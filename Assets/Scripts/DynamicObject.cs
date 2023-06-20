@@ -38,16 +38,20 @@ public class DynamicObject {
 
     public int DoAnomalyAction(bool enable) {
         DynamicData data = this.Obj.GetComponent<DynamicData>();
+
         if(enable == false) {
-            data.timeSinceLastDespawn = Time.time;
+            data.beenKilled = true;
+            data.cooldown = 20f;
+            data.killedTime = Time.time;
         }
-        else if(Time.time - data.timeSinceLastDespawn <= data.cooldown) {
+        else if(Time.time > 10 && Time.time <= data.killedTime + data.cooldownTime) {
             return 0;
         }
         
         Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.Type) + 
         (enable ? " ENABLED" : " DISABLED"));
         this.normal = !enable;
+        data.beenKilled = false;
         switch(this.Type) {
             case ANOMALY_TYPE.ObjectDisappearance:
                 this.ObjectDisappearance(enable);

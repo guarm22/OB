@@ -16,6 +16,9 @@ public class GameSystem : MonoBehaviour
   public AudioClip DisappearSound;
   public int GameStartTime;
   public int GameObjectDisappearanceInterval;
+  public int AnomaliesPerRoom;
+
+  public static List<string> Rooms;
 
 
   void Start()
@@ -28,6 +31,7 @@ public class GameSystem : MonoBehaviour
     Instance = this;
     Anomalies = new List<DynamicObject>();
     DynamicObjects = new List<DynamicObject>();
+    Rooms = new List<string>();
     Guessed = false;
     LastGuess = 0;
     PrivateCorrectGuess = false;
@@ -55,6 +59,12 @@ public class GameSystem : MonoBehaviour
             dynam.Obj.SetActive(false);
         }
     }
+    
+    foreach(DynamicObject obj in DynamicObjects) {
+        if(!Rooms.Contains(obj.Room)) {
+            Rooms.Add(obj.Room);
+        }
+    }
   }
   private static ANOMALY_TYPE GetAnomalyTypeByName(string name) {
     switch(name){
@@ -74,6 +84,11 @@ public class GameSystem : MonoBehaviour
   }
 
     public void GetRandomDynamicObject() {
+        if(Anomalies.Count*AnomaliesPerRoom == Rooms.Count) {
+            //Each room has an Anomaly
+            return;
+        }
+
         //Find all dynamic objects
         int index = UnityEngine.Random.Range(0, DynamicObjects.Count);
         // Select the object at the random index
@@ -81,15 +96,14 @@ public class GameSystem : MonoBehaviour
 
         foreach(DynamicObject obj in Anomalies) {
             //we dont want to move 2 objects from the same room
-            if(obj.Room.Equals(randomObject.Obj.transform.parent.name)) {
+            if(obj.Room.Equals(randomObject.Room)) {
                 //Debug.Log("Already an anomaly in " + obj.Obj.transform.parent.name);
+                GetRandomDynamicObject();
                 return;
             }
         }
         // Do something with the random object
-
-        int success = randomObject.DoAnomalyAction(true);
-        if(success == 0) {
+        if(randomObject.DoAnomalyAction(true) == 0) {
             return;
         }
 
@@ -137,6 +151,10 @@ public class GameSystem : MonoBehaviour
             Guessed = false;
             CorrectGuess = PrivateCorrectGuess;
         }
+    }
+
+    public void EndGame() {
+        Debug.Log("Game over!");
     }
 
   void Update()
