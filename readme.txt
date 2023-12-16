@@ -1,3 +1,14 @@
+Github:
+	Always pull from Github before you work "git pull origin master"
+
+	
+	how to push: 
+	Add all the files you have changed "git add ."
+	Commit them with a message with what you have changed "git commit -m 'message'"
+	and push: "git push origin master"
+
+
+
 Creating dynamic objects:
 
 
