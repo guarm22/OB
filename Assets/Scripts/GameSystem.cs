@@ -42,18 +42,24 @@ public class GameSystem : MonoBehaviour
     InvokeRepeating("GetRandomDynamicObject", GameStartTime, GameObjectDisappearanceInterval);
   }
 
+/// <summary>
+/// Runs on game start, takes every object in the world with the dynamic tag and instantiates it as an object
+/// 
+/// </summary>
   static void InstantiateAllDynamicObjects() {
     GameObject[] objects = GameObject.FindGameObjectsWithTag("Dynamic");
     foreach(GameObject obj in objects) {
         DynamicData data = obj.gameObject.GetComponent<DynamicData>();
-        DynamicObject dynam = new DynamicObject();
-        dynam.Type = data.type;
+            DynamicObject dynam = new DynamicObject
+            {
+                Type = data.type,
 
-        dynam.Room = obj.transform.parent.name;
-        dynam.Name = obj.name;
-        dynam.Obj = obj;
-        dynam.normal = true;
-        DynamicObjects.Add(dynam);
+                Room = obj.transform.parent.name,
+                Name = obj.name,
+                Obj = obj,
+                normal = true
+            };
+            DynamicObjects.Add(dynam);
 
         if(dynam.Type == ANOMALY_TYPE.Creature) {
             dynam.Obj.SetActive(false);
@@ -116,6 +122,11 @@ public class GameSystem : MonoBehaviour
         Anomalies.Add(randomObject);
     }
 
+    /// <summary>
+    /// Takes in a type and room, and sets the "guessed" variable true or false depending on whether there is an anomaly with that room and type
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="room"></param>
     public static void MakeSelection(string type, string room) {
         DynamicObject found = null;
         foreach(DynamicObject dynam in Anomalies) {
@@ -137,6 +148,9 @@ public class GameSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates each frame with the time since the last guess
+    /// </summary>
     void SetGuessTime() {
         if(Time.time - LastGuess >= GuessLockout-5 && Guessed == true) {
             CorrectGuess = PrivateCorrectGuess;
