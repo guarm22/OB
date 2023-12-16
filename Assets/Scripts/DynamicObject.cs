@@ -124,8 +124,7 @@ public class DynamicObject {
         Transform replacement = this.Obj.transform.GetChild(0);
         Vector3 old = replacement.position;
         replacement.localPosition = new Vector3(0, enable ? 10f : -10f, 0);
-        this.Obj.transform.position = old;
-        
+        this.Obj.transform.position = old; 
     }
 
     private void Creature(bool enable) {

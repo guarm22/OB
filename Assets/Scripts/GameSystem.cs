@@ -47,16 +47,17 @@ public class GameSystem : MonoBehaviour
 /// 
 /// </summary>
   static void InstantiateAllDynamicObjects() {
-    GameObject[] objects = GameObject.FindGameObjectsWithTag("Dynamic");
-    foreach(GameObject obj in objects) {
+    DynamicData[] objects = GameObject.FindObjectsOfType<DynamicData>();
+    foreach(DynamicData obj in objects) {
         DynamicData data = obj.gameObject.GetComponent<DynamicData>();
+        GameObject gameobj = obj.transform.gameObject; 
             DynamicObject dynam = new DynamicObject
             {
                 Type = data.type,
 
                 Room = obj.transform.parent.name,
                 Name = obj.name,
-                Obj = obj,
+                Obj = gameobj,
                 normal = true
             };
             DynamicObjects.Add(dynam);
