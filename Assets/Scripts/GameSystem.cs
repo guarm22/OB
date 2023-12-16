@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 public class GameSystem : MonoBehaviour
 {
   public int GuessLockout;
@@ -18,7 +19,7 @@ public class GameSystem : MonoBehaviour
   public int GameObjectDisappearanceInterval;
   public int AnomaliesPerRoom;
 
-  public static List<string> Rooms;
+  public static Dictionary<string, int> Rooms;
 
 
   void Start()
@@ -31,7 +32,7 @@ public class GameSystem : MonoBehaviour
     Instance = this;
     Anomalies = new List<DynamicObject>();
     DynamicObjects = new List<DynamicObject>();
-    Rooms = new List<string>();
+    Rooms = new Dictionary<string, int>();
     Guessed = false;
     LastGuess = 0;
     PrivateCorrectGuess = false;
@@ -68,8 +69,8 @@ public class GameSystem : MonoBehaviour
     }
     
     foreach(DynamicObject obj in DynamicObjects) {
-        if(!Rooms.Contains(obj.Room)) {
-            Rooms.Add(obj.Room);
+        if(!Rooms.Keys.Contains<string>(obj.Room)) {
+            Rooms.Add(obj.Room, 0);
         }
     }
   }
@@ -91,7 +92,8 @@ public class GameSystem : MonoBehaviour
   }
 
     public void GetRandomDynamicObject() {
-        if(Anomalies.Count*AnomaliesPerRoom == Rooms.Count) {
+        if(areAllRoomsFull()) {
+            Application.Quit();
             //Each room has an Anomaly
             return;
         }
@@ -100,14 +102,18 @@ public class GameSystem : MonoBehaviour
         int index = UnityEngine.Random.Range(0, DynamicObjects.Count);
         // Select the object at the random index
         DynamicObject randomObject = DynamicObjects[index];
-
-        foreach(DynamicObject obj in Anomalies) {
             //we dont want to move 2 objects from the same room
-            if(obj.Room.Equals(randomObject.Room)) {
-                //Debug.Log("Already an anomaly in " + obj.Obj.transform.parent.name);
-                GetRandomDynamicObject();
-                return;
-            }
+            
+            //var to hold amount of anomalies in room of obj
+        int amt = Rooms.ContainsKey(randomObject.Room) ? Rooms[randomObject.Room] : -1;
+        //Debug.Log("count for " + randomObject.Room + "  -  " + amt);
+        if(amt == AnomaliesPerRoom) {
+            //Debug.Log("Already an anomaly in " + obj.Obj.transform.parent.name);
+            GetRandomDynamicObject();
+            return;
+        }
+        else {
+            Rooms[randomObject.Room] += 1;
         }
         // Do something with the random object
         if(randomObject.DoAnomalyAction(true) == 0) {
@@ -166,6 +172,64 @@ public class GameSystem : MonoBehaviour
             Guessed = false;
             CorrectGuess = PrivateCorrectGuess;
         }
+    }
+
+    private bool areAllRoomsFull() {
+        foreach (string str in Rooms.Keys) {
+            if(Rooms[str] == AnomaliesPerRoom || isRoomAllAnomaliesActive(str)) {
+                continue;
+            }
+            else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool isRoomAllAnomaliesActive(string str) {
+        List<DynamicObject> anoms = getAnomaliesByRoom(str);
+        List<DynamicObject> dynams = getDynamicObjectsByRoom(str);
+        int alen = anoms.Count;
+        int dlen = dynams.Count;
+
+        //if there are NO dynamic objects in the room, just return false
+        if(alen+dlen == 0) {
+            return false;
+        }
+
+        //no anomalies in the room
+        if(alen == 0) {
+            return false;
+        }
+
+        if(dlen == 0) {
+            return true;
+        }
+        if(alen == AnomaliesPerRoom) {
+
+        }
+
+        return false;
+    }
+
+    private List<DynamicObject> getAnomaliesByRoom(string room) {
+        List<DynamicObject> res = new List<DynamicObject>();
+        foreach(DynamicObject d in Anomalies) {
+            if(d.Room.Equals(room)) {
+                res.Add(d);
+            }
+        }
+        return res;
+    }
+
+    private List<DynamicObject> getDynamicObjectsByRoom(string room) {
+        List<DynamicObject> res = new List<DynamicObject>();
+        foreach(DynamicObject d in DynamicObjects) {
+            if(d.Room.Equals(room)) {
+                res.Add(d);
+            }
+        }
+        return res;
     }
 
     public void EndGame() {
