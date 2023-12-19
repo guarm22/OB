@@ -13,8 +13,7 @@ Creating dynamic objects:
 
 
 Generally:
-	Add the 'DynamicData' script to each object, then change it's type to whatever you want it to be
-	Make sure it has the 'dynamic' tag (top right).
+	Add the 'DynamicData' script to each object, then change its type to whatever you want it to be
 	Make sure each dynamic object is the child of a room that has the 'room' tag
 	
 

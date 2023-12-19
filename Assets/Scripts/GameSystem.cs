@@ -52,16 +52,15 @@ public class GameSystem : MonoBehaviour
     foreach(DynamicData obj in objects) {
         DynamicData data = obj.gameObject.GetComponent<DynamicData>();
         GameObject gameobj = obj.transform.gameObject; 
-            DynamicObject dynam = new DynamicObject
-            {
-                Type = data.type,
-
-                Room = obj.transform.parent.name,
-                Name = obj.name,
-                Obj = gameobj,
-                normal = true
-            };
-            DynamicObjects.Add(dynam);
+        DynamicObject dynam = new DynamicObject
+        {
+            Type = data.type,
+            Room = obj.transform.parent.name,
+            Name = obj.name,
+            Obj = gameobj,
+            normal = true
+        };
+        DynamicObjects.Add(dynam);
 
         if(dynam.Type == ANOMALY_TYPE.Creature) {
             dynam.Obj.SetActive(false);
@@ -92,22 +91,20 @@ public class GameSystem : MonoBehaviour
   }
 
     public void GetRandomDynamicObject() {
-        if(areAllRoomsFull()) {
-            Application.Quit();
+        if(areAllRoomsFull() || DynamicObjects.Count == 0) {
+            Debug.Log("Full --- DynamicObjects Count: " + DynamicObjects.Count);
             //Each room has an Anomaly
             return;
         }
-
         //Find all dynamic objects
         int index = UnityEngine.Random.Range(0, DynamicObjects.Count);
         // Select the object at the random index
         DynamicObject randomObject = DynamicObjects[index];
-            //we dont want to move 2 objects from the same room
-            
-            //var to hold amount of anomalies in room of obj
+        //we dont want to move 2 objects from the same room
+        //var to hold amount of anomalies in room of obj
         int amt = Rooms.ContainsKey(randomObject.Room) ? Rooms[randomObject.Room] : -1;
         //Debug.Log("count for " + randomObject.Room + "  -  " + amt);
-        if(amt == AnomaliesPerRoom) {
+        if(amt == AnomaliesPerRoom || AnyAvailableDynamicObjectsInRoom(randomObject.Room)) {
             //Debug.Log("Already an anomaly in " + obj.Obj.transform.parent.name);
             GetRandomDynamicObject();
             return;
@@ -119,7 +116,6 @@ public class GameSystem : MonoBehaviour
         if(randomObject.DoAnomalyAction(true) == 0) {
             return;
         }
-
         AudioSource audioSource = randomObject.Obj.AddComponent<AudioSource>();
         audioSource.clip = DisappearSound;
         audioSource.Play();
@@ -129,8 +125,27 @@ public class GameSystem : MonoBehaviour
         Anomalies.Add(randomObject);
     }
 
+    public bool AnyAvailableDynamicObjectsInRoom(string room) {
+        List<DynamicObject> anoms = getAnomaliesByRoom(room);
+        List<DynamicObject> dynams = getDynamicObjectsByRoom(room);
+        int dlen = dynams.Count;
+        int count = 0;
+        foreach(DynamicObject d in dynams) {
+            foreach(DynamicObject a in anoms) {
+                if(d.Type == a.Type) {
+                    count++;
+                    break;
+                }   
+            }
+        }
+        if(count == dlen) {
+            return true;
+        }
+        return false;
+    }
+
     /// <summary>
-    /// Takes in a type and room, and sets the "guessed" variable true or false depending on whether there is an anomaly with that room and type
+    /// Takes in a type and room, and sets the "PrivateCorrectGuess" variable true or false depending on whether there is an anomaly with that room and type
     /// </summary>
     /// <param name="type"></param>
     /// <param name="room"></param>
@@ -176,7 +191,7 @@ public class GameSystem : MonoBehaviour
 
     private bool areAllRoomsFull() {
         foreach (string str in Rooms.Keys) {
-            if(Rooms[str] == AnomaliesPerRoom || isRoomAllAnomaliesActive(str)) {
+            if(isRoomAllAnomaliesActive(str)) {
                 continue;
             }
             else {
@@ -192,6 +207,21 @@ public class GameSystem : MonoBehaviour
         int alen = anoms.Count;
         int dlen = dynams.Count;
 
+        //we need to check that based on the current active anomalies
+        //that the only other possible anomalies are ones that share a type with a currently active anomaly
+        int count = 0;
+        foreach(DynamicObject d in dynams) {
+            foreach(DynamicObject a in anoms) {
+                if(d.Type == a.Type) {
+                    count++;
+                    break;
+                }   
+            }
+        }
+        if(count == dlen) {
+            return true;
+        }
+
         //if there are NO dynamic objects in the room, just return false
         if(alen+dlen == 0) {
             return false;
@@ -205,8 +235,9 @@ public class GameSystem : MonoBehaviour
         if(dlen == 0) {
             return true;
         }
-        if(alen == AnomaliesPerRoom) {
 
+        if(Rooms[str] == AnomaliesPerRoom) {
+            return true;
         }
 
         return false;

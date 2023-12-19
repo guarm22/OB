@@ -76,11 +76,10 @@ public class SC_FPSController : MonoBehaviour
             iter+=100f;
         }
 
-        GameObject[] types = GameObject.FindGameObjectsWithTag("Anomaly Type");
-        i = 0;
+        List<string> types = DynamicObject.GetAllAnomalyTypes();
         iter = 0f;
         //Creates each of the type selectors
-        foreach(GameObject type in types) {
+        foreach(string type in types) {
             //Create Object
             GameObject ui = Instantiate(togglePrefab, transform);
             //Set parent to correct UI element
@@ -88,10 +87,10 @@ public class SC_FPSController : MonoBehaviour
             //Set position
             ui.transform.localPosition = new Vector3(0f, iter, 0f);
             //Set text
-            ui.transform.GetChild(1).gameObject.GetComponent<Text>().text = types[i].name;
+            ui.transform.GetChild(1).gameObject.GetComponent<Text>().text = type;
             //Scale is set to 0 by default for some reason
             ui.transform.localScale = new Vector3(3f,3f,3f);
-            ui.name = types[i++].name;
+            ui.name = type;
             //Increase Y value of next object
             iter+=100f;
         }

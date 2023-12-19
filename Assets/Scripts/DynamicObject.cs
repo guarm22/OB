@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public enum ANOMALY_TYPE {
     NONE,
@@ -30,6 +31,7 @@ public class DynamicObject {
         Room = room;
         Obj = obj;
         normal = true;
+        
     }
 
     public DynamicObject() {
@@ -129,6 +131,16 @@ public class DynamicObject {
 
     private void Creature(bool enable) {
         this.Obj.SetActive(enable);
+    }
+
+    public static List<string> GetAllAnomalyTypes() {
+        List<string> res = new List<string>();
+        res.Add("Light");
+        res.Add("ObjectDisappearance");
+        res.Add("ObjectMovement");
+        res.Add("ObjectChange");
+        res.Add("Creature");
+        return res;
     }
 
 
