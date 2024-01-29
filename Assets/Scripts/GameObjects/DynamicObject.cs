@@ -47,7 +47,8 @@ public class DynamicObject {
             data.killedTime = Time.time;
         }
         else if(Time.time > 10 && Time.time <= data.killedTime + data.cooldownTime) {
-            return 0;
+            //there is a bug in this if statement: fix later if cooldown should be re added
+            //return 0;
         }
         
         Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.Type) + 

@@ -35,6 +35,10 @@ public class EscapeMenu : MonoBehaviour
                 else if(selectedObject.name.Equals("Return")) {
                     ReturnToGame();
                 }
+                else if(selectedObject.name.Equals("Main Menu")) {
+                    //call some function that saves some data and returns player to main menu
+                    Debug.Log("going home");
+                }
             }
         }
     }

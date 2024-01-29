@@ -98,10 +98,6 @@ public class GameSystem : MonoBehaviour
   }
 
     public void GetRandomDynamicObject() {
-        if(SC_FPSController.paused) {
-            return;
-        }
-
         if(areAllRoomsFull() || DynamicObjects.Count == 0) {
             Debug.Log("Full --- DynamicObjects Count: " + DynamicObjects.Count);
             //Each room has an Anomaly
@@ -127,6 +123,7 @@ public class GameSystem : MonoBehaviour
         if(randomObject.DoAnomalyAction(true) == 0) {
             return;
         }
+                Debug.Log("doing");
         AudioSource audioSource = randomObject.Obj.AddComponent<AudioSource>();
         audioSource.clip = DisappearSound;
         audioSource.Play();
@@ -140,6 +137,8 @@ public class GameSystem : MonoBehaviour
         List<DynamicObject> anoms = getAnomaliesByRoom(room);
         List<DynamicObject> dynams = getDynamicObjectsByRoom(room);
         int dlen = dynams.Count;
+        Debug.Log("Dlen: " + dlen);
+        Debug.Log(anoms.Count);
         int count = 0;
         foreach(DynamicObject d in dynams) {
             foreach(DynamicObject a in anoms) {
@@ -188,6 +187,7 @@ public class GameSystem : MonoBehaviour
         if(Time.time - LastGuess >= GuessLockout-5 && Guessed == true) {
             CorrectGuess = PrivateCorrectGuess;
             if(CorrectObject != null) {
+                Rooms[CorrectObject.Room] -= 1;
                 CorrectObject.DoAnomalyAction(false);
                 Anomalies.Remove(CorrectObject);
                 DynamicObjects.Add(CorrectObject);
