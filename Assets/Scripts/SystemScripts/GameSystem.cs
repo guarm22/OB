@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using UnityEngine.UI;
 public class GameSystem : MonoBehaviour
 {
   public int GuessLockout;
@@ -21,6 +22,11 @@ public class GameSystem : MonoBehaviour
 
   public static Dictionary<string, int> Rooms;
 
+  public float gameTime;
+  public Text gameTimer;
+  public float startTime = 60*15f;
+
+  public float timeSinceLastDisappearance;
 
   void Start()
   {
@@ -28,7 +34,7 @@ public class GameSystem : MonoBehaviour
       Debug.LogError("There is more than one instance!");
       return;
     }
-
+    gameTime = startTime;
     Instance = this;
     Anomalies = new List<DynamicObject>();
     DynamicObjects = new List<DynamicObject>();
@@ -37,10 +43,11 @@ public class GameSystem : MonoBehaviour
     LastGuess = 0;
     PrivateCorrectGuess = false;
     CorrectObject = null;
+    timeSinceLastDisappearance = 0f - GameStartTime;
 
     InstantiateAllDynamicObjects();
 
-    InvokeRepeating("GetRandomDynamicObject", GameStartTime, GameObjectDisappearanceInterval);
+    //InvokeRepeating("GetRandomDynamicObject", GameStartTime, GameObjectDisappearanceInterval);
   }
 
 /// <summary>
@@ -91,6 +98,10 @@ public class GameSystem : MonoBehaviour
   }
 
     public void GetRandomDynamicObject() {
+        if(SC_FPSController.paused) {
+            return;
+        }
+
         if(areAllRoomsFull() || DynamicObjects.Count == 0) {
             Debug.Log("Full --- DynamicObjects Count: " + DynamicObjects.Count);
             //Each room has an Anomaly
@@ -263,12 +274,38 @@ public class GameSystem : MonoBehaviour
         return res;
     }
 
+    public void SetGameTime() {
+        if (gameTime > 0)
+        {
+            gameTime -= Time.deltaTime;
+            gameTimer.text = "" + Mathf.FloorToInt(gameTime/60) + ":" + Mathf.FloorToInt(gameTime % 60);
+        }
+        else {
+            GameSystem.Instance.EndGame();
+        }
+    }
+
     public void EndGame() {
         Debug.Log("Game over!");
     }
 
+    private void CheckTimer() {
+        if(timeSinceLastDisappearance > GameObjectDisappearanceInterval) {
+            timeSinceLastDisappearance = 0f;
+            GetRandomDynamicObject();
+        }
+        else {
+            timeSinceLastDisappearance += Time.deltaTime;
+        }
+    }
+
   void Update()
   {
+    if(SC_FPSController.paused) {
+        return;
+    }
+    CheckTimer();
+    SetGameTime();
     SetGuessTime();
   }
 

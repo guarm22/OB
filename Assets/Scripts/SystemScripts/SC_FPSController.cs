@@ -22,6 +22,8 @@ public class SC_FPSController : MonoBehaviour
 
     public GameObject roomText;
 
+    public GameObject escapeMenuUI;
+
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
@@ -47,6 +49,7 @@ public class SC_FPSController : MonoBehaviour
 
     public bool inJournal = false;
     public bool inMenu = false;
+    public static bool paused = false;
 
     void Start()
     {
@@ -96,6 +99,23 @@ public class SC_FPSController : MonoBehaviour
         }
     }
 
+    private void turnOffSelection() {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        inMenu = false;
+        selectionUI.SetActive(false);
+        defaultUI.SetActive(true);
+        canMove = true;
+    }
+    private void turnOnSelection() {
+        selectionUI.SetActive(true);
+        defaultUI.SetActive(false);
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        inMenu = true;
+        canMove = false;
+    }
+
     void SelectionMenu() {
         if(inJournal) {
             return;
@@ -104,28 +124,12 @@ public class SC_FPSController : MonoBehaviour
         //if menu is open, check if tab is pressed to close, otherwise stop movement
         if(inMenu) {
             if(Input.GetKeyDown(KeyCode.Tab) || GameSystem.Guessed) {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                inMenu = false;
-
-                selectionUI.SetActive(false);
-                defaultUI.SetActive(true);
-                canMove = true;
+                turnOffSelection();
             }
-
-            //return;
         }
 
         else if(Input.GetKeyDown(KeyCode.Tab) && !GameSystem.Guessed) {
-            //activate selection UI
-            selectionUI.SetActive(true);
-            defaultUI.SetActive(false);
-
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-            inMenu = true;
-            canMove = false;
-            //return;
+            turnOnSelection();
         }
     }
 
@@ -224,8 +228,43 @@ public class SC_FPSController : MonoBehaviour
         }
     }
 
+    private void openEscape() {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        escapeMenuUI.SetActive(true);
+        paused = true;
+
+        defaultUI.SetActive(false);
+    }
+
+    private void closeEscape() {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        escapeMenuUI.SetActive(false);
+        paused = false;
+
+        defaultUI.SetActive(true);
+    }
+
+    private void EscapeMenu() {
+        //CHANGE TO ESCAPE
+        if(Input.GetKeyDown(KeyCode.Q)) { 
+
+            if(!paused) {
+                openEscape();
+            }
+            else {
+                closeEscape();
+            }
+        }
+    }
     void Update()
     {
+        EscapeMenu();
+        if(paused) {
+            return;
+        }
+
         SelectionMenu();
 
         Interact();
