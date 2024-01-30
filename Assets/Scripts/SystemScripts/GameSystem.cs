@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using UnityEngine.UI;
-public class GameSystem : MonoBehaviour
+public class GameSystem : MonoBehaviour, IDataPersistence
 {
   public int GuessLockout;
   public static GameSystem Instance { get; private set; }
@@ -28,6 +28,17 @@ public class GameSystem : MonoBehaviour
 
   public float timeSinceLastDisappearance;
 
+  private int AnomaliesSuccesfullyReported = 0;
+  private int AnomaliesSuccesfullyReportedThisGame;
+
+  public void LoadData(GameData data) {
+        AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
+  }
+
+  public void SaveData(ref GameData data) {
+        data.AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported + AnomaliesSuccesfullyReportedThisGame;
+  }
+
   void Start()
   {
     if (Instance != null) {
@@ -44,6 +55,7 @@ public class GameSystem : MonoBehaviour
     PrivateCorrectGuess = false;
     CorrectObject = null;
     timeSinceLastDisappearance = 0f - GameStartTime;
+    AnomaliesSuccesfullyReportedThisGame = 0;
 
     InstantiateAllDynamicObjects();
 
@@ -99,7 +111,7 @@ public class GameSystem : MonoBehaviour
 
     public void GetRandomDynamicObject() {
         if(areAllRoomsFull() || DynamicObjects.Count == 0) {
-            Debug.Log("Full --- DynamicObjects Count: " + DynamicObjects.Count);
+            //Debug.Log("Full --- DynamicObjects Count: " + DynamicObjects.Count);
             //Each room has an Anomaly
             return;
         }
@@ -123,7 +135,6 @@ public class GameSystem : MonoBehaviour
         if(randomObject.DoAnomalyAction(true) == 0) {
             return;
         }
-                Debug.Log("doing");
         AudioSource audioSource = randomObject.Obj.AddComponent<AudioSource>();
         audioSource.clip = DisappearSound;
         audioSource.Play();
@@ -137,8 +148,6 @@ public class GameSystem : MonoBehaviour
         List<DynamicObject> anoms = getAnomaliesByRoom(room);
         List<DynamicObject> dynams = getDynamicObjectsByRoom(room);
         int dlen = dynams.Count;
-        Debug.Log("Dlen: " + dlen);
-        Debug.Log(anoms.Count);
         int count = 0;
         foreach(DynamicObject d in dynams) {
             foreach(DynamicObject a in anoms) {
@@ -187,6 +196,7 @@ public class GameSystem : MonoBehaviour
         if(Time.time - LastGuess >= GuessLockout-5 && Guessed == true) {
             CorrectGuess = PrivateCorrectGuess;
             if(CorrectObject != null) {
+                this.AnomaliesSuccesfullyReportedThisGame += 1;
                 Rooms[CorrectObject.Room] -= 1;
                 CorrectObject.DoAnomalyAction(false);
                 Anomalies.Remove(CorrectObject);

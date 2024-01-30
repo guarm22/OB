@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class EscapeMenu : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class EscapeMenu : MonoBehaviour
         Cursor.visible = false;
         escapeMenuUI.SetActive(false);
         defaultUI.SetActive(true);
+    }
+
+    public void QuitGame() {
+        SceneManager.LoadScene(0);
     }
 
     // Start is called before the first frame update
@@ -37,7 +42,7 @@ public class EscapeMenu : MonoBehaviour
                 }
                 else if(selectedObject.name.Equals("Main Menu")) {
                     //call some function that saves some data and returns player to main menu
-                    Debug.Log("going home");
+                    QuitGame();
                 }
             }
         }

@@ -6,13 +6,21 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : MonoBehaviour, IDataPersistence
 {
     public GameObject DefaultMenu;
 
     public GameObject LevelSelectionMenu;
 
     public GameObject Settings;
+
+    public GameObject Stats;
+
+    public Text AnomaliesStat;
+
+    private int AnomaliesSuccesfullyReported;
+    private int LevelsWon;
+    private int LevelsFailed;
 
 
     static int GetLevelInt(string name) {
@@ -28,10 +36,25 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    public void LoadData(GameData data) {
+        this.AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
+        Debug.Log(this.AnomaliesSuccesfullyReported);
+        this.LevelsFailed = data.LevelsFailed;
+        this.LevelsWon = data.LevelsWon;
+    }
+
+    public void SaveData(ref GameData data) {
+        //data should not change on this scene
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    private void LoadStats() {
+        AnomaliesStat.text = "Anomalies Successfully Reported: " + this.AnomaliesSuccesfullyReported;
     }
 
     // Update is called once per frame
@@ -68,6 +91,17 @@ public class MainMenu : MonoBehaviour
                 else if(selectedObject.name.Equals("SettingsBack")) {
                     DefaultMenu.SetActive(true);
                     Settings.SetActive(false);
+                }
+
+                else if(selectedObject.name.Equals("StatsBack")) {
+                    DefaultMenu.SetActive(true);
+                    Stats.SetActive(false);
+                }
+
+                else if(selectedObject.name.Equals("StatsButton")) {
+                    DefaultMenu.SetActive(false);
+                    Stats.SetActive(true);
+                    LoadStats();
                 }
 
 
