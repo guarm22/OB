@@ -20,6 +20,13 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public int GameObjectDisappearanceInterval;
   public int AnomaliesPerRoom;
 
+  public int MaxEnergy = 100;
+  public int CurrentEnergy;
+  private float LastEnergyCheck=0f;
+  private float EnergyCheckInterval=1f;
+
+  private int EnergyPerGuess = 25;
+
   public static Dictionary<string, int> Rooms;
 
   public float gameTime;
@@ -56,6 +63,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     CorrectObject = null;
     timeSinceLastDisappearance = 0f - GameStartTime;
     AnomaliesSuccesfullyReportedThisGame = 0;
+    CurrentEnergy = MaxEnergy;
 
     InstantiateAllDynamicObjects();
 
@@ -169,7 +177,13 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     /// <param name="type"></param>
     /// <param name="room"></param>
     public static void MakeSelection(string type, string room) {
+        if(Instance.CurrentEnergy < Instance.EnergyPerGuess) {
+            return;
+        }
+
+
         DynamicObject found = null;
+        Instance.CurrentEnergy = Instance.CurrentEnergy-25;
         foreach(DynamicObject dynam in Anomalies) {
             if(GetAnomalyTypeByName(type)==dynam.Type && room == dynam.Room) {
                 found = dynam;
@@ -309,6 +323,18 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
     }
 
+    private void UpdateEnergy() {
+        if(Time.time - LastEnergyCheck >= EnergyCheckInterval) {
+            if(CurrentEnergy >= 100) {
+                CurrentEnergy = 100;
+            }
+            else {
+                CurrentEnergy = CurrentEnergy + 1;
+            }
+            LastEnergyCheck = Time.time;
+        }
+    }
+
   void Update()
   {
     if(SC_FPSController.paused) {
@@ -317,6 +343,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     CheckTimer();
     SetGameTime();
     SetGuessTime();
+    UpdateEnergy();
   }
 
 }

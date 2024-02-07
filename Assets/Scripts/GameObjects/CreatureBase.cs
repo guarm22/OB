@@ -4,28 +4,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 
-public enum CREATURE_TYPE {
-    NONE,
-    DEFAULT,
-}
-
 public class CreatureBase : MonoBehaviour
 {
-    public Vector3 roomMax;
-    public Vector3 roomMin;
-
-    public float movementSpeed;
-    private Vector3 movementLocation;
     public GameObject player;
     public float sightRange;
     public LayerMask playerLayer;
 
     private bool playerInSight;
-
     private NavMeshAgent agent;
-
-    public CREATURE_TYPE type;
-
     public float radius;
 
     public Action reachedLocation;
