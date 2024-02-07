@@ -24,6 +24,8 @@ public class SC_FPSController : MonoBehaviour
 
     public GameObject escapeMenuUI;
 
+    public GameObject EndGameUI;
+
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
@@ -259,8 +261,18 @@ public class SC_FPSController : MonoBehaviour
             }
         }
     }
+
+    private void EndingGame() {
+        EndGameUI.SetActive(true);
+    }
+
     void Update()
     {
+        if(GameSystem.Instance.GameOver) {
+            EndingGame();
+            return;
+        }
+
         EscapeMenu();
         if(paused) {
             return;

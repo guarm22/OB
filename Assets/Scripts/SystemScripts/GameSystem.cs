@@ -20,6 +20,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public int GameObjectDisappearanceInterval;
   public int AnomaliesPerRoom;
 
+  public int TotalAnomalies;
+
   public int MaxEnergy = 100;
   public int CurrentEnergy;
   private float LastEnergyCheck=0f;
@@ -36,8 +38,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public float timeSinceLastDisappearance;
 
   private int AnomaliesSuccesfullyReported = 0;
-  private int AnomaliesSuccesfullyReportedThisGame;
+  public int AnomaliesSuccesfullyReportedThisGame;
 
+  public bool GameOver = false;
+  
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
   }
@@ -64,6 +68,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     timeSinceLastDisappearance = 0f - GameStartTime;
     AnomaliesSuccesfullyReportedThisGame = 0;
     CurrentEnergy = MaxEnergy;
+    TotalAnomalies = 0;
 
     InstantiateAllDynamicObjects();
 
@@ -150,6 +155,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         DynamicObjects.Remove(randomObject);
         //Add to current anomalies
         Anomalies.Add(randomObject);
+        TotalAnomalies = TotalAnomalies + 1;
     }
 
     public bool AnyAvailableDynamicObjectsInRoom(string room) {
@@ -180,10 +186,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(Instance.CurrentEnergy < Instance.EnergyPerGuess) {
             return;
         }
-
-
         DynamicObject found = null;
-        Instance.CurrentEnergy = Instance.CurrentEnergy-25;
+        Instance.CurrentEnergy = Instance.CurrentEnergy-Instance.EnergyPerGuess;
         foreach(DynamicObject dynam in Anomalies) {
             if(GetAnomalyTypeByName(type)==dynam.Type && room == dynam.Room) {
                 found = dynam;
@@ -299,6 +303,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     }
 
     public void SetGameTime() {
+        if (Input.GetKeyDown(KeyCode.N)) {
+            GameSystem.Instance.EndGame();
+        }
+
         if (gameTime > 0)
         {
             gameTime -= Time.deltaTime;
@@ -310,6 +318,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     }
 
     public void EndGame() {
+        GameOver = true;
         Debug.Log("Game over!");
     }
 
@@ -337,7 +346,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
   void Update()
   {
-    if(SC_FPSController.paused) {
+    if(SC_FPSController.paused || GameOver) {
         return;
     }
     CheckTimer();

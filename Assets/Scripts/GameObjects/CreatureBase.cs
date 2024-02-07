@@ -7,23 +7,16 @@ using System;
 public class CreatureBase : MonoBehaviour
 {
     public GameObject player;
-    public float sightRange;
-    public LayerMask playerLayer;
+    public float sightRange = 15;
+    private LayerMask playerLayer;
 
     private bool playerInSight;
     private NavMeshAgent agent;
-    public float radius;
+    public float radius = 20;
 
     public Action reachedLocation;
-    // Start is called before the first frame update
-    void Start()
-    {
-        agent = GetComponent<NavMeshAgent>();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+    private void CreatureMove() {
         playerInSight = Physics.CheckSphere(transform.position, sightRange, playerLayer);
 
         if(playerInSight) {
@@ -33,6 +26,26 @@ public class CreatureBase : MonoBehaviour
         else if(!agent.hasPath) {
             agent.SetDestination(GetPoint.Instance.GetRandomPoint(transform, radius));
         }
+    }
+
+    private void StopCreature() {
+        agent.SetDestination(transform.position);
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        playerLayer = LayerMask.GetMask("Player");
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(SC_FPSController.paused || GameSystem.Instance.GameOver) {
+            StopCreature();
+            return;
+        }
+        CreatureMove();
     }
 
 
