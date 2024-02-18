@@ -27,7 +27,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   private float LastEnergyCheck=0f;
   private float EnergyCheckInterval=1f;
 
-  private int EnergyPerGuess = 25;
+  public int EnergyPerGuess = 25;
 
   public static Dictionary<string, int> Rooms;
 
@@ -41,6 +41,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public int AnomaliesSuccesfullyReportedThisGame;
 
   public bool GameOver = false;
+
+  public bool Won = false;
   
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
@@ -84,9 +86,12 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     foreach(DynamicData obj in objects) {
         DynamicData data = obj.gameObject.GetComponent<DynamicData>();
         GameObject gameobj = obj.transform.gameObject; 
+        CustomDivergence cd = obj.gameObject.GetComponent<CustomDivergence>();
+        data.customDivergence = cd;
+
         DynamicObject dynam = new DynamicObject
         {
-            Type = data.type,
+            data = data,
             Room = obj.transform.parent.name,
             Name = obj.name,
             Obj = gameobj,
@@ -94,7 +99,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         };
         DynamicObjects.Add(dynam);
 
-        if(dynam.Type == ANOMALY_TYPE.Creature) {
+        if(dynam.data.type == ANOMALY_TYPE.Creature) {
             dynam.Obj.SetActive(false);
         }
     }
@@ -165,7 +170,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         int count = 0;
         foreach(DynamicObject d in dynams) {
             foreach(DynamicObject a in anoms) {
-                if(d.Type == a.Type) {
+                if(d.data.type == a.data.type) {
                     count++;
                     break;
                 }   
@@ -182,15 +187,17 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     /// </summary>
     /// <param name="type"></param>
     /// <param name="room"></param>
-    public static void MakeSelection(string type, string room) {
-        if(Instance.CurrentEnergy < Instance.EnergyPerGuess) {
+    public static void MakeSelection(List<string> types, string room) {
+        if(Instance.CurrentEnergy < Instance.EnergyPerGuess * types.Count) {
             return;
         }
         DynamicObject found = null;
-        Instance.CurrentEnergy = Instance.CurrentEnergy-Instance.EnergyPerGuess;
+        Instance.CurrentEnergy = Instance.CurrentEnergy-(Instance.EnergyPerGuess * types.Count);
         foreach(DynamicObject dynam in Anomalies) {
-            if(GetAnomalyTypeByName(type)==dynam.Type && room == dynam.Room) {
-                found = dynam;
+            foreach(string type in types) {
+                if(GetAnomalyTypeByName(type)==dynam.data.type && room == dynam.Room) {
+                    found = dynam;
+                }
             }
         }
         Guessed = true;
@@ -251,7 +258,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         int count = 0;
         foreach(DynamicObject d in dynams) {
             foreach(DynamicObject a in anoms) {
-                if(d.Type == a.Type) {
+                if(d.data.type == a.data.type) {
                     count++;
                     break;
                 }   
@@ -309,10 +316,16 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
         if (gameTime > 0)
         {
+            string zero = "";
+            if(Mathf.FloorToInt(gameTime % 60) < 10) {
+                zero = "0";
+            }
+
             gameTime -= Time.deltaTime;
-            gameTimer.text = "" + Mathf.FloorToInt(gameTime/60) + ":" + Mathf.FloorToInt(gameTime % 60);
+            gameTimer.text = "" + Mathf.FloorToInt(gameTime/60) + ":" + zero + Mathf.FloorToInt(gameTime % 60);
         }
         else {
+            Won = true;
             GameSystem.Instance.EndGame();
         }
     }

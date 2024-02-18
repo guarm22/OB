@@ -10,12 +10,13 @@ public class TypeSelection : MonoBehaviour
 
     public static TypeSelection Instance {get; private set;}
 
-    public static string CurrentlySelected {get; private set;}
+    public static List<string> CurrentlySelected {get; private set;}
 
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
+        CurrentlySelected = new List<string>();
     }
 
     void Select(GameObject selectedObject) {
@@ -33,11 +34,11 @@ public class TypeSelection : MonoBehaviour
             }
 
             if(!selectedObject.name.Equals(child.name)) {
-                toggle.isOn = false;
+                //toggle.isOn = false;
             }
             else {
                 //get the text from the label
-                CurrentlySelected = toggle.transform.GetChild(1).GetComponent<Text>().text;
+                CurrentlySelected.Add(toggle.transform.GetChild(1).GetComponent<Text>().text);
             }
         }
     }

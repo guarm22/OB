@@ -9,6 +9,7 @@ public class EndGameScreen : MonoBehaviour
 {
     public Text ADetected;
     public Text AMissed;
+    public Text GameOver;
 
 
     public void ReturnToMenu() {
@@ -27,6 +28,10 @@ public class EndGameScreen : MonoBehaviour
 
         ADetected.text = "Divergences Found: " + GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame;
         AMissed.text = "Divergences Missed: " + (GameSystem.Instance.TotalAnomalies - GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame);
+
+        if(GameSystem.Instance.Won == true) {
+            GameOver.text = "You Won!";
+        }
     }
 
     // Update is called once per frame

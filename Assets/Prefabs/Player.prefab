@@ -812,6 +812,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ADetected: {fileID: 5476036637064787046}
   AMissed: {fileID: 3094958768639757136}
+  GameOver: {fileID: 3964785415228112652}
 --- !u!114 &6068964288468257407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,7 +820,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4130014255294691665}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5464ec081ecfe143b5c3f339ca7cea5, type: 3}
   m_Name: 
@@ -838,7 +839,7 @@ GameObject:
   - component: {fileID: 2319820517131227195}
   - component: {fileID: 3964785415228112652}
   m_Layer: 5
-  m_Name: YouLost
+  m_Name: GameOver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

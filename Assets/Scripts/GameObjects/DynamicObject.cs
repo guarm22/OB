@@ -12,7 +12,7 @@ public enum ANOMALY_TYPE {
 };
 
 public class DynamicObject {
-    public ANOMALY_TYPE Type {get; set;}
+    public DynamicData data;
     public string Room {get; set;}
     public string Name {get; set;}
 
@@ -25,13 +25,12 @@ public class DynamicObject {
 
     public Vector3 PrevPos {get; set;}
 
-    public DynamicObject(ANOMALY_TYPE type, string room, string name, GameObject obj) {
-        Type = type;
+    public DynamicObject(DynamicData data, string room, string name, GameObject obj) {
+        data = data;
         Name = name;
         Room = room;
         Obj = obj;
         normal = true;
-        
     }
 
     public DynamicObject() {
@@ -39,23 +38,27 @@ public class DynamicObject {
     }
 
     public int DoAnomalyAction(bool enable) {
-        DynamicData data = this.Obj.GetComponent<DynamicData>();
-
         if(enable == false) {
-            data.beenKilled = true;
-            data.cooldown = 20f;
-            data.killedTime = Time.time;
+            this.data.beenKilled = true;
+            this.data.cooldown = 20f;
+            this.data.killedTime = Time.time;
         }
-        else if(Time.time > 10 && Time.time <= data.killedTime + data.cooldownTime) {
+        else if(Time.time > 10 && Time.time <= this.data.killedTime + this.data.cooldownTime) {
             //there is a bug in this if statement: fix later if cooldown should be re added
             //return 0;
         }
         
-        Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.Type) + 
+        Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.data.type) + 
         (enable ? " ENABLED" : " DISABLED"));
         this.normal = !enable;
-        data.beenKilled = false;
-        switch(this.Type) {
+        this.data.beenKilled = false;
+
+        if(this.data.customDivergence != null) {
+            this.data.customDivergence.DoDivergenceAction(enable, this.Obj);
+            return 1;
+        }
+
+        switch(this.data.type) {
             case ANOMALY_TYPE.ObjectDisappearance:
                 this.ObjectDisappearance(enable);
                 break;

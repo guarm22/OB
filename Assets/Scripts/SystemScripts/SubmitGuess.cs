@@ -12,7 +12,7 @@ public class SubmitGuess : MonoBehaviour
     }
 
     void SubmitAnswer() {
-        string type = TypeSelection.CurrentlySelected;
+        List<string> type = TypeSelection.CurrentlySelected;
         string room = RoomSelection.CurrentlySelected;
         GameSystem.MakeSelection(type,room);
     }

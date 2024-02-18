@@ -12,6 +12,8 @@ public class DynamicData : MonoBehaviour
 
     public bool beenKilled;
 
+    public CustomDivergence customDivergence;
+    
     void Update() {
         if(cooldown > 0f) {
             cooldown -= Time.deltaTime;
