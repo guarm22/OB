@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomDivergence : MonoBehaviour {
-    public virtual void DoDivergenceAction(bool activate, GameObject gameObject) {
+    public virtual void DoDivergenceAction(bool activate, DynamicObject gameObject) {
         Debug.Log("Parent Class");
     }
 } 

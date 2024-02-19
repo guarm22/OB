@@ -23,18 +23,15 @@ public class DynamicObject {
 
     public GameObject Obj {get; set;}
 
-    public Vector3 PrevPos {get; set;}
+    public Vector3 originalPosition {get; set;}
 
     public DynamicObject(DynamicData data, string room, string name, GameObject obj) {
-        data = data;
+        this.data = data;
         Name = name;
         Room = room;
         Obj = obj;
         normal = true;
-    }
-
-    public DynamicObject() {
-
+        originalPosition = obj.transform.position;
     }
 
     public int DoAnomalyAction(bool enable) {
@@ -54,7 +51,7 @@ public class DynamicObject {
         this.data.beenKilled = false;
 
         if(this.data.customDivergence != null) {
-            this.data.customDivergence.DoDivergenceAction(enable, this.Obj);
+            this.data.customDivergence.DoDivergenceAction(enable, this);
             return 1;
         }
 
@@ -114,7 +111,6 @@ public class DynamicObject {
             float negativeZ = Random.Range(0f, 1f);
             float randomX = (negativeX > 0.5f) ? 1f : -1f * Random.Range(minMovement, maxMovement);
             float randomZ = (negativeZ > 0.5f) ? 1f : -1f * Random.Range(minMovement, maxMovement);
-            this.PrevPos = this.Obj.transform.position;
             this.Obj.transform.DOMove(new Vector3(
                                                     randomX + this.Obj.transform.position.x, 
                                                     this.Obj.transform.position.y, 
@@ -122,7 +118,7 @@ public class DynamicObject {
                                                 ), 8.0f);   
         }
         else {
-            this.Obj.transform.DOMove(this.PrevPos, 2.0f);
+            this.Obj.transform.DOMove(this.originalPosition, 2.0f);
         }
     }
 

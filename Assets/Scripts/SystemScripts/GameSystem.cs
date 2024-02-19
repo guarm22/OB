@@ -85,18 +85,18 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     DynamicData[] objects = GameObject.FindObjectsOfType<DynamicData>();
     foreach(DynamicData obj in objects) {
         DynamicData data = obj.gameObject.GetComponent<DynamicData>();
+
         GameObject gameobj = obj.transform.gameObject; 
+
         CustomDivergence cd = obj.gameObject.GetComponent<CustomDivergence>();
         data.customDivergence = cd;
 
-        DynamicObject dynam = new DynamicObject
-        {
-            data = data,
-            Room = obj.transform.parent.name,
-            Name = obj.name,
-            Obj = gameobj,
-            normal = true
-        };
+        DynamicObject dynam = new DynamicObject(
+            data,
+            obj.transform.parent.name,
+            obj.name,
+            gameobj
+        );
         DynamicObjects.Add(dynam);
 
         if(dynam.data.type == ANOMALY_TYPE.Creature) {
