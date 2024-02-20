@@ -77,6 +77,7 @@ public class SC_FPSController : MonoBehaviour
             ui.transform.SetParent(roomSelectionUI.transform);
             ui.transform.localPosition = new Vector3(0f, iter, 0f);
             ui.transform.GetChild(1).gameObject.GetComponent<Text>().text = rooms[i].name;
+            //ui.transform.GetChild(1).gameObject.GetComponent<Text>().fontSize = 40;
             ui.transform.localScale = new Vector3(3f,3f,3f);
             ui.name = rooms[i++].name;
             iter+=100f;
