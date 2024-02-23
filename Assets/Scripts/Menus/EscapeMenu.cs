@@ -18,7 +18,7 @@ public class EscapeMenu : MonoBehaviour
     }
 
     public void QuitGame() {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenuScene");
     }
 
     // Start is called before the first frame update

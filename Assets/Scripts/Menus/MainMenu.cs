@@ -22,20 +22,6 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     private int LevelsWon;
     private int LevelsFailed;
 
-
-    static int GetLevelInt(string name) {
-        switch(name) {
-            case "Test":
-                return 1;
-
-            case "The Puncture":
-                return 2;
-
-            default:
-                return 0;
-        }
-    }
-
     public void LoadData(GameData data) {
         this.AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
         Debug.Log(this.AnomaliesSuccesfullyReported);
@@ -108,7 +94,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
                 //Level Selection
                 else {
                     try {
-                        SceneManager.LoadScene(GetLevelInt(selectedObject.name));
+                        SceneManager.LoadScene(selectedObject.name);
                     }
                     catch(Exception e) {
                         Debug.Log("Level does not exist: " +e);

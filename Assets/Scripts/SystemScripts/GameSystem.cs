@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Linq;
 using UnityEngine.UI;
 public class GameSystem : MonoBehaviour, IDataPersistence
@@ -116,8 +114,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             return ANOMALY_TYPE.Light;
         case "ObjectDisappearance":
             return ANOMALY_TYPE.ObjectDisappearance;
-        case "ObjectMovement":
-            return ANOMALY_TYPE.ObjectMovement;
         case "ObjectChange":
             return ANOMALY_TYPE.ObjectChange;
         case "Creature":
@@ -140,7 +136,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         //we dont want to move 2 objects from the same room
         //var to hold amount of anomalies in room of obj
         int amt = Rooms.ContainsKey(randomObject.Room) ? Rooms[randomObject.Room] : -1;
-        //Debug.Log("count for " + randomObject.Room + "  -  " + amt);
         if(amt == AnomaliesPerRoom || AnyAvailableDynamicObjectsInRoom(randomObject.Room)) {
             //Debug.Log("Already an anomaly in " + obj.Obj.transform.parent.name);
             GetRandomDynamicObject();
@@ -160,7 +155,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         DynamicObjects.Remove(randomObject);
         //Add to current anomalies
         Anomalies.Add(randomObject);
-        TotalAnomalies = TotalAnomalies + 1;
+        TotalAnomalies++;
     }
 
     public bool AnyAvailableDynamicObjectsInRoom(string room) {
@@ -221,8 +216,13 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(Time.time - LastGuess >= GuessLockout-5 && Guessed == true) {
             CorrectGuess = PrivateCorrectGuess;
             if(CorrectObject != null) {
+                //Stops multiple audio sources from going on a single gameobject
+                Destroy(CorrectObject.Obj.GetComponent<AudioSource>());
+                //counter
                 this.AnomaliesSuccesfullyReportedThisGame += 1;
+                //there is 1 less divergence in the reported room
                 Rooms[CorrectObject.Room] -= 1;
+                //undo divergence
                 CorrectObject.DoAnomalyAction(false);
                 Anomalies.Remove(CorrectObject);
                 DynamicObjects.Add(CorrectObject);

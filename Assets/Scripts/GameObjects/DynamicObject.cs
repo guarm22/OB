@@ -6,19 +6,15 @@ public enum ANOMALY_TYPE {
     NONE,
     Light,
     ObjectDisappearance,
-    ObjectMovement,
     ObjectChange,
     Creature,
+    Audio,
 };
 
 public class DynamicObject {
     public DynamicData data;
     public string Room {get; set;}
     public string Name {get; set;}
-
-    private float minMovement = 3.5f;
-    private float maxMovement = 7.5f;
-
     public bool normal;
 
     public GameObject Obj {get; set;}
@@ -63,10 +59,6 @@ public class DynamicObject {
             case ANOMALY_TYPE.Light:
                 this.Light(enable);
                 break;
-
-            case ANOMALY_TYPE.ObjectMovement: 
-                this.ObjectMovement(enable);
-                break;
             
             case ANOMALY_TYPE.ObjectChange:
                 this.ObjectChange(enable);
@@ -74,6 +66,10 @@ public class DynamicObject {
 
             case ANOMALY_TYPE.Creature:
                 this.Creature(enable);
+                break;
+
+            case ANOMALY_TYPE.Audio:
+                this.Audio(enable);
                 break;
 
             default:
@@ -105,23 +101,6 @@ public class DynamicObject {
         }
     }
 
-    private void ObjectMovement(bool enable) {
-        if(enable) {
-            float negativeX = Random.Range(0f, 1f);
-            float negativeZ = Random.Range(0f, 1f);
-            float randomX = (negativeX > 0.5f) ? 1f : -1f * Random.Range(minMovement, maxMovement);
-            float randomZ = (negativeZ > 0.5f) ? 1f : -1f * Random.Range(minMovement, maxMovement);
-            this.Obj.transform.DOMove(new Vector3(
-                                                    randomX + this.Obj.transform.position.x, 
-                                                    this.Obj.transform.position.y, 
-                                                    randomZ + this.Obj.transform.position.z
-                                                ), 8.0f);   
-        }
-        else {
-            this.Obj.transform.DOMove(this.originalPosition, 2.0f);
-        }
-    }
-
     private void ObjectChange(bool enable) {
         Transform replacement = this.Obj.transform.GetChild(0);
         Vector3 old = replacement.position;
@@ -133,13 +112,18 @@ public class DynamicObject {
         this.Obj.SetActive(enable);
     }
 
+    private void Audio(bool enable) {
+        Debug.Log("WIP");
+        //footstep sounds
+    }
+
     public static List<string> GetAllAnomalyTypes() {
         List<string> res = new List<string>();
         res.Add("Light");
         res.Add("ObjectDisappearance");
-        res.Add("ObjectMovement");
         res.Add("ObjectChange");
         res.Add("Creature");
+        res.Add("Audio");
         return res;
     }
 
@@ -152,12 +136,12 @@ public class DynamicObject {
                 return "Light";
             case ANOMALY_TYPE.ObjectDisappearance:
                 return "ObjectDisappearance";
-            case ANOMALY_TYPE.ObjectMovement:
-                return "ObjectMovement";
             case ANOMALY_TYPE.ObjectChange:
                 return "ObjectChange";
             case ANOMALY_TYPE.Creature:
                 return "Creature";
+            case ANOMALY_TYPE.Audio:
+                return "Audio";
             default:
                 return "Error";
         }
