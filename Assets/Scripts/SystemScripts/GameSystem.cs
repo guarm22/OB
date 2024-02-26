@@ -89,9 +89,11 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         CustomDivergence cd = obj.gameObject.GetComponent<CustomDivergence>();
         data.customDivergence = cd;
 
+        string room = getRoomName(obj.transform);
+
         DynamicObject dynam = new DynamicObject(
             data,
-            obj.transform.parent.name,
+            room,
             obj.name,
             gameobj
         );
@@ -108,6 +110,24 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
     }
   }
+
+    private static string getRoomName(Transform obj) {
+        if(obj.parent.tag != "Room") {
+            while(true) {
+                if(obj.parent == null) {
+                    return "";
+                }
+                else if(obj.parent.tag == "Room") {
+                    return obj.parent.name;
+                }
+                else {
+                    obj = obj.parent;
+                }
+            }
+        }
+        return obj.parent.name;
+    }
+
   private static ANOMALY_TYPE GetAnomalyTypeByName(string name) {
     switch(name){
         case "Light":

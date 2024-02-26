@@ -24,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5820590235935395684}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5820590235935395690
 MonoBehaviour:
@@ -47,3 +48,15 @@ MonoBehaviour:
   DisappearSound: {fileID: 8300000, guid: cabfae866cab347928b74b7d0ca6bfa9, type: 3}
   GameStartTime: 10
   GameObjectDisappearanceInterval: 10
+  AnomaliesPerRoom: 1
+  TotalAnomalies: 0
+  MaxEnergy: 100
+  CurrentEnergy: 0
+  EnergyPerGuess: 25
+  gameTime: 0
+  gameTimer: {fileID: 0}
+  startTime: 900
+  timeSinceLastDisappearance: 0
+  AnomaliesSuccesfullyReportedThisGame: 0
+  GameOver: 0
+  Won: 0
