@@ -8,6 +8,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public static GameSystem Instance { get; private set; }
   public static List<DynamicObject> Anomalies {get; private set;}
   public static List<DynamicObject> DynamicObjects {get; private set;}
+  public GameObject zombiePrefab;
   public static float LastGuess {get; private set;}
   public static bool Guessed {get; private set;}
   public static bool PrivateCorrectGuess {get; private set;}
@@ -24,6 +25,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public int CurrentEnergy;
   private float LastEnergyCheck=0f;
   private float EnergyCheckInterval=1f;
+
+  public int MaxDivergences = 4;
 
   public int EnergyPerGuess = 25;
 
@@ -207,7 +210,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             return;
         }
         DynamicObject found = null;
-        Instance.CurrentEnergy = Instance.CurrentEnergy-(Instance.EnergyPerGuess * types.Count);
         foreach(DynamicObject dynam in Anomalies) {
             foreach(string type in types) {
                 if(GetAnomalyTypeByName(type)==dynam.data.type && room == dynam.Room) {
@@ -215,6 +217,13 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                 }
             }
         }
+        Instance.CurrentEnergy = Instance.CurrentEnergy-(Instance.EnergyPerGuess * types.Count);
+
+        //Creatures cost less energy to report
+        if(found.data.type == ANOMALY_TYPE.Creature) {
+            Instance.CurrentEnergy = Instance.CurrentEnergy + Instance.EnergyPerGuess-18;
+        }
+
         Guessed = true;
         LastGuess = Time.time;
         if(found == null) {
@@ -375,6 +384,23 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             }
             LastEnergyCheck = Time.time;
         }
+    }
+
+    private void CreatureSpawn() {
+        //If we have less than the maximum, we come back later
+        if(Anomalies.Count <= MaxDivergences) {
+            return;
+        }
+
+        int divergencesAboveMax = Anomalies.Count - MaxDivergences;
+        int spawnChance = Random.Range(0,33*divergencesAboveMax);
+        if(spawnChance > 20-divergencesAboveMax*2) {
+            //get a random room
+            string room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
+            //put the guy in the room as a zombie
+            GameObject zombie = Instantiate(zombiePrefab, GameObject.Find(room).transform);
+        }
+
     }
 
   void Update()

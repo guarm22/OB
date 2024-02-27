@@ -12,6 +12,8 @@ public class DynamicData : MonoBehaviour
 
     public bool beenKilled;
 
+    public int energyCost = 25;
+
     public CustomDivergence customDivergence;
     
     void Update() {
