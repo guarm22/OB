@@ -21,15 +21,22 @@ public class CreatureBase : MonoBehaviour
 
     private void CreaturePatrol() {
 
-        Vector3 direction = dest - transform.position;
+        if(canSeePlayer()) {
+            agent.SetDestination(player.transform.position);
 
-        // Perform the raycast
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit, 10f, floorLayer))
-        {
-            isDestSet = false;
+            if(amTouchingPlayer()) {
+                GameSystem.Instance.EndGame();
+            }
+
+            return;
         }
 
+        Vector3 direction = dest - transform.position;
+        // Perform the raycast
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, direction, out hit, 10f, floorLayer)) {
+            isDestSet = false;
+        }
         if(!isDestSet) {
             findDest();
         }
@@ -40,6 +47,29 @@ public class CreatureBase : MonoBehaviour
             isDestSet = false;
         }
 
+    }
+
+    private bool canSeePlayer() {
+        RaycastHit hit;
+        Vector3 direction = player.transform.position - transform.position;
+        if (Physics.Raycast(transform.position, direction, out hit, sightRange, playerLayer)) {
+            //then check if there is a wall between
+            if(Physics.Raycast(transform.position, direction, out hit, 
+            Vector3.Distance(transform.position, player.transform.position), floorLayer)) {
+                return false;
+            }
+            return true;
+        }
+        return false;   
+    }
+
+    private bool amTouchingPlayer() {
+        RaycastHit hit;
+        Vector3 direction = player.transform.position - transform.position;
+        if(Vector3.Distance(transform.position, player.transform.position) < 1.3f) {
+                return true;
+            }
+        return false;
     }
 
     void findDest() {

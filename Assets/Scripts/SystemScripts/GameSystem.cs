@@ -395,6 +395,15 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     public void EndGame() {
         GameOver = true;
         Debug.Log("Game over!");
+        cleanUpGame();
+    }
+
+    public void cleanUpGame() {
+        foreach(DynamicObject div in Anomalies) {
+            if(div.data.type == ANOMALY_TYPE.Creature) {
+                Destroy(div.Obj);
+            }
+        }
     }
 
     private void CheckTimer() {
