@@ -25,7 +25,7 @@ public class CreatureBase : MonoBehaviour
 
         // Perform the raycast
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit, 1f, floorLayer))
+        if (Physics.Raycast(transform.position, direction, out hit, 10f, floorLayer))
         {
             isDestSet = false;
         }
@@ -36,7 +36,7 @@ public class CreatureBase : MonoBehaviour
         if(isDestSet) {
             agent.SetDestination(dest);
         }
-        if(Vector3.Distance(transform.position, dest) < 3) {
+        if(Vector3.Distance(transform.position, dest) < 1) {
             isDestSet = false;
         }
 
