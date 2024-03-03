@@ -368,6 +368,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(timeSinceLastDisappearance > GameObjectDisappearanceInterval) {
             timeSinceLastDisappearance = 0f;
             GetRandomDynamicObject();
+            CreatureSpawn();
         }
         else {
             timeSinceLastDisappearance += Time.deltaTime;
@@ -399,6 +400,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             string room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
             //put the guy in the room as a zombie
             GameObject zombie = Instantiate(zombiePrefab, GameObject.Find(room).transform);
+            Debug.Log("Spawning creature in " + room);
         }
 
     }
