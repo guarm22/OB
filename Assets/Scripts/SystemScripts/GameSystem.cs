@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.AI;
 public class GameSystem : MonoBehaviour, IDataPersistence
 {
   public int GuessLockout;
@@ -395,12 +396,14 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
         int divergencesAboveMax = Anomalies.Count - MaxDivergences;
         int spawnChance = Random.Range(0,33*divergencesAboveMax);
+        print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
         if(spawnChance > 20-divergencesAboveMax*2) {
             //get a random room
             string room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
             //put the guy in the room as a zombie
-            GameObject zombie = Instantiate(zombiePrefab, GameObject.Find(room).transform);
-            Debug.Log("Spawning creature in " + room);
+            GameObject zombie = Instantiate(zombiePrefab);
+            zombie.name = "Zombie - " + room;
+            zombie.transform.position = GameObject.Find(room).transform.position;
         }
 
     }

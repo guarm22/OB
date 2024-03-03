@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions.Must;
 
 public class CreatureBase : MonoBehaviour
 {
@@ -19,16 +20,23 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] float walkRange;
 
     private void CreaturePatrol() {
+
+        Vector3 direction = dest - transform.position;
+
+        // Perform the raycast
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, direction, out hit, 1f, floorLayer))
+        {
+            isDestSet = false;
+        }
+
         if(!isDestSet) {
             findDest();
         }
         if(isDestSet) {
             agent.SetDestination(dest);
         }
-        if(!agent.CalculatePath(dest, agent.path)) {
-            
-        }
-        if(Vector3.Distance(transform.position, dest) < 15) {
+        if(Vector3.Distance(transform.position, dest) < 3) {
             isDestSet = false;
         }
 
@@ -44,7 +52,7 @@ public class CreatureBase : MonoBehaviour
             isDestSet = true;
         }
         NavMeshHit hit;
-        if (NavMesh.Raycast(transform.position, dest, out hit, NavMesh.AllAreas)) {
+        if (!NavMesh.Raycast(transform.position, dest, out hit, NavMesh.AllAreas)) {
             // Destination is not reachable, set a new destination point
             Vector3 newDestination = hit.position;
             agent.SetDestination(newDestination);
@@ -61,6 +69,9 @@ public class CreatureBase : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player");
+        //hacky fix to stop navmeshagent from getting stuck
+        agent.Warp(transform.position);
+        
     }
 
     // Update is called once per frame
@@ -77,7 +88,7 @@ public class CreatureBase : MonoBehaviour
     #if UNITY_EDITOR
     void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, radius);
+        //Gizmos.DrawWireSphere(transform.position, radius);
     }
     #endif
 }
