@@ -45,13 +45,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GuessLockout: 15
+  zombiePrefab: {fileID: 0}
   DisappearSound: {fileID: 8300000, guid: cabfae866cab347928b74b7d0ca6bfa9, type: 3}
-  GameStartTime: 10
+  GameStartTime: 0
   GameObjectDisappearanceInterval: 10
   AnomaliesPerRoom: 1
   TotalAnomalies: 0
+  maxCreaturesPerRoom: 1
   MaxEnergy: 100
   CurrentEnergy: 0
+  MaxDivergences: 4
   EnergyPerGuess: 25
   gameTime: 0
   gameTimer: {fileID: 0}
