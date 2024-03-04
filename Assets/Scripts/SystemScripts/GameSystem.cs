@@ -376,7 +376,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             GameSystem.Instance.EndGame();
         }
 
-        if (gameTime > 0)
+        if (gameTime > 1)
         {
             string zero = "";
             if(Mathf.FloorToInt(gameTime % 60) < 10) {
@@ -400,6 +400,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
     public void cleanUpGame() {
         foreach(DynamicObject div in Anomalies) {
+            //destroy all creatures because it looks weird when theyre walking around
             if(div.data.type == ANOMALY_TYPE.Creature) {
                 Destroy(div.Obj);
             }

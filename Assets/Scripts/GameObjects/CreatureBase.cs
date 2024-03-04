@@ -11,7 +11,6 @@ public class CreatureBase : MonoBehaviour
     private NavMeshAgent agent;
     [SerializeField] public LayerMask playerLayer;
     [SerializeField] public LayerMask floorLayer;
-    private bool playerInSight;
     public float radius = 20;
 
     Vector3 dest;
@@ -64,8 +63,6 @@ public class CreatureBase : MonoBehaviour
     }
 
     private bool amTouchingPlayer() {
-        RaycastHit hit;
-        Vector3 direction = player.transform.position - transform.position;
         if(Vector3.Distance(transform.position, player.transform.position) < 1.3f) {
                 return true;
             }

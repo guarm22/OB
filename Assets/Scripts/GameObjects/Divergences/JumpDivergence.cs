@@ -20,7 +20,6 @@ public class JumpDivergence : CustomDivergence {
     {
     while(activate) { 
         float waitTime = 0.5f;
-        Debug.Log(activate);
         gameObject.transform.DOMove(new Vector3(gameObject.transform.position.x,
                                                 gameObject.transform.position.y + jumpHeight,
                                                 gameObject.transform.position.z),
