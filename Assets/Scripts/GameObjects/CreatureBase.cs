@@ -12,6 +12,9 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] public LayerMask playerLayer;
     [SerializeField] public LayerMask floorLayer;
     public float radius = 20;
+    public float stuckTimer = 3f;
+    public Vector3 posCheck;
+    public float timeSinceLastStuckCheck;
 
     Vector3 dest;
     bool isDestSet;
@@ -19,7 +22,7 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] float walkRange;
 
     private void CreaturePatrol() {
-
+        //if the creature can see the player, chasing the player takes priority over everything else
         if(canSeePlayer()) {
             agent.SetDestination(player.transform.position);
 
@@ -30,10 +33,15 @@ public class CreatureBase : MonoBehaviour
             return;
         }
 
+        //every 3 seconds it checks if the creature has been in the same spot, if so then choose another place to move
+        if(stuck()) {
+            isDestSet = false;
+        }
+
         Vector3 direction = dest - transform.position;
         // Perform the raycast
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit, 10f, floorLayer)) {
+        if (Physics.Raycast(transform.position, direction, out hit, 5f, floorLayer)) {
             isDestSet = false;
         }
         if(!isDestSet) {
@@ -46,6 +54,21 @@ public class CreatureBase : MonoBehaviour
             isDestSet = false;
         }
 
+    }
+
+    private bool stuck() {
+        if(timeSinceLastStuckCheck > stuckTimer) {
+            timeSinceLastStuckCheck = 0f;
+            if(Vector3.Distance(posCheck, transform.position) > 1f) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
     }
 
     private bool canSeePlayer() {
@@ -98,7 +121,8 @@ public class CreatureBase : MonoBehaviour
         player = GameObject.Find("Player");
         //hacky fix to stop navmeshagent from getting stuck
         agent.Warp(transform.position);
-        
+        timeSinceLastStuckCheck = 0f;
+        posCheck = transform.position;
     }
 
     // Update is called once per frame
@@ -108,6 +132,7 @@ public class CreatureBase : MonoBehaviour
             StopCreature();
             return;
         }
+        timeSinceLastStuckCheck += Time.deltaTime;
         CreaturePatrol();
     }
 
