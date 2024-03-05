@@ -37,6 +37,7 @@ public class SC_FPSController : MonoBehaviour
     public float maxDistance = 5.0f;
 
     public string targetTag = "Room";
+    public string tutTag = "Tutorial";
 
     public GameObject body;
 
@@ -45,7 +46,6 @@ public class SC_FPSController : MonoBehaviour
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
-
     [HideInInspector]
     public bool canMove = true;
 
@@ -187,6 +187,10 @@ public class SC_FPSController : MonoBehaviour
         //Debug.Log("Player is within a GameObject with the tag: " + targetTag + " with object name: " + other.gameObject.name);
             roomText.GetComponent<Text>().text = other.gameObject.name;
         }
+
+        if (other.tag.Equals(tutTag)) {
+            Tutorial.ActivateTrigger(other.gameObject);
+        }
     }
 
     private void PlayerMove() {
@@ -261,6 +265,10 @@ public class SC_FPSController : MonoBehaviour
                 closeEscape();
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.P)) {
+            Popup.Instance.OpenPopup("Test message!");
+        }
     }
 
     private void EndingGame() {
@@ -269,6 +277,10 @@ public class SC_FPSController : MonoBehaviour
 
     void Update()
     {
+        if(Popup.Instance.isPopupOpen) {
+            return;
+        }
+
         if(GameSystem.Instance.GameOver) {
             EndingGame();
             return;

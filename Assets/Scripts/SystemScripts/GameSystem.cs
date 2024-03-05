@@ -203,6 +203,30 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         TotalAnomalies++;
     }
 
+    public void ManuallyCreateDivergence(string name) {
+        DynamicObject obj = null;
+        foreach(DynamicObject item in DynamicObjects) {
+            if (item.Obj.name == name) {
+                obj = item;
+            }
+        }
+
+        if(obj == null) {
+            return;
+        }
+        
+        obj.DoAnomalyAction(true);
+        AudioSource audioSource = obj.Obj.AddComponent<AudioSource>();
+        audioSource.clip = DisappearSound;
+        audioSource.Play();
+
+        DynamicObjects.Remove(obj);
+        //Add to current anomalies
+        Anomalies.Add(obj);
+        TotalAnomalies++;
+        Rooms[obj.Room] += 1;
+    }
+
     public bool AnyAvailableDynamicObjectsInRoom(string room) {
         List<DynamicObject> anoms = getAnomaliesByRoom(room);
         List<DynamicObject> dynams = getDynamicObjectsByRoom(room);
@@ -241,14 +265,14 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
 
         //Creatures cost less energy to report
+        Instance.CurrentEnergy = Instance.CurrentEnergy-(Instance.EnergyPerGuess * types.Count);
+
         foreach(DynamicObject d in found) {
             if(d.data.type == ANOMALY_TYPE.Creature) {
-                Instance.CurrentEnergy = Instance.CurrentEnergy + Instance.EnergyPerGuess-18;
-            }
-            else {
-                Instance.CurrentEnergy = Instance.CurrentEnergy-(Instance.EnergyPerGuess * types.Count);
+                Instance.CurrentEnergy = Instance.CurrentEnergy + 18;
             }
         }
+
         Guessed = true;
         LastGuess = Time.time;
         if(found == null) {
@@ -435,7 +459,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(Anomalies.Count <= MaxDivergences) {
             return;
         }
-
         int divergencesAboveMax = Anomalies.Count - MaxDivergences;
         int spawnChance = Random.Range(0,33*divergencesAboveMax);
         print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
@@ -444,7 +467,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
             return;
         }
-
         if(spawnChance > 20-divergencesAboveMax*2) {
             //get a random room
             //put the guy in the room as a zombie
@@ -455,8 +477,17 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             zombie.transform.SetParent(GameObject.Find(room).transform);
             CreateDivergence(zombie);
         }
-
     }
+
+    public void ManuallySpawnCreature(string room) {
+         GameObject zombie = Instantiate(zombiePrefab);
+        zombie.name = "Zombie - " + room;
+        zombie.transform.position = GameObject.Find(room).transform.position;
+        CreaturesPerRoom[room] += 1;
+        zombie.transform.SetParent(GameObject.Find(room).transform);
+        CreateDivergence(zombie);
+    }
+    
 
   void Update()
   {
