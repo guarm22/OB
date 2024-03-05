@@ -40,7 +40,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger2")) {
-            Popup.Instance.OpenPopup("See that box in front of you? If you walk a bit more forward it'll disappear.\n\nUse the reporting menu to report that it's disappeared!\n\nHint: You can see the current room name at the top right.");
+            Popup.Instance.OpenPopup("See that box in front of you? If you walk a bit more forward it'll disappear - creating a divergence.\n\nUse the reporting menu to report any divergences you discover!\n\nHint: You can see the current room name at the top right.");
         }
 
         if(hit.name.Equals("DivTrigger1")) {

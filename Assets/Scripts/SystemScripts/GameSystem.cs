@@ -250,7 +250,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     /// <param name="type"></param>
     /// <param name="room"></param>
     public static void MakeSelection(List<string> types, string room) {
-        if(Instance.CurrentEnergy < Instance.EnergyPerGuess * types.Count) {
+        if(Instance.CurrentEnergy < Instance.EnergyPerGuess * types.Count || room.Length<1) {
             return;
         }
         List<DynamicObject> found = new List<DynamicObject>();
@@ -273,7 +273,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
         Guessed = true;
         LastGuess = Time.time;
-        if(found == null) {
+        if(found.Count == 0) {
             //incorrect guess
             PrivateCorrectGuess = false;
             return;

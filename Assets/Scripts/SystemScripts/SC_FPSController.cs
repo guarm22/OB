@@ -277,8 +277,10 @@ public class SC_FPSController : MonoBehaviour
 
     void Update()
     {
-        if(Popup.Instance.isPopupOpen) {
-            return;
+        if(Popup.Instance != null) {
+            if(Popup.Instance.isPopupOpen ) {
+                return;
+            }
         }
 
         if(GameSystem.Instance.GameOver) {
