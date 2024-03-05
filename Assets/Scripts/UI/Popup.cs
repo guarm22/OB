@@ -30,11 +30,6 @@ public class Popup : MonoBehaviour
         this.gameObject.SetActive(false);
         isPopupOpen = false;
     }
-
-    private void test() {
-
-    }
-
     // Start is called before the first frame update
     void Start() {
         if (Instance != null) {
@@ -42,9 +37,8 @@ public class Popup : MonoBehaviour
             return;
         }
         Instance = this;
-        PopupText = this.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
-        print(PopupText);
-        CloseButton = this.transform.GetChild(0).GetChild(1).GetComponent<Button>();
+        PopupText = this.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>();
+        CloseButton = this.transform.GetChild(0).GetChild(2).GetComponent<Button>();
         this.gameObject.SetActive(false);
     }
 

@@ -117,11 +117,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
     }
   }
-  static void CreateDivergence(GameObject obj) {
-    DynamicData data = obj.gameObject.GetComponent<DynamicData>();
-
-        GameObject gameobj = obj.transform.gameObject; 
-
+    static void CreateDivergence(GameObject obj) {
+        DynamicData data = obj.gameObject.GetComponent<DynamicData>();
         CustomDivergence cd = obj.gameObject.GetComponent<CustomDivergence>();
         data.customDivergence = cd;
 
@@ -131,9 +128,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             data,
             room,
             obj.name,
-            gameobj
+            obj
         );
         Anomalies.Add(dynam);
+        Instance.TotalAnomalies++;
   }
 
     private static string getRoomName(Transform obj) {
@@ -311,7 +309,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                     else {       
                         DynamicObjects.Add(d);
                     }
-                    CorrectObject = null;
+                    CorrectObject = new List<DynamicObject>();
                 }
             }
         }
@@ -395,9 +393,13 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         return res;
     }
 
-    public void SetGameTime() {
+    public void SetGameTime(float t=-1) {
         if (Input.GetKeyDown(KeyCode.N)) {
             GameSystem.Instance.EndGame();
+        }
+
+        if(t>0) {
+            gameTime = t;
         }
 
         if (gameTime > 1)
