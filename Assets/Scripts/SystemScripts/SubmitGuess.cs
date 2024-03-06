@@ -12,9 +12,16 @@ public class SubmitGuess : MonoBehaviour
     }
 
     void SubmitAnswer() {
+        if(TypeSelection.CurrentlySelected.Count == 0 || RoomSelection.CurrentlySelected == null) {
+            return;
+        }
+
         List<string> type = TypeSelection.CurrentlySelected;
         string room = RoomSelection.CurrentlySelected;
         GameSystem.MakeSelection(type,room);
+
+        TypeSelection.CurrentlySelected.Clear();
+        TypeSelection.Instance.ResetToggles();
     }
 
     // Update is called once per frame

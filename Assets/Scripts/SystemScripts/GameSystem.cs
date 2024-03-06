@@ -89,31 +89,26 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 /// 
 /// </summary>
   static void InstantiateAllDynamicObjects() {
-    DynamicData[] objects = GameObject.FindObjectsOfType<DynamicData>();
+    DynamicData[] objects = FindObjectsOfType<DynamicData>();
     foreach(DynamicData obj in objects) {
-        DynamicData data = obj.gameObject.GetComponent<DynamicData>();
-
         GameObject gameobj = obj.transform.gameObject; 
 
         CustomDivergence cd = obj.gameObject.GetComponent<CustomDivergence>();
-        data.customDivergence = cd;
+        obj.customDivergence = cd;
 
         string room = getRoomName(obj.transform);
 
         DynamicObject dynam = new DynamicObject(
-            data,
+            obj,
             room,
             obj.name,
             gameobj
         );
         DynamicObjects.Add(dynam);
-    }
-    
-    //search all dynamic objects to get each room
-    foreach(DynamicObject obj in DynamicObjects) {
-        if(!Rooms.Keys.Contains<string>(obj.Room)) {
-            Rooms.Add(obj.Room, 0);
-            CreaturesPerRoom.Add(obj.Room, 0);
+
+        if(!Rooms.ContainsKey(room)) {
+            Rooms.Add(room, 0);
+            CreaturesPerRoom.Add(room, 0);
         }
     }
   }
@@ -135,20 +130,13 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   }
 
     private static string getRoomName(Transform obj) {
-        if(obj.parent.tag != "Room") {
-            while(true) {
-                if(obj.parent == null) {
-                    return "";
-                }
-                else if(obj.parent.tag == "Room") {
-                    return obj.parent.name;
-                }
-                else {
-                    obj = obj.parent;
-                }
-            }
+    while (obj != null) {
+        if (obj.tag == "Room") {
+            return obj.name;
         }
-        return obj.parent.name;
+        obj = obj.parent;
+    }
+    return "";
     }
 
   private static ANOMALY_TYPE GetAnomalyTypeByName(string name) {
@@ -184,9 +172,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             GetRandomDynamicObject();
             return;
         }
-        else {
-            Rooms[randomObject.Room] += 1;
-        }
+        Rooms[randomObject.Room] += 1;
+        
         // Do something with the random object
         if(randomObject.DoAnomalyAction(true) == 0) {
             return;
@@ -374,53 +361,39 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     }
 
     private List<DynamicObject> getAnomaliesByRoom(string room) {
-        List<DynamicObject> res = new List<DynamicObject>();
-        foreach(DynamicObject d in Anomalies) {
-            if(d.Room.Equals(room)) {
-                res.Add(d);
-            }
-        }
-        return res;
+        return Anomalies.Where(d => d.Room.Equals(room)).ToList();
     }
 
     private List<DynamicObject> getDynamicObjectsByRoom(string room) {
-        List<DynamicObject> res = new List<DynamicObject>();
-        foreach(DynamicObject d in DynamicObjects) {
-            if(d.Room.Equals(room)) {
-                res.Add(d);
-            }
-        }
-        return res;
+        return DynamicObjects.Where(d => d.Room.Equals(room)).ToList();
     }
 
     public void SetGameTime(float t=-1) {
         if (Input.GetKeyDown(KeyCode.N)) {
-            GameSystem.Instance.EndGame();
+            EndGame();
+            return;
         }
 
-        if(t>0) {
+        if (t > 0)
+        {
             gameTime = t;
         }
 
-        if (gameTime > 1)
+        if (gameTime <= 1)
         {
-            string zero = "";
-            if(Mathf.FloorToInt(gameTime % 60) < 10) {
-                zero = "0";
-            }
-
-            gameTime -= Time.deltaTime;
-            gameTimer.text = "" + Mathf.FloorToInt(gameTime/60) + ":" + zero + Mathf.FloorToInt(gameTime % 60);
-        }
-        else {
             Won = true;
-            GameSystem.Instance.EndGame();
+            EndGame();
+            return;
         }
+
+        gameTime -= Time.deltaTime;
+        int minutes = Mathf.FloorToInt(gameTime / 60);
+        int seconds = Mathf.FloorToInt(gameTime % 60);
+        gameTimer.text = $"{minutes:D2}:{seconds:D2}";
     }
 
     public void EndGame() {
         GameOver = true;
-        Debug.Log("Game over!");
         cleanUpGame();
     }
 
@@ -489,7 +462,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         zombie.transform.SetParent(GameObject.Find(room).transform);
         CreateDivergence(zombie);
     }
-    
 
   void Update()
   {

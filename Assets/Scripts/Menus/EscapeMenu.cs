@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EscapeMenu : MonoBehaviour
 {
     public GameObject escapeMenuUI;
     public GameObject defaultUI;
+
+    public Button quitButton;
+    public Button returnButton;
 
     public void ReturnToGame() {
         SC_FPSController.paused = false;
@@ -24,7 +28,11 @@ public class EscapeMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(defaultUI == null) {
+            defaultUI = GameObject.Find("DefaultUI");
+        }
+        quitButton.onClick.AddListener(QuitGame);
+        returnButton.onClick.AddListener(ReturnToGame);
     }
 
     // Update is called once per frame
@@ -34,6 +42,7 @@ public class EscapeMenu : MonoBehaviour
             if (EventSystem.current.IsPointerOverGameObject()) {
                 // Get a reference to the selected UI game object
                 GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
+                                Debug.Log(selectedObject.name);
                 if(selectedObject == null) {
                     return;
                 }

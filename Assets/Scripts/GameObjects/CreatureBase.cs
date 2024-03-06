@@ -29,7 +29,6 @@ public class CreatureBase : MonoBehaviour
             if(amTouchingPlayer()) {
                 GameSystem.Instance.EndGame();
             }
-
             return;
         }
 
@@ -111,7 +110,7 @@ public class CreatureBase : MonoBehaviour
 
 
     private void StopCreature() {
-        
+        agent.SetDestination(transform.position);
     }
 
     // Start is called before the first frame update

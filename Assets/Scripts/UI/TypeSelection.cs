@@ -43,6 +43,23 @@ public class TypeSelection : MonoBehaviour
         }
     }
 
+    public void ResetToggles(){
+        int childCount = TypeSelector.transform.childCount;
+
+        // Iterate over all children
+        for (int i = 0; i < childCount; i++) {
+            // Get the child at the current index
+            Transform child = TypeSelector.transform.GetChild(i);
+
+            // Do something with the child
+            Toggle toggle = child.GetComponent<Toggle>();
+            if(toggle == null) {
+                return;
+            }
+            toggle.isOn = false;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

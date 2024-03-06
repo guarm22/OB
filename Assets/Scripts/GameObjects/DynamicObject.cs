@@ -7,6 +7,7 @@ public enum ANOMALY_TYPE {
     Light,
     ObjectDisappearance,
     ObjectChange,
+    Movement,
     Creature,
     Audio,
 };
@@ -46,8 +47,8 @@ public class DynamicObject {
         this.normal = !enable;
         this.data.beenKilled = false;
 
-        if(this.data.customDivergence != null) {
-            this.data.customDivergence.DoDivergenceAction(enable, this);
+        if(Obj.GetComponent<CustomDivergence>() != null) {
+            Obj.GetComponent<CustomDivergence>().DoDivergenceAction(enable, this);
             return 1;
         }
 
@@ -70,6 +71,10 @@ public class DynamicObject {
 
             case ANOMALY_TYPE.Audio:
                 this.Audio(enable);
+                break;
+
+            case ANOMALY_TYPE.Movement:
+                //not implemented
                 break;
 
             default:
@@ -113,17 +118,21 @@ public class DynamicObject {
     }
 
     private void Audio(bool enable) {
-        Debug.Log("WIP");
+        PlayAudio pa = this.Obj.GetComponent<PlayAudio>();
+        pa.enabled = true;
         //footstep sounds
     }
 
     public static List<string> GetAllAnomalyTypes() {
-        List<string> res = new List<string>();
-        res.Add("Light");
-        res.Add("ObjectDisappearance");
-        res.Add("ObjectChange");
-        res.Add("Creature");
-        res.Add("Audio");
+        List<string> res = new List<string>
+        {
+            "Light",
+            "ObjectDisappearance",
+            "ObjectChange",
+            "Creature",
+            "Audio",
+            "Movement"
+        };
         return res;
     }
 
@@ -142,6 +151,8 @@ public class DynamicObject {
                 return "Creature";
             case ANOMALY_TYPE.Audio:
                 return "Audio";
+            case ANOMALY_TYPE.Movement:
+                return "Movement";
             default:
                 return "Error";
         }

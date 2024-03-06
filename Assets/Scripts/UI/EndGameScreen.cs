@@ -13,11 +13,12 @@ public class EndGameScreen : MonoBehaviour
 
 
     public void ReturnToMenu() {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenuScene");
     }
 
     public void Retry() {
-        SceneManager.LoadScene(2);
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 
     // Start is called before the first frame update
