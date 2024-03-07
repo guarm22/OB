@@ -97,12 +97,12 @@ public class SC_FPSController : MonoBehaviour
         Cursor.visible = false;
         inMenu = false;
         selectionUI.SetActive(false);
-        defaultUI.SetActive(true);
+        defaultUI.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
         canMove = true;
     }
     private void turnOnSelection() {
         selectionUI.SetActive(true);
-        defaultUI.SetActive(false);
+        defaultUI.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         inMenu = true;

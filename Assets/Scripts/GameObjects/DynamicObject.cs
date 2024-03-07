@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public enum ANOMALY_TYPE {
     NONE,
     Light,
-    ObjectDisappearance,
-    ObjectChange,
+    Disappearance,
+    Replacement,
     Movement,
     Creature,
     Audio,
@@ -53,7 +53,7 @@ public class DynamicObject {
         }
 
         switch(this.data.type) {
-            case ANOMALY_TYPE.ObjectDisappearance:
+            case ANOMALY_TYPE.Disappearance:
                 this.ObjectDisappearance(enable);
                 break;
 
@@ -61,7 +61,7 @@ public class DynamicObject {
                 this.Light(enable);
                 break;
             
-            case ANOMALY_TYPE.ObjectChange:
+            case ANOMALY_TYPE.Replacement:
                 this.ObjectChange(enable);
                 break;
 
@@ -99,10 +99,10 @@ public class DynamicObject {
 
     private void Light(bool enable) {
         if(enable) {
-            this.Obj.GetComponent<Light>().intensity += 1.2f;
+            this.Obj.GetComponent<Light>().intensity += 3.5f;
         }
         else {
-            this.Obj.GetComponent<Light>().intensity -= 1.2f;
+            this.Obj.GetComponent<Light>().intensity -= 3.5f;
         }
     }
 
@@ -118,8 +118,12 @@ public class DynamicObject {
     }
 
     private void Audio(bool enable) {
-        PlayAudio pa = this.Obj.GetComponent<PlayAudio>();
-        pa.enabled = true;
+        if(enable) {
+            this.Obj.GetComponent<PlayAudio>().enabled = true;
+        }
+        else {
+            this.Obj.GetComponent<PlayAudio>().enabled = false;
+        }
         //footstep sounds
     }
 
@@ -127,8 +131,8 @@ public class DynamicObject {
         List<string> res = new List<string>
         {
             "Light",
-            "ObjectDisappearance",
-            "ObjectChange",
+            "Disappearance",
+            "Replacement",
             "Creature",
             "Audio",
             "Movement"
@@ -143,10 +147,10 @@ public class DynamicObject {
                 return "NONE";
             case ANOMALY_TYPE.Light:
                 return "Light";
-            case ANOMALY_TYPE.ObjectDisappearance:
-                return "ObjectDisappearance";
-            case ANOMALY_TYPE.ObjectChange:
-                return "ObjectChange";
+            case ANOMALY_TYPE.Disappearance:
+                return "Disappearance";
+            case ANOMALY_TYPE.Replacement:
+                return "Replacement";
             case ANOMALY_TYPE.Creature:
                 return "Creature";
             case ANOMALY_TYPE.Audio:

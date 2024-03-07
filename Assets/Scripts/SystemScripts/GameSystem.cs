@@ -25,10 +25,11 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
   public int maxCreaturesPerRoom = 1;
 
-  public int MaxEnergy = 100;
-  public int CurrentEnergy;
+  public float MaxEnergy = 100;
+  public float CurrentEnergy;
   private float LastEnergyCheck=0f;
   private float EnergyCheckInterval=1f;
+  public float energyPerSecond = 1.2f;
 
   public int MaxDivergences = 4;
 
@@ -146,10 +147,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     switch(name){
         case "Light":
             return ANOMALY_TYPE.Light;
-        case "ObjectDisappearance":
-            return ANOMALY_TYPE.ObjectDisappearance;
-        case "ObjectChange":
-            return ANOMALY_TYPE.ObjectChange;
+        case "Disappearance":
+            return ANOMALY_TYPE.Disappearance;
+        case "Replacement":
+            return ANOMALY_TYPE.Replacement;
         case "Creature":
             return ANOMALY_TYPE.Creature;
         case "Audio":
@@ -430,7 +431,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                 CurrentEnergy = 100;
             }
             else {
-                CurrentEnergy = CurrentEnergy + 1;
+                CurrentEnergy = CurrentEnergy + energyPerSecond;
             }
             LastEnergyCheck = Time.time;
         }
