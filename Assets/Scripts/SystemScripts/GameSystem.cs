@@ -10,6 +10,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public static List<DynamicObject> Anomalies {get; private set;}
   public static List<DynamicObject> DynamicObjects {get; private set;}
   public GameObject zombiePrefab;
+  public GameObject endCreaturePrefab;
   public static float LastGuess {get; private set;}
   public static bool Guessed {get; private set;}
   public static bool PrivateCorrectGuess {get; private set;}
@@ -49,6 +50,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public bool GameOver = false;
 
   public bool Won = false;
+
+  public int creatureMax;
   
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
@@ -171,7 +174,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         //we dont want to move 2 objects from the same room
         //var to hold amount of anomalies in room of obj
         int amt = Rooms.ContainsKey(randomObject.Room) ? Rooms[randomObject.Room] : -1;
-        if(amt == AnomaliesPerRoom || AnyAvailableDynamicObjectsInRoom(randomObject.Room)) {
+        if(amt >= AnomaliesPerRoom || AnyAvailableDynamicObjectsInRoom(randomObject.Room)) {
             //Debug.Log("Already an anomaly in " + obj.Obj.transform.parent.name);
             GetRandomDynamicObject();
             return;
@@ -443,10 +446,23 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
         string room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
         
-        if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
-            return;
-        }
         if(spawnChance > 20-divergencesAboveMax*2) {
+
+            Debug.Log(Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count);
+
+            if(Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count >= creatureMax) {
+                GameObject ender = Instantiate(endCreaturePrefab);
+                ender.name = "Ender - " + room;
+                ender.transform.position = GameObject.Find(room).transform.position;
+                CreaturesPerRoom[room] += 1;
+                ender.transform.SetParent(GameObject.Find(room).transform);
+                CreateDivergence(ender);
+            }
+
+            if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
+                return;
+            }
+
             //get a random room
             //put the guy in the room as a zombie
             GameObject zombie = Instantiate(zombiePrefab);
