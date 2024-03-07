@@ -459,7 +459,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     }
 
     public void ManuallySpawnCreature(string room) {
-         GameObject zombie = Instantiate(zombiePrefab);
+        GameObject zombie = Instantiate(zombiePrefab);
         zombie.name = "Zombie - " + room;
         zombie.transform.position = GameObject.Find(room).transform.position;
         CreaturesPerRoom[room] += 1;

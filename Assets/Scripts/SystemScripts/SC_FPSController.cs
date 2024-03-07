@@ -13,19 +13,12 @@ public class SC_FPSController : MonoBehaviour
     public GameObject selectionUI;
     public GameObject roomSelectionUI;
     public GameObject typeSelectionUI;
-
     public GameObject journalUI;
-
     public GameObject journalPanel;
-
     public GameObject togglePrefab;
-
     public GameObject roomText;
-
     public GameObject escapeMenuUI;
-
     public GameObject EndGameUI;
-
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
@@ -33,14 +26,10 @@ public class SC_FPSController : MonoBehaviour
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 90.0f;
-
     public float maxDistance = 5.0f;
 
     public string targetTag = "Room";
     public string tutTag = "Tutorial";
-
-    public GameObject body;
-
     public string interactableTag;
 
     CharacterController characterController;
