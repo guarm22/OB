@@ -22,7 +22,7 @@ private IEnumerator MovePieces(bool activate)
     for (int i = 0; i < pieces.Count; i++)
     {
         if(activate) {
-            StartCoroutine(MoveOverTime(pieces[i], movements[i], 1f));
+            StartCoroutine(MoveOverTime(pieces[i], movements[i], 3f));
         }
         else {
             StartCoroutine(MoveOverTime(pieces[i], -movements[i], 1f));
