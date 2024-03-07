@@ -149,6 +149,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             return ANOMALY_TYPE.ObjectChange;
         case "Creature":
             return ANOMALY_TYPE.Creature;
+        case "Audio":
+            return ANOMALY_TYPE.Audio;
+        case "Movement":
+            return ANOMALY_TYPE.Movement;
         default:
             return ANOMALY_TYPE.NONE;
     }
