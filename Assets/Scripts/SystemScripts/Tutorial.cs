@@ -56,7 +56,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger5")) {
-            Popup.Instance.OpenPopup("If you let too many divergences appear without reporting them, creatures eventually become attracted to the area.\n\nYou can report these for a reduced energy cost.\n\nYour goal is to survive until the timer at the top right hits zero.");
+            Popup.Instance.OpenPopup("If you let too many divergences appear without reporting them, creatures eventually become attracted to the area.\n\nYou can report these for a reduced energy cost.\n\nYour goal is to survive until the timer at the top right hits zero.a");
         }
 
         if(hit.name.Equals("Trigger6")) {
