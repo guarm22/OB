@@ -21,7 +21,7 @@ public class CreatureBase : MonoBehaviour
 
     public AudioClip closeSound;
     public AudioClip farSound;
-    private float soundTimer = 7f;
+    private float soundTimer = 13.8f;
     public float soundTimerMax = 14f;
 
     private void CreaturePatrol() {

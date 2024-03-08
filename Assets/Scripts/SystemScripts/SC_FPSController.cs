@@ -42,15 +42,21 @@ public class SC_FPSController : MonoBehaviour
     public bool inMenu = false;
     public static bool paused = false;
 
+    public static SC_FPSController Instance;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-
+        Instance = this;
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         paused = false;
         PopulateSelectorUI();
+    }
+
+    public string GetPlayerRoom() {
+        return roomText.GetComponent<Text>().text;
     }
 
     void PopulateSelectorUI() {
@@ -113,15 +119,15 @@ public class SC_FPSController : MonoBehaviour
         if(inJournal) {
             return;
         }
+        bool beforeTimer = Time.time - GameSystem.LastGuess >= GameSystem.Instance.GuessLockout-GameSystem.Instance.reportTextTimer;
 
         //if menu is open, check if tab is pressed to close, otherwise stop movement
         if(inMenu) {
-            if(Input.GetKeyDown(KeyCode.Tab) || GameSystem.Guessed) {
+            if(Input.GetKeyDown(KeyCode.Tab) || Time.time - GameSystem.LastGuess < 1) {
                 turnOffSelection();
             }
         }
-
-        else if(Input.GetKeyDown(KeyCode.Tab) && !GameSystem.Guessed) {
+        else if(Input.GetKeyDown(KeyCode.Tab) && beforeTimer) {
             turnOnSelection();
         }
     }

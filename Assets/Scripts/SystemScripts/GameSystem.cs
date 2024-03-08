@@ -78,7 +78,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     Rooms = new Dictionary<string, int>();
     CreaturesPerRoom = new Dictionary<string, int>();
     Guessed = false;
-    LastGuess = 0;
+    LastGuess = -5;
     PrivateCorrectGuess = false;
     CorrectObject = new List<DynamicObject>();
     timeSinceLastDisappearance = 0f - GameStartTime;
@@ -449,6 +449,13 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         int spawnChance = Random.Range(0,33*divergencesAboveMax);
         print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
         string room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
+
+        Debug.Log(room);
+        Debug.Log(SC_FPSController.Instance.GetPlayerRoom());
+        Debug.Log(room == SC_FPSController.Instance.GetPlayerRoom());
+        while(room == SC_FPSController.Instance.GetPlayerRoom()) {
+            room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
+        }
         
         if(spawnChance > 20-divergencesAboveMax*2) {
 
