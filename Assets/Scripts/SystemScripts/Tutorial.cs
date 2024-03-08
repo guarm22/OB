@@ -14,7 +14,7 @@ public class Tutorial : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -36,7 +36,7 @@ public class Tutorial : MonoBehaviour
 
     public static void ActivateTrigger(GameObject hit) {
         if(hit.name.Equals("Trigger1")) {
-            Popup.Instance.OpenPopup("Welcome to The Puncture\n\nControls:\nTAB: Opens and closes reporting menu.\nQ: Pauses game\nWASD: Movement\nSpace: Jump\n");
+            Popup.Instance.OpenPopup("Welcome to The Puncture\n\nControls:\nTAB: Opens and closes reporting menu.\nQ: Pauses game\nWASD: Movement\nSpace: Jump\nInteract: Left Click or E");
         }
 
         if(hit.name.Equals("Trigger2")) {
@@ -52,7 +52,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger4")) {
-            Popup.Instance.OpenPopup("Left click opens doors.\n\nYou can replay this tutorial at any time if you forget the controls.");
+            Popup.Instance.OpenPopup("Left click or E opens doors.\n\nYou can replay this tutorial at any time if you forget the controls.");
         }
 
         if(hit.name.Equals("Trigger5")) {

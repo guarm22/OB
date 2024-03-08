@@ -15,13 +15,28 @@ public class CreatureBase : MonoBehaviour
     public float stuckTimer = 3f;
     public Vector3 posCheck;
     public float timeSinceLastStuckCheck;
-
     Vector3 dest;
     bool isDestSet;
-
     [SerializeField] float walkRange;
 
+    public AudioClip closeSound;
+    public AudioClip farSound;
+    private float soundTimer = 7f;
+    public float soundTimerMax = 14f;
+
     private void CreaturePatrol() {
+        soundTimer += Time.deltaTime;
+
+        if(soundTimer >= soundTimerMax) {
+            if(Vector3.Distance(player.transform.position, transform.position) < 10f) {
+                AudioSource.PlayClipAtPoint(closeSound, transform.position);
+            }
+            else {
+                AudioSource.PlayClipAtPoint(farSound, transform.position);
+            }
+            soundTimer = 0f;
+        }
+
         //if the creature can see the player, chasing the player takes priority over everything else
         if(canSeePlayer()) {
             agent.SetDestination(player.transform.position);

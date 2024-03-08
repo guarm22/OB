@@ -30,10 +30,12 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   private float LastEnergyCheck=0f;
   private float EnergyCheckInterval=1f;
   public float energyPerSecond = 1.2f;
-
+  private bool justPaused = false;
   public int MaxDivergences = 4;
 
   public int EnergyPerGuess = 25;
+  private Dictionary<AudioSource, float> pausedAudioSources = new Dictionary<AudioSource, float>();
+
 
   public static Dictionary<string, int> Rooms;
 
@@ -53,6 +55,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public bool Won = false;
 
   public int creatureMax;
+  public float reportTextTimer = 5f;
   
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
@@ -283,7 +286,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     /// Updates each frame with the time since the last guess
     /// </summary>
     void SetGuessTime() {
-        if(Time.time - LastGuess >= GuessLockout-5 && Guessed == true) {
+        if(Time.time - LastGuess >= GuessLockout-reportTextTimer && Guessed == true) {
             CorrectGuess = PrivateCorrectGuess;
             if(CorrectObject != null) {
                 foreach(DynamicObject d in CorrectObject) {
@@ -484,8 +487,30 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         CreateDivergence(zombie);
     }
 
+    private void SoundControl() {
+        if(Instance.GameOver || SC_FPSController.paused) {
+        justPaused = true;
+        foreach (var audioSource in FindObjectsOfType<AudioSource>()) {
+            if (!audioSource.isPlaying) continue;
+            audioSource.loop = true;
+            pausedAudioSources[audioSource] = audioSource.time;
+            audioSource.Pause();
+        }
+    }
+    else if(justPaused) {
+        justPaused = false;
+        foreach (var audioSource in pausedAudioSources.Keys) {
+            audioSource.loop = false;
+            audioSource.time = pausedAudioSources[audioSource];
+            audioSource.Play();
+        }
+        pausedAudioSources.Clear();
+    }
+    }
+
   void Update()
   {
+    SoundControl();
     if(SC_FPSController.paused || GameOver) {
         return;
     }

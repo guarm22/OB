@@ -30,24 +30,6 @@ public class PlayAudio : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if(GameSystem.Instance.GameOver || SC_FPSController.paused) {
-            justPaused = true;
-            foreach (var audioSource in FindObjectsOfType<AudioSource>()) {
-                if(audioSource.clip == currentSound) {
-                    audioSource.Pause();
-                }
-            }
-            return;
-        }
-        else if(justPaused) {
-            justPaused = false;
-            foreach (var audioSource in FindObjectsOfType<AudioSource>()) {
-                if(audioSource.clip == currentSound) {
-                    audioSource.UnPause();
-                }
-            }
-        }
-
         timeSinceLastSound += Time.deltaTime;
         isPlaying = timeSinceLastSound >= currentSound.length;
         if(!isPlaying) {

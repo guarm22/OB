@@ -12,9 +12,18 @@ public class EndCreature : MonoBehaviour
     bool isDestSet;
     [SerializeField] float walkRange;
 
+    public AudioClip yippie;
+    private float timeSinceLastYip = 1;
+
     private void CreaturePatrol() {
     //if the creature can see the player, chasing the player takes priority over everything else
     MoveTowards(player.transform.position);
+
+    if(timeSinceLastYip > 2) {
+        AudioSource.PlayClipAtPoint(yippie, transform.position);
+        timeSinceLastYip = 0;
+    }
+    timeSinceLastYip += Time.deltaTime;
 
     if(amTouchingPlayer()) {
         GameSystem.Instance.EndGame();

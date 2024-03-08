@@ -160,7 +160,6 @@ public class SC_FPSController : MonoBehaviour
                 }
                 else {
                     // The ray did not hit an object with the target tag
-                    Debug.Log("Did not hit object with target tag.");
 
                 }
             }
@@ -234,12 +233,11 @@ public class SC_FPSController : MonoBehaviour
         defaultUI.SetActive(false);
     }
 
-    private void closeEscape() {
+    public void closeEscape() {
+        paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         escapeMenuUI.SetActive(false);
-        paused = false;
-
         defaultUI.SetActive(true);
     }
 

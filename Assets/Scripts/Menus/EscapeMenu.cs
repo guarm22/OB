@@ -17,8 +17,8 @@ public class EscapeMenu : MonoBehaviour
         SC_FPSController.paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        escapeMenuUI.SetActive(false);
         defaultUI.SetActive(true);
+        escapeMenuUI.SetActive(false);
     }
 
     public void QuitGame() {

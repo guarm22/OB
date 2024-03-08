@@ -40,7 +40,7 @@ Bug Fixes:
 -Fixed main menu buttons
 -Fixed audio and movement divergences being unreportable
 
-v0.2.0
+v0.2.0 (Mar 7, 2024)
 
 Additions:
 -Ender creature
@@ -48,8 +48,18 @@ Additions:
 -Changed some divergence names for clarity
 -Room+Timer text no longer disable when opening report menu
 -Added background to report menu and room+timer to make it easier to read in certain areas
+-Allowed reporting earlier after reporting
 
 Bug fixes:
 -Chess board divergence now correctly returns to original positions if reported mid-animation
 -Fixed apartment toilet audio not playing
 -fixed audio never disabling
+
+Known Issues:
+-Audio stops playing if paused for a certain amount of time
+
+V0.2.1 (Mar 8, 2024):
+
+Additions:
+-Added sounds for creatures
+-Can now press E interact with doors and other openable objects
