@@ -95,6 +95,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   }
 
   private void SetGameSettings() {
+    #if UNITY_EDITOR
+    return;
+    #endif
+
     if(SceneManager.GetActiveScene().name == "Tutorial") {
         return;
     }
@@ -209,7 +213,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   }
 
     public void GetRandomDynamicObject() {
-        if(areAllRoomsFull() || DynamicObjects.Count == 0) {
+        if(Anomalies.Count >= Rooms.Count*AnomaliesPerRoom || areAllRoomsFull() || DynamicObjects.Count == 0) {
             //Debug.Log("Full --- DynamicObjects Count: " + DynamicObjects.Count);
             //Each room has an Anomaly
             return;
@@ -492,18 +496,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         int spawnChance = Random.Range(0,33*divergencesAboveMax);
         print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
         string room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
-
-        Debug.Log(room);
-        Debug.Log(SC_FPSController.Instance.GetPlayerRoom());
-        Debug.Log(room == SC_FPSController.Instance.GetPlayerRoom());
         while(room == SC_FPSController.Instance.GetPlayerRoom()) {
             room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
         }
-        
         if(spawnChance > 20-divergencesAboveMax*2) {
-
-            Debug.Log(Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count);
-
             if(Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count >= creatureMax) {
                 GameObject ender = Instantiate(endCreaturePrefab);
                 ender.name = "Ender - " + room;
@@ -512,11 +508,9 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                 ender.transform.SetParent(GameObject.Find(room).transform);
                 CreateDivergence(ender);
             }
-
             if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
                 return;
             }
-
             //get a random room
             //put the guy in the room as a zombie
             GameObject zombie = Instantiate(zombiePrefab);

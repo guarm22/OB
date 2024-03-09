@@ -52,6 +52,7 @@ public class GameSettings : MonoBehaviour
     }
 
     void HigherEPS() {
+        EPS += 0.05f;
         if(EPS <= 0.8f) {
             EPS = 0.8f;
         }
@@ -59,37 +60,30 @@ public class GameSettings : MonoBehaviour
         else if(EPS >= 2.5f) {
                 EPS = 2.5f;
         }
-        else {
-            EPS += 0.05f;
-        }
         Difficulty= "Custom";
         SetTexts();
     }
 
     void LowerEPS() {
+        EPS -= 0.05f;
         if(EPS > 2.5f) {
             EPS = 2.5f;
         }
         else if(EPS <= 0.8f) {
             EPS = 0.8f;
         }
-        else {
-            EPS -= 0.05f;
-        }
         Difficulty= "Custom";
         SetTexts();
     }
 
     void HigherDR() {
+        DivergenceRate += 1;
         if(DivergenceRate <= 15) {
             DivergenceRate = 15;
         }
 
         else if(DivergenceRate >= 40) {
             DivergenceRate = 40;
-        }
-        else {
-            DivergenceRate += 1;
         }
         Difficulty= "Custom";
         SetTexts();
