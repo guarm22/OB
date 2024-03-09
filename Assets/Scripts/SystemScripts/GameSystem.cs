@@ -312,6 +312,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                         CreaturesPerRoom[d.Room] -= 1;
                     }
                     else {
+                        TotalAnomalies--;
                         Rooms[d.Room] -= 1;       
                         DynamicObjects.Add(d);
                     }
