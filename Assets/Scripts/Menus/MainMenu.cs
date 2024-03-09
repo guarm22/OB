@@ -68,6 +68,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         AdvancedDifficulty.onClick.AddListener(AdvancedDifficultyEvent);
         AdvancedBack.onClick.AddListener(AdvancedBackEvent);
         GameSetting.SetActive(false);
+        Settings.SetActive(false);
     }
 
     private void AdvancedBackEvent() {
@@ -125,9 +126,8 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         Stats.SetActive(false);
     }
     private void LoadLevel(string level) {
-        PlayerPrefs.SetString("Difficulty", GameSettings.Instance.Difficulty);
-        PlayerPrefs.SetInt("DivergenceRate", GameSettings.Instance.DivergenceRate);
-        PlayerPrefs.SetFloat("EPS", GameSettings.Instance.EPS);
+        //sets difficulty settings before loading level
+        GameSettings.Instance.SetValues();
         try {
             SceneManager.LoadScene(level);
         }

@@ -17,7 +17,6 @@ Additions:
 -Added creature mechanics to tutorial
 -Allowed changing of game time to any number of seconds
 
-
 Bug Fixes:
 -Made popups easier to read by adding a background
 -Fixed list of correct objects being set to null instead of a new list after report
@@ -40,6 +39,7 @@ Bug Fixes:
 -Fixed main menu buttons
 -Fixed audio and movement divergences being unreportable
 
+
 v0.2.0 (Mar 7, 2024)
 
 Additions:
@@ -58,6 +58,7 @@ Bug fixes:
 Known Issues:
 -Audio stops playing if paused for a certain amount of time
 
+
 V0.2.1 (Mar 8, 2024):
 
 Additions:
@@ -68,9 +69,14 @@ Bug Fixes:
 -Can no longer interact while in menu
 -Reporting a creature in a room that has a divergence in it will no longer cause the count of divergences in that room to go below 0, unintentionally allowing an additional divergence to spawn
 
-v0.3.0 (Mar 8, 2024) - The Difficulty update:
+
+v0.3.0 (Mar 9, 2024) - The Difficulty update:
 
 Additions:
 -Added difficulty options accessible before choosing a level
 -Added more divergences to apartment
 -Lights now randomly get dimmer OR brighter
+-Added volume slider
+
+Bug Fixes:
+-Fixed stack overflow when each room had a divergence

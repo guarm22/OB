@@ -95,9 +95,9 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   }
 
   private void SetGameSettings() {
-    #if UNITY_EDITOR
-    return;
-    #endif
+    //#if UNITY_EDITOR
+    //return;
+    //#endif
 
     if(SceneManager.GetActiveScene().name == "Tutorial") {
         return;
@@ -107,31 +107,31 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     switch(PlayerPrefs.GetString("Difficulty", "Normal")) {
         case "Easy":
             GameObjectDisappearanceInterval = 28;
-            AnomaliesPerRoom = 1;
             MaxDivergences = 4; //divergences before creatures start spawning
             creatureMax = 3; //max creatures in the world before enders start spawning
             energyPerSecond = 0.95f;
+            GameStartTime = 25;
             break;
         case "Normal":
             GameObjectDisappearanceInterval = 22;
-            AnomaliesPerRoom = 1;
             MaxDivergences = 4;
             creatureMax = 3;
             energyPerSecond = 1.1f;
+            GameStartTime = 15;
             break;
         case "Hard":
             GameObjectDisappearanceInterval = 18;
-            AnomaliesPerRoom = 1;
-            MaxDivergences = 5;
+            MaxDivergences = 4;
             creatureMax = 2;
             energyPerSecond = 1.3f;
+            GameStartTime = 5;
             break;
         case "Custom":
             GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 22);
-            AnomaliesPerRoom = 1;
-            MaxDivergences = 4;
+            MaxDivergences = PlayerPrefs.GetInt("MaxDivergences", 4);
             creatureMax = 3;
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
+            GameStartTime = PlayerPrefs.GetInt("GameStartTime", 15);
             break;
     }
   
