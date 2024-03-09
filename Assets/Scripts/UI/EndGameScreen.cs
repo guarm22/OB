@@ -11,6 +11,9 @@ public class EndGameScreen : MonoBehaviour
     public Text AMissed;
     public Text GameOver;
 
+    public Button ReturnToMenuButton;
+    public Button RetryButton;
+
 
     public void ReturnToMenu() {
         SceneManager.LoadScene("MainMenuScene");
@@ -33,26 +36,13 @@ public class EndGameScreen : MonoBehaviour
         if(GameSystem.Instance.Won == true) {
             GameOver.text = "You Won!";
         }
+        RetryButton.onClick.AddListener(Retry);
+        ReturnToMenuButton.onClick.AddListener(ReturnToMenu);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) {
-            if (EventSystem.current.IsPointerOverGameObject()) {
-                // Get a reference to the selected UI game object
-                GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
-                if(selectedObject == null) {
-                    return;
-                }
-                else if(selectedObject.name.Equals("Return to menu")) {
-                    ReturnToMenu();
-                }
-                else if(selectedObject.name.Equals("Retry")) {
-                    //call some function that saves some data and returns player to main menu
-                    Retry();
-                }
-            }
-        }
     }
 }

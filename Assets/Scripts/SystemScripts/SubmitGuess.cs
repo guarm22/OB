@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SubmitGuess : MonoBehaviour
 {
+
+    public Button SubmitButton;
     // Start is called before the first frame update
     void Start()
     {
-        
+        SubmitButton.onClick.AddListener(SubmitAnswer);
     }
 
     void SubmitAnswer() {
@@ -27,16 +30,6 @@ public class SubmitGuess : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) {
-            if (EventSystem.current.IsPointerOverGameObject()) {
-                // Get a reference to the selected UI game object
-                GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
-                
-                if(selectedObject == null || !selectedObject.name.Equals("AnswerSubmit")) {
-                    return;
-                }
-                SubmitAnswer();
-            }
-        }
+        
     }
 }

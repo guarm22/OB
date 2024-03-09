@@ -67,8 +67,6 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         DifficultyBack.onClick.AddListener(DifficultyBackEvent);
         AdvancedDifficulty.onClick.AddListener(AdvancedDifficultyEvent);
         AdvancedBack.onClick.AddListener(AdvancedBackEvent);
-        GameSetting.SetActive(false);
-        Settings.SetActive(false);
     }
 
     private void AdvancedBackEvent() {
@@ -83,17 +81,17 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     }
 
     private void DifficultyBackEvent() {
-        GameSetting.SetActive(false);
+        GameSetting.transform.localScale = new Vector3(0, 0, 0);
         LevelSelectionMenu.SetActive(true);
     }
 
     private void DifficultyButtonEvent() {  
-        GameSetting.SetActive(true);
+        GameSetting.transform.localScale = new Vector3(1, 1, 1);
         LevelSelectionMenu.SetActive(false);
     }
 
     private void LoadStats() {
-        AnomaliesStat.text = "Anomalies Successfully Reported: " + this.AnomaliesSuccesfullyReported;
+        AnomaliesStat.text = "Divergences Successfully Reported: " + this.AnomaliesSuccesfullyReported;
     }
 
     private void LevelSelectionEvent() {
@@ -106,7 +104,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     }
     private void SettingsButtonEvent() {
         DefaultMenu.SetActive(false);
-        Settings.SetActive(true);
+        Settings.transform.localScale = new Vector3(1, 1, 1);
     }
     private void StatsButtonEvent() {
         DefaultMenu.SetActive(false);
@@ -119,7 +117,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     }
     private void SettingsBackEvent() {
         DefaultMenu.SetActive(true);
-        Settings.SetActive(false);
+        Settings.transform.localScale = new Vector3(0, 0, 0);
     }
     private void StatsBackEvent() {
         DefaultMenu.SetActive(true);

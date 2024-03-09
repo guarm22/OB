@@ -40,22 +40,12 @@ public class Popup : MonoBehaviour
         PopupText = this.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>();
         CloseButton = this.transform.GetChild(0).GetChild(2).GetComponent<Button>();
         this.gameObject.SetActive(false);
+        CloseButton.onClick.AddListener(ClosePopup);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) {
-            if (EventSystem.current.IsPointerOverGameObject()) {
-                // Get a reference to the selected UI game object
-                GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
-                if(selectedObject == null) {
-                    return;
-                }
-                else if(selectedObject.name.Equals("ClosePopup")) {
-                    ClosePopup();
-                }
-            }
-        }
+
     }
 }

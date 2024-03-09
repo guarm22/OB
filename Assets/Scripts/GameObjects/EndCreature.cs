@@ -29,13 +29,12 @@ public class EndCreature : MonoBehaviour
         GameSystem.Instance.EndGame();
     }
     return;
-}
+    }
 
     private void MoveTowards(Vector3 target) {
         Vector3 direction = (target - transform.position).normalized;
         transform.position += direction * 5f * Time.deltaTime;
     }
-
     private bool amTouchingPlayer() {
         if(Vector3.Distance(transform.position, player.transform.position) < 1.3f) {
                 return true;

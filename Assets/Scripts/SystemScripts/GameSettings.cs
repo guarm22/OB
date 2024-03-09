@@ -38,7 +38,6 @@ public class GameSettings : MonoBehaviour
 
     void Start()
     {
-        this.gameObject.transform.localScale = new Vector3(1,1,1);
         Instance = this;
         LoadValues();
         SetTexts();
@@ -113,8 +112,8 @@ public class GameSettings : MonoBehaviour
 
     void LowerGP() {
         gracePeriod -= 1;
-        if(gracePeriod > 20) {
-            gracePeriod = 20;
+        if(gracePeriod > 25) {
+            gracePeriod = 25;
         }
         else if(gracePeriod <= 5) {
             gracePeriod = 5;
@@ -174,17 +173,17 @@ public class GameSettings : MonoBehaviour
     void LowerDifficulty() {
         if(Difficulty == "Easy") {
             Difficulty = "Easy";
-            DivergenceRate = 28;
+            DivergenceRate = 26;
             EPS = 0.95f;
             creatureThreshold = 4;
-            gracePeriod = 25;
+            gracePeriod = 20;
         }
         else if(Difficulty == "Normal") {
             Difficulty = "Easy";
-            DivergenceRate = 28;
-            EPS = 1f;
+            DivergenceRate = 26;
+            EPS = .95f;
             creatureThreshold = 4;
-            gracePeriod = 15;
+            gracePeriod = 20;
         }
         else if(Difficulty == "Hard") {
             Difficulty = "Normal";

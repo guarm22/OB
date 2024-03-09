@@ -6,15 +6,9 @@ using UnityEngine.UI;
 public class EnergyUI : MonoBehaviour
 {
     public Text EnergyText;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        EnergyText.text = "Energy = " + GameSystem.Instance.CurrentEnergy.ToString() + "%";
+        EnergyText.text = "Energy = " + Mathf.RoundToInt(GameSystem.Instance.CurrentEnergy).ToString() + "%";
     }
 }

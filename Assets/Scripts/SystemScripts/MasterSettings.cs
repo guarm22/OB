@@ -16,9 +16,8 @@ public class MasterSettings : MonoBehaviour
     public Button applySettings;
     public Button backButton;
 
-    void Awake()
+    void Start()
     {
-        this.gameObject.transform.localScale = new Vector3(1,1,1);
         instance = this;
         LoadSettings();
         SetUI();

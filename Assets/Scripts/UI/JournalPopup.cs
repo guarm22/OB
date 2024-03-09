@@ -13,14 +13,9 @@ public class JournalPopup : MonoBehaviour
 
     string LeftText;
     string RightText;
-
-
     public void SetText(string[] text) {
-
         LeftText = text[0];
         LeftPage.text = LeftText;
-        
-
         if(text[1] != null) {
             RightText = text[1];
             RightPage.text = RightText;
