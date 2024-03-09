@@ -15,6 +15,8 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     public GameObject Settings;
 
     public GameObject Stats;
+    public GameObject GameSetting;
+    public GameObject AdvancedSettings;
 
     public Text AnomaliesStat;
 
@@ -31,10 +33,16 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     public Button StatsBack;
     public Button apartment;
     public Button tutorial;
+    public Button DifficultyButton;
+    public Button DifficultyBack;
+    public Button AdvancedDifficulty;
+    public Button AdvancedBack;
+
+    public string Difficulty;
+    public int DivergenceRate;
 
     public void LoadData(GameData data) {
         this.AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
-        Debug.Log(this.AnomaliesSuccesfullyReported);
         this.LevelsFailed = data.LevelsFailed;
         this.LevelsWon = data.LevelsWon;
     }
@@ -55,6 +63,32 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         StatsBack.onClick.AddListener(StatsBackEvent);
         apartment.onClick.AddListener(delegate { LoadLevel("Apartment_safe"); });
         tutorial.onClick.AddListener(delegate { LoadLevel("Tutorial"); });
+        DifficultyButton.onClick.AddListener(DifficultyButtonEvent);
+        DifficultyBack.onClick.AddListener(DifficultyBackEvent);
+        AdvancedDifficulty.onClick.AddListener(AdvancedDifficultyEvent);
+        AdvancedBack.onClick.AddListener(AdvancedBackEvent);
+        GameSetting.SetActive(false);
+    }
+
+    private void AdvancedBackEvent() {
+        AdvancedSettings.SetActive(false);
+        AdvancedBack.gameObject.SetActive(false);
+        AdvancedDifficulty.gameObject.SetActive(true);
+    }
+    private void AdvancedDifficultyEvent() {
+        AdvancedSettings.SetActive(true);
+        AdvancedBack.gameObject.SetActive(true);
+        AdvancedDifficulty.gameObject.SetActive(false);
+    }
+
+    private void DifficultyBackEvent() {
+        GameSetting.SetActive(false);
+        LevelSelectionMenu.SetActive(true);
+    }
+
+    private void DifficultyButtonEvent() {  
+        GameSetting.SetActive(true);
+        LevelSelectionMenu.SetActive(false);
     }
 
     private void LoadStats() {
@@ -91,6 +125,9 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         Stats.SetActive(false);
     }
     private void LoadLevel(string level) {
+        PlayerPrefs.SetString("Difficulty", GameSettings.Instance.Difficulty);
+        PlayerPrefs.SetInt("DivergenceRate", GameSettings.Instance.DivergenceRate);
+        PlayerPrefs.SetFloat("EPS", GameSettings.Instance.EPS);
         try {
             SceneManager.LoadScene(level);
         }
@@ -102,63 +139,6 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     // Update is called once per frame
     void Update()
     {
-
-     if(Input.GetMouseButtonDown(0)) {
-            if (EventSystem.current.IsPointerOverGameObject()) {
-                // Get a reference to the selected UI game object
-                GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
-
-                if(selectedObject == null) {
-                    return;
-                }
-                
-                if(selectedObject.name.Equals("ExitGame")) {
-                    Application.Quit();
-                }
-                else if(selectedObject.name.Equals("ChooseLevel")) {
-                    DefaultMenu.SetActive(false);
-                    LevelSelectionMenu.SetActive(true);
-                }
-
-                else if(selectedObject.name.Equals("LevelBack")) {
-                    DefaultMenu.SetActive(true);
-                    LevelSelectionMenu.SetActive(false);
-                }
-
-                else if(selectedObject.name.Equals("SettingsButton")) {
-                    DefaultMenu.SetActive(false);
-                    Settings.SetActive(true);
-                }
-
-                else if(selectedObject.name.Equals("SettingsBack")) {
-                    DefaultMenu.SetActive(true);
-                    Settings.SetActive(false);
-                }
-
-                else if(selectedObject.name.Equals("StatsBack")) {
-                    DefaultMenu.SetActive(true);
-                    Stats.SetActive(false);
-                }
-
-                else if(selectedObject.name.Equals("StatsButton")) {
-                    DefaultMenu.SetActive(false);
-                    Stats.SetActive(true);
-                    LoadStats();
-                }
-
-
-                //Level Selection
-                else {
-                    try {
-                        SceneManager.LoadScene(selectedObject.name);
-                    }
-                    catch(Exception e) {
-                        Debug.Log("Level does not exist: " +e);
-                    }
-                }
-                
-            }
-        }
 
     }
 }

@@ -86,9 +86,46 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     CurrentEnergy = MaxEnergy;
     TotalAnomalies = 0;
 
+    SetGameSettings();
+
     InstantiateAllDynamicObjects();
 
     //InvokeRepeating("GetRandomDynamicObject", GameStartTime, GameObjectDisappearanceInterval);
+  }
+
+  private void SetGameSettings() {
+    Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
+    switch(PlayerPrefs.GetString("Difficulty", "Normal")) {
+        case "Easy":
+            GameObjectDisappearanceInterval = 28;
+            AnomaliesPerRoom = 1;
+            MaxDivergences = 4; //divergences before creatures start spawning
+            creatureMax = 3; //max creatures in the world before enders start spawning
+            energyPerSecond = 0.95f;
+            break;
+        case "Normal":
+            GameObjectDisappearanceInterval = 22;
+            AnomaliesPerRoom = 1;
+            MaxDivergences = 4;
+            creatureMax = 3;
+            energyPerSecond = 1.1f;
+            break;
+        case "Hard":
+            GameObjectDisappearanceInterval = 18;
+            AnomaliesPerRoom = 1;
+            MaxDivergences = 5;
+            creatureMax = 2;
+            energyPerSecond = 1.3f;
+            break;
+        case "Custom":
+            GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 22);
+            AnomaliesPerRoom = 1;
+            MaxDivergences = 4;
+            creatureMax = 3;
+            energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
+            break;
+    }
+  
   }
 
 /// <summary>
@@ -133,6 +170,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             obj
         );
         Anomalies.Add(dynam);
+        Rooms[room] += 1;
         Instance.TotalAnomalies++;
   }
 
