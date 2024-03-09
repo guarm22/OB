@@ -30,7 +30,8 @@ public class GameSettings : MonoBehaviour
         this.gameObject.transform.localScale = new Vector3(1,1,1);
         Instance = this;
         SetValues();
-        
+        SetTexts();
+
         lowerDifficulty.onClick.AddListener(LowerDifficulty);
         higherDifficulty.onClick.AddListener(HigherDifficulty);
         higherDR.onClick.AddListener(HigherDR);
@@ -43,7 +44,8 @@ public class GameSettings : MonoBehaviour
         Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
         DivergenceRate = PlayerPrefs.GetInt("DivergenceRate", 22);
         EPS = PlayerPrefs.GetFloat("EPS", 1.1f);
-
+    }
+    private void SetTexts() {
         DifficultyText.text = Difficulty;
         divergenceRateText.text = "Divergence Rate: " + DivergenceRate.ToString(); // Convert DivergenceRate to string
         energyPerSecondText.text = "Energy Per Second: " + EPS.ToString();
@@ -58,27 +60,24 @@ public class GameSettings : MonoBehaviour
                 EPS = 2.5f;
         }
         else {
-            EPS += 0.1f;
+            EPS += 0.05f;
         }
         Difficulty= "Custom";
-        DifficultyText.text = "Custom";
-        energyPerSecondText.text = "Energy Per Second: " + EPS.ToString();
+        SetTexts();
     }
 
     void LowerEPS() {
-        if(EPS <= 0.8f) {
-            EPS = 0.8f;
-        }
-
-        else if(EPS >= 2.5f) {
+        if(EPS > 2.5f) {
             EPS = 2.5f;
         }
+        else if(EPS <= 0.8f) {
+            EPS = 0.8f;
+        }
         else {
-            EPS -= 0.1f;
+            EPS -= 0.05f;
         }
         Difficulty= "Custom";
-        DifficultyText.text = "Custom";
-        energyPerSecondText.text = "Energy Per Second: " + EPS.ToString();
+        SetTexts();
     }
 
     void HigherDR() {
@@ -93,24 +92,18 @@ public class GameSettings : MonoBehaviour
             DivergenceRate += 1;
         }
         Difficulty= "Custom";
-        DifficultyText.text = "Custom";
-        divergenceRateText.text = "Divergence Rate: " + DivergenceRate.ToString(); // Convert DivergenceRate to string
+        SetTexts();
     }
 
     void LowerDR() {
-        if(DivergenceRate <= 15) {
-            DivergenceRate = 15;
-        }
-
-        else if(DivergenceRate >= 40) {
+        DivergenceRate -= 1;
+        if(DivergenceRate >= 40) {
             DivergenceRate = 40;
         }
-        else {
-            DivergenceRate -= 1;
+        else if(DivergenceRate <= 15) {
+            DivergenceRate = 15;
         }
-        Difficulty= "Custom";
-        DifficultyText.text = "Custom";
-        divergenceRateText.text = "Divergence Rate: " + DivergenceRate.ToString(); // Convert DivergenceRate to string
+        SetTexts();
     }
 
     void LowerDifficulty() {
@@ -134,8 +127,7 @@ public class GameSettings : MonoBehaviour
             DivergenceRate = 22;
             EPS = 1.1f;
         }
-        DifficultyText.text = Difficulty;
-        divergenceRateText.text = "Divergence Rate: " + DivergenceRate.ToString(); // Convert DivergenceRate to string
+        SetTexts();
     }
     
     void HigherDifficulty() {
@@ -159,8 +151,7 @@ public class GameSettings : MonoBehaviour
             DivergenceRate = 22;
             EPS = 1.1f;
         }
-        DifficultyText.text = Difficulty;
-        divergenceRateText.text = "Divergence Rate: " + DivergenceRate.ToString(); // Convert DivergenceRate to string
+        SetTexts();
     }
 
     // Update is called once per frame

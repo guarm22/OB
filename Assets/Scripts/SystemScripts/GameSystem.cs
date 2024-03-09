@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 public class GameSystem : MonoBehaviour, IDataPersistence
 {
   public int GuessLockout;
@@ -94,6 +95,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   }
 
   private void SetGameSettings() {
+    if(SceneManager.GetActiveScene().name == "Tutorial") {
+        return;
+    }
+
     Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
     switch(PlayerPrefs.GetString("Difficulty", "Normal")) {
         case "Easy":
