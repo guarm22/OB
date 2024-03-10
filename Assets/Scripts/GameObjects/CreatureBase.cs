@@ -11,7 +11,6 @@ public class CreatureBase : MonoBehaviour
     private NavMeshAgent agent;
     [SerializeField] public LayerMask playerLayer;
     [SerializeField] public LayerMask floorLayer;
-    public float radius = 20;
     public float stuckTimer = 3f;
     public Vector3 posCheck;
     public float timeSinceLastStuckCheck;

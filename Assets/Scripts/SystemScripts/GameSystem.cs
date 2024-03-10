@@ -57,7 +57,11 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
   public int creatureMax;
   public float reportTextTimer = 5f;
-  
+
+  public float divergenceRandomnessMax = 1.5f;
+  public float divergenceRandomnessMin = -2f;
+  private float currentRandomness;
+
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
   }
@@ -86,7 +90,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     AnomaliesSuccesfullyReportedThisGame = 0;
     CurrentEnergy = MaxEnergy;
     TotalAnomalies = 0;
-
+    generateNewRandomness();
     SetGameSettings();
 
     InstantiateAllDynamicObjects();
@@ -384,8 +388,17 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
     }
 
+    private void generateNewRandomness() {
+        currentRandomness = UnityEngine.Random.Range(divergenceRandomnessMin, divergenceRandomnessMax);
+        if(GameObjectDisappearanceInterval + currentRandomness <= 0.5f) {
+            currentRandomness = 0;
+        }
+
+    }
+
     private void CheckTimer() {
-        if(timeSinceLastDisappearance > GameObjectDisappearanceInterval) {
+        if(timeSinceLastDisappearance > GameObjectDisappearanceInterval + currentRandomness) {
+            generateNewRandomness();
             timeSinceLastDisappearance = 0f;
             GetRandomDynamicObject();
             CreatureSpawn();
@@ -414,11 +427,9 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
         int divergencesAboveMax = Anomalies.Count - MaxDivergences;
         int spawnChance = Random.Range(0,33*divergencesAboveMax);
-        print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
+        //print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
         string room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
-        while(room == SC_FPSController.Instance.GetPlayerRoom()) {
-            room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
-        }
+
         if(spawnChance > 20-divergencesAboveMax*2) {
             if(Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count >= creatureMax) {
                 GameObject ender = Instantiate(endCreaturePrefab);
@@ -431,15 +442,39 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
                 return;
             }
-            //get a random room
-            //put the guy in the room as a zombie
+
+            Vector3 spawnPos = FindSpawnPoint(room);
             GameObject zombie = Instantiate(zombiePrefab);
             zombie.name = "Zombie - " + room;
-            zombie.transform.position = GameObject.Find(room).transform.position;
+            zombie.transform.position = spawnPos;
             CreaturesPerRoom[room] += 1;
             zombie.transform.SetParent(GameObject.Find(room).transform);
             CreateDivergence(zombie);
         }
+    }
+
+    private Vector3 FindSpawnPoint(string room) {
+            GameObject roomObj = GameObject.Find(room);
+            BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
+            List<Vector3> roomPoints = new List<Vector3> {
+                new Vector3(roomObj.transform.position.x + roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z + roomCollider.bounds.size.z / 2), // Top right corner
+                new Vector3(roomObj.transform.position.x - roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z - roomCollider.bounds.size.z / 2), // Bottom left corner
+                new Vector3(roomObj.transform.position.x + roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z - roomCollider.bounds.size.z / 2), // Bottom right corner
+                new Vector3(roomObj.transform.position.x - roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z + roomCollider.bounds.size.z / 2), // Top left corner
+                roomObj.transform.position // Center
+            };
+
+            Vector3 playerPosition = GameObject.Find("Player").transform.position;
+            Vector3 furthestPoint = roomPoints.OrderByDescending(point => Vector3.Distance(playerPosition, point)).First();
+            
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(furthestPoint, out hit, 5f, NavMesh.AllAreas)) {
+                furthestPoint = hit.position;
+            } else {
+                // Handle case where no point could be found on the NavMesh
+            }
+
+            return furthestPoint;
     }
 
     public void ManuallySpawnCreature(string room) {
