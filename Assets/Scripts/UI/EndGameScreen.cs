@@ -31,7 +31,7 @@ public class EndGameScreen : MonoBehaviour
         Cursor.visible = true;
 
         ADetected.text = "Divergences Found: " + GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame;
-        AMissed.text = "Divergences Missed: " + (GameSystem.Instance.TotalAnomalies - GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame);
+        AMissed.text = "Divergences Missed: " + (GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame - GameSystem.Instance.TotalAnomalies);
 
         if(GameSystem.Instance.Won == true) {
             GameOver.text = "You Won!";

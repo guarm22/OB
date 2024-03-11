@@ -2393,15 +2393,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7607658426802268545, guid: b6051831735950e45a12422235f03581, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.547056
+      value: 4.58
       objectReference: {fileID: 0}
     - target: {fileID: 7607658426802268545, guid: b6051831735950e45a12422235f03581, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.1778994
+      value: 2.17
       objectReference: {fileID: 0}
     - target: {fileID: 7607658426802268545, guid: b6051831735950e45a12422235f03581, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.656232
+      value: -4.641
       objectReference: {fileID: 0}
     - target: {fileID: 7607658426802268545, guid: b6051831735950e45a12422235f03581, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2438,7 +2438,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7607658426802268550, guid: b6051831735950e45a12422235f03581, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1644401141}
+    - targetCorrespondingSourceObject: {fileID: 7607658426802268550, guid: b6051831735950e45a12422235f03581, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1644401140}
   m_SourcePrefab: {fileID: 100100000, guid: b6051831735950e45a12422235f03581, type: 3}
 --- !u!4 &192996918 stripped
 Transform:
@@ -2913,7 +2919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -3000,7 +3006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 2
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -4829,7 +4835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -4920,7 +4926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 4
+  type: 3
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -4963,7 +4969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 2
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -5366,7 +5372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -6122,12 +6128,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: creatureMax
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: GuessLockout
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: correctGuess
+      value: 
+      objectReference: {fileID: 8300000, guid: 868db2ca330356d4fb7c73b6e6370430, type: 3}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: zombiePrefab
       value: 
@@ -6138,11 +6148,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: MaxDivergences
-      value: 4
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: incorrectGuess
+      value: 
+      objectReference: {fileID: 8300000, guid: 8fb2a526b3d71084aaf2146f45eb618d, type: 3}
+    - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: energyPerSecond
-      value: 1.2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: divergenceRandomnessMax
@@ -6154,7 +6168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: GameObjectDisappearanceInterval
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6743913093581102291, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7253,7 +7267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -7364,9 +7378,8 @@ GameObject:
   m_Component:
   - component: {fileID: 815845071}
   - component: {fileID: 815845072}
-  - component: {fileID: 815845073}
   m_Layer: 0
-  m_Name: Light - D
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7381,7 +7394,7 @@ Transform:
   m_GameObject: {fileID: 815845070}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: -0.55, y: 3.997, z: 0.778}
+  m_LocalPosition: {x: -0.55, y: 4.03, z: 0.778}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7449,25 +7462,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &815845073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815845070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  cooldown: 0
-  cooldownTime: 10
-  killedTime: 0
-  beenKilled: 0
-  energyCost: 25
-  customDivergence: {fileID: 0}
 --- !u!1001 &816654947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8401,7 +8395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 4
+  type: 3
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -9529,7 +9523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -10948,7 +10942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -12156,7 +12150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -13264,7 +13258,6 @@ Transform:
   - {fileID: 577912584}
   - {fileID: 1505186735}
   - {fileID: 2011690426}
-  - {fileID: 556109724}
   - {fileID: 2104543700}
   - {fileID: 1368391211}
   - {fileID: 1296268020}
@@ -16274,7 +16267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 2
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -16287,7 +16280,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1247569228}
+    m_TransformParent: {fileID: 1559349866}
     m_Modifications:
     - target: {fileID: 5108936787988436181, guid: 4601e83fbeb2cc648ae43af2b2165330, type: 3}
       propertyPath: m_Name
@@ -16371,6 +16364,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 556109724}
   - {fileID: 1103416702}
   - {fileID: 1247569228}
   - {fileID: 165938939}
@@ -16489,7 +16483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -16576,7 +16570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 2
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -16645,9 +16639,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6017100943722803059, guid: 10d4ee2e07ed6c043bcfb109fd37b49a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1582410031}
-    - targetCorrespondingSourceObject: {fileID: 6017100943722803059, guid: 10d4ee2e07ed6c043bcfb109fd37b49a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1582410035}
   m_SourcePrefab: {fileID: 100100000, guid: 10d4ee2e07ed6c043bcfb109fd37b49a, type: 3}
 --- !u!4 &1582410028 stripped
 Transform:
@@ -16673,7 +16664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 08975a96e04a9804698c52699c2cf669, type: 3}
   distantSound: {fileID: 8300000, guid: daa27d858013d2746b60bfd224392ed4, type: 3}
-  soundRepeatTimer: 30
+  soundRepeatTimer: 20
 --- !u!114 &1582410031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16686,109 +16677,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 6
+  type: 5
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
   beenKilled: 0
   energyCost: 25
   customDivergence: {fileID: 0}
---- !u!82 &1582410035
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1582410029}
-  m_Enabled: 0
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 85
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!4 &1583237535 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5110968814036781977, guid: 4601e83fbeb2cc648ae43af2b2165330, type: 3}
@@ -16983,7 +16878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -17067,7 +16962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -17396,6 +17291,44 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5485911931104626639, guid: 46bf299537dbcae4cbccff6784223305, type: 3}
   m_PrefabInstance: {fileID: 1644134013}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1644401136 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7607658426802268550, guid: b6051831735950e45a12422235f03581, type: 3}
+  m_PrefabInstance: {fileID: 192996917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1644401140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644401136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9458164950422294b985fb3ec8491ee4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {x: 2.931, y: 2.977, z: -6.24}
+  rotation: {x: 0, y: 90, z: 0}
+--- !u!114 &1644401141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644401136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 3
+  cooldown: 0
+  cooldownTime: 10
+  killedTime: 0
+  beenKilled: 0
+  energyCost: 25
+  customDivergence: {fileID: 0}
 --- !u!4 &1656577075 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8128322320853617336, guid: e9a47cdb5968d66499f6b4ee53467cd4, type: 3}
@@ -18242,8 +18175,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1750571492}
   - component: {fileID: 1750571493}
-  - component: {fileID: 1750571494}
-  - component: {fileID: 1750571495}
   m_Layer: 0
   m_Name: R1 Light - D
   m_TagString: Untagged
@@ -18328,37 +18259,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &1750571494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750571491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  cooldown: 0
-  cooldownTime: 10
-  killedTime: 0
-  beenKilled: 0
-  energyCost: 25
-  customDivergence: {fileID: 0}
---- !u!114 &1750571495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750571491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cce71a734ec9ced41835edb34dc1d1b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1754947595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18505,7 +18405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -18917,7 +18817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 2
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -19032,7 +18932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 4
+  type: 3
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -19180,7 +19080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -20086,7 +19986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -20239,7 +20139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -20811,7 +20711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 4
+  type: 3
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -21414,7 +21314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -22035,7 +21935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   cooldown: 0
   cooldownTime: 10
   killedTime: 0
@@ -22267,7 +22167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 2
   cooldown: 0
   cooldownTime: 10
   killedTime: 0

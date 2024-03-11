@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System;
 public class GameSystem : MonoBehaviour, IDataPersistence
 {
   public int GuessLockout;
@@ -21,11 +23,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public int GameStartTime;
   public int GameObjectDisappearanceInterval;
   public int AnomaliesPerRoom;
-
   public int TotalAnomalies;
-
   public int maxCreaturesPerRoom = 1;
-
   public float MaxEnergy = 100;
   public float CurrentEnergy;
   private float LastEnergyCheck=0f;
@@ -33,34 +32,29 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public float energyPerSecond = 1.2f;
   private bool justPaused = false;
   public int MaxDivergences = 4;
-
   public int EnergyPerGuess = 25;
   private Dictionary<AudioSource, float> pausedAudioSources = new Dictionary<AudioSource, float>();
-
-
   public static Dictionary<string, int> Rooms;
 
   public static Dictionary<string, int> CreaturesPerRoom;
-
   public float gameTime;
   public Text gameTimer;
   public float startTime = 60*15f;
-
   public float timeSinceLastDisappearance;
-
   private int AnomaliesSuccesfullyReported = 0;
   public int AnomaliesSuccesfullyReportedThisGame;
-
   public bool GameOver = false;
-
   public bool Won = false;
-
   public int creatureMax;
   public float reportTextTimer = 5f;
-
   public float divergenceRandomnessMax = 1.5f;
   public float divergenceRandomnessMin = -2f;
   private float currentRandomness;
+  public AudioClip correctGuess;
+  public AudioClip incorrectGuess;
+  public bool madeGuess;
+  public List<DynamicObject> lockedObjects;
+  public static int totalDynamicObjectsInScene;
 
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
@@ -90,9 +84,12 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     AnomaliesSuccesfullyReportedThisGame = 0;
     CurrentEnergy = MaxEnergy;
     TotalAnomalies = 0;
+    madeGuess = false;
+    lockedObjects = new List<DynamicObject>();
+    this.gameObject.AddComponent<AudioSource>();
+    this.gameObject.GetComponent<AudioSource>().clip = DisappearSound;
     generateNewRandomness();
     SetGameSettings();
-
     InstantiateAllDynamicObjects();
 
     //InvokeRepeating("GetRandomDynamicObject", GameStartTime, GameObjectDisappearanceInterval);
@@ -106,8 +103,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         return;
     }
     Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
-    switch(PlayerPrefs.GetString("Difficulty", "Normal")) {
-        case "Normal":
+    switch(PlayerPrefs.GetString("Difficulty", "NotLoaded")) {
+        case "NotLoaded":
             GameObjectDisappearanceInterval = 22;
             MaxDivergences = 4;
             creatureMax = 3;
@@ -148,15 +145,14 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             Rooms.Add(room, 0);
             CreaturesPerRoom.Add(room, 0);
         }
+        totalDynamicObjectsInScene = DynamicObjects.Count;
     }
   }
     static void CreateDivergence(GameObject obj) {
         DynamicData data = obj.gameObject.GetComponent<DynamicData>();
         CustomDivergence cd = obj.gameObject.GetComponent<CustomDivergence>();
         data.customDivergence = cd;
-
         string room = getRoomName(obj.transform);
-
         DynamicObject dynam = new DynamicObject(
             data,
             room,
@@ -164,29 +160,25 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             obj
         );
         Anomalies.Add(dynam);
-
         if(data.type == ANOMALY_TYPE.Creature) {
             return;
         }
-
         Rooms[room] += 1;
         Instance.TotalAnomalies++;
   }
 
     private static string getRoomName(Transform obj) {
-    while (obj != null) {
-        if (obj.tag == "Room") {
-            return obj.name;
+        while (obj != null) {
+            if (obj.tag == "Room") {
+                return obj.name;
+            }
+            obj = obj.parent;
         }
-        obj = obj.parent;
-    }
-    return "";
+        return "";
     }
 
   private static ANOMALY_TYPE GetAnomalyTypeByName(string name) {
     switch(name){
-        case "Light":
-            return ANOMALY_TYPE.Light;
         case "Disappearance":
             return ANOMALY_TYPE.Disappearance;
         case "Replacement":
@@ -204,32 +196,48 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
     public void GetRandomDynamicObject() {
         if(TotalAnomalies >= Rooms.Count*AnomaliesPerRoom || areAllRoomsFull() || DynamicObjects.Count == 0) {
-            //Debug.Log("Full --- DynamicObjects Count: " + DynamicObjects.Count);
-            //Each room has an Anomaly
             return;
         }
         DynamicObject randomObject = null;
         int amt = -1;
-        do {
-            int index = UnityEngine.Random.Range(0, DynamicObjects.Count);
-            randomObject = DynamicObjects[index];
-            Rooms.TryGetValue(randomObject.Room, out amt);
-        } while (amt >= AnomaliesPerRoom);
+
+        List<string> availableRooms = DynamicObjects
+        .GroupBy(d => d.Room)
+        .Where(g => HowManyDivergencesInRoom(g.Key) < AnomaliesPerRoom)
+        .Select(g => g.Key)
+        .ToList();
+
+        if (availableRooms.Count > 0)
+        {
+            do {
+                // Choose a random room from the available rooms
+                string room = availableRooms[UnityEngine.Random.Range(0, availableRooms.Count)];
+
+                // Choose a random object from the selected room
+                randomObject = DynamicObjects
+                    .Where(d => d.Room == room)
+                    .OrderBy(d => Guid.NewGuid())
+                    .FirstOrDefault();
+
+                if (randomObject != null)
+                {
+                    Rooms.TryGetValue(randomObject.Room, out amt);
+                }
+            }
+            while (randomObject == null || amt >= AnomaliesPerRoom);
+        }
 
         if (randomObject == null) {
             return;
         }
-        Rooms[randomObject.Room] += 1;
         if(randomObject.DoAnomalyAction(true) == 0) {
             return;
         }
-        AudioSource audioSource = randomObject.Obj.AddComponent<AudioSource>();
-        audioSource.clip = DisappearSound;
-        audioSource.Play();
-
+        GetComponent<AudioSource>().Play();
         DynamicObjects.Remove(randomObject);
         Anomalies.Add(randomObject);
         TotalAnomalies++;
+        Rooms[randomObject.Room] += 1;
     }
 
     public void ManuallyCreateDivergence(string name) {
@@ -243,12 +251,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             return;
         } 
         obj.DoAnomalyAction(true);
-        AudioSource audioSource = obj.Obj.AddComponent<AudioSource>();
-        audioSource.clip = DisappearSound;
-        audioSource.Play();
-
+        this.GetComponent<AudioSource>();
         DynamicObjects.Remove(obj);
-        //Add to current anomalies
         Anomalies.Add(obj);
         TotalAnomalies++;
         Rooms[obj.Room] += 1;
@@ -256,6 +260,9 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
     public bool AnyAvailableDynamicObjectsInRoom(string room) {
         return DynamicObjects.Any(d => d.Room.Equals(room));
+    }
+    public int HowManyDivergencesInRoom(string room) {
+        return Anomalies.Count(d => d.Room.Equals(room) && d.data.type != ANOMALY_TYPE.Creature);
     }
 
     /// <summary>
@@ -267,46 +274,36 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(Instance.CurrentEnergy < Instance.EnergyPerGuess * types.Count || room.Length<1) {
             return;
         }
-        List<DynamicObject> found = new List<DynamicObject>();
-        foreach(DynamicObject dynam in Anomalies) {
-            foreach(string type in types) {
-                if(GetAnomalyTypeByName(type)==dynam.data.type && room == dynam.Room) {
-                    found.Add(dynam);
-                }
-            }
-        }
-
-        //Creatures cost less energy to report
-        Instance.CurrentEnergy = Instance.CurrentEnergy-(Instance.EnergyPerGuess * types.Count);
-        foreach(DynamicObject d in found) {
-            if(d.data.type == ANOMALY_TYPE.Creature) {
-                Instance.CurrentEnergy = Instance.CurrentEnergy + 20;
-            }
-        }
+        Instance.madeGuess = true;
+        List<DynamicObject> found = Anomalies
+            .Where(dynam => types.Any(type => GetAnomalyTypeByName(type) == dynam.data.type && room == dynam.Room))
+            .ToList();
+        
+        Instance.CurrentEnergy -= Instance.EnergyPerGuess * types.Count;
+        int creatureCount = found.Count(d => d.data.type == ANOMALY_TYPE.Creature);
+        Instance.CurrentEnergy += 20 * creatureCount;
 
         Guessed = true;
         LastGuess = Time.time;
-        if(found.Count == 0) {
-            PrivateCorrectGuess = false;
-            return;
-        }
-        else {
-            foreach(DynamicObject d in found) {CorrectObject.Add(d);}
-            PrivateCorrectGuess = true;
-        }
+        TypeSelection.CurrentlySelected.Clear();
+        TypeSelection.Instance.ResetToggles();
+        foreach(DynamicObject d in found) {CorrectObject.Add(d);}
+        PrivateCorrectGuess = CorrectObject.Count > 0;
     }
 
     /// <summary>
     /// Updates each frame with the time since the last guess
     /// </summary>
     void SetGuessTime() {
-        if(Time.time - LastGuess >= GuessLockout-reportTextTimer && Guessed == true) {
+        if(Time.time - LastGuess >= GuessLockout/2 && madeGuess == true) {
             CorrectGuess = PrivateCorrectGuess;
-            if(CorrectObject != null) {
-                foreach(DynamicObject d in CorrectObject) {
-                    //Stops multiple audio sources from going on a single gameobject
-                    Destroy(d.Obj.GetComponent<AudioSource>());
+            madeGuess = false;
+            Debug.Log("Locked Objects: " + lockedObjects.Count);
+            Debug.Log("Total Dynamic Objects: " + DynamicObjects.Count);
 
+            if(CorrectObject.Count > 0) {
+                StartCoroutine(guessFeedbackSound(true));
+                foreach(DynamicObject d in CorrectObject) {
                     this.AnomaliesSuccesfullyReportedThisGame += 1;
                     d.DoAnomalyAction(false);
                     Anomalies.Remove(d);
@@ -318,16 +315,40 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                     else {
                         TotalAnomalies--;
                         Rooms[d.Room] -= 1;       
-                        DynamicObjects.Add(d);
+                        lockedObjects.Add(d);
+
+                        if(lockedObjects.Count >= totalDynamicObjectsInScene/3) {
+                            DynamicObjects.Add(lockedObjects[0]);
+                            lockedObjects.RemoveAt(0);
+                        }
                     }
-                    CorrectObject = new List<DynamicObject>();
                 }
+                CorrectObject = new List<DynamicObject>();
+            }
+            else {
+                StartCoroutine(guessFeedbackSound(false));
             }
         }
         if(Time.time - LastGuess >= GuessLockout && Guessed == true) {
             Guessed = false;
             CorrectGuess = PrivateCorrectGuess;
         }
+    }
+
+    private IEnumerator guessFeedbackSound(bool correct) {
+        GameObject player = GameObject.Find("Player");
+        player.AddComponent<AudioSource>();
+        AudioSource audioSource = player.GetComponent<AudioSource>();
+        if(correct) {
+            audioSource.clip = correctGuess;
+        }
+        else {
+            audioSource.volume = 0.5f;
+            audioSource.clip = incorrectGuess;
+        }
+        audioSource.Play();
+        yield return new WaitForSeconds(audioSource.clip.length);
+        Destroy(audioSource);
     }
 
     private bool areAllRoomsFull() {
@@ -342,32 +363,19 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         return true;
     }
 
-    private List<DynamicObject> getAnomaliesByRoom(string room) {
-        return Anomalies.Where(d => d.Room.Equals(room)).ToList();
-    }
-
-    private List<DynamicObject> getDynamicObjectsByRoom(string room) {
-        return DynamicObjects.Where(d => d.Room.Equals(room)).ToList();
-    }
-
     public void SetGameTime(float t=-1) {
         if (Input.GetKeyDown(KeyCode.N)) {
             EndGame();
             return;
         }
-
-        if (t > 0)
-        {
+        if (t > 0) {
             gameTime = t;
         }
-
-        if (gameTime <= 1)
-        {
+        if (gameTime <= 1) {
             Won = true;
             EndGame();
             return;
         }
-
         gameTime -= Time.deltaTime;
         int minutes = Mathf.FloorToInt(gameTime / 60);
         int seconds = Mathf.FloorToInt(gameTime % 60);
@@ -378,7 +386,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         GameOver = true;
         cleanUpGame();
     }
-
     public void cleanUpGame() {
         foreach(DynamicObject div in Anomalies) {
             //destroy all creatures because it looks weird when theyre walking around
@@ -387,15 +394,12 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             }
         }
     }
-
     private void generateNewRandomness() {
         currentRandomness = UnityEngine.Random.Range(divergenceRandomnessMin, divergenceRandomnessMax);
         if(GameObjectDisappearanceInterval + currentRandomness <= 0.5f) {
             currentRandomness = 0;
         }
-
     }
-
     private void CheckTimer() {
         if(timeSinceLastDisappearance > GameObjectDisappearanceInterval + currentRandomness) {
             generateNewRandomness();
@@ -407,7 +411,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             timeSinceLastDisappearance += Time.deltaTime;
         }
     }
-
     private void UpdateEnergy() {
         if(Time.time - LastEnergyCheck >= EnergyCheckInterval) {
             if(CurrentEnergy >= 100) {
@@ -419,16 +422,15 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             LastEnergyCheck = Time.time;
         }
     }
-
     private void CreatureSpawn() {
         //If we have less than the maximum, we come back later
         if(Anomalies.Count <= MaxDivergences) {
             return;
         }
         int divergencesAboveMax = Anomalies.Count - MaxDivergences;
-        int spawnChance = Random.Range(0,33*divergencesAboveMax);
+        int spawnChance = UnityEngine.Random.Range(0,33*divergencesAboveMax);
         //print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
-        string room = Rooms.ElementAt(Random.Range(0, Rooms.Count)).Key;
+        string room = Rooms.ElementAt(UnityEngine.Random.Range(0, Rooms.Count)).Key;
 
         if(spawnChance > 20-divergencesAboveMax*2) {
             if(Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count >= creatureMax) {
@@ -452,7 +454,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             CreateDivergence(zombie);
         }
     }
-
     private Vector3 FindSpawnPoint(string room) {
             GameObject roomObj = GameObject.Find(room);
             BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
@@ -473,7 +474,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             } else {
                 // Handle case where no point could be found on the NavMesh
             }
-
             return furthestPoint;
     }
 
@@ -488,9 +488,9 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
     private void SoundControl() {
         if(Instance.GameOver || SC_FPSController.paused) {
-        justPaused = true;
-        foreach (var audioSource in FindObjectsOfType<AudioSource>()) {
-            if (!audioSource.isPlaying) continue;
+            justPaused = true;
+            foreach (var audioSource in FindObjectsOfType<AudioSource>()) {
+                if (!audioSource.isPlaying) continue;
                 audioSource.loop = true;
                 pausedAudioSources[audioSource] = audioSource.time;
                 audioSource.Pause();

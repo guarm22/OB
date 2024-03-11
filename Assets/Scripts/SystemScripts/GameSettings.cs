@@ -64,10 +64,10 @@ public class GameSettings : MonoBehaviour
 
     private void LoadValues() {
         Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
-        DivergenceRate = PlayerPrefs.GetInt("DivergenceRate", 22);
+        DivergenceRate = PlayerPrefs.GetInt("DivergenceRate", 21);
         EPS = PlayerPrefs.GetFloat("EPS", 1.1f);
         creatureThreshold = PlayerPrefs.GetInt("MaxDivergences", 4);
-        gracePeriod = PlayerPrefs.GetInt("GracePeriod", 10);
+        gracePeriod = PlayerPrefs.GetInt("GracePeriod", 15);
     }
     private void SetTexts() {
         DifficultyText.text = Difficulty;
@@ -173,28 +173,28 @@ public class GameSettings : MonoBehaviour
     void LowerDifficulty() {
         if(Difficulty == "Easy") {
             Difficulty = "Easy";
-            DivergenceRate = 26;
-            EPS = 0.95f;
+            DivergenceRate = 25;
+            EPS = 1f;
             creatureThreshold = 4;
             gracePeriod = 20;
         }
         else if(Difficulty == "Normal") {
             Difficulty = "Easy";
-            DivergenceRate = 26;
-            EPS = .95f;
+            DivergenceRate = 25;
+            EPS = 1f;
             creatureThreshold = 4;
             gracePeriod = 20;
         }
         else if(Difficulty == "Hard") {
             Difficulty = "Normal";
-            DivergenceRate = 22;
+            DivergenceRate = 21;
             EPS = 1.1f;
             creatureThreshold = 4;
-            gracePeriod = 5;
+            gracePeriod = 15;
         }
         else if(Difficulty == "Custom") {
             Difficulty = "Normal";
-            DivergenceRate = 22;
+            DivergenceRate = 21;
             EPS = 1.1f;
             creatureThreshold = 4;
             gracePeriod = 15;
@@ -205,7 +205,7 @@ public class GameSettings : MonoBehaviour
     void HigherDifficulty() {
         if(Difficulty == "Easy") {
             Difficulty = "Normal";
-            DivergenceRate = 22;
+            DivergenceRate = 21;
             EPS = 1.1f;
             creatureThreshold = 4;
             gracePeriod = 15;
@@ -226,7 +226,7 @@ public class GameSettings : MonoBehaviour
         }
         else if(Difficulty == "Custom") {
             Difficulty = "Normal";
-            DivergenceRate = 22;
+            DivergenceRate = 21;
             EPS = 1.1f;
             creatureThreshold = 4;
             gracePeriod = 15;

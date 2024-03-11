@@ -93,10 +93,28 @@ Bug fixes:
 -Energy no longer shows as a decimal
 
 
-v0.3.2 ():
+v0.3.2 (Mar 10, 2024):
 
 Additions:
 -Creatures can now spawn in the same room as the player
 -Creatures now spawn in the furthest corner of a room from the player
 -Slightly increased creature detection range
 -Divergences now have some randomness to their timing
+-Added sound feedback for reporting
+
+Bug Fixes:
+-Allowed for guess lockout to be changed, value no longer hard coded
+-Fixed bug that caused wrong guess even when guessing correctly after wrong guess
+
+
+v0.3.3 ():
+
+Changes:
+-Removed light divergence
+
+Additions:
+-Created an object lockout system, where the same dynamic object cannot become a divergence before a certain number of other divergences have occurred
+
+Bug fixes:
+-Refactored selection code
+-Re-added code that was accidentally removed, causing audio divergences to no longer function

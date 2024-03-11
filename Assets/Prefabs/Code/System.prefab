@@ -55,6 +55,7 @@ MonoBehaviour:
   maxCreaturesPerRoom: 1
   MaxEnergy: 100
   CurrentEnergy: 0
+  energyPerSecond: 1.2
   MaxDivergences: 4
   EnergyPerGuess: 25
   gameTime: 0
@@ -65,3 +66,9 @@ MonoBehaviour:
   GameOver: 0
   Won: 0
   creatureMax: 0
+  reportTextTimer: 5
+  divergenceRandomnessMax: 1.5
+  divergenceRandomnessMin: -2
+  correctGuess: {fileID: 8300000, guid: 868db2ca330356d4fb7c73b6e6370430, type: 3}
+  incorrectGuess: {fileID: 8300000, guid: 8fb2a526b3d71084aaf2146f45eb618d, type: 3}
+  madeGuess: 0

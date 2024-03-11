@@ -13,16 +13,15 @@ public class DefaultUI : MonoBehaviour
     }
 
     void SetText() {
-        bool beforeTimer = Time.time - GameSystem.LastGuess >= GameSystem.Instance.GuessLockout-GameSystem.Instance.reportTextTimer;
+        bool beforeTimer = Time.time - GameSystem.LastGuess >= GameSystem.Instance.GuessLockout/2;
         bool afterTimer = Time.time - GameSystem.LastGuess <= GameSystem.Instance.GuessLockout;
 
         if(!GameSystem.Guessed) {
             label.text = "TAB";
         }
-        else if(Time.time - GameSystem.LastGuess < GameSystem.Instance.GuessLockout-5 &&  GameSystem.Guessed) {
+        else if(Time.time - GameSystem.LastGuess < GameSystem.Instance.GuessLockout/2 && GameSystem.Guessed) {
             label.text = "Verifying...";
         }
-
         else if(beforeTimer && GameSystem.CorrectGuess && afterTimer) {
             label.text = "CORRECT";
         }

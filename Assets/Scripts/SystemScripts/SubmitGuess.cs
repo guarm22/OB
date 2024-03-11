@@ -22,9 +22,6 @@ public class SubmitGuess : MonoBehaviour
         List<string> type = TypeSelection.CurrentlySelected;
         string room = RoomSelection.CurrentlySelected;
         GameSystem.MakeSelection(type,room);
-
-        TypeSelection.CurrentlySelected.Clear();
-        TypeSelection.Instance.ResetToggles();
     }
 
     // Update is called once per frame

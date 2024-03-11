@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public enum ANOMALY_TYPE {
     NONE,
-    Light,
     Disappearance,
     Replacement,
     Movement,
@@ -32,16 +31,6 @@ public class DynamicObject {
     }
 
     public int DoAnomalyAction(bool enable) {
-        if(enable == false) {
-            this.data.beenKilled = true;
-            this.data.cooldown = 20f;
-            this.data.killedTime = Time.time;
-        }
-        else if(Time.time > 10 && Time.time <= this.data.killedTime + this.data.cooldownTime) {
-            //there is a bug in this if statement: fix later if cooldown should be re added
-            //return 0;
-        }
-        
         Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.data.type) + 
         (enable ? " ENABLED" : " DISABLED"));
         this.normal = !enable;
@@ -56,17 +45,13 @@ public class DynamicObject {
             case ANOMALY_TYPE.Disappearance:
                 this.ObjectDisappearance(enable);
                 break;
-
-            case ANOMALY_TYPE.Light:
-                this.Light(enable);
-                break;
             
             case ANOMALY_TYPE.Replacement:
                 this.ObjectChange(enable);
                 break;
 
             case ANOMALY_TYPE.Creature:
-                this.Creature(enable);
+                //done through custom class
                 break;
 
             case ANOMALY_TYPE.Audio:
@@ -74,12 +59,8 @@ public class DynamicObject {
                 break;
 
             case ANOMALY_TYPE.Movement:
-                //not implemented
+                //done through custom class
                 break;
-
-            default:
-                this.normal = true;
-                return 0;
         }
         return 1;
     }
@@ -96,27 +77,6 @@ public class DynamicObject {
             this.Obj.transform.position = vec;
         }
     }
-
-    private void Light(bool enable) {
-        if(enable) {
-            this.Obj.GetComponent<Light>().intensity += 3.5f;
-        }
-        else {
-            this.Obj.GetComponent<Light>().intensity -= 3.5f;
-        }
-    }
-
-    private void ObjectChange(bool enable) {
-        Transform replacement = this.Obj.transform.GetChild(0);
-        Vector3 old = replacement.position;
-        replacement.localPosition = new Vector3(0, enable ? 10f : -10f, 0);
-        this.Obj.transform.position = old; 
-    }
-
-    private void Creature(bool enable) {
-        this.Obj.SetActive(enable);
-    }
-
     private void Audio(bool enable) {
         if(enable) {
             this.Obj.GetComponent<PlayAudio>().enabled = true;
@@ -127,10 +87,16 @@ public class DynamicObject {
         //footstep sounds
     }
 
+    private void ObjectChange(bool enable) {
+        Transform replacement = this.Obj.transform.GetChild(0);
+        Vector3 old = replacement.position;
+        replacement.localPosition = new Vector3(0, enable ? 10f : -10f, 0);
+        this.Obj.transform.position = old; 
+    }
+
     public static List<string> GetAllAnomalyTypes() {
         List<string> res = new List<string>
         {
-            "Light",
             "Disappearance",
             "Replacement",
             "Creature",
@@ -140,13 +106,10 @@ public class DynamicObject {
         return res;
     }
 
-
     public static string AnomalyTypeToString(ANOMALY_TYPE type) {
         switch(type) {
             case ANOMALY_TYPE.NONE:
                 return "NONE";
-            case ANOMALY_TYPE.Light:
-                return "Light";
             case ANOMALY_TYPE.Disappearance:
                 return "Disappearance";
             case ANOMALY_TYPE.Replacement:
