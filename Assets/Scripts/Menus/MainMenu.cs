@@ -38,6 +38,8 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     public Button AdvancedDifficulty;
     public Button AdvancedBack;
 
+    public AudioClip menuTheme;
+
     public string Difficulty;
     public int DivergenceRate;
 
@@ -54,6 +56,9 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     // Start is called before the first frame update
     void Start()
     {
+        //play menu theme
+        this.GetComponent<AudioSource>().clip = menuTheme;
+        this.GetComponent<AudioSource>().Play();
         ExitGame.onClick.AddListener(ExitButtonEvent);
         ChooseLevel.onClick.AddListener(LevelSelectionEvent);
         LevelBack.onClick.AddListener(LevelBackEvent);

@@ -55,6 +55,8 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public bool madeGuess;
   public List<DynamicObject> lockedObjects;
   public static int totalDynamicObjectsInScene;
+  public bool killedLights = false;
+  private Dictionary<Light, Coroutine> flickeringLights = new Dictionary<Light, Coroutine>();
 
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
@@ -95,10 +97,18 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     //InvokeRepeating("GetRandomDynamicObject", GameStartTime, GameObjectDisappearanceInterval);
   }
 
-  private void SetGameSettings() {
+  private static bool InEditor() {
     #if UNITY_EDITOR
-    return;
+    return true;
     #endif
+    return false;
+  }
+
+  private void SetGameSettings() {
+    if(InEditor()) {
+        return;
+    }
+
     if(SceneManager.GetActiveScene().name == "Tutorial") {
         return;
     }
@@ -123,7 +133,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   }
 
 /// <summary>
-/// Runs on game start, takes every object in the world with the dynamic tag and instantiates it as an object
+/// Runs on game start, takes every object in the world with the dynamic data script and instantiates it as an object
 /// 
 /// </summary>
   static void InstantiateAllDynamicObjects() {
@@ -196,6 +206,9 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
     public void GetRandomDynamicObject() {
         if(TotalAnomalies >= Rooms.Count*AnomaliesPerRoom || areAllRoomsFull() || DynamicObjects.Count == 0) {
+            if(UnityEngine.Random.Range(0, 100) < 50 && !killedLights) {
+                KillLights(0.40f);
+            } 
             return;
         }
         DynamicObject randomObject = null;
@@ -226,12 +239,13 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             }
             while (randomObject == null || amt >= AnomaliesPerRoom);
         }
-
-        if (randomObject == null) {
-            return;
-        }
         if(randomObject.DoAnomalyAction(true) == 0) {
             return;
+        }
+
+        int lowerBound = TotalAnomalies < 3 ? 0 : TotalAnomalies == 3 ? 20 : TotalAnomalies > 3 ? 33 : 33;
+        if(UnityEngine.Random.Range(0, 100) < lowerBound) {
+            FlickerLights();
         }
         GetComponent<AudioSource>().Play();
         DynamicObjects.Remove(randomObject);
@@ -249,9 +263,9 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
         if(obj == null) {
             return;
-        } 
+        }
+        GetComponent<AudioSource>().Play(); 
         obj.DoAnomalyAction(true);
-        this.GetComponent<AudioSource>();
         DynamicObjects.Remove(obj);
         Anomalies.Add(obj);
         TotalAnomalies++;
@@ -271,9 +285,15 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     /// <param name="type"></param>
     /// <param name="room"></param>
     public static void MakeSelection(List<string> types, string room) {
+        Debug.Log("Making selection");  
         if(Instance.CurrentEnergy < Instance.EnergyPerGuess * types.Count || room.Length<1) {
             return;
         }
+
+        foreach(string type in types) {
+            Debug.Log("Type: " + type);
+        }
+        Debug.Log("Room: " + room);
         Instance.madeGuess = true;
         List<DynamicObject> found = Anomalies
             .Where(dynam => types.Any(type => GetAnomalyTypeByName(type) == dynam.data.type && room == dynam.Room))
@@ -287,6 +307,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         LastGuess = Time.time;
         TypeSelection.CurrentlySelected.Clear();
         TypeSelection.Instance.ResetToggles();
+        RoomSelection.Instance.ResetToggles();
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
         PrivateCorrectGuess = CorrectObject.Count > 0;
     }
@@ -298,9 +319,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(Time.time - LastGuess >= GuessLockout/2 && madeGuess == true) {
             CorrectGuess = PrivateCorrectGuess;
             madeGuess = false;
-            Debug.Log("Locked Objects: " + lockedObjects.Count);
-            Debug.Log("Total Dynamic Objects: " + DynamicObjects.Count);
-
             if(CorrectObject.Count > 0) {
                 StartCoroutine(guessFeedbackSound(true));
                 foreach(DynamicObject d in CorrectObject) {
@@ -448,9 +466,18 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             Vector3 spawnPos = FindSpawnPoint(room);
             GameObject zombie = Instantiate(zombiePrefab);
             zombie.name = "Zombie - " + room;
-            zombie.transform.position = spawnPos;
             CreaturesPerRoom[room] += 1;
-            zombie.transform.SetParent(GameObject.Find(room).transform);
+            GameObject roomObj = GameObject.Find(room);
+            zombie.transform.SetParent(roomObj.transform);
+            zombie.transform.position = spawnPos;
+
+            BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
+            if (roomCollider.bounds.Contains(zombie.transform.position)) {
+                Debug.Log("Test");
+            }
+            else {
+                zombie.transform.position = roomObj.transform.position;
+            }
             CreateDivergence(zombie);
         }
     }
@@ -504,6 +531,47 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                 audioSource.Play();
             }
             pausedAudioSources.Clear();
+        }
+    }
+
+    IEnumerator FlickerLight(Light light, float minIntensity, float maxIntensity, float duration)
+{
+    float elapsedTime = 0f;
+    while (elapsedTime < duration)
+    {
+        // Randomly change the light's intensity
+        light.intensity = UnityEngine.Random.Range(minIntensity, maxIntensity);
+
+        // Wait for a short amount of time
+        yield return new WaitForSeconds(UnityEngine.Random.Range(0.05f, 0.1f));
+
+        elapsedTime += Time.deltaTime;
+    }
+    flickeringLights.Remove(light);
+    // Ensure the light's intensity is reset to its original state
+    light.intensity = maxIntensity;
+}
+
+    public void FlickerLights()
+    {
+        foreach (GameObject lightObject in GameObject.FindGameObjectsWithTag("Light"))
+        {
+            Light light = lightObject.GetComponent<Light>();
+            flickeringLights.Add(light, StartCoroutine(FlickerLight(light, 2f, light.intensity, .1f)));
+        }
+    }
+
+    public void KillLights(float amt) {
+        killedLights = true;
+        int amtOfLightsInScene = GameObject.FindGameObjectsWithTag("Light").Length;
+        int lightsToKill = (int)Math.Ceiling(amtOfLightsInScene * amt);
+        for(int i = 0; i < lightsToKill; i++) {
+            GameObject light = GameObject.FindGameObjectsWithTag("Light")[UnityEngine.Random.Range(0, amtOfLightsInScene-i)];
+            light.tag = "Untagged";
+            light.GetComponent<Light>().intensity = 2f;
+            if(flickeringLights.ContainsKey(light.GetComponent<Light>()) && flickeringLights[light.GetComponent<Light>()] != null) {
+                StopCoroutine(flickeringLights[light.GetComponent<Light>()]);
+            }
         }
     }
 

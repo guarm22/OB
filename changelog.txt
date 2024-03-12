@@ -107,14 +107,23 @@ Bug Fixes:
 -Fixed bug that caused wrong guess even when guessing correctly after wrong guess
 
 
-v0.3.3 ():
+v0.3.3 (Mar 11, 2024):
 
 Changes:
 -Removed light divergence
 
 Additions:
 -Created an object lockout system, where the same dynamic object cannot become a divergence before a certain number of other divergences have occurred
+-Apartment updates
+-Lights now flicker when a certain amount of divergences are active
+-Some lights have a chance to turn off if each room has a divergence active
+-Improved tutorial
+-Main menu music
 
 Bug fixes:
 -Refactored selection code
 -Re-added code that was accidentally removed, causing audio divergences to no longer function
+-Fixed bug that sometimes caused player to not be able to report
+-Fixed sound not playing in tutorial
+-Deselecting a room no longer saves your last selection
+-Fixed bug for zombies spawning in the wrong room

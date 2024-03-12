@@ -15,6 +15,7 @@ public class SubmitGuess : MonoBehaviour
     }
 
     void SubmitAnswer() {
+        Debug.Log("RoomSelection.CurrentlySelected: " + RoomSelection.CurrentlySelected);
         if(TypeSelection.CurrentlySelected.Count == 0 || RoomSelection.CurrentlySelected == null) {
             return;
         }

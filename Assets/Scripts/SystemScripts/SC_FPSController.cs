@@ -73,6 +73,10 @@ public class SC_FPSController : MonoBehaviour
             ui.transform.localPosition = new Vector3(0f, iter, 0f);
             ui.transform.GetChild(1).gameObject.GetComponent<Text>().text = rooms[i].name;
             //ui.transform.GetChild(1).gameObject.GetComponent<Text>().fontSize = 40;
+
+            ui.GetComponent<Toggle>().onValueChanged.AddListener(
+                delegate { RoomSelection.Instance.Select(ui); });
+
             ui.transform.localScale = new Vector3(3f,3f,3f);
             ui.name = rooms[i++].name;
             iter+=100f;
@@ -82,19 +86,19 @@ public class SC_FPSController : MonoBehaviour
         iter = 0f;
         //Creates each of the type selectors
         foreach(string type in types) {
-            //Create Object
             GameObject ui = Instantiate(togglePrefab, transform);
-            //Set parent to correct UI element
             ui.transform.SetParent(typeSelectionUI.transform);
-            //Set position
             ui.transform.localPosition = new Vector3(0f, iter, 0f);
-            //Set text
             ui.transform.GetChild(1).gameObject.GetComponent<Text>().text = type;
-            //Scale is set to 0 by default for some reason
             ui.transform.localScale = new Vector3(3f,3f,3f);
             ui.name = type;
-            //Increase Y value of next object
             iter+=100f;
+
+            ui.GetComponent<Toggle>().onValueChanged.AddListener(
+            delegate { TypeSelection.Instance.Select(ui); });
+
+
+                
         }
     }
 
@@ -183,7 +187,7 @@ public class SC_FPSController : MonoBehaviour
         }
 
         if (other.tag.Equals(tutTag)) {
-            Tutorial.ActivateTrigger(other.gameObject);
+            Tutorial.Instance.ActivateTrigger(other.gameObject);
         }
     }
 
