@@ -14,8 +14,9 @@ public class CreatureBase : MonoBehaviour
     public float stuckTimer = 3f;
     public Vector3 posCheck;
     public float timeSinceLastStuckCheck;
+    public bool playerInView = false;
     Vector3 dest;
-    bool isDestSet;
+    public bool isDestSet;
     [SerializeField] float walkRange;
 
     public AudioClip closeSound;
@@ -41,7 +42,7 @@ public class CreatureBase : MonoBehaviour
             agent.SetDestination(player.transform.position);
 
             if(amTouchingPlayer()) {
-                GameSystem.Instance.EndGame();
+                StartCoroutine(GameSystem.Instance.EndGame("zombie"));
             }
             return;
         }
@@ -93,6 +94,7 @@ public class CreatureBase : MonoBehaviour
             Vector3.Distance(transform.position, player.transform.position), floorLayer)) {
                 return false;
             }
+            playerInView = true;
             return true;
         }
         return false;   

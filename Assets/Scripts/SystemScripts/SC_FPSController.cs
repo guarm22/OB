@@ -280,8 +280,13 @@ public class SC_FPSController : MonoBehaviour
             }
         }
 
-        if(GameSystem.Instance.GameOver) {
+        if(GameSystem.Instance.IsJumpscareFinished) {
             EndingGame();
+            return;
+        }
+
+        //now waiting for jumpscare to finish, if any
+        if(GameSystem.Instance.GameOver) {
             return;
         }
 

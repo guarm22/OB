@@ -58,6 +58,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public bool killedLights = false;
   private Dictionary<Light, Coroutine> flickeringLights = new Dictionary<Light, Coroutine>();
 
+  public GameObject jumpscareZombie;
+  public bool IsJumpscareFinished = false;
+  public AudioClip yippie;
+
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
   }
@@ -115,14 +119,14 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
     switch(PlayerPrefs.GetString("Difficulty", "NotLoaded")) {
         case "NotLoaded":
-            GameObjectDisappearanceInterval = 22;
+            GameObjectDisappearanceInterval = 21;
             MaxDivergences = 4;
             creatureMax = 3;
             energyPerSecond = 1.1f;
             GameStartTime = 15;
             break;
         default:
-            GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 22);
+            GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 21);
             MaxDivergences = PlayerPrefs.GetInt("MaxDivergences", 4);
             creatureMax = 3;
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
@@ -285,23 +289,22 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     /// <param name="type"></param>
     /// <param name="room"></param>
     public static void MakeSelection(List<string> types, string room) {
-        Debug.Log("Making selection");  
-        if(Instance.CurrentEnergy < Instance.EnergyPerGuess * types.Count || room.Length<1) {
-            return;
-        }
-
-        foreach(string type in types) {
-            Debug.Log("Type: " + type);
-        }
-        Debug.Log("Room: " + room);
-        Instance.madeGuess = true;
         List<DynamicObject> found = Anomalies
             .Where(dynam => types.Any(type => GetAnomalyTypeByName(type) == dynam.data.type && room == dynam.Room))
             .ToList();
-        
-        Instance.CurrentEnergy -= Instance.EnergyPerGuess * types.Count;
-        int creatureCount = found.Count(d => d.data.type == ANOMALY_TYPE.Creature);
-        Instance.CurrentEnergy += 20 * creatureCount;
+
+        int totalCost = types.Count * Instance.EnergyPerGuess;
+        foreach(DynamicObject d in found) {
+             totalCost -= Instance.EnergyPerGuess - d.data.energyCost;
+        }
+        Debug.Log("Total cost: " + totalCost);
+
+        if(Instance.CurrentEnergy < totalCost || room.Length<1) {
+            Instance.StartCoroutine(Instance.guessFeedbackSound(false));
+            return;
+        }
+        Instance.madeGuess = true;
+        Instance.CurrentEnergy -= totalCost;
 
         Guessed = true;
         LastGuess = Time.time;
@@ -383,7 +386,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
     public void SetGameTime(float t=-1) {
         if (Input.GetKeyDown(KeyCode.N)) {
-            EndGame();
+            StartCoroutine(EndGame("manual"));
             return;
         }
         if (t > 0) {
@@ -391,7 +394,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
         if (gameTime <= 1) {
             Won = true;
-            EndGame();
+            StartCoroutine(EndGame("won"));
             return;
         }
         gameTime -= Time.deltaTime;
@@ -400,14 +403,42 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         gameTimer.text = $"{minutes:D2}:{seconds:D2}";
     }
 
-    public void EndGame() {
+    public IEnumerator EndGame(string reason="") {
         GameOver = true;
+        if(reason.Equals("zombie") || reason.Equals("yippie")) {
+            yield return StartCoroutine(ZombieJumpscare());
+        }
+        IsJumpscareFinished =true;
         cleanUpGame();
     }
+    private IEnumerator ZombieJumpscare() {
+        GameObject player = GameObject.Find("Player");
+        player.transform.position = jumpscareZombie.transform.position - new Vector3(0, -1, -2f);
+        Vector3 direction = jumpscareZombie.transform.position - player.transform.position + new Vector3(0, 1, 0);
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        player.transform.rotation = rotation;
+        float originalLightIntensity = GameObject.Find("JumpscareLight").GetComponent<Light>().intensity;
+        StartCoroutine(FlickerLight(GameObject.Find("JumpscareLight").GetComponent<Light>(), 2, 4, 1.5f));
+
+        while(Vector3.Distance(player.transform.position, jumpscareZombie.transform.position) > 1.2f) {
+            player.transform.position = Vector3.MoveTowards(player.transform.position, 
+            jumpscareZombie.transform.position + new Vector3(0,1,0), 1.8f * Time.deltaTime);
+            yield return null;
+        }
+        GameObject audioSourceObject = new GameObject("JumpscareAudioSource");
+        AudioSource audioSource = audioSourceObject.AddComponent<AudioSource>();
+        audioSource.clip = yippie;
+        audioSource.transform.position = jumpscareZombie.transform.position;
+        audioSource.Play();
+
+        yield return new WaitForSeconds(1);
+        GameObject.Find("JumpscareLight").GetComponent<Light>().intensity = originalLightIntensity;
+    }
+
     public void cleanUpGame() {
-        foreach(DynamicObject div in Anomalies) {
+        foreach (DynamicObject div in Anomalies) {
             //destroy all creatures because it looks weird when theyre walking around
-            if(div.data.type == ANOMALY_TYPE.Creature) {
+            if (div.data.type == ANOMALY_TYPE.Creature) {
                 Destroy(div.Obj);
             }
         }
@@ -473,7 +504,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
             BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
             if (roomCollider.bounds.Contains(zombie.transform.position)) {
-                Debug.Log("Test");
             }
             else {
                 zombie.transform.position = roomObj.transform.position;
@@ -517,7 +547,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(Instance.GameOver || SC_FPSController.paused) {
             justPaused = true;
             foreach (var audioSource in FindObjectsOfType<AudioSource>()) {
-                if (!audioSource.isPlaying) continue;
+                if (!audioSource.isPlaying || audioSource.gameObject.name.Equals("JumpscareAudioSource")) continue;
                 audioSource.loop = true;
                 pausedAudioSources[audioSource] = audioSource.time;
                 audioSource.Pause();

@@ -58,6 +58,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     {
         //play menu theme
         this.GetComponent<AudioSource>().clip = menuTheme;
+        this.GetComponent<AudioSource>().loop = true;
         this.GetComponent<AudioSource>().Play();
         ExitGame.onClick.AddListener(ExitButtonEvent);
         ChooseLevel.onClick.AddListener(LevelSelectionEvent);

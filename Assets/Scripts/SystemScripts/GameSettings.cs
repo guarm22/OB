@@ -173,14 +173,14 @@ public class GameSettings : MonoBehaviour
     void LowerDifficulty() {
         if(Difficulty == "Easy") {
             Difficulty = "Easy";
-            DivergenceRate = 25;
+            DivergenceRate = 23;
             EPS = 1f;
             creatureThreshold = 4;
             gracePeriod = 20;
         }
         else if(Difficulty == "Normal") {
             Difficulty = "Easy";
-            DivergenceRate = 25;
+            DivergenceRate = 23;
             EPS = 1f;
             creatureThreshold = 4;
             gracePeriod = 20;
