@@ -23,6 +23,8 @@ public class CreatureBase : MonoBehaviour
     private float soundTimer = 13.8f;
     public float soundTimerMax = 14f;
 
+    private Animator animator;
+
     private void CreaturePatrol() {
         soundTimer += Time.deltaTime;
 
@@ -37,10 +39,21 @@ public class CreatureBase : MonoBehaviour
         }
 
         //if the creature can see the player, chasing the player takes priority over everything else
-        if(canSeePlayer()) {
+        bool isPlayerSeen = canSeePlayer();
+        animator.SetBool("PlayerSeen", isPlayerSeen);
+
+        if(isPlayerSeen) {
             agent.SetDestination(player.transform.position);
+            
+            try {
+                animator.SetBool("isDestinationSet", isDestSet);
+                animator.SetBool("isPlayerInRange", Vector3.Distance(player.transform.position, transform.position) < 4f);
+            } catch (Exception e) {
+
+            }
 
             if(amTouchingPlayer()) {
+
                 GameSystem.Instance.EndGame();
             }
             return;
@@ -56,6 +69,7 @@ public class CreatureBase : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction, out hit, 5f, floorLayer)) {
             isDestSet = false;
+
         }
         if(!isDestSet) {
             findDest();
@@ -136,6 +150,7 @@ public class CreatureBase : MonoBehaviour
         agent.Warp(transform.position);
         timeSinceLastStuckCheck = 0f;
         posCheck = transform.position;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
