@@ -54,12 +54,7 @@ public class CreatureBase : MonoBehaviour
             }
 
             if(amTouchingPlayer()) {
-<<<<<<< HEAD
                 StartCoroutine(GameSystem.Instance.EndGame("zombie"));
-=======
-
-                GameSystem.Instance.EndGame();
->>>>>>> 29353eed7e01d83fde72da71f78c2c965a5513be
             }
             return;
         }

@@ -280,7 +280,7 @@ public class SC_FPSController : MonoBehaviour
             }
         }
 
-        if(GameSystem.Instance.IsJumpscareFinished) {
+        if(CreatureControl.Instance.IsJumpscareFinished) {
             EndingGame();
             return;
         }

@@ -214,14 +214,14 @@ public class GameSettings : MonoBehaviour
             Difficulty = "Hard";
             DivergenceRate = 18;
             EPS = 1.3f;
-            creatureThreshold = 4;
+            creatureThreshold = 3;
             gracePeriod = 5;
         }
         else if(Difficulty == "Hard") {
             Difficulty = "Hard";
             DivergenceRate = 18;
             EPS = 1.3f;
-            creatureThreshold = 4;
+            creatureThreshold = 3;
             gracePeriod = 5;
         }
         else if(Difficulty == "Custom") {

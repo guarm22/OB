@@ -90,7 +90,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger6")) {
-            GameSystem.Instance.ManuallySpawnCreature("Side Room");
+            CreatureControl.Instance.ManuallySpawnCreature("Side Room");
             trigger6 = true;
         }
 
