@@ -128,14 +128,21 @@ Bug fixes:
 -Deselecting a room no longer saves your last selection
 -Fixed bug for zombies spawning in the wrong room
 
-v0.3.4 ():
+v0.3.4 (Mar 15, 2024):
 
 Changes:
--You now get 2 less energy back when reporting a creature, but you are able to report it with less energy
+-Creatures now cost 7 energy instead of 8
 -Refactored energy calculation code
 -Removed 'bedroom' toggle from settings
+-Completely overhauled creature spawning, now separated from divergence spawning
+-Creatures spawn more rarely, but are more deadly
+-Guaranteed ender to spawn when each room has a divergence
 
 Additions:
 -Added jumpscare when dying to zombie or ender
 -Each divergence can now have it's own energy cost
 -A sound plays when you try to report without enough energy
+-The type of divergence you have selected is now highlighted
+
+Bug Fixes:
+-Fixed grace period game setting not being applied

@@ -23,6 +23,7 @@ public class CreatureBase : MonoBehaviour
     public AudioClip farSound;
     private float soundTimer = 13.8f;
     public float soundTimerMax = 14f;
+    public float creatureSpeed = 5f;
 
     private Animator animator;
 
@@ -151,6 +152,8 @@ public class CreatureBase : MonoBehaviour
         agent.Warp(transform.position);
         timeSinceLastStuckCheck = 0f;
         posCheck = transform.position;
+        agent.speed = creatureSpeed;
+        agent.angularSpeed=720;
         animator = GetComponent<Animator>();
     }
 

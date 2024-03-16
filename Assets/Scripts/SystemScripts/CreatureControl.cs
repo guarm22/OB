@@ -16,6 +16,9 @@ public class CreatureControl : MonoBehaviour
     public GameObject jumpscareZombie;
     public bool IsJumpscareFinished = false;
     public AudioClip yippie;
+    public float creatureSpawnRate = 20f;
+    private float startSpawnRate;
+    private float timeSinceLastCreature = 0f;
 
 
     public IEnumerator ZombieJumpscare() {
@@ -43,35 +46,24 @@ public class CreatureControl : MonoBehaviour
         GameObject.Find("JumpscareLight").GetComponent<Light>().intensity = originalLightIntensity;
     }
 
-    public void CreatureSpawn() {
-        //If we have less than the maximum, we come back later
-        if(GameSystem.Instance.Anomalies.Count <= GameSystem.Instance.MaxDivergences) {
+    public void CreatureSpawn(string room) {
+        if(GameSystem.Instance.Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count >= creatureMax) {
+            GameObject ender = Instantiate(endCreaturePrefab);
+            createCreature(ender, room, "Ender");
+        }
+        if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
             return;
         }
-        int divergencesAboveMax = GameSystem.Instance.Anomalies.Count - GameSystem.Instance.MaxDivergences;
-        int spawnChance = UnityEngine.Random.Range(0,33*divergencesAboveMax);
-        //print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
-        string room = GameSystem.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, GameSystem.Instance.Rooms.Count)).Key;
-
-        if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
-            CreaturesPerRoom.Add(room, 0);
-        } 
-        if(spawnChance > 15-divergencesAboveMax*2) {
-            if(GameSystem.Instance.Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count >= creatureMax) {
-                GameObject ender = Instantiate(endCreaturePrefab);
-                createCreature(ender, room, "Ender");
-            }
-            if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
-                return;
-            }
-            GameObject zombie = Instantiate(zombiePrefab);
-            createCreature(zombie, room, "Zombie");
-        }
+        GameObject zombie = Instantiate(zombiePrefab);
+        createCreature(zombie, room, "Zombie");
     }
 
     private void createCreature(GameObject creature, string room, string type = "Zombie") {
         Vector3 spawnPos = FindSpawnPoint(room);
         GameObject roomObj = GameObject.Find(room);
+        if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
+            CreaturesPerRoom.Add(room, 0);
+        } 
         creature.transform.position = spawnPos;
         creature.transform.SetParent(roomObj.transform);
         creature.name = type + " - " + room;
@@ -115,11 +107,45 @@ public class CreatureControl : MonoBehaviour
         createCreature(zombie, room, "Zombie");
     }
 
+    public void ManuallySpawnEnder(string room) {
+        GameObject ender = Instantiate(endCreaturePrefab);
+        createCreature(ender, room, "Ender");
+    }
+
+    private void doCreatureCheck() {
+        //set spawn rate based on number of divergences
+        //creatureSpawnRate = startSpawnRate - GameSystem.Instance.Anomalies.Count;
+        if(creatureSpawnRate <= 1f) {
+            creatureSpawnRate = 1f;
+        }
+
+        string room = GameSystem.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, GameSystem.Instance.Rooms.Count)).Key;
+        if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.AnomaliesPerRoom*GameSystem.Instance.Rooms.Count) {
+            ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
+        }
+
+        //If we have less than the maximum, we come back later
+        if(GameSystem.Instance.Anomalies.Count <= GameSystem.Instance.MaxDivergences) {
+            return;
+        }
+        //int divergencesAboveMax = GameSystem.Instance.TotalAnomalies - GameSystem.Instance.MaxDivergences;
+        int spawnChance = UnityEngine.Random.Range(0,100);
+        //print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
+        if(spawnChance > 75) {
+            CreatureSpawn(room);
+        }
+    }
+
     void Start() {
-        Instance = this;   
+        Instance = this;
+        startSpawnRate = creatureSpawnRate;
     }
 
     void Update() {
-        
+        timeSinceLastCreature += Time.deltaTime;
+        if(timeSinceLastCreature > creatureSpawnRate) {
+            timeSinceLastCreature = 0;
+            doCreatureCheck();
+        }
     }
 }

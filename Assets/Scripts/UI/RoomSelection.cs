@@ -21,7 +21,6 @@ public class RoomSelection : MonoBehaviour
 
     public void Select(GameObject selectedObject) {
         if(selectedObject.GetComponent<Toggle>().isOn) {
-
             CurrentlySelected = selectedObject.name;
             List<Toggle> toggles = new List<Toggle>(RoomSelector.GetComponentsInChildren<Toggle>());
             toggles.Remove(selectedObject.GetComponent<Toggle>());

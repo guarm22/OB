@@ -64,9 +64,9 @@ public class GameSettings : MonoBehaviour
 
     private void LoadValues() {
         Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
-        DivergenceRate = PlayerPrefs.GetInt("DivergenceRate", 21);
+        DivergenceRate = PlayerPrefs.GetInt("DivergenceRate", 23);
         EPS = PlayerPrefs.GetFloat("EPS", 1.1f);
-        creatureThreshold = PlayerPrefs.GetInt("MaxDivergences", 4);
+        creatureThreshold = PlayerPrefs.GetInt("MaxDivergences", 5);
         gracePeriod = PlayerPrefs.GetInt("GracePeriod", 15);
     }
     private void SetTexts() {
@@ -182,10 +182,10 @@ public class GameSettings : MonoBehaviour
 
     private int GetDivergenceRate(string diff) {
         if(diff == "Easy") {
-            return 23;
+            return 26;
         }
         else if(diff == "Normal") {
-            return 21;
+            return 22;
         }
         else if(diff == "Hard") {
             return 18;
@@ -197,13 +197,13 @@ public class GameSettings : MonoBehaviour
 
     private int getGracePeriod(string diff) {
         if(diff == "Easy") {
-            return 20;
+            return 35;
         }
         else if(diff == "Normal") {
-            return 15;
+            return 25;
         }
         else if(diff == "Hard") {
-            return 5;
+            return 12;
         }
         else {
             return gracePeriod;

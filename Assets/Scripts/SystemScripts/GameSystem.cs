@@ -57,6 +57,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
       Debug.LogError("There is more than one instance!");
       return;
     }
+    SetGameSettings();
     gameTime = startTime;
     Instance = this;
     Anomalies = new List<DynamicObject>();
@@ -74,7 +75,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     gameObject.AddComponent<AudioSource>();
     gameObject.GetComponent<AudioSource>().clip = DisappearSound;
     generateNewRandomness();
-    SetGameSettings();
     InstantiateAllDynamicObjects();
   }
 
@@ -154,6 +154,11 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
         return "";
     }
+    public string getRandomRoom() {
+        List<string> rooms = new List<string>(Instance.Rooms.Keys);
+        return rooms[UnityEngine.Random.Range(0, rooms.Count)];
+    }
+
     public void GetRandomDynamicObject() {
         if(TotalAnomalies >= Rooms.Count*AnomaliesPerRoom || areAllRoomsFull() || DynamicObjects.Count == 0) {
             if(UnityEngine.Random.Range(0, 100) < 50) {
@@ -344,7 +349,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             generateNewRandomness();
             timeSinceLastDisappearance = 0f;
             GetRandomDynamicObject();
-            CreatureControl.Instance.CreatureSpawn();
         }
         else {
             timeSinceLastDisappearance += Time.deltaTime;

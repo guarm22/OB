@@ -114,6 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2698898879369814195}
+  - component: {fileID: 3644676362518181232}
   m_Layer: 0
   m_Name: CreatureController
   m_TagString: Untagged
@@ -136,6 +137,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6743913093581102291}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3644676362518181232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676074117847145115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ca7223b90da564aadea374ac979eb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zombiePrefab: {fileID: 2174045631847333030, guid: 6c0bb4bebe48fdf4cb751e832831e97d, type: 3}
+  endCreaturePrefab: {fileID: 2174045631847333030, guid: 95c9f0faadc6c8c49aa4b09532e0e2e4, type: 3}
+  maxCreaturesPerRoom: 1
+  creatureMax: 0
+  jumpscareZombie: {fileID: 7791008221772424225, guid: f0030c7861fe13b4cae25283ebfab3b4, type: 3}
+  IsJumpscareFinished: 0
+  yippie: {fileID: 8300000, guid: f32b5db229ed82842af27c0b007611a7, type: 3}
+  creatureSpawnRate: 20
 --- !u!1001 &37308958329343441
 PrefabInstance:
   m_ObjectHideFlags: 0
