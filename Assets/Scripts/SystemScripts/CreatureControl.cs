@@ -11,7 +11,7 @@ public class CreatureControl : MonoBehaviour
     public GameObject zombiePrefab;
     public GameObject endCreaturePrefab;
     public int maxCreaturesPerRoom = 1;
-    public Dictionary<string, int> CreaturesPerRoom;
+    public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
     public int creatureMax;
     public GameObject jumpscareZombie;
     public bool IsJumpscareFinished = false;
@@ -53,35 +53,37 @@ public class CreatureControl : MonoBehaviour
         //print("Spawn chance: " + spawnChance + "     Minimum #:" + (spawnChance > 20-divergencesAboveMax*2));
         string room = GameSystem.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, GameSystem.Instance.Rooms.Count)).Key;
 
+        if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
+            CreaturesPerRoom.Add(room, 0);
+        } 
         if(spawnChance > 15-divergencesAboveMax*2) {
             if(GameSystem.Instance.Anomalies.Where(d => d.data.type.Equals(ANOMALY_TYPE.Creature)).ToList().Count >= creatureMax) {
                 GameObject ender = Instantiate(endCreaturePrefab);
-                ender.name = "Ender - " + room;
-                ender.transform.position = GameObject.Find(room).transform.position;
-                CreaturesPerRoom[room] += 1;
-                ender.transform.SetParent(GameObject.Find(room).transform);
-                GameSystem.Instance.CreateDivergence(ender);
+                createCreature(ender, room, "Ender");
             }
             if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
                 return;
             }
-
-            Vector3 spawnPos = FindSpawnPoint(room);
             GameObject zombie = Instantiate(zombiePrefab);
-            zombie.name = "Zombie - " + room;
-            CreaturesPerRoom[room] += 1;
-            GameObject roomObj = GameObject.Find(room);
-            zombie.transform.SetParent(roomObj.transform);
-            zombie.transform.position = spawnPos;
-
-            BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
-            if (roomCollider.bounds.Contains(zombie.transform.position)) {
-            }
-            else {
-                zombie.transform.position = roomObj.transform.position;
-            }
-            GameSystem.Instance.CreateDivergence(zombie);
+            createCreature(zombie, room, "Zombie");
         }
+    }
+
+    private void createCreature(GameObject creature, string room, string type = "Zombie") {
+        Vector3 spawnPos = FindSpawnPoint(room);
+        GameObject roomObj = GameObject.Find(room);
+        creature.transform.position = spawnPos;
+        creature.transform.SetParent(roomObj.transform);
+        creature.name = type + " - " + room;
+        CreaturesPerRoom[room] += 1;
+
+        BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
+        if (roomCollider.bounds.Contains(creature.transform.position)) {
+        }
+        else {
+            creature.transform.position = roomObj.transform.position;
+        }
+        GameSystem.Instance.CreateDivergence(creature);
     }
 
       private Vector3 FindSpawnPoint(string room) {
@@ -110,16 +112,11 @@ public class CreatureControl : MonoBehaviour
     
     public void ManuallySpawnCreature(string room) {
         GameObject zombie = Instantiate(zombiePrefab);
-        zombie.name = "Zombie - " + room;
-        zombie.transform.position = GameObject.Find(room).transform.position;
-        CreaturesPerRoom[room] += 1;
-        zombie.transform.SetParent(GameObject.Find(room).transform);
-        GameSystem.Instance.CreateDivergence(zombie);
+        createCreature(zombie, room, "Zombie");
     }
 
     void Start() {
         Instance = this;   
-        CreaturesPerRoom = new Dictionary<string, int>();
     }
 
     void Update() {

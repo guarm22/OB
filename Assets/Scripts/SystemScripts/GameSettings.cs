@@ -44,14 +44,14 @@ public class GameSettings : MonoBehaviour
 
         lowerDifficulty.onClick.AddListener(LowerDifficulty);
         higherDifficulty.onClick.AddListener(HigherDifficulty);
-        higherDR.onClick.AddListener(HigherDR);
-        lowerDR.onClick.AddListener(LowerDR);
-        highEPS.onClick.AddListener(HigherEPS);
-        lowEPS.onClick.AddListener(LowerEPS);
-        highCT.onClick.AddListener(HigherCT);
-        lowCT.onClick.AddListener(LowerCT);
-        highGP.onClick.AddListener(HigherGP);
-        lowGP.onClick.AddListener(LowerGP);
+        higherDR.onClick.AddListener(() => setDR(higherDR));
+        lowerDR.onClick.AddListener(() => setDR(lowerDR));
+        highEPS.onClick.AddListener(() => setEPS(highEPS));
+        lowEPS.onClick.AddListener(() => setEPS(lowEPS));
+        highCT.onClick.AddListener(() => setCT(highCT));
+        lowCT.onClick.AddListener(() => setCT(lowCT));
+        highGP.onClick.AddListener(() => setGP(highGP));
+        lowGP.onClick.AddListener(() => setGP(lowGP));
     }
 
     public void SetValues() {
@@ -77,94 +77,63 @@ public class GameSettings : MonoBehaviour
         gracePeriodText.text = "Grace Period: " + gracePeriod.ToString();
     }
 
-    void HigherCT() {
-        creatureThreshold += 1;
-        if(creatureThreshold <= 0) {
-            creatureThreshold = 0;
+    private void setCT(Button b) {
+        if(b.name.Contains("High")) {
+            creatureThreshold += 1;
         }
-        else if(creatureThreshold >= 5) {
-            creatureThreshold = 5;
+        else {
+            creatureThreshold -= 1;
         }
-        SetTexts();
-    }
-
-    void LowerCT() {
-        creatureThreshold -= 1;
         if(creatureThreshold > 6) {
             creatureThreshold = 6;
         }
-        else if(creatureThreshold <= 0) {
+        else if(creatureThreshold < 0) {
             creatureThreshold = 0;
         }
         SetTexts();
     }
-
-    void HigherGP() {
-        gracePeriod += 1;
-        if(gracePeriod <= 0) {
-            gracePeriod = 0;
+    private void setGP(Button b) {
+        if(b.name.Contains("High")) {
+            gracePeriod += 1;
         }
-        else if(gracePeriod >= 20) {
-            gracePeriod = 20;
+        else {
+            gracePeriod -= 1;
         }
-        SetTexts();
-    }
-
-    void LowerGP() {
-        gracePeriod -= 1;
         if(gracePeriod > 25) {
             gracePeriod = 25;
         }
-        else if(gracePeriod <= 5) {
+        else if(gracePeriod < 5) {
             gracePeriod = 5;
         }
         SetTexts();
     }
 
-    void HigherEPS() {
-        EPS += 0.05f;
-        if(EPS <= 0.8f) {
-            EPS = 0.8f;
+    private void setEPS(Button b) {
+        if(b.name.Contains("High")) {
+            EPS += 0.05f;
         }
-
-        else if(EPS >= 2.5f) {
-                EPS = 2.5f;
+        else {
+            EPS -= 0.05f;
         }
-        Difficulty= "Custom";
-        SetTexts();
-    }
-
-    void LowerEPS() {
-        EPS -= 0.05f;
         if(EPS > 2.5f) {
             EPS = 2.5f;
         }
-        else if(EPS <= 0.8f) {
+        else if(EPS < 0.8f) {
             EPS = 0.8f;
         }
-        Difficulty= "Custom";
         SetTexts();
     }
-
-    void HigherDR() {
-        DivergenceRate += 1;
-        if(DivergenceRate <= 15) {
-            DivergenceRate = 15;
+    private void setDR(Button b) {
+        if(b.name.Contains("High")) {
+            DivergenceRate += 1;
         }
-
-        else if(DivergenceRate >= 40) {
+        else {
+            DivergenceRate -= 1;
+        }
+        if(DivergenceRate > 40) {
             DivergenceRate = 40;
         }
-        Difficulty= "Custom";
-        SetTexts();
-    }
-
-    void LowerDR() {
-        DivergenceRate -= 1;
-        if(DivergenceRate >= 40) {
-            DivergenceRate = 40;
-        }
-        else if(DivergenceRate <= 15) {
+        else if(DivergenceRate < 15) {
             DivergenceRate = 15;
         }
         SetTexts();
@@ -173,65 +142,102 @@ public class GameSettings : MonoBehaviour
     void LowerDifficulty() {
         if(Difficulty == "Easy") {
             Difficulty = "Easy";
-            DivergenceRate = 23;
-            EPS = 1f;
-            creatureThreshold = 4;
-            gracePeriod = 20;
         }
         else if(Difficulty == "Normal") {
             Difficulty = "Easy";
-            DivergenceRate = 23;
-            EPS = 1f;
-            creatureThreshold = 4;
-            gracePeriod = 20;
         }
         else if(Difficulty == "Hard") {
             Difficulty = "Normal";
-            DivergenceRate = 21;
-            EPS = 1.1f;
-            creatureThreshold = 4;
-            gracePeriod = 15;
         }
         else if(Difficulty == "Custom") {
             Difficulty = "Normal";
-            DivergenceRate = 21;
-            EPS = 1.1f;
-            creatureThreshold = 4;
-            gracePeriod = 15;
         }
-        SetTexts();
+        setDifficulty(Difficulty);
     }
     
     void HigherDifficulty() {
         if(Difficulty == "Easy") {
             Difficulty = "Normal";
-            DivergenceRate = 21;
-            EPS = 1.1f;
-            creatureThreshold = 4;
-            gracePeriod = 15;
         }
         else if(Difficulty == "Normal") {
             Difficulty = "Hard";
-            DivergenceRate = 18;
-            EPS = 1.3f;
-            creatureThreshold = 3;
-            gracePeriod = 5;
         }
         else if(Difficulty == "Hard") {
             Difficulty = "Hard";
-            DivergenceRate = 18;
-            EPS = 1.3f;
-            creatureThreshold = 3;
-            gracePeriod = 5;
         }
         else if(Difficulty == "Custom") {
             Difficulty = "Normal";
-            DivergenceRate = 21;
-            EPS = 1.1f;
-            creatureThreshold = 4;
-            gracePeriod = 15;
         }
+        setDifficulty(Difficulty);
+    }
+
+
+    private void setDifficulty(string diff) {
+        DivergenceRate = GetDivergenceRate(diff);
+        EPS = getEPS(diff);
+        creatureThreshold = getCreatureThreshold(diff);
+        gracePeriod = getGracePeriod(diff);
         SetTexts();
+    }
+
+    private int GetDivergenceRate(string diff) {
+        if(diff == "Easy") {
+            return 23;
+        }
+        else if(diff == "Normal") {
+            return 21;
+        }
+        else if(diff == "Hard") {
+            return 18;
+        }
+        else {
+            return DivergenceRate;
+        }
+    }
+
+    private int getGracePeriod(string diff) {
+        if(diff == "Easy") {
+            return 20;
+        }
+        else if(diff == "Normal") {
+            return 15;
+        }
+        else if(diff == "Hard") {
+            return 5;
+        }
+        else {
+            return gracePeriod;
+        }
+    }
+
+    private int getCreatureThreshold(string diff) {
+        if(diff == "Easy") {
+            return 4;
+        }
+        else if(diff == "Normal") {
+            return 4;
+        }
+        else if(diff == "Hard") {
+            return 3;
+        }
+        else {
+            return creatureThreshold;
+        }
+    }
+
+    private float getEPS(string diff) {
+        if(diff == "Easy") {
+            return 1f;
+        }
+        else if(diff == "Normal") {
+            return 1.1f;
+        }
+        else if(diff == "Hard") {
+            return 1.3f;
+        }
+        else {
+            return EPS;
+        }
     }
 
     // Update is called once per frame

@@ -7,8 +7,7 @@ public class DefaultUI : MonoBehaviour
 {
     public Text label;
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         
     }
 
@@ -22,17 +21,16 @@ public class DefaultUI : MonoBehaviour
         else if(Time.time - GameSystem.LastGuess < GameSystem.Instance.GuessLockout/2 && GameSystem.Guessed) {
             label.text = "Verifying...";
         }
-        else if(beforeTimer && GameSystem.CorrectGuess && afterTimer) {
+        else if(beforeTimer && GameSystem.Instance.wasLastGuessCorrect && afterTimer) {
             label.text = "CORRECT";
         }
-        else if(beforeTimer && !GameSystem.CorrectGuess && afterTimer) {
+        else if(beforeTimer && !GameSystem.Instance.wasLastGuessCorrect && afterTimer) {
             label.text = "WRONG";
         }
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         SetText();
     }
 }

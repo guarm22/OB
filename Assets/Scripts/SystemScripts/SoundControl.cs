@@ -8,9 +8,8 @@ public class SoundControl : MonoBehaviour
     public AudioClip correctGuess;
     [SerializeField]
     public AudioClip incorrectGuess;
-
+    public GameObject walkingSound;
     public static SoundControl Instance;
-
     private Dictionary<AudioSource, float> pausedAudioSources = new Dictionary<AudioSource, float>();
     private bool justPaused = false;
     // Start is called before the first frame update
@@ -23,6 +22,15 @@ public class SoundControl : MonoBehaviour
     void Update()
     {
         PauseSound();
+        walking();
+    }
+    private void walking() {
+        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
+            walkingSound.SetActive(true);
+        }
+        else {
+            walkingSound.SetActive(false);
+        }
     }
 
     private void PauseSound() {

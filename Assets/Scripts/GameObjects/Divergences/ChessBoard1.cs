@@ -31,24 +31,24 @@ public class ChessBoard1 : CustomDivergence
         }
     }
 
-private IEnumerator MovePieces(bool activate, float duration, float delay)
-{
-    for (int i = 0; i < pieces.Count; i++)
+    private IEnumerator MovePieces(bool activate, float duration, float delay)
     {
-        if(activate) {
-            if(pieces[i].transform.position == originalPositions[i]) {
-                StartCoroutine(MoveOverTime(pieces[i], newPositions[i], duration));
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if(activate) {
+                if(pieces[i].transform.position == originalPositions[i]) {
+                    StartCoroutine(MoveOverTime(pieces[i], newPositions[i], duration));
+                }
             }
-        }
 
-        else {
-            if(pieces[i].transform.position != originalPositions[i]) {
-                StartCoroutine(MoveOverTime(pieces[i], originalPositions[i], duration));
+            else {
+                if(pieces[i].transform.position != originalPositions[i]) {
+                    StartCoroutine(MoveOverTime(pieces[i], originalPositions[i], duration));
+                }
             }
+            yield return new WaitForSeconds(delay);
         }
-        yield return new WaitForSeconds(delay);
     }
-}
 
     private IEnumerator MoveOverTime(GameObject piece, Vector3 newPos, float duration)
     {

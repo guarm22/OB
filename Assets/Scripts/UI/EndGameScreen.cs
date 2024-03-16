@@ -10,11 +10,8 @@ public class EndGameScreen : MonoBehaviour
     public Text ADetected;
     public Text AMissed;
     public Text GameOver;
-
     public Button ReturnToMenuButton;
     public Button RetryButton;
-
-
     public void ReturnToMenu() {
         SceneManager.LoadScene("MainMenuScene");
     }
@@ -25,8 +22,7 @@ public class EndGameScreen : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
@@ -42,7 +38,6 @@ public class EndGameScreen : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
     }
 }

@@ -14,8 +14,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public List<DynamicObject> DynamicObjects {get; private set;}
   public static float LastGuess {get; private set;}
   public static bool Guessed {get; private set;}
-  public static bool PrivateCorrectGuess {get; private set;}
-  public static bool CorrectGuess {get; set;}
   public static List<DynamicObject> CorrectObject {get; private set;}
   public AudioClip DisappearSound;
   public int GameStartTime;
@@ -45,16 +43,14 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public bool madeGuess;
   public List<DynamicObject> lockedObjects;
   public static int totalDynamicObjectsInScene;
-  public AudioClip yippie;
+  public bool wasLastGuessCorrect = false;
 
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
   }
-
   public void SaveData(ref GameData data) {
         data.AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported + AnomaliesSuccesfullyReportedThisGame;
   }
-
   void Start()
   {
     if (Instance != null) {
@@ -68,7 +64,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     Rooms = new Dictionary<string, int>();
     Guessed = false;
     LastGuess = -5;
-    PrivateCorrectGuess = false;
     CorrectObject = new List<DynamicObject>();
     timeSinceLastDisappearance = 0f - GameStartTime;
     AnomaliesSuccesfullyReportedThisGame = 0;
@@ -138,7 +133,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         this.DynamicObjects.Add(dynam);
         if(!Rooms.ContainsKey(room)) {
             Rooms.Add(room, 0);
-            CreatureControl.Instance.CreaturesPerRoom.Add(room, 0);
         }
     }
 
@@ -160,22 +154,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
         return "";
     }
-  private static ANOMALY_TYPE GetAnomalyTypeByName(string name) {
-    switch(name){
-        case "Disappearance":
-            return ANOMALY_TYPE.Disappearance;
-        case "Replacement":
-            return ANOMALY_TYPE.Replacement;
-        case "Creature":
-            return ANOMALY_TYPE.Creature;
-        case "Audio":
-            return ANOMALY_TYPE.Audio;
-        case "Movement":
-            return ANOMALY_TYPE.Movement;
-        default:
-            return ANOMALY_TYPE.NONE;
-    }
-  }
     public void GetRandomDynamicObject() {
         if(TotalAnomalies >= Rooms.Count*AnomaliesPerRoom || areAllRoomsFull() || DynamicObjects.Count == 0) {
             if(UnityEngine.Random.Range(0, 100) < 50) {
@@ -209,7 +187,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
 
         int lowerBound = TotalAnomalies < 3 ? 0 : TotalAnomalies == 3 ? 20 : TotalAnomalies > 3 ? 33 : 33;
-        if(UnityEngine.Random.Range(0, 0) < lowerBound) {
+        if(UnityEngine.Random.Range(0, 99) < lowerBound) {
             LightControl.Instance.FlickerLights();
         }
         GetComponent<AudioSource>().Play();
@@ -247,7 +225,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     /// <param name="room"></param>
     public void MakeSelection(List<string> types, string room) {
         List<DynamicObject> found = Anomalies
-            .Where(dynam => types.Any(type => GetAnomalyTypeByName(type) == dynam.data.type && room == dynam.Room))
+            .Where(dynam => types.Any(type => DynamicObject.GetAnomalyTypeByName(type) == dynam.data.type && room == dynam.Room))
             .ToList();
 
         int totalCost = types.Count * Instance.EnergyPerGuess;
@@ -267,7 +245,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         TypeSelection.Instance.ResetToggles();
         RoomSelection.Instance.ResetToggles();
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
-        PrivateCorrectGuess = CorrectObject.Count > 0;
     }
 
     /// <summary>
@@ -275,12 +252,11 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     /// </summary>
     void SetGuessTime() {
         if(Time.time - LastGuess >= GuessLockout/2 && madeGuess == true) {
-            CorrectGuess = PrivateCorrectGuess;
             madeGuess = false;
-            if(CorrectObject.Count > 0) {
+            wasLastGuessCorrect = CorrectObject.Count > 0;
+            if(wasLastGuessCorrect) {
                 StartCoroutine(SoundControl.Instance.guessFeedbackSound(true));
                 foreach(DynamicObject d in CorrectObject) {
-                    this.AnomaliesSuccesfullyReportedThisGame += 1;
                     d.DoAnomalyAction(false);
                     Anomalies.Remove(d);
                     if(d.data.type == ANOMALY_TYPE.Creature) {
@@ -297,6 +273,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                         }
                     }
                 }
+                AnomaliesSuccesfullyReportedThisGame += CorrectObject.Count;
                 CorrectObject = new List<DynamicObject>();
             }
             else {
@@ -305,7 +282,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
         if(Time.time - LastGuess >= GuessLockout && Guessed == true) {
             Guessed = false;
-            CorrectGuess = PrivateCorrectGuess;
         }
     }
 

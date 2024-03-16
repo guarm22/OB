@@ -15,27 +15,20 @@ public class DynamicObject {
     public DynamicData data;
     public string Room {get; set;}
     public string Name {get; set;}
-    public bool normal;
-
     public GameObject Obj {get; set;}
-
     public Vector3 originalPosition {get; set;}
-
     public DynamicObject(DynamicData data, string room, string name, GameObject obj) {
         this.data = data;
         Name = name;
         Room = room;
         Obj = obj;
-        normal = true;
         originalPosition = obj.transform.position;
     }
 
     public int DoAnomalyAction(bool enable) {
         Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.data.type) + 
         (enable ? " ENABLED" : " DISABLED"));
-        this.normal = !enable;
-        this.data.beenKilled = false;
-
+ 
         if(Obj.GetComponent<CustomDivergence>() != null) {
             Obj.GetComponent<CustomDivergence>().DoDivergenceAction(enable, this);
             return 1;
@@ -105,6 +98,23 @@ public class DynamicObject {
         };
         return res;
     }
+
+      public static ANOMALY_TYPE GetAnomalyTypeByName(string name) {
+        switch(name){
+            case "Disappearance":
+                return ANOMALY_TYPE.Disappearance;
+            case "Replacement":
+                return ANOMALY_TYPE.Replacement;
+            case "Creature":
+                return ANOMALY_TYPE.Creature;
+            case "Audio":
+                return ANOMALY_TYPE.Audio;
+            case "Movement":
+                return ANOMALY_TYPE.Movement;
+            default:
+                return ANOMALY_TYPE.NONE;
+        }
+  }
 
     public static string AnomalyTypeToString(ANOMALY_TYPE type) {
         switch(type) {

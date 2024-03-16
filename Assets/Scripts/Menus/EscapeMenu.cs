@@ -9,7 +9,6 @@ public class EscapeMenu : MonoBehaviour
 {
     public GameObject escapeMenuUI;
     public GameObject defaultUI;
-
     public Button quitButton;
     public Button returnButton;
 
@@ -38,22 +37,6 @@ public class EscapeMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) {
-            if (EventSystem.current.IsPointerOverGameObject()) {
-                // Get a reference to the selected UI game object
-                GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
-                                Debug.Log(selectedObject.name);
-                if(selectedObject == null) {
-                    return;
-                }
-                else if(selectedObject.name.Equals("Return")) {
-                    ReturnToGame();
-                }
-                else if(selectedObject.name.Equals("Main Menu")) {
-                    //call some function that saves some data and returns player to main menu
-                    QuitGame();
-                }
-            }
-        }
+
     }
 }

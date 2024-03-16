@@ -27,21 +27,17 @@ public class SC_FPSController : MonoBehaviour
     public float lookSpeed = 2.0f;
     public float lookXLimit = 90.0f;
     public float maxDistance = 5.0f;
-
     public string targetTag = "Room";
     public string tutTag = "Tutorial";
     public string interactableTag;
-
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
     [HideInInspector]
     public bool canMove = true;
-
     public bool inJournal = false;
     public bool inMenu = false;
     public static bool paused = false;
-
     public static SC_FPSController Instance;
 
     void Start()
@@ -93,12 +89,8 @@ public class SC_FPSController : MonoBehaviour
             ui.transform.localScale = new Vector3(3f,3f,3f);
             ui.name = type;
             iter+=100f;
-
             ui.GetComponent<Toggle>().onValueChanged.AddListener(
-            delegate { TypeSelection.Instance.Select(ui); });
-
-
-                
+            delegate { TypeSelection.Instance.Select(ui); });       
         }
     }
 
@@ -124,7 +116,6 @@ public class SC_FPSController : MonoBehaviour
             return;
         }
         bool beforeTimer = Time.time - GameSystem.LastGuess >= GameSystem.Instance.GuessLockout-GameSystem.Instance.reportTextTimer;
-
         //if menu is open, check if tab is pressed to close, otherwise stop movement
         if(inMenu) {
             if(Input.GetKeyDown(KeyCode.Tab) || Time.time - GameSystem.LastGuess < 1) {
@@ -204,29 +195,23 @@ public class SC_FPSController : MonoBehaviour
         //So speed is not doubled when moving in two directions
         moveDirection = Vector3.ClampMagnitude(moveDirection, isRunning ? runningSpeed : walkingSpeed);
 
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
-        {
+        if (Input.GetButton("Jump") && canMove && characterController.isGrounded) {
             moveDirection.y = jumpSpeed;
         }
-        else
-        {
+        else {
             moveDirection.y = movementDirectionY;
         }
 
         // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
         // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
         // as an acceleration (ms^-2)
-        if (!characterController.isGrounded)
-        {
+        if (!characterController.isGrounded) {
             moveDirection.y -= gravity * Time.deltaTime;
         }
-
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
-
         // Player and Camera rotation
-        if (canMove)
-        {
+        if (canMove) {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
@@ -239,7 +224,6 @@ public class SC_FPSController : MonoBehaviour
         Cursor.visible = true;
         escapeMenuUI.SetActive(true);
         paused = true;
-
         defaultUI.SetActive(false);
     }
 
@@ -254,7 +238,6 @@ public class SC_FPSController : MonoBehaviour
     private void EscapeMenu() {
         //CHANGE TO ESCAPE
         if(Input.GetKeyDown(KeyCode.Q)) { 
-
             if(!paused) {
                 openEscape();
             }
@@ -262,7 +245,6 @@ public class SC_FPSController : MonoBehaviour
                 closeEscape();
             }
         }
-
         if(Input.GetKeyDown(KeyCode.P)) {
             Popup.Instance.OpenPopup("Test message!");
         }
@@ -279,26 +261,20 @@ public class SC_FPSController : MonoBehaviour
                 return;
             }
         }
-
         if(CreatureControl.Instance.IsJumpscareFinished) {
             EndingGame();
             return;
         }
-
         //now waiting for jumpscare to finish, if any
         if(GameSystem.Instance.GameOver) {
             return;
         }
-
         EscapeMenu();
         if(paused) {
             return;
         }
-
         SelectionMenu();
-
         Interact();
-
         PlayerMove();
     }
 }
