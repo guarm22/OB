@@ -20,6 +20,8 @@ public class SC_FPSController : MonoBehaviour
     public GameObject escapeMenuUI;
     public GameObject EndGameUI;
     public float walkingSpeed = 7.5f;
+    public float originalWalkSpeed;
+    public float originalRunSpeed;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
@@ -47,6 +49,8 @@ public class SC_FPSController : MonoBehaviour
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        originalRunSpeed = runningSpeed;
+        originalWalkSpeed = walkingSpeed;
         paused = false;
         PopulateSelectorUI();
     }
@@ -252,6 +256,12 @@ public class SC_FPSController : MonoBehaviour
 
     private void EndingGame() {
         EndGameUI.SetActive(true);
+    }
+
+    public void Debuff(string type) {
+        if(type == "Slow") {
+            StartCoroutine(PlayerDebuffs.Instance.Slow());
+        }
     }
 
     void Update()

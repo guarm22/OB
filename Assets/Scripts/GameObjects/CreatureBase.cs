@@ -2,8 +2,6 @@ using System;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Assertions.Must;
-
 public class CreatureBase : MonoBehaviour
 {
     public GameObject player;
@@ -27,7 +25,7 @@ public class CreatureBase : MonoBehaviour
 
     private Animator animator;
 
-    private void CreaturePatrol() {
+    public void CreaturePatrol() {
         soundTimer += Time.deltaTime;
 
         if(soundTimer >= soundTimerMax) {
@@ -51,11 +49,7 @@ public class CreatureBase : MonoBehaviour
                 animator.SetBool("isDestinationSet", isDestSet);
                 animator.SetBool("isPlayerInRange", Vector3.Distance(player.transform.position, transform.position) < 4f);
             } catch (Exception e) {
-
-            }
-
-            if(amTouchingPlayer()) {
-                StartCoroutine(GameSystem.Instance.EndGame("zombie"));
+                UnityEngine.Debug.Log(e);
             }
             return;
         }
@@ -81,7 +75,6 @@ public class CreatureBase : MonoBehaviour
         if(Vector3.Distance(transform.position, dest) < 1) {
             isDestSet = false;
         }
-
     }
 
     private bool stuck() {
@@ -114,13 +107,6 @@ public class CreatureBase : MonoBehaviour
         return false;   
     }
 
-    private bool amTouchingPlayer() {
-        if(Vector3.Distance(transform.position, player.transform.position) < 1.3f) {
-                return true;
-            }
-        return false;
-    }
-
     void findDest() {
         float z = UnityEngine.Random.Range(-walkRange, walkRange);
         float x = UnityEngine.Random.Range(-walkRange, walkRange);
@@ -137,14 +123,19 @@ public class CreatureBase : MonoBehaviour
             agent.SetDestination(newDestination);
         }
     }
-
-
     private void StopCreature() {
         agent.SetDestination(transform.position);
     }
 
+    public void SetValues() {
+        Start();
+    }
+    public void whatAmIDoing() {
+        Update();
+    }
+
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player");
@@ -158,7 +149,7 @@ public class CreatureBase : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         if(SC_FPSController.paused || GameSystem.Instance.GameOver) {
             StopCreature();

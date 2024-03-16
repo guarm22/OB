@@ -89,7 +89,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     if(InEditor()) {
         return;
     }
-
     if(SceneManager.GetActiveScene().name == "Tutorial") {
         return;
     }
@@ -265,8 +264,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                     d.DoAnomalyAction(false);
                     Anomalies.Remove(d);
                     if(d.data.type == ANOMALY_TYPE.Creature) {
-                        Destroy(d.Obj);
-                        CreatureControl.Instance.CreaturesPerRoom[d.Room] -= 1;
+                        CreatureControl.Instance.RemoveCreature(d.Obj);
                     }
                     else {
                         TotalAnomalies--;

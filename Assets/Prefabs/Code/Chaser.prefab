@@ -14,15 +14,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 578376449398627443, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 578376449398627443, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 578376449398627443, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 578376449398627443, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
       propertyPath: m_LocalPosition.x
@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4493914613880827488, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
       propertyPath: m_Name
-      value: Zombie Variant
+      value: Chaser
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -83,7 +83,7 @@ PrefabInstance:
       addedObject: {fileID: 7146165255003451063}
     - targetCorrespondingSourceObject: {fileID: 4493914613880827488, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8549559190753843939}
+      addedObject: {fileID: 5968906759031130792}
   m_SourcePrefab: {fileID: 100100000, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
 --- !u!1 &2174045631847333030 stripped
 GameObject:
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d7ec480e33f9b343bcf88dac1cebdbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8549559190753843939
+--- !u!114 &5968906759031130792
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2174045631847333030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c10db8419aaf7b479d22306eb95962d, type: 3}
+  m_Script: {fileID: 11500000, guid: bddd8c41180ac0f4aac014a9efdcc58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
@@ -164,8 +164,8 @@ MonoBehaviour:
   timeSinceLastStuckCheck: 0
   playerInView: 0
   isDestSet: 0
-  walkRange: 10
+  walkRange: 15
   closeSound: {fileID: 8300000, guid: 2b268240d4c620947ae76619dec727c1, type: 3}
   farSound: {fileID: 8300000, guid: 3df8fd0a952e05640bf1b68ca27cf231, type: 3}
   soundTimerMax: 14
-  creatureSpeed: 6
+  creatureSpeed: 7
