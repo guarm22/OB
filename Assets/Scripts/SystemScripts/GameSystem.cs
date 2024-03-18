@@ -39,7 +39,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public float reportTextTimer = 5f;
   public float divergenceRandomnessMax = 1.5f;
   public float divergenceRandomnessMin = -2f;
-  private float currentRandomness;
+  public float currentRandomness;
   public bool madeGuess;
   public List<DynamicObject> lockedObjects;
   public static int totalDynamicObjectsInScene;
@@ -95,18 +95,20 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
     switch(PlayerPrefs.GetString("Difficulty", "NotLoaded")) {
         case "NotLoaded":
-            GameObjectDisappearanceInterval = 21;
-            MaxDivergences = 4;
+            GameObjectDisappearanceInterval = GameSettings.NormalDivergenceRate;
+            MaxDivergences = GameSettings.NormalCreatureThreshold;
             CreatureControl.Instance.creatureMax = 3;
-            energyPerSecond = 1.1f;
-            GameStartTime = 15;
+            energyPerSecond = GameSettings.NormalEPS;
+            GameStartTime = GameSettings.NormalGracePeriod;
+            CreatureControl.Instance.creatureSpawnRate = GameSettings.NormalCreatureSpawnRate;
             break;
         default:
-            GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 21);
+            GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 22);
             MaxDivergences = PlayerPrefs.GetInt("MaxDivergences", 4);
             CreatureControl.Instance.creatureMax = 3;
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
             GameStartTime = PlayerPrefs.GetInt("GameStartTime", 15);
+            CreatureControl.Instance.creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
             break;
     }
   

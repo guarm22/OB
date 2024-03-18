@@ -19,25 +19,15 @@ public class CreatureBase : MonoBehaviour
 
     public AudioClip closeSound;
     public AudioClip farSound;
-    private float soundTimer = 13.8f;
+    public float soundTimerStart = 13.8f;
     public float soundTimerMax = 14f;
     public float creatureSpeed = 5f;
+    public float closeSoundRange = 10f;
 
     private Animator animator;
 
     public void CreaturePatrol() {
-        soundTimer += Time.deltaTime;
-
-        if(soundTimer >= soundTimerMax) {
-            if(Vector3.Distance(player.transform.position, transform.position) < 10f) {
-                AudioSource.PlayClipAtPoint(closeSound, transform.position);
-            }
-            else {
-                AudioSource.PlayClipAtPoint(farSound, transform.position);
-            }
-            soundTimer = 0f;
-        }
-
+        CreatureSounds();
         //if the creature can see the player, chasing the player takes priority over everything else
         bool isPlayerSeen = canSeePlayer();
         animator.SetBool("PlayerSeen", isPlayerSeen);
@@ -92,7 +82,7 @@ public class CreatureBase : MonoBehaviour
         }
     }
 
-    private bool canSeePlayer() {
+    protected bool canSeePlayer() {
         RaycastHit hit;
         Vector3 direction = player.transform.position - transform.position;
         if (Physics.Raycast(transform.position, direction, out hit, sightRange, playerLayer)) {
@@ -125,13 +115,20 @@ public class CreatureBase : MonoBehaviour
     }
     private void StopCreature() {
         agent.SetDestination(transform.position);
+        animator.enabled = false;
     }
+    protected virtual void CreatureSounds() {
+        soundTimerStart += Time.deltaTime;
 
-    public void SetValues() {
-        Start();
-    }
-    public void whatAmIDoing() {
-        Update();
+        if(soundTimerStart >= soundTimerMax) {
+            if(Vector3.Distance(player.transform.position, transform.position) < closeSoundRange) {
+                AudioSource.PlayClipAtPoint(closeSound, transform.position);
+            }
+            else {
+                AudioSource.PlayClipAtPoint(farSound, transform.position);
+            }
+            soundTimerStart = 0f;
+        }
     }
 
     // Start is called before the first frame update
@@ -144,7 +141,7 @@ public class CreatureBase : MonoBehaviour
         timeSinceLastStuckCheck = 0f;
         posCheck = transform.position;
         agent.speed = creatureSpeed;
-        agent.angularSpeed=720;
+        agent.angularSpeed=1500;
         animator = GetComponent<Animator>();
     }
 
@@ -155,6 +152,7 @@ public class CreatureBase : MonoBehaviour
             StopCreature();
             return;
         }
+        animator.enabled = true;
         timeSinceLastStuckCheck += Time.deltaTime;
         CreaturePatrol();
     }

@@ -19,6 +19,7 @@ public class SC_FPSController : MonoBehaviour
     public GameObject roomText;
     public GameObject escapeMenuUI;
     public GameObject EndGameUI;
+    public GameObject debugUI;
     public float walkingSpeed = 7.5f;
     public float originalWalkSpeed;
     public float originalRunSpeed;
@@ -252,15 +253,18 @@ public class SC_FPSController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.P)) {
             Popup.Instance.OpenPopup("Test message!");
         }
+        if(Input.GetKeyDown(KeyCode.O)) {
+            debugUI.SetActive(!debugUI.activeSelf);
+        }
     }
 
     private void EndingGame() {
         EndGameUI.SetActive(true);
     }
 
-    public void Debuff(string type) {
+    public void Debuff(string type, float multiplier) {
         if(type == "Slow") {
-            StartCoroutine(PlayerDebuffs.Instance.Slow());
+            StartCoroutine(PlayerDebuffs.Instance.Slow(multiplier));
         }
     }
 

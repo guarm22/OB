@@ -36,6 +36,18 @@ public class GameSettings : MonoBehaviour
     public Button lowGP;
     public int gracePeriod;
 
+    public TMP_Text creatureSpawnrateText;
+    public Button highCS;
+    public Button lowCS;
+    public float creatureSpawnRate;
+
+    public const int NormalDivergenceRate = 22;
+    public const int NormalCreatureThreshold = 4;
+    public const int NormalGracePeriod = 25;
+    public const float NormalEPS = 1.1f;
+    public const float NormalCreatureSpawnRate = 20f;
+
+
     void Start()
     {
         Instance = this;
@@ -52,6 +64,8 @@ public class GameSettings : MonoBehaviour
         lowCT.onClick.AddListener(() => setCT(lowCT));
         highGP.onClick.AddListener(() => setGP(highGP));
         lowGP.onClick.AddListener(() => setGP(lowGP));
+        highCS.onClick.AddListener(() => setCS(highCS));
+        lowCS.onClick.AddListener(() => setCS(lowCS));
     }
 
     public void SetValues() {
@@ -60,6 +74,7 @@ public class GameSettings : MonoBehaviour
         PlayerPrefs.SetFloat("EPS", EPS);
         PlayerPrefs.SetInt("MaxDivergences", creatureThreshold);
         PlayerPrefs.SetInt("GracePeriod", gracePeriod);
+        PlayerPrefs.SetFloat("CreatureSpawnRate", creatureSpawnRate);
     }
 
     private void LoadValues() {
@@ -68,6 +83,7 @@ public class GameSettings : MonoBehaviour
         EPS = PlayerPrefs.GetFloat("EPS", 1.1f);
         creatureThreshold = PlayerPrefs.GetInt("MaxDivergences", 5);
         gracePeriod = PlayerPrefs.GetInt("GracePeriod", 15);
+        creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
     }
     private void SetTexts() {
         DifficultyText.text = Difficulty;
@@ -75,9 +91,28 @@ public class GameSettings : MonoBehaviour
         energyPerSecondText.text = "Energy Per Second: " + EPS.ToString();
         creatureThresholdText.text = "Creature Threshold: " + creatureThreshold.ToString();
         gracePeriodText.text = "Grace Period: " + gracePeriod.ToString();
+        creatureSpawnrateText.text = "Creature Spawn Rate: " + creatureSpawnRate.ToString();
+    }
+
+    private void setCS(Button b) {
+        Difficulty = "Custom";
+        if(b.name.Contains("High")) {
+            creatureSpawnRate += 0.5f;
+        }
+        else {
+            creatureSpawnRate -= 0.5f;
+        }
+        if(creatureSpawnRate > 35) {
+            creatureSpawnRate = 35f;
+        }
+        else if(creatureSpawnRate < 10) {
+            creatureSpawnRate = 10f;
+        }
+        SetTexts();
     }
 
     private void setCT(Button b) {
+        Difficulty = "Custom";
         if(b.name.Contains("High")) {
             creatureThreshold += 1;
         }
@@ -93,6 +128,7 @@ public class GameSettings : MonoBehaviour
         SetTexts();
     }
     private void setGP(Button b) {
+        Difficulty = "Custom";
         if(b.name.Contains("High")) {
             gracePeriod += 1;
         }
@@ -109,6 +145,7 @@ public class GameSettings : MonoBehaviour
     }
 
     private void setEPS(Button b) {
+        Difficulty = "Custom";
         if(b.name.Contains("High")) {
             EPS += 0.05f;
         }
@@ -124,6 +161,7 @@ public class GameSettings : MonoBehaviour
         SetTexts();
     }
     private void setDR(Button b) {
+        Difficulty = "Custom";
         if(b.name.Contains("High")) {
             DivergenceRate += 1;
         }
@@ -177,7 +215,23 @@ public class GameSettings : MonoBehaviour
         EPS = getEPS(diff);
         creatureThreshold = getCreatureThreshold(diff);
         gracePeriod = getGracePeriod(diff);
+        creatureSpawnRate = GetCreatureSpawnRate(diff);
         SetTexts();
+    }
+
+    private float GetCreatureSpawnRate(string diff) {
+        if(diff == "Easy") {
+            return 30f;
+        }
+        else if(diff == "Normal") {
+            return 20f;
+        }
+        else if(diff == "Hard") {
+            return 15f;
+        }
+        else {
+            return creatureSpawnRate;
+        }
     }
 
     private int GetDivergenceRate(string diff) {

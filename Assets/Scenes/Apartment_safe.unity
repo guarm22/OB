@@ -6684,7 +6684,10 @@ MonoBehaviour:
   jumpscareZombie: {fileID: 4493914615434692733}
   IsJumpscareFinished: 0
   yippie: {fileID: 8300000, guid: f32b5db229ed82842af27c0b007611a7, type: 3}
-  creatureSpawnRate: 20
+  creatureSpawnRate: 1
+  zombieSpawnChance: 66.667
+  specialSpawnChance: 60.000004
+  TotalCreatures: 0
 --- !u!1001 &704000044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22663,7 +22666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e5b13d8f88a00b4a8f2ca0411b02bd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowAmount: 3.5
 --- !u!4 &2046137943 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5110968814036781977, guid: 4601e83fbeb2cc648ae43af2b2165330, type: 3}
@@ -23995,6 +23997,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3587059926079662790, guid: edf570990754269468089ad91638b6b3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4931282106654654560, guid: edf570990754269468089ad91638b6b3, type: 3}
+      propertyPath: m_Name
+      value: DivRate
+      objectReference: {fileID: 0}
     - target: {fileID: 6119517453442503493, guid: edf570990754269468089ad91638b6b3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -19.744
@@ -24039,7 +24049,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1329939197950843147, guid: edf570990754269468089ad91638b6b3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6119517453442503493, guid: edf570990754269468089ad91638b6b3, type: 3}

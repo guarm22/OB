@@ -21,6 +21,9 @@ public class CreatureControl : MonoBehaviour
     private float startSpawnRate;
     private float timeSinceLastCreature = 0f;
     private List<GameObject> specialCreatures = new List<GameObject>();
+    public float zombieSpawnChance = 66.6667f;
+    public float specialSpawnChance = 60f;
+    public int TotalCreatures;
 
 
     public IEnumerator ZombieJumpscare() {
@@ -66,6 +69,7 @@ public class CreatureControl : MonoBehaviour
         else {
             creature.transform.position = roomObj.transform.position;
         }
+        TotalCreatures += 1;
         GameSystem.Instance.CreateDivergence(creature);
     }
 
@@ -137,6 +141,7 @@ public class CreatureControl : MonoBehaviour
         string room = creature.name.Split('-')[1].Trim();
         CreaturesPerRoom[room] -= 1;
         Destroy(creature);
+        TotalCreatures -= 1;
     }
 
     void Start() {
