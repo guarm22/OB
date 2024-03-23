@@ -6571,7 +6571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: MaxDivergences
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: incorrectGuess
@@ -6595,7 +6595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: GameObjectDisappearanceInterval
-      value: 2
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6743913093581102291, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6680,13 +6680,13 @@ MonoBehaviour:
   endCreaturePrefab: {fileID: 2174045631847333030, guid: 95c9f0faadc6c8c49aa4b09532e0e2e4, type: 3}
   chaserPrefab: {fileID: 2174045631847333030, guid: 6b3d37bc2424f934d9f303f6720d9244, type: 3}
   maxCreaturesPerRoom: 1
-  creatureMax: 5
+  creatureMax: 4
   jumpscareZombie: {fileID: 4493914615434692733}
   IsJumpscareFinished: 0
   yippie: {fileID: 8300000, guid: f32b5db229ed82842af27c0b007611a7, type: 3}
-  creatureSpawnRate: 1
-  zombieSpawnChance: 66.667
-  specialSpawnChance: 60.000004
+  creatureSpawnRate: 18
+  zombieSpawnChance: 60
+  specialSpawnChance: 50
   TotalCreatures: 0
 --- !u!1001 &704000044
 PrefabInstance:
@@ -23997,6 +23997,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1924879465379874756, guid: edf570990754269468089ad91638b6b3, type: 3}
+      propertyPath: crouchAnimationTime
+      value: 0.18
+      objectReference: {fileID: 0}
     - target: {fileID: 3587059926079662790, guid: edf570990754269468089ad91638b6b3, type: 3}
       propertyPath: m_IsActive
       value: 0

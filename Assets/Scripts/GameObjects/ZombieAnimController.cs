@@ -14,7 +14,7 @@ public class ZombieAnimController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(SC_FPSController.paused) {
+        if(PlayerUI.paused) {
             //set animation to idle
             return;
         }

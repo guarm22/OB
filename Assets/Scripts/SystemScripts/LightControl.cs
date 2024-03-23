@@ -5,26 +5,20 @@ using UnityEngine;
 
 public class LightControl : MonoBehaviour
 {
-    // Start is called before the first frame update
     private bool killedLights = false;
     private Dictionary<Light, Coroutine> flickeringLights = new Dictionary<Light, Coroutine>();
 
     public static LightControl Instance;
-    void Start()
-    {
+    void Start() {
         Instance = this;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         
     }
 
     public IEnumerator FlickerLight(Light light, float minIntensity, float maxIntensity, float duration) {
-    float elapsedTime = 0f;
-        while (elapsedTime < duration)
-        {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration) {
             // Randomly change the light's intensity
             light.intensity = UnityEngine.Random.Range(minIntensity, maxIntensity);
 

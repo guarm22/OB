@@ -4186,6 +4186,7 @@ GameObject:
   - component: {fileID: 8119868162508073802}
   - component: {fileID: 1924879465379874756}
   - component: {fileID: 7452495510842597735}
+  - component: {fileID: 470884159155598455}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -4254,17 +4255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3685944c770db428010a0e0f8521c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultUI: {fileID: 1058509794432075622}
-  selectionUI: {fileID: 305678990516453246}
-  roomSelectionUI: {fileID: 8823558268131069886}
-  typeSelectionUI: {fileID: 8823558267141807406}
-  journalUI: {fileID: 1171673619178200624}
-  journalPanel: {fileID: 2802309996764752261}
-  togglePrefab: {fileID: 8849891312943932477, guid: 6380db97f24b8b54bb37b26bc66fc1f0, type: 3}
-  roomText: {fileID: 7265405184232334332}
-  escapeMenuUI: {fileID: 4292381272318160870}
-  EndGameUI: {fileID: 7760866587858621164}
-  debugUI: {fileID: 3587059926079662790}
   walkingSpeed: 4.5
   originalWalkSpeed: 0
   originalRunSpeed: 0
@@ -4274,13 +4264,10 @@ MonoBehaviour:
   playerCamera: {fileID: 6346401432085515879}
   lookSpeed: 2
   lookXLimit: 90
-  maxDistance: 5
-  targetTag: Room
-  tutTag: Tutorial
-  interactableTag: Interactable
+  isCrouching: 0
+  crouchAnimationTime: 0.15
+  crouchSpeed: 2.5
   canMove: 1
-  inJournal: 0
-  inMenu: 0
 --- !u!114 &7452495510842597735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4293,6 +4280,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e5b13d8f88a00b4a8f2ca0411b02bd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &470884159155598455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7706331086653523539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadc0a230ba789746ad8abcdf14d58b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultUI: {fileID: 1058509794432075622}
+  selectionUI: {fileID: 305678990516453246}
+  roomSelectionUI: {fileID: 8823558268131069886}
+  typeSelectionUI: {fileID: 8823558267141807406}
+  journalUI: {fileID: 1171673619178200624}
+  journalPanel: {fileID: 2802309996764752261}
+  togglePrefab: {fileID: 8849891312943932477, guid: 6380db97f24b8b54bb37b26bc66fc1f0, type: 3}
+  roomText: {fileID: 7265405184232334332}
+  escapeMenuUI: {fileID: 4292381272318160870}
+  EndGameUI: {fileID: 7760866587858621164}
+  debugUI: {fileID: 3587059926079662790}
+  targetTag: Room
+  tutTag: Tutorial
+  interactableTag: 
+  inJournal: 0
+  inMenu: 0
+  maxDistance: 5
 --- !u!1 &7760866587858621164
 GameObject:
   m_ObjectHideFlags: 0

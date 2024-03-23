@@ -118,7 +118,12 @@ public class CreatureControl : MonoBehaviour
 
         //lose condition - all rooms have max anomalies
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.AnomaliesPerRoom*GameSystem.Instance.Rooms.Count) {
-            //ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
+            #if UNITY_EDITOR
+            return;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+            ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
+#pragma warning restore CS0162 // Unreachable code detected
         }
 
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences) {

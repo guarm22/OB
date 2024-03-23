@@ -148,7 +148,7 @@ public class CreatureBase : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        if(SC_FPSController.paused || GameSystem.Instance.GameOver) {
+        if(PlayerUI.paused || GameSystem.Instance.GameOver) {
             StopCreature();
             return;
         }

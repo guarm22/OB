@@ -250,6 +250,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         TypeSelection.CurrentlySelected.Clear();
         TypeSelection.Instance.ResetToggles();
         RoomSelection.Instance.ResetToggles();
+        AnomaliesSuccesfullyReportedThisGame += found.Count;
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
     }
 
@@ -278,7 +279,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                         }
                     }
                 }
-                AnomaliesSuccesfullyReportedThisGame += CorrectObject.Count;
                 CorrectObject = new List<DynamicObject>();
             }
             else {
@@ -330,7 +330,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         cleanUpGame();
     }
 
-    public void cleanUpGame() {
+    private void cleanUpGame() {
         foreach (DynamicObject div in Anomalies) {
             //destroy all creatures because it looks weird when theyre walking around
             if (div.data.type == ANOMALY_TYPE.Creature) {
@@ -368,7 +368,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
   void Update()
   {
-    if(SC_FPSController.paused || GameOver) {
+    if(PlayerUI.paused || GameOver) {
         return;
     }
     CheckTimer();
