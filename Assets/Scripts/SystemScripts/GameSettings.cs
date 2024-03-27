@@ -41,11 +41,11 @@ public class GameSettings : MonoBehaviour
     public Button lowCS;
     public float creatureSpawnRate;
 
-    public const int NormalDivergenceRate = 22;
+    public const int NormalDivergenceRate = 25;
     public const int NormalCreatureThreshold = 4;
-    public const int NormalGracePeriod = 25;
+    public const int NormalGracePeriod = 28;
     public const float NormalEPS = 1.1f;
-    public const float NormalCreatureSpawnRate = 20f;
+    public const float NormalCreatureSpawnRate = 22f;
 
 
     void Start()
@@ -171,8 +171,8 @@ public class GameSettings : MonoBehaviour
         if(DivergenceRate > 40) {
             DivergenceRate = 40;
         }
-        else if(DivergenceRate < 15) {
-            DivergenceRate = 15;
+        else if(DivergenceRate < 10) {
+            DivergenceRate = 10;
         }
         SetTexts();
     }
@@ -186,6 +186,9 @@ public class GameSettings : MonoBehaviour
         }
         else if(Difficulty == "Hard") {
             Difficulty = "Normal";
+        }
+        else if (Difficulty == "Nightmare") {
+            Difficulty = "Hard";
         }
         else if(Difficulty == "Custom") {
             Difficulty = "Normal";
@@ -201,7 +204,10 @@ public class GameSettings : MonoBehaviour
             Difficulty = "Hard";
         }
         else if(Difficulty == "Hard") {
-            Difficulty = "Hard";
+            Difficulty = "Nightmare";
+        }
+        else if (Difficulty == "Nightmare") {
+            Difficulty = "Nightmare";
         }
         else if(Difficulty == "Custom") {
             Difficulty = "Normal";
@@ -221,13 +227,16 @@ public class GameSettings : MonoBehaviour
 
     private float GetCreatureSpawnRate(string diff) {
         if(diff == "Easy") {
-            return 30f;
+            return 28f;
         }
         else if(diff == "Normal") {
-            return 20f;
+            return 22f;
         }
         else if(diff == "Hard") {
-            return 15f;
+            return 18f;
+        }
+        else if(diff == "Nightmare") {
+            return 16f;
         }
         else {
             return creatureSpawnRate;
@@ -236,13 +245,16 @@ public class GameSettings : MonoBehaviour
 
     private int GetDivergenceRate(string diff) {
         if(diff == "Easy") {
-            return 26;
+            return 30;
         }
         else if(diff == "Normal") {
-            return 22;
+            return 25;
         }
         else if(diff == "Hard") {
-            return 18;
+            return 20;
+        }
+        else if(diff == "Nightmare") {
+            return 15;
         }
         else {
             return DivergenceRate;
@@ -251,13 +263,16 @@ public class GameSettings : MonoBehaviour
 
     private int getGracePeriod(string diff) {
         if(diff == "Easy") {
-            return 35;
+            return 40;
         }
         else if(diff == "Normal") {
-            return 25;
+            return 28;
         }
         else if(diff == "Hard") {
-            return 12;
+            return 16;
+        }
+        else if(diff == "Nightmare") {
+            return 8;
         }
         else {
             return gracePeriod;
@@ -266,12 +281,15 @@ public class GameSettings : MonoBehaviour
 
     private int getCreatureThreshold(string diff) {
         if(diff == "Easy") {
-            return 4;
+            return 5;
         }
         else if(diff == "Normal") {
             return 4;
         }
         else if(diff == "Hard") {
+            return 3;
+        }
+        else if(diff == "Nightmare") {
             return 3;
         }
         else {
@@ -287,7 +305,10 @@ public class GameSettings : MonoBehaviour
             return 1.1f;
         }
         else if(diff == "Hard") {
-            return 1.3f;
+            return 1.4f;
+        }
+        else if(diff == "Nightmare") {
+            return 1.8f;
         }
         else {
             return EPS;

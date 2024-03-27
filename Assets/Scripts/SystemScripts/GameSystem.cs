@@ -87,7 +87,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
   private void SetGameSettings() {
     if(InEditor()) {
-        return;
+        //return;
     }
     if(SceneManager.GetActiveScene().name == "Tutorial") {
         return;
@@ -97,18 +97,18 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         case "NotLoaded":
             GameObjectDisappearanceInterval = GameSettings.NormalDivergenceRate;
             MaxDivergences = GameSettings.NormalCreatureThreshold;
-            CreatureControl.Instance.creatureMax = 3;
+            //CreatureControl.Instance.creatureMax = 3;
             energyPerSecond = GameSettings.NormalEPS;
             GameStartTime = GameSettings.NormalGracePeriod;
-            CreatureControl.Instance.creatureSpawnRate = GameSettings.NormalCreatureSpawnRate;
+            //CreatureControl.Instance.creatureSpawnRate = GameSettings.NormalCreatureSpawnRate;
             break;
         default:
             GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 22);
             MaxDivergences = PlayerPrefs.GetInt("MaxDivergences", 4);
-            CreatureControl.Instance.creatureMax = 3;
+            //CreatureControl.Instance.creatureMax = 3;
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
             GameStartTime = PlayerPrefs.GetInt("GameStartTime", 15);
-            CreatureControl.Instance.creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
+            //CreatureControl.Instance.creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
             break;
     }
   
@@ -224,21 +224,16 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         return Anomalies.Count(d => d.Room.Equals(room) && d.data.type != ANOMALY_TYPE.Creature);
     }
 
-    /// <summary>
-    /// Takes in a type and room, and sets the "PrivateCorrectGuess" variable true or false depending on whether there is an anomaly with that room and type
-    /// </summary>
-    /// <param name="type"></param>
-    /// <param name="room"></param>
     public void MakeSelection(List<string> types, string room) {
         List<DynamicObject> found = Anomalies
-            .Where(dynam => types.Any(type => DynamicObject.GetAnomalyTypeByName(type) == dynam.data.type && room == dynam.Room))
+            .Where(dynam => types.Any(type => DynamicObject.GetAnomalyTypeByName(type)==dynam.data.type && room == dynam.Room))
             .ToList();
 
         int totalCost = types.Count * Instance.EnergyPerGuess;
         foreach(DynamicObject d in found) {
              totalCost -= Instance.EnergyPerGuess - d.data.energyCost;
         }
-        if(Instance.CurrentEnergy < totalCost || room.Length<1) {
+        if(Instance.CurrentEnergy < totalCost || room == null || types.Count < 1 || types == null) {
             Instance.StartCoroutine(SoundControl.Instance.guessFeedbackSound(false));
             return;
         }

@@ -21,6 +21,7 @@ public class EscapeMenu : MonoBehaviour
     }
 
     public void QuitGame() {
+        PlayerUI.paused = false;
         SceneManager.LoadScene("MainMenuScene");
     }
 

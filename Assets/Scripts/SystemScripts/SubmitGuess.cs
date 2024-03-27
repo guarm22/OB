@@ -10,10 +10,6 @@ public class SubmitGuess : MonoBehaviour {
         SubmitButton.onClick.AddListener(SubmitAnswer);
     }
     void SubmitAnswer() {
-        Debug.Log("RoomSelection.CurrentlySelected: " + RoomSelection.CurrentlySelected);
-        if(TypeSelection.CurrentlySelected.Count == 0 || RoomSelection.CurrentlySelected == null) {
-            return;
-        }
         List<string> type = TypeSelection.CurrentlySelected;
         string room = RoomSelection.CurrentlySelected;
         GameSystem.Instance.MakeSelection(type,room);

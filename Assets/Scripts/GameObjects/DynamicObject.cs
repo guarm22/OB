@@ -1,5 +1,4 @@
 using UnityEngine;
-using DG.Tweening;
 using System.Collections.Generic;
 
 public enum ANOMALY_TYPE {
@@ -16,13 +15,11 @@ public class DynamicObject {
     public string Room {get; set;}
     public string Name {get; set;}
     public GameObject Obj {get; set;}
-    public Vector3 originalPosition {get; set;}
     public DynamicObject(DynamicData data, string room, string name, GameObject obj) {
         this.data = data;
         Name = name;
         Room = room;
         Obj = obj;
-        originalPosition = obj.transform.position;
     }
 
     public int DoAnomalyAction(bool enable) {
@@ -48,6 +45,7 @@ public class DynamicObject {
                 break;
 
             case ANOMALY_TYPE.Audio:
+                //also done through custom class, but im bad at coding
                 this.Audio(enable);
                 break;
 
@@ -60,24 +58,12 @@ public class DynamicObject {
 
 //Makes an object disappear or reappear based on the enable argument
     private void ObjectDisappearance(bool enable) {
-        if(enable) {
-          Vector3 vec = new Vector3(this.Obj.transform.position.x, this.Obj.transform.position.y-100f, this.Obj.transform.position.z);
-            this.Obj.transform.position = vec;
-        }
-
-        else {
-            Vector3 vec = new Vector3(this.Obj.transform.position.x, this.Obj.transform.position.y+100f, this.Obj.transform.position.z);
-            this.Obj.transform.position = vec;
-        }
+        float moveAmt = enable ? 100f : -100f;
+        Vector3 vec = new Vector3(this.Obj.transform.position.x, this.Obj.transform.position.y+moveAmt, this.Obj.transform.position.z);
+        this.Obj.transform.position = vec;
     }
     private void Audio(bool enable) {
-        if(enable) {
-            this.Obj.GetComponent<PlayAudio>().enabled = true;
-        }
-        else {
-            this.Obj.GetComponent<PlayAudio>().enabled = false;
-        }
-        //footstep sounds
+        this.Obj.GetComponent<PlayAudio>().enabled = enable;
     }
 
     private void ObjectChange(bool enable) {

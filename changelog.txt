@@ -148,7 +148,7 @@ Bug Fixes:
 -Fixed grace period game setting not being applied
 
 
-v0.4.0 () - More Creatures Update:
+v0.4.0 (Mar 23, 2024) - More Creatures Update:
 
 Changes:
 -Changed some divergences in the apartment
@@ -168,3 +168,19 @@ Bug Fixes:
 
 Known issues:
 -Sounds that are playing when paused, don't continue playing when unpaused
+
+v0.4.1 ():
+
+Changes:
+-Made game settings generally easier across the board
+-Increased game length by 2 minutes on apartment
+-Overhauled many apartment divergences
+
+Additions:
+-Added 'Spin' divergence
+-Added the 'MoveContinuous' divergence, which causes an object to continuously move instead of just once
+-Added FOV settings
+
+Bug Fixes:
+-Fixed player being able to move when the game is over/jumpscare is playing
+-Fixed error sound not playing when the player hasn't selected a divergence type or room

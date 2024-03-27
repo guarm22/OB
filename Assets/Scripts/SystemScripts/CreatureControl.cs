@@ -13,10 +13,11 @@ public class CreatureControl : MonoBehaviour
     public GameObject chaserPrefab;
     public int maxCreaturesPerRoom = 1;
     public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
-    public int creatureMax;
+    public int creatureMax = 3;
     public GameObject jumpscareZombie;
     public bool IsJumpscareFinished = false;
     public AudioClip yippie;
+    public AudioClip jumpscareSound;
     public float creatureSpawnRate = 20f;
     private float startSpawnRate;
     private float timeSinceLastCreature = 0f;
@@ -43,7 +44,7 @@ public class CreatureControl : MonoBehaviour
         }
         GameObject audioSourceObject = new GameObject("JumpscareAudioSource");
         AudioSource audioSource = audioSourceObject.AddComponent<AudioSource>();
-        audioSource.clip = yippie;
+        audioSource.clip = jumpscareSound;
         audioSource.transform.position = jumpscareZombie.transform.position;
         audioSource.Play();
 
@@ -106,11 +107,6 @@ public class CreatureControl : MonoBehaviour
     }
 
     private void doCreatureCheck() {
-        //set spawn rate based on number of divergences
-        //creatureSpawnRate = startSpawnRate - GameSystem.Instance.Anomalies.Count;
-        if(creatureSpawnRate <= 1f) {
-            creatureSpawnRate = 1f;
-        }
         string room = GameSystem.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, GameSystem.Instance.Rooms.Count)).Key;
         if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
             CreaturesPerRoom.Add(room, 0);
@@ -118,17 +114,12 @@ public class CreatureControl : MonoBehaviour
 
         //lose condition - all rooms have max anomalies
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.AnomaliesPerRoom*GameSystem.Instance.Rooms.Count) {
-            #if UNITY_EDITOR
-            return;
-#endif
-#pragma warning disable CS0162 // Unreachable code detected
             ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
-#pragma warning restore CS0162 // Unreachable code detected
         }
 
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences) {
             int spawnChance = UnityEngine.Random.Range(0,100);
-            if(spawnChance > 66.667) {
+            if(spawnChance > zombieSpawnChance) {
                 createCreature(zombiePrefab, room);
                 return;
             }
@@ -136,7 +127,7 @@ public class CreatureControl : MonoBehaviour
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences/2) {
             int spawnChance = UnityEngine.Random.Range(0,100);
             int randomIndex = UnityEngine.Random.Range(0, specialCreatures.Count);
-            if(spawnChance > 60) {
+            if(spawnChance > specialSpawnChance) {
                 createCreature(specialCreatures[randomIndex], room, specialCreatures[randomIndex].name);
             }
         }
@@ -153,9 +144,29 @@ public class CreatureControl : MonoBehaviour
         Instance = this;
         startSpawnRate = creatureSpawnRate;
         specialCreatures.Add(chaserPrefab);
+        setCreatureSettings();
+    }
+
+    private static bool InEditor() {
+    #if UNITY_EDITOR
+    return true;
+    #endif
+    return false;
+  }
+
+    private void setCreatureSettings() {
+        if(InEditor()) {
+            //return;
+        }
+        creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
+        creatureMax = 3;
     }
 
     void Update() {
+        if(GameSystem.Instance.GameOver || PlayerUI.paused) {
+            return;
+        }
+
         timeSinceLastCreature += Time.deltaTime;
         if(timeSinceLastCreature > creatureSpawnRate) {
             timeSinceLastCreature = 0;

@@ -22,8 +22,8 @@ public class SC_FPSController : MonoBehaviour
     public float crouchAnimationTime = 0.15f;
     public float crouchSpeed = 2.5f;
     private bool isCrouchAnimation = false;
-    
     public bool canMove = true;
+    private float FOV;
 
     void Start() {
         characterController = GetComponent<CharacterController>();
@@ -33,6 +33,8 @@ public class SC_FPSController : MonoBehaviour
         Cursor.visible = false;
         originalRunSpeed = runningSpeed;
         originalWalkSpeed = walkingSpeed;
+        FOV = PlayerPrefs.GetFloat("FOV", 60);
+        playerCamera.fieldOfView = FOV;
     }
 
     private void PlayerMove() {
@@ -127,7 +129,10 @@ public class SC_FPSController : MonoBehaviour
         }
     }
 
-    void Update() {
+    void Update()  {   
+        if(PlayerUI.paused || GameSystem.Instance.GameOver || CreatureControl.Instance.IsJumpscareFinished) {
+            return;
+        }
         PlayerMove();
     }
 }
