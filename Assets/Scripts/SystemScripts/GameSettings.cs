@@ -41,6 +41,10 @@ public class GameSettings : MonoBehaviour
     public Button lowCS;
     public float creatureSpawnRate;
 
+    public Button hints;
+    public TMP_Text hintsText;
+    public bool hintsEnabled;
+
     public const int NormalDivergenceRate = 25;
     public const int NormalCreatureThreshold = 4;
     public const int NormalGracePeriod = 28;
@@ -66,6 +70,7 @@ public class GameSettings : MonoBehaviour
         lowGP.onClick.AddListener(() => setGP(lowGP));
         highCS.onClick.AddListener(() => setCS(highCS));
         lowCS.onClick.AddListener(() => setCS(lowCS));
+        hints.onClick.AddListener(setHints);
     }
 
     public void SetValues() {
@@ -75,6 +80,7 @@ public class GameSettings : MonoBehaviour
         PlayerPrefs.SetInt("MaxDivergences", creatureThreshold);
         PlayerPrefs.SetInt("GracePeriod", gracePeriod);
         PlayerPrefs.SetFloat("CreatureSpawnRate", creatureSpawnRate);
+        PlayerPrefs.SetInt("HintsEnabled", hintsEnabled ? 1 : 0);
     }
 
     private void LoadValues() {
@@ -84,6 +90,7 @@ public class GameSettings : MonoBehaviour
         creatureThreshold = PlayerPrefs.GetInt("MaxDivergences", 5);
         gracePeriod = PlayerPrefs.GetInt("GracePeriod", 15);
         creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
+        hintsEnabled = PlayerPrefs.GetInt("HintsEnabled", 1) == 1;
     }
     private void SetTexts() {
         DifficultyText.text = Difficulty;
@@ -92,6 +99,7 @@ public class GameSettings : MonoBehaviour
         creatureThresholdText.text = "Creature Threshold: " + creatureThreshold.ToString();
         gracePeriodText.text = "Grace Period: " + gracePeriod.ToString();
         creatureSpawnrateText.text = "Creature Spawn Rate: " + creatureSpawnRate.ToString();
+        hintsText.text = hintsEnabled ? "Divergence Hints: Enabled" : "Divergence Hints: Disabled";
     }
 
     private void setCS(Button b) {
@@ -176,6 +184,18 @@ public class GameSettings : MonoBehaviour
         }
         SetTexts();
     }
+    void setHints() {
+        Difficulty = "Custom";
+        if(hintsEnabled) {
+            hintsEnabled = false;
+            hintsText.text = "Divergence Hints: Disabled";
+        }
+        else {
+            hintsEnabled = true;
+            hintsText.text = "Divergence Hints: Enabled";
+        }
+        SetTexts();
+    }
 
     void LowerDifficulty() {
         if(Difficulty == "Easy") {
@@ -222,6 +242,7 @@ public class GameSettings : MonoBehaviour
         creatureThreshold = getCreatureThreshold(diff);
         gracePeriod = getGracePeriod(diff);
         creatureSpawnRate = GetCreatureSpawnRate(diff);
+        hintsEnabled = getHints(diff);
         SetTexts();
     }
 
@@ -315,9 +336,26 @@ public class GameSettings : MonoBehaviour
         }
     }
 
+    private bool getHints(string diff) {
+        if(diff == "Easy") {
+            return true;
+        }
+        else if(diff == "Normal") {
+            return true;
+        }
+        else if(diff == "Hard") {
+            return false;
+        }
+        else if(diff == "Nightmare") {
+            return false;
+        }
+        else {
+            return hintsEnabled;
+        }
+    }
+
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         
     }
 }

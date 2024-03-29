@@ -73,6 +73,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         DifficultyBack.onClick.AddListener(DifficultyBackEvent);
         AdvancedDifficulty.onClick.AddListener(AdvancedDifficultyEvent);
         AdvancedBack.onClick.AddListener(AdvancedBackEvent);
+        DefaultMenu.SetActive(true);
     }
 
     private void AdvancedBackEvent() {
@@ -131,6 +132,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     }
     private void LoadLevel(string level) {
         //sets difficulty settings before loading level
+        LoadScreen.Instance.Loading = true;
         GameSettings.Instance.SetValues();
         try {
             SceneManager.LoadScene(level);

@@ -15,17 +15,20 @@ public class DynamicObject {
     public string Room {get; set;}
     public string Name {get; set;}
     public GameObject Obj {get; set;}
+    public float divTime;
     public DynamicObject(DynamicData data, string room, string name, GameObject obj) {
         this.data = data;
         Name = name;
         Room = room;
         Obj = obj;
+        divTime = -1f;
     }
 
     public int DoAnomalyAction(bool enable) {
         Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.data.type) + 
         (enable ? " ENABLED" : " DISABLED"));
  
+        divTime = Time.time;
         if(Obj.GetComponent<CustomDivergence>() != null) {
             Obj.GetComponent<CustomDivergence>().DoDivergenceAction(enable, this);
             return 1;
@@ -120,5 +123,4 @@ public class DynamicObject {
                 return "Error";
         }
     }
-
 }

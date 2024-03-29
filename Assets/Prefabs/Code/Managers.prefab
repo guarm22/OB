@@ -35,8 +35,57 @@ Transform:
   - {fileID: 8367047149932991781}
   - {fileID: 8252720133886842515}
   - {fileID: 2698898879369814195}
+  - {fileID: 6102887828712202602}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1040976191276869710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6102887828712202602}
+  - component: {fileID: 3593655099652364543}
+  m_Layer: 0
+  m_Name: HintController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6102887828712202602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040976191276869710}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6743913093581102291}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3593655099652364543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040976191276869710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fec1e92cab214c4b9fe010ab1edf983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hintTimer: 30
+  hintChance: 50
+  hintDelay: 1
+  hintSound: {fileID: 8300000, guid: 8fb2a526b3d71084aaf2146f45eb618d, type: 3}
 --- !u!1 &2555364214299694908
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,8 +208,8 @@ MonoBehaviour:
   yippie: {fileID: 8300000, guid: f32b5db229ed82842af27c0b007611a7, type: 3}
   jumpscareSound: {fileID: 8300000, guid: bd2dfa365d46d3e4d8b88d6aa90234b1, type: 3}
   creatureSpawnRate: 20
-  zombieSpawnChance: 66.6667
-  specialSpawnChance: 60
+  zombieSpawnChance: 70
+  specialSpawnChance: 65
   TotalCreatures: 0
 --- !u!1001 &37308958329343441
 PrefabInstance:

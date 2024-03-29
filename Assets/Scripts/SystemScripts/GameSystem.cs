@@ -44,6 +44,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public List<DynamicObject> lockedObjects;
   public static int totalDynamicObjectsInScene;
   public bool wasLastGuessCorrect = false;
+  public string Difficulty;
 
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
@@ -78,7 +79,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     InstantiateAllDynamicObjects();
   }
 
-  private static bool InEditor() {
+  public static bool InEditor() {
     #if UNITY_EDITOR
     return true;
     #endif
@@ -87,7 +88,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
   private void SetGameSettings() {
     if(InEditor()) {
-        //return;
+        return;
     }
     if(SceneManager.GetActiveScene().name == "Tutorial") {
         return;
@@ -95,20 +96,18 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
     switch(PlayerPrefs.GetString("Difficulty", "NotLoaded")) {
         case "NotLoaded":
+            Difficulty = "Normal";
             GameObjectDisappearanceInterval = GameSettings.NormalDivergenceRate;
             MaxDivergences = GameSettings.NormalCreatureThreshold;
-            //CreatureControl.Instance.creatureMax = 3;
             energyPerSecond = GameSettings.NormalEPS;
             GameStartTime = GameSettings.NormalGracePeriod;
-            //CreatureControl.Instance.creatureSpawnRate = GameSettings.NormalCreatureSpawnRate;
             break;
         default:
+            Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
             GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 22);
             MaxDivergences = PlayerPrefs.GetInt("MaxDivergences", 4);
-            //CreatureControl.Instance.creatureMax = 3;
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
             GameStartTime = PlayerPrefs.GetInt("GameStartTime", 15);
-            //CreatureControl.Instance.creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
             break;
     }
   
@@ -190,11 +189,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
         if(randomObject.DoAnomalyAction(true) == 0) {
             return;
-        }
-
-        int lowerBound = TotalAnomalies < 3 ? 0 : TotalAnomalies == 3 ? 20 : TotalAnomalies > 3 ? 33 : 33;
-        if(UnityEngine.Random.Range(0, 99) < lowerBound) {
-            LightControl.Instance.FlickerLights();
         }
         GetComponent<AudioSource>().Play();
         DynamicObjects.Remove(randomObject);

@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 public class CreatureBase : MonoBehaviour
@@ -31,8 +31,12 @@ public class CreatureBase : MonoBehaviour
         //if the creature can see the player, chasing the player takes priority over everything else
         bool isPlayerSeen = canSeePlayer();
         animator.SetBool("PlayerSeen", isPlayerSeen);
+        
+        Vector3 direction = dest - transform.position;
+        Debug.DrawRay(transform.position, direction, Color.red);
 
         if(isPlayerSeen) {
+            dest = player.transform.position;
             agent.SetDestination(player.transform.position);
             
             try {
@@ -48,8 +52,6 @@ public class CreatureBase : MonoBehaviour
         if(stuck()) {
             isDestSet = false;
         }
-
-        Vector3 direction = dest - transform.position;
         // Perform the raycast
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction, out hit, 5f, floorLayer)) {

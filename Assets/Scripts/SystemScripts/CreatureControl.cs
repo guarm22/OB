@@ -114,7 +114,9 @@ public class CreatureControl : MonoBehaviour
 
         //lose condition - all rooms have max anomalies
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.AnomaliesPerRoom*GameSystem.Instance.Rooms.Count) {
-            ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
+            if(!GameSystem.InEditor()) {
+                ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
+            }
         }
 
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences) {
@@ -147,16 +149,9 @@ public class CreatureControl : MonoBehaviour
         setCreatureSettings();
     }
 
-    private static bool InEditor() {
-    #if UNITY_EDITOR
-    return true;
-    #endif
-    return false;
-  }
-
     private void setCreatureSettings() {
-        if(InEditor()) {
-            //return;
+        if(GameSystem.InEditor()) {
+            return;
         }
         creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
         creatureMax = 3;

@@ -22,6 +22,8 @@ public class MasterSettings : MonoBehaviour
     public Button applySettings;
     public Button backButton;
 
+    public TMP_Text appliedText;
+
     void Start()
     {
         instance = this;
@@ -59,13 +61,20 @@ public class MasterSettings : MonoBehaviour
         originalVolume = volume;
         FOV = FOVSlider.value;
         PlayerPrefs.SetFloat("FOV", FOV);
+
+        StartCoroutine(AppliedTextFade());
     }
 
     void Back() {
         volume = originalVolume;
         volumeSlider.value = volume;
         AudioListener.volume = volume;
+    }
 
+    private IEnumerator AppliedTextFade() {
+        appliedText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        appliedText.gameObject.SetActive(false);
     }
 
    
