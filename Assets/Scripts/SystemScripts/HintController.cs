@@ -22,7 +22,7 @@ public class HintController : MonoBehaviour
     }
 
     private void doHint(DynamicObject obj) {
-        AudioSource.PlayClipAtPoint(hintSound, obj.Obj.transform.position);
+        //AudioSource.PlayClipAtPoint(hintSound, obj.Obj.transform.position);
         LightControl.Instance.FlickerRoomLights(obj.Room, 0.1f);
     }
 
