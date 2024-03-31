@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
-using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
@@ -145,7 +144,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         Anomalies.Add(dynam);
   }
 
-    private static string getRoomName(Transform obj) {
+    public static string getRoomName(Transform obj) {
         while (obj != null) {
             if (obj.tag == "Room") {
                 return obj.name;

@@ -36,7 +36,7 @@ public class LightControl : MonoBehaviour
 
     public void FlickerRoomLights(string room, float duration = 1f) {
         foreach(Light light in lights) {
-            if(light.gameObject.transform.parent.name == room) {
+            if(GameSystem.getRoomName(light.gameObject.transform) == room) {
                 flickeringLights.Add(light, StartCoroutine(FlickerLight(light, 2f, light.intensity, duration)));
             }
         }

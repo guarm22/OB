@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,15 +14,15 @@ public class CreatureControl : MonoBehaviour
     public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
     public int creatureMax = 3;
     public GameObject jumpscareZombie;
+    [HideInInspector]
     public bool IsJumpscareFinished = false;
-    public AudioClip yippie;
     public AudioClip jumpscareSound;
     public float creatureSpawnRate = 20f;
-    private float startSpawnRate;
     private float timeSinceLastCreature = 0f;
     private List<GameObject> specialCreatures = new List<GameObject>();
     public float zombieSpawnChance = 66.6667f;
     public float specialSpawnChance = 60f;
+    [HideInInspector]
     public int TotalCreatures;
 
 
@@ -121,7 +120,7 @@ public class CreatureControl : MonoBehaviour
 
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences) {
             int spawnChance = UnityEngine.Random.Range(0,100);
-            if(spawnChance > zombieSpawnChance) {
+            if(spawnChance < zombieSpawnChance) {
                 createCreature(zombiePrefab, room);
                 return;
             }
@@ -129,7 +128,7 @@ public class CreatureControl : MonoBehaviour
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences/2) {
             int spawnChance = UnityEngine.Random.Range(0,100);
             int randomIndex = UnityEngine.Random.Range(0, specialCreatures.Count);
-            if(spawnChance > specialSpawnChance) {
+            if(spawnChance < specialSpawnChance) {
                 createCreature(specialCreatures[randomIndex], room, specialCreatures[randomIndex].name);
             }
         }
@@ -144,7 +143,6 @@ public class CreatureControl : MonoBehaviour
 
     void Start() {
         Instance = this;
-        startSpawnRate = creatureSpawnRate;
         specialCreatures.Add(chaserPrefab);
         setCreatureSettings();
     }

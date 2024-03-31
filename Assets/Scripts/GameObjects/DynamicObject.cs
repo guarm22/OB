@@ -27,8 +27,14 @@ public class DynamicObject {
     public int DoAnomalyAction(bool enable) {
         Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.data.type) + 
         (enable ? " ENABLED" : " DISABLED"));
- 
-        divTime = Time.time;
+
+        if(enable) {
+            this.divTime = Time.time;
+        }
+        else {
+            this.divTime = -1f;
+        }
+        
         if(Obj.GetComponent<CustomDivergence>() != null) {
             Obj.GetComponent<CustomDivergence>().DoDivergenceAction(enable, this);
             return 1;

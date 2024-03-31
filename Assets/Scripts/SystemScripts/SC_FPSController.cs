@@ -21,9 +21,11 @@ public class SC_FPSController : MonoBehaviour
     public bool isCrouching = false;
     public float crouchAnimationTime = 0.15f;
     public float crouchSpeed = 2.5f;
+    public float originalCrouchSpeed;
     private bool isCrouchAnimation = false;
     public bool canMove = true;
-    private float FOV;
+    public float FOV;
+    public float originalFOV;
 
     void Start() {
         characterController = GetComponent<CharacterController>();
@@ -33,7 +35,9 @@ public class SC_FPSController : MonoBehaviour
         Cursor.visible = false;
         originalRunSpeed = runningSpeed;
         originalWalkSpeed = walkingSpeed;
+        originalCrouchSpeed = crouchSpeed;
         FOV = PlayerPrefs.GetFloat("FOV", 60);
+        originalFOV = FOV;
         playerCamera.fieldOfView = FOV;
     }
 
@@ -127,6 +131,11 @@ public class SC_FPSController : MonoBehaviour
         if(type == "Slow") {
             StartCoroutine(PlayerDebuffs.Instance.Slow(multiplier));
         }
+    }
+
+    public void ChangeFOV(float fov) {
+        FOV = fov;
+        playerCamera.fieldOfView = FOV;
     }
 
     void Update()  {   
