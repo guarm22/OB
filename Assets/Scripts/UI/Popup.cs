@@ -15,7 +15,7 @@ public class Popup : MonoBehaviour
     public bool isPopupOpen = false;
 
     public void OpenPopup(string message) {
-        SC_FPSController.paused = true;
+        PlayerUI.paused = true;
         isPopupOpen = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -24,7 +24,7 @@ public class Popup : MonoBehaviour
     }
 
     public void ClosePopup() {
-        SC_FPSController.paused = false;
+        PlayerUI.paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         this.gameObject.SetActive(false);

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
-using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
@@ -44,6 +43,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public List<DynamicObject> lockedObjects;
   public static int totalDynamicObjectsInScene;
   public bool wasLastGuessCorrect = false;
+  public string Difficulty;
 
   public void LoadData(GameData data) {
         AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
@@ -78,7 +78,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     InstantiateAllDynamicObjects();
   }
 
-  private static bool InEditor() {
+  public static bool InEditor() {
     #if UNITY_EDITOR
     return true;
     #endif
@@ -95,20 +95,18 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
     switch(PlayerPrefs.GetString("Difficulty", "NotLoaded")) {
         case "NotLoaded":
+            Difficulty = "Normal";
             GameObjectDisappearanceInterval = GameSettings.NormalDivergenceRate;
             MaxDivergences = GameSettings.NormalCreatureThreshold;
-            CreatureControl.Instance.creatureMax = 3;
             energyPerSecond = GameSettings.NormalEPS;
             GameStartTime = GameSettings.NormalGracePeriod;
-            CreatureControl.Instance.creatureSpawnRate = GameSettings.NormalCreatureSpawnRate;
             break;
         default:
+            Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
             GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 22);
             MaxDivergences = PlayerPrefs.GetInt("MaxDivergences", 4);
-            CreatureControl.Instance.creatureMax = 3;
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
             GameStartTime = PlayerPrefs.GetInt("GameStartTime", 15);
-            CreatureControl.Instance.creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
             break;
     }
   
@@ -146,7 +144,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         Anomalies.Add(dynam);
   }
 
-    private static string getRoomName(Transform obj) {
+    public static string getRoomName(Transform obj) {
         while (obj != null) {
             if (obj.tag == "Room") {
                 return obj.name;
@@ -191,11 +189,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(randomObject.DoAnomalyAction(true) == 0) {
             return;
         }
-
-        int lowerBound = TotalAnomalies < 3 ? 0 : TotalAnomalies == 3 ? 20 : TotalAnomalies > 3 ? 33 : 33;
-        if(UnityEngine.Random.Range(0, 99) < lowerBound) {
-            LightControl.Instance.FlickerLights();
-        }
         GetComponent<AudioSource>().Play();
         DynamicObjects.Remove(randomObject);
         Anomalies.Add(randomObject);
@@ -224,21 +217,16 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         return Anomalies.Count(d => d.Room.Equals(room) && d.data.type != ANOMALY_TYPE.Creature);
     }
 
-    /// <summary>
-    /// Takes in a type and room, and sets the "PrivateCorrectGuess" variable true or false depending on whether there is an anomaly with that room and type
-    /// </summary>
-    /// <param name="type"></param>
-    /// <param name="room"></param>
     public void MakeSelection(List<string> types, string room) {
         List<DynamicObject> found = Anomalies
-            .Where(dynam => types.Any(type => DynamicObject.GetAnomalyTypeByName(type) == dynam.data.type && room == dynam.Room))
+            .Where(dynam => types.Any(type => DynamicObject.GetAnomalyTypeByName(type)==dynam.data.type && room == dynam.Room))
             .ToList();
 
         int totalCost = types.Count * Instance.EnergyPerGuess;
         foreach(DynamicObject d in found) {
              totalCost -= Instance.EnergyPerGuess - d.data.energyCost;
         }
-        if(Instance.CurrentEnergy < totalCost || room.Length<1) {
+        if(Instance.CurrentEnergy < totalCost || room == null || types.Count < 1 || types == null) {
             Instance.StartCoroutine(SoundControl.Instance.guessFeedbackSound(false));
             return;
         }
@@ -250,6 +238,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         TypeSelection.CurrentlySelected.Clear();
         TypeSelection.Instance.ResetToggles();
         RoomSelection.Instance.ResetToggles();
+        AnomaliesSuccesfullyReportedThisGame += found.Count;
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
     }
 
@@ -278,7 +267,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
                         }
                     }
                 }
-                AnomaliesSuccesfullyReportedThisGame += CorrectObject.Count;
                 CorrectObject = new List<DynamicObject>();
             }
             else {
@@ -330,7 +318,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         cleanUpGame();
     }
 
-    public void cleanUpGame() {
+    private void cleanUpGame() {
         foreach (DynamicObject div in Anomalies) {
             //destroy all creatures because it looks weird when theyre walking around
             if (div.data.type == ANOMALY_TYPE.Creature) {
@@ -368,7 +356,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
   void Update()
   {
-    if(SC_FPSController.paused || GameOver) {
+    if(PlayerUI.paused || GameOver) {
         return;
     }
     CheckTimer();

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,16 +12,17 @@ public class CreatureControl : MonoBehaviour
     public GameObject chaserPrefab;
     public int maxCreaturesPerRoom = 1;
     public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
-    public int creatureMax;
+    public int creatureMax = 3;
     public GameObject jumpscareZombie;
+    [HideInInspector]
     public bool IsJumpscareFinished = false;
-    public AudioClip yippie;
+    public AudioClip jumpscareSound;
     public float creatureSpawnRate = 20f;
-    private float startSpawnRate;
     private float timeSinceLastCreature = 0f;
     private List<GameObject> specialCreatures = new List<GameObject>();
     public float zombieSpawnChance = 66.6667f;
     public float specialSpawnChance = 60f;
+    [HideInInspector]
     public int TotalCreatures;
 
 
@@ -43,7 +43,7 @@ public class CreatureControl : MonoBehaviour
         }
         GameObject audioSourceObject = new GameObject("JumpscareAudioSource");
         AudioSource audioSource = audioSourceObject.AddComponent<AudioSource>();
-        audioSource.clip = yippie;
+        audioSource.clip = jumpscareSound;
         audioSource.transform.position = jumpscareZombie.transform.position;
         audioSource.Play();
 
@@ -106,11 +106,6 @@ public class CreatureControl : MonoBehaviour
     }
 
     private void doCreatureCheck() {
-        //set spawn rate based on number of divergences
-        //creatureSpawnRate = startSpawnRate - GameSystem.Instance.Anomalies.Count;
-        if(creatureSpawnRate <= 1f) {
-            creatureSpawnRate = 1f;
-        }
         string room = GameSystem.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, GameSystem.Instance.Rooms.Count)).Key;
         if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
             CreaturesPerRoom.Add(room, 0);
@@ -118,12 +113,14 @@ public class CreatureControl : MonoBehaviour
 
         //lose condition - all rooms have max anomalies
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.AnomaliesPerRoom*GameSystem.Instance.Rooms.Count) {
-            //ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
+            if(!GameSystem.InEditor()) {
+                ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
+            }
         }
 
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences) {
             int spawnChance = UnityEngine.Random.Range(0,100);
-            if(spawnChance > 66.667) {
+            if(spawnChance < zombieSpawnChance) {
                 createCreature(zombiePrefab, room);
                 return;
             }
@@ -131,7 +128,7 @@ public class CreatureControl : MonoBehaviour
         if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences/2) {
             int spawnChance = UnityEngine.Random.Range(0,100);
             int randomIndex = UnityEngine.Random.Range(0, specialCreatures.Count);
-            if(spawnChance > 60) {
+            if(spawnChance < specialSpawnChance) {
                 createCreature(specialCreatures[randomIndex], room, specialCreatures[randomIndex].name);
             }
         }
@@ -146,11 +143,23 @@ public class CreatureControl : MonoBehaviour
 
     void Start() {
         Instance = this;
-        startSpawnRate = creatureSpawnRate;
         specialCreatures.Add(chaserPrefab);
+        setCreatureSettings();
+    }
+
+    private void setCreatureSettings() {
+        if(GameSystem.InEditor()) {
+            return;
+        }
+        creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
+        creatureMax = 3;
     }
 
     void Update() {
+        if(GameSystem.Instance.GameOver || PlayerUI.paused) {
+            return;
+        }
+
         timeSinceLastCreature += Time.deltaTime;
         if(timeSinceLastCreature > creatureSpawnRate) {
             timeSinceLastCreature = 0;

@@ -13,7 +13,7 @@ public class EscapeMenu : MonoBehaviour
     public Button returnButton;
 
     public void ReturnToGame() {
-        SC_FPSController.paused = false;
+        PlayerUI.paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         defaultUI.SetActive(true);
@@ -21,6 +21,7 @@ public class EscapeMenu : MonoBehaviour
     }
 
     public void QuitGame() {
+        PlayerUI.paused = false;
         SceneManager.LoadScene("MainMenuScene");
     }
 

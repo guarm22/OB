@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EndCreature : MonoBehaviour
 {
@@ -38,7 +35,7 @@ public class EndCreature : MonoBehaviour
     }
 
     void Update() {
-        if(SC_FPSController.paused || GameSystem.Instance.GameOver) {
+        if(PlayerUI.paused || GameSystem.Instance.GameOver) {
             return;
         }
         CreaturePatrol();

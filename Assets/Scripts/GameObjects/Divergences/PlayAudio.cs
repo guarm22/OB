@@ -10,9 +10,7 @@ public class PlayAudio : MonoBehaviour
     private float timeSinceLastSound;
     private GameObject player;
     private AudioClip currentSound;
-    private float clipLength;
     private bool isPlaying;
-    private bool justPaused;
     // Start is called before the first frame update
     void Start() {
         player = GameObject.Find("Player");
@@ -23,7 +21,6 @@ public class PlayAudio : MonoBehaviour
         else {
             currentSound = sound;
         }
-        clipLength = currentSound.length;
         isPlaying = true;
         AudioSource.PlayClipAtPoint(currentSound, this.transform.position);
     }

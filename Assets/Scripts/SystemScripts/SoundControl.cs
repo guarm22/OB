@@ -34,7 +34,7 @@ public class SoundControl : MonoBehaviour
     }
 
     private void PauseSound() {
-        if(GameSystem.Instance.GameOver || SC_FPSController.paused) {
+        if(GameSystem.Instance.GameOver || PlayerUI.paused) {
             justPaused = true;
             foreach (var audioSource in FindObjectsOfType<AudioSource>()) {
                 if (!audioSource.isPlaying || audioSource.gameObject.name.Equals("JumpscareAudioSource")) continue;

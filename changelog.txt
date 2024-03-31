@@ -1,4 +1,4 @@
-v0.1.2 (Mar 4, 2024):
+v0.1.2 (Mar 4, 2024) - First release/Tutorial update:
 
 Additions:
 -Added 'Popups' that pause the game and show a message
@@ -40,7 +40,7 @@ Bug Fixes:
 -Fixed audio and movement divergences being unreportable
 
 
-v0.2.0 (Mar 7, 2024)
+v0.2.0 (Mar 7, 2024) - Yippie Update
 
 Additions:
 -Ender creature
@@ -148,18 +148,56 @@ Bug Fixes:
 -Fixed grace period game setting not being applied
 
 
-v0.4.0 ():
+v0.4.0 (Mar 23, 2024) - More Creatures Update:
 
 Changes:
 -Changed some divergences in the apartment
 -Creatures now have a slightly higher chance to spawn
+-Moved the players UI controls to a different class
 
 Additions:
--Added 'Chaser'
+-Added 'Chaser' as a special creature
 -Chaser is smaller and faster, but cannot kill the player
+-Special creatures spawn earlier in the match than zombies, but cannot kill
 -Added creature spawn rate to settings
+-Debug menu
+-Added crouching
 
 Bug Fixes:
+-Fixed missed divergence count number
 
 Known issues:
 -Sounds that are playing when paused, don't continue playing when unpaused
+
+v0.4.1 (Mar 27, 2024) - Accessability update:
+
+Changes:
+-Made game settings generally easier across the board
+-Increased game length by 2 minutes on apartment
+-Overhauled many apartment divergences
+-Removed the randomly flickering lights and moved it to the hint system instead
+
+Additions:
+-Added 'Spin' divergence
+-Added the 'MoveContinuous' divergence, which causes an object to continuously move instead of just once
+-Added FOV settings
+-Added Devan
+-Added a 'hint' system
+-Added text to let user know settings have been applied
+-Added a loading screen when the player selects a level
+
+Bug Fixes:
+-Fixed player being able to move when the game is over/jumpscare is playing
+-Fixed error sound not playing when the player hasn't selected a divergence type or room
+
+v0.4.2 (Mar 31, 2024):
+
+Changes:
+-Lighting Overhaul
+
+Additions:
+
+Bug Fixes:
+-Fixed hints not working on certain lights
+-Fixed flickering lights
+-Fixed camera clipping on higher FOVs

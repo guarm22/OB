@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,13 +9,20 @@ public class MasterSettings : MonoBehaviour
 {
     public float volume;
     public float originalVolume;
+    public float FOV;
     public static MasterSettings instance;
     public Slider volumeSlider;
     public Button volumeTest;
+    public TMP_Text volumeText;
     public AudioClip testClip;
+
+    public Slider FOVSlider;
+    public TMP_Text FOVText;
 
     public Button applySettings;
     public Button backButton;
+
+    public TMP_Text appliedText;
 
     void Start()
     {
@@ -30,12 +38,15 @@ public class MasterSettings : MonoBehaviour
 
     private void SetUI() {
         volumeSlider.value = volume;
+        FOVSlider.value = FOV;
     }
 
     public void LoadSettings() {
         volume = PlayerPrefs.GetFloat("Volume", 0.5f);
         AudioListener.volume = volume;
         volumeSlider.value = volume;
+        FOV = PlayerPrefs.GetFloat("FOV", 60);
+        FOVSlider.value = FOV;
     }
 
     void VolumeTest() {
@@ -48,6 +59,10 @@ public class MasterSettings : MonoBehaviour
         AudioListener.volume = volume;
         PlayerPrefs.SetFloat("Volume", volume);
         originalVolume = volume;
+        FOV = FOVSlider.value;
+        PlayerPrefs.SetFloat("FOV", FOV);
+
+        StartCoroutine(AppliedTextFade());
     }
 
     void Back() {
@@ -56,9 +71,18 @@ public class MasterSettings : MonoBehaviour
         AudioListener.volume = volume;
     }
 
+    private IEnumerator AppliedTextFade() {
+        appliedText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        appliedText.gameObject.SetActive(false);
+    }
+
    
     void Update()
     {
         volume = volumeSlider.value;
+        volumeText.text = (int)(volume * 100) + "%";
+        FOV = FOVSlider.value;
+        FOVText.text = (int)FOV + "";
     }
 }

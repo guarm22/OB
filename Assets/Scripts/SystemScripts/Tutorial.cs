@@ -53,12 +53,12 @@ public class Tutorial : MonoBehaviour
             }
         }
 
-        if(GameSystem.Instance.gameTime <= 173f && Instance.timer3) {
+        if(GameSystem.Instance.gameTime <= 176f && Instance.timer3) {
             Instance.timer3= false;
             Popup.Instance.OpenPopup("There's a box on the other side of the room, if you wait a bit it'll disappear - creating a divergence.\n\nUse the reporting menu to report any divergences you discover! You wont be able to move forward until you report the box.\n\nHint: You can see the current room name at the top right.");
         }
 
-        if(GameSystem.Instance.gameTime <= 170f && Instance.timer2) {
+        if(GameSystem.Instance.gameTime <= 173f && Instance.timer2) {
             Instance.timer2 = false;
             GameSystem.Instance.ManuallyCreateDivergence("TutorialBox");
         }
@@ -94,11 +94,11 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger7")) {
-            Popup.Instance.OpenPopup("Your goal is to survive until the timer at the top right hits zero.\n\nEach level is a different puzzle with different divergences and creatures. Make sure to check every location (even inside things).\n\n");
+            Popup.Instance.OpenPopup("Your goal is to survive until the timer at the top right hits zero.\n\nOn certain difficulties, flickering lights will appear in rooms that have divergences, make sure to use this to your advantage!\n\n");
         }
 
         if(hit.name.Equals("Trigger8")) {
-            Popup.Instance.OpenPopup("Report the final divergence and you will complete the tutorial.\n\n");
+            Popup.Instance.OpenPopup("Each level has different divergences, make sure you watch out for everything!\n\nReport the final divergence and you will complete the tutorial.\n\n");
             GameSystem.Instance.ManuallyCreateDivergence("tutorialToilet");
         }
 
