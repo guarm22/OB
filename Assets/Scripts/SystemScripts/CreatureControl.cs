@@ -52,6 +52,9 @@ public class CreatureControl : MonoBehaviour
     }
 
     private void createCreature(GameObject prefab, string room, string type = "Zombie") {
+        if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
+            CreaturesPerRoom.Add(room, 0);
+        } 
         if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
             return;
         }

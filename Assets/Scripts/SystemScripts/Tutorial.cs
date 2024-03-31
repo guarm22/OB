@@ -73,7 +73,7 @@ public class Tutorial : MonoBehaviour
 
         if(hit.name.Equals("Trigger1")) {
             Instance.trigger1 = true;
-            Popup.Instance.OpenPopup("Welcome to The Puncture\n\nControls:\nTAB: Opens and closes reporting menu.\nQ: Pauses game\nWASD: Movement\nSpace: Jump\nInteract: Left Click or E");
+            Popup.Instance.OpenPopup("Welcome to The Puncture\n\nControls:\nTAB: Opens and closes reporting menu.\nQ: Pauses game\nWASD: Movement\nSpace: Jump\nInteract: Left Click or E\nFlashlight:F\nCrouch: Left Ctrl");
         }
 
         if(hit.name.Equals("Trigger3")) {
@@ -89,7 +89,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger6")) {
-            CreatureControl.Instance.ManuallySpawnCreature("Side Room");
+            CreatureControl.Instance.ManuallySpawnCreature("Main Room");
             trigger6 = true;
         }
 
