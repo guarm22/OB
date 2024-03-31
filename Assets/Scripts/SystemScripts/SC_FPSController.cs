@@ -6,7 +6,9 @@ using UnityEngine;
 public class SC_FPSController : MonoBehaviour
 {
     public float walkingSpeed = 7.5f;
+    [HideInInspector]
     public float originalWalkSpeed;
+    [HideInInspector]
     public float originalRunSpeed;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
@@ -18,13 +20,18 @@ public class SC_FPSController : MonoBehaviour
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
     public static SC_FPSController Instance;
+    [HideInInspector]
     public bool isCrouching = false;
     public float crouchAnimationTime = 0.15f;
     public float crouchSpeed = 2.5f;
+    [HideInInspector]
     public float originalCrouchSpeed;
     private bool isCrouchAnimation = false;
+    [HideInInspector]
     public bool canMove = true;
+    [HideInInspector]
     public float FOV;
+    [HideInInspector]
     public float originalFOV;
 
     void Start() {

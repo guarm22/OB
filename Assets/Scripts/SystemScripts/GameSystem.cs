@@ -119,6 +119,9 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   void InstantiateAllDynamicObjects() {
     DynamicData[] objects = FindObjectsOfType<DynamicData>();
     foreach(DynamicData obj in objects) {
+        if(obj.gameObject.GetComponent<DynamicData>().enabled == false) {
+            return;
+        }
         CreateDynamicObject(obj.gameObject);
     }
     totalDynamicObjectsInScene = DynamicObjects.Count;

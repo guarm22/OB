@@ -32,6 +32,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     public Button StatsButton;
     public Button StatsBack;
     public Button apartment;
+    public Button mariaApartment;
     public Button tutorial;
     public Button DifficultyButton;
     public Button DifficultyBack;
@@ -69,6 +70,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         StatsBack.onClick.AddListener(StatsBackEvent);
         apartment.onClick.AddListener(delegate { LoadLevel("Apartment_safe"); });
         tutorial.onClick.AddListener(delegate { LoadLevel("Tutorial"); });
+        mariaApartment.onClick.AddListener(delegate { LoadLevel("Maria's Apartment"); });
         DifficultyButton.onClick.AddListener(DifficultyButtonEvent);
         DifficultyBack.onClick.AddListener(DifficultyBackEvent);
         AdvancedDifficulty.onClick.AddListener(AdvancedDifficultyEvent);
