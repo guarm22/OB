@@ -5,14 +5,14 @@ using UnityEngine;
 public class Flashlight : MonoBehaviour
 {
 
-    public Light light;
+    public Light beam;
     private float staticEnergyDrainPerSecond;
     private float totalEnergyDrainPerSecond;
     public float energyDrainModifier = 1f;
     private float timer;
     // Start is called before the first frame update
     void Start() {
-        light.enabled = false;   
+        beam.enabled = false;   
         float eps = PlayerPrefs.GetFloat("EPS");
         staticEnergyDrainPerSecond = eps * 1.5f;
         totalEnergyDrainPerSecond = staticEnergyDrainPerSecond * energyDrainModifier;
@@ -21,10 +21,10 @@ public class Flashlight : MonoBehaviour
     // Update is called once per frame
     void Update() {
         if(Input.GetKeyDown(KeyCode.F)) {
-            light.enabled = !light.enabled;
+            beam.enabled = !beam.enabled;
         }
 
-        if(light.enabled) {
+        if(beam.enabled) {
             timer += Time.deltaTime;
             if(timer >= 1f) {
                 timer = 0;
