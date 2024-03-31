@@ -354,6 +354,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
     }
 
+    public void ChangeEnergy(float amount) {
+        CurrentEnergy += amount;
+    }
+
   void Update()
   {
     if(PlayerUI.paused || GameOver) {
