@@ -445,7 +445,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.899371, g: 0.5967524, b: 0.5967524, a: 1}
-  m_Intensity: 9
+  m_Intensity: 10
   m_Range: 8
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2637,6 +2637,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7467293960597961414, guid: 29eb9cdec523f4944b46fcfae81dc9c8, type: 3}
   m_PrefabInstance: {fileID: 165938938}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &170184845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7043932511323071429, guid: 3f38091ec14910c4c8b8af3bab31b1bf, type: 3}
+  m_PrefabInstance: {fileID: 1154414450}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &172352106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3653,26 +3658,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f13e2e193b7411478434edd7b149917, type: 3}
---- !u!1 &253672069 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4721157838418399921, guid: 79723f7a04c42fa4cb0fefb4f7686381, type: 3}
-  m_PrefabInstance: {fileID: 282134685}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &253672074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 253672069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  energyCost: 25
-  customDivergence: {fileID: 0}
 --- !u!1001 &254120978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3921,10 +3906,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4721157838418399921, guid: 79723f7a04c42fa4cb0fefb4f7686381, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 253672074}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79723f7a04c42fa4cb0fefb4f7686381, type: 3}
 --- !u!1001 &293735253
 PrefabInstance:
@@ -6538,7 +6520,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.94232583, g: 0.9685534, b: 0.9411415, a: 1}
-  m_Intensity: 10
+  m_Intensity: 12
   m_Range: 11
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -7374,6 +7356,35 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1734684919744719291, guid: 3f38091ec14910c4c8b8af3bab31b1bf, type: 3}
   m_PrefabInstance: {fileID: 1154414450}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &632972315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170184845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9a0c256cb80984faf32633c7a79f2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {x: -9.625, y: -0.031, z: 6.098}
+  moveTime: 4
+--- !u!114 &632972316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170184845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 3
+  energyCost: 25
+  customDivergence: {fileID: 0}
 --- !u!1001 &639804810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7925,7 +7936,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: GameObjectDisappearanceInterval
-      value: 22
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6743913093581102291, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8013,7 +8024,6 @@ MonoBehaviour:
   creatureMax: 4
   jumpscareZombie: {fileID: 4493914615434692733}
   IsJumpscareFinished: 0
-  yippie: {fileID: 8300000, guid: f32b5db229ed82842af27c0b007611a7, type: 3}
   jumpscareSound: {fileID: 8300000, guid: bd2dfa365d46d3e4d8b88d6aa90234b1, type: 3}
   creatureSpawnRate: 22
   zombieSpawnChance: 35
@@ -10650,7 +10660,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 8
+  m_Intensity: 9
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -13698,7 +13708,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1734684919744719291, guid: 3f38091ec14910c4c8b8af3bab31b1bf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.8969994
+      value: -8.03
       objectReference: {fileID: 0}
     - target: {fileID: 1734684919744719291, guid: 3f38091ec14910c4c8b8af3bab31b1bf, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13743,7 +13753,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7043932511323071429, guid: 3f38091ec14910c4c8b8af3bab31b1bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 632972316}
+    - targetCorrespondingSourceObject: {fileID: 7043932511323071429, guid: 3f38091ec14910c4c8b8af3bab31b1bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 632972315}
   m_SourcePrefab: {fileID: 100100000, guid: 3f38091ec14910c4c8b8af3bab31b1bf, type: 3}
 --- !u!1001 &1159477734
 PrefabInstance:
@@ -19587,11 +19603,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3386719459365879084, guid: dd22d3cb5edddc54fb43d88c8b0da7d5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.00000004371139
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3386719459365879084, guid: dd22d3cb5edddc54fb43d88c8b0da7d5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3386719459365879084, guid: dd22d3cb5edddc54fb43d88c8b0da7d5, type: 3}
       propertyPath: m_LocalRotation.y
@@ -19599,7 +19615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3386719459365879084, guid: dd22d3cb5edddc54fb43d88c8b0da7d5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3386719459365879084, guid: dd22d3cb5edddc54fb43d88c8b0da7d5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -19624,6 +19640,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6074021452604995049, guid: dd22d3cb5edddc54fb43d88c8b0da7d5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1610048559}
+    - targetCorrespondingSourceObject: {fileID: 6074021452604995049, guid: dd22d3cb5edddc54fb43d88c8b0da7d5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1610048563}
   m_SourcePrefab: {fileID: 100100000, guid: dd22d3cb5edddc54fb43d88c8b0da7d5, type: 3}
 --- !u!4 &1610048555 stripped
 Transform:
@@ -19642,9 +19661,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 3
   energyCost: 25
   customDivergence: {fileID: 0}
+--- !u!114 &1610048563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545066197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b7acd93b4e04024f93b9959ad9070b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationsPerSecond: 0.01
+  rotationAxis: {x: 1, y: 0, z: 0}
 --- !u!4 &1610129775 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4333507836982010, guid: c350023b68bece943928351ad0df5c3a, type: 3}
@@ -24234,7 +24267,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5
+  m_Intensity: 6
   m_Range: 15
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -26477,6 +26510,10 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.z
       value: 11.333333
       objectReference: {fileID: 0}
+    - target: {fileID: 6307527093069290010, guid: 1d311c2edaf616641830fd86d65473ef, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 465c65aa8b64e5b44a81bd949edeac39, type: 2}
     - target: {fileID: 6817084972786408322, guid: 1d311c2edaf616641830fd86d65473ef, type: 3}
       propertyPath: m_Name
       value: Jumpscare
