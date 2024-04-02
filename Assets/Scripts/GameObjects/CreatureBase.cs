@@ -5,7 +5,7 @@ public class CreatureBase : MonoBehaviour
 {
     public GameObject player;
     public float sightRange = 15;
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
     [SerializeField] public LayerMask playerLayer;
     [SerializeField] public LayerMask floorLayer;
     public float stuckTimer = 3f;
@@ -142,7 +142,7 @@ public class CreatureBase : MonoBehaviour
         timeSinceLastStuckCheck = 0f;
         posCheck = transform.position;
         agent.speed = creatureSpeed;
-        agent.angularSpeed=1500;
+        agent.angularSpeed=3000;
         animator = GetComponent<Animator>();
     }
 

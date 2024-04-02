@@ -25,7 +25,7 @@ public class HintController : MonoBehaviour
 
     private void doHint(DynamicObject obj) {
         //AudioSource.PlayClipAtPoint(hintSound, obj.Obj.transform.position);
-        LightControl.Instance.FlickerRoomLights(obj.Room, 0.15f);
+        LightControl.Instance.FlickerRoomLights(obj.Room, 0.5f);
     }
 
     // Update is called once per frame

@@ -18,6 +18,10 @@ public class PlayerDebuffs : MonoBehaviour
         SC_FPSController.Instance.ChangeFOV(SC_FPSController.Instance.originalFOV);
     }
 
+    public void Energy(float amount=1f) {
+        GameSystem.Instance.CurrentEnergy -= amount;
+    }
+
     void Start()
     {
         Instance = this;

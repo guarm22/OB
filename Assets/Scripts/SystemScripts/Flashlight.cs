@@ -20,6 +20,10 @@ public class Flashlight : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if(GameSystem.Instance.GameOver || PlayerUI.paused) {
+            return;
+        }
+
         if(Input.GetKeyDown(KeyCode.F)) {
             beam.enabled = !beam.enabled;
         }

@@ -138,6 +138,12 @@ public class SC_FPSController : MonoBehaviour
         if(type == "Slow") {
             StartCoroutine(PlayerDebuffs.Instance.Slow(multiplier));
         }
+        else if(type == "Energy") {
+            PlayerDebuffs.Instance.Energy(multiplier);
+        }
+        else {
+            Debug.LogError("Invalid debuff type: " + type);
+        }
     }
 
     public void ChangeFOV(float fov) {

@@ -119,9 +119,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   void InstantiateAllDynamicObjects() {
     DynamicData[] objects = FindObjectsOfType<DynamicData>();
     foreach(DynamicData obj in objects) {
-        if(obj.gameObject.GetComponent<DynamicData>().enabled == false) {
-            return;
-        }
         CreateDynamicObject(obj.gameObject);
     }
     totalDynamicObjectsInScene = DynamicObjects.Count;
@@ -238,9 +235,17 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
         Guessed = true;
         LastGuess = Time.time;
-        TypeSelection.CurrentlySelected.Clear();
-        TypeSelection.Instance.ResetToggles();
-        RoomSelection.Instance.ResetToggles();
+
+        if(TypeSelection.Instance) {
+            TypeSelection.CurrentlySelected.Clear();
+            TypeSelection.Instance.ResetToggles();
+            RoomSelection.Instance.ResetToggles();
+        }
+
+        if(ReportUI.Instance) {
+            ReportUI.Instance.ResetSelections();
+        }
+
         AnomaliesSuccesfullyReportedThisGame += found.Count;
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
     }

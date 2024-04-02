@@ -10,6 +10,7 @@ public class CreatureControl : MonoBehaviour
     public GameObject zombiePrefab;
     public GameObject endCreaturePrefab;
     public GameObject chaserPrefab;
+    public GameObject lurkerPrefab;
     public int maxCreaturesPerRoom = 1;
     public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
     public int creatureMax = 3;
@@ -59,7 +60,7 @@ public class CreatureControl : MonoBehaviour
             return;
         }
         GameObject creature = Instantiate(prefab);
-        Vector3 spawnPos = FindSpawnPoint(room);
+        Vector3 spawnPos = FindSpawnPoint(room, type);
         GameObject roomObj = GameObject.Find(room);
         creature.transform.position = spawnPos;
         creature.transform.SetParent(roomObj.transform);
@@ -76,7 +77,11 @@ public class CreatureControl : MonoBehaviour
         GameSystem.Instance.CreateDivergence(creature);
     }
 
-      private Vector3 FindSpawnPoint(string room) {
+      private Vector3 FindSpawnPoint(string room, string type) {
+            if(type == "Lurker") {
+                return FindLurkerSpawn(room);
+            }
+
             GameObject roomObj = GameObject.Find(room);
             BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
             List<Vector3> roomPoints = new List<Vector3> {
@@ -97,6 +102,11 @@ public class CreatureControl : MonoBehaviour
                 // Handle case where no point could be found on the NavMesh
             }
             return furthestPoint;
+    }
+
+    private Vector3 FindLurkerSpawn(string room) {
+        Vector3 spawnPos = GameObject.Find("LurkerSpawn"+room).transform.position;
+        return spawnPos;
     }
 
     
@@ -146,6 +156,7 @@ public class CreatureControl : MonoBehaviour
 
     void Start() {
         Instance = this;
+        specialCreatures.Add(lurkerPrefab);
         specialCreatures.Add(chaserPrefab);
         setCreatureSettings();
     }
