@@ -10,6 +10,7 @@ public class ReportUI : MonoBehaviour {
     public GameObject togglePrefab;
     public GameObject typeSelectionUI;
     public Button reportButton;
+    public GameObject playerLoc;
 
     public Color OriginalBGColor;
     public Color SelectedBGColor;
@@ -28,6 +29,19 @@ public class ReportUI : MonoBehaviour {
         GetRooms();
         Instance = this;
         reportButton.onClick.AddListener(Report);
+    }
+
+    void Update() {
+        findPlayerLoc();
+    }
+
+    public void findPlayerLoc() {
+        GameObject player = GameObject.Find("Player");
+        foreach(GameObject room in rooms) {
+            if(PlayerUI.Instance.GetPlayerRoom() == room.name) {
+                playerLoc.transform.position = room.transform.position - new Vector3(0,-50,0);
+            }
+        }
     }
 
     public void Report() {

@@ -24,6 +24,10 @@ public class Flashlight : MonoBehaviour
             return;
         }
 
+        if(GameSystem.Instance.CurrentEnergy <= 0) {
+            beam.enabled = false;
+        }
+
         if(Input.GetKeyDown(KeyCode.F)) {
             beam.enabled = !beam.enabled;
         }
