@@ -21,8 +21,8 @@ public class CreatureControl : MonoBehaviour
     public float creatureSpawnRate = 20f;
     private float timeSinceLastCreature = 0f;
     private List<GameObject> specialCreatures = new List<GameObject>();
-    public float zombieSpawnChance = 66.6667f;
-    public float specialSpawnChance = 60f;
+    public float zombieSpawnChance = 50f;
+    public float specialSpawnChance = 50f;
     [HideInInspector]
     public int TotalCreatures;
 
