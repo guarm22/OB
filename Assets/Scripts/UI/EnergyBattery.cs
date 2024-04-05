@@ -15,7 +15,10 @@ public class EnergyBattery : MonoBehaviour
     }
 
     private void UpdateBattery() {
-        if(energy >= 99) {
+        if(energy >= 95) {
+            foreach(Image i in batteryImages) {
+                i.enabled = true;
+            }
             return;
         }
 

@@ -43,6 +43,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public List<DynamicObject> lockedObjects;
   public static int totalDynamicObjectsInScene;
   public bool wasLastGuessCorrect = false;
+  public float lastCorrectGuessTime = 0f;
   public string Difficulty;
 
   public void LoadData(GameData data) {
@@ -248,6 +249,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
         AnomaliesSuccesfullyReportedThisGame += found.Count;
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
+
+        if(CorrectObject.Count > 0) {
+            lastCorrectGuessTime = Time.time;
+        }
     }
 
     /// <summary>
@@ -364,6 +369,10 @@ public class GameSystem : MonoBehaviour, IDataPersistence
 
     public void ChangeEnergy(float amount) {
         CurrentEnergy += amount;
+    }
+
+    public void ChangeDivergenceRate(int newTime) {
+        GameObjectDisappearanceInterval = newTime;
     }
 
   void Update()
