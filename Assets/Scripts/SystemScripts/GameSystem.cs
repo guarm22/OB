@@ -246,8 +246,6 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(ReportUI.Instance) {
             ReportUI.Instance.ResetSelections();
         }
-
-        AnomaliesSuccesfullyReportedThisGame += found.Count;
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
 
         if(CorrectObject.Count > 0) {
@@ -263,6 +261,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             madeGuess = false;
             wasLastGuessCorrect = CorrectObject.Count > 0;
             if(wasLastGuessCorrect) {
+                AnomaliesSuccesfullyReportedThisGame += CorrectObject.Count;
                 StartCoroutine(SoundControl.Instance.guessFeedbackSound(true));
                 foreach(DynamicObject d in CorrectObject) {
                     d.DoAnomalyAction(false);
