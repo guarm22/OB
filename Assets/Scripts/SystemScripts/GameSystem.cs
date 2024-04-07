@@ -248,7 +248,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         }
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
 
-        if(CorrectObject.Count > 0) {
+        if(CorrectObject.Where(d => d.data.type != ANOMALY_TYPE.Creature).Count() > 0) {
             lastCorrectGuessTime = Time.time;
         }
     }

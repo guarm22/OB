@@ -68,7 +68,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         SettingsBack.onClick.AddListener(SettingsBackEvent);
         StatsButton.onClick.AddListener(StatsButtonEvent);
         StatsBack.onClick.AddListener(StatsBackEvent);
-        apartment.onClick.AddListener(delegate { LoadLevel("Apartment_safe"); });
+        apartment.onClick.AddListener(delegate { LoadLevel("Cabin"); });
         tutorial.onClick.AddListener(delegate { LoadLevel("Tutorial"); });
         mariaApartment.onClick.AddListener(delegate { LoadLevel("Maria's Apartment"); });
         DifficultyButton.onClick.AddListener(DifficultyButtonEvent);

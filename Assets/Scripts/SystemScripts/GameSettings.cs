@@ -319,7 +319,7 @@ public class GameSettings : MonoBehaviour
             return 1f;
         }
         else if(diff == "Normal") {
-            return 1.1f;
+            return 1.15f;
         }
         else if(diff == "Hard") {
             return 1.4f;

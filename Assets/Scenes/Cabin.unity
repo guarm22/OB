@@ -7922,9 +7922,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 923589540}
     m_Modifications:
+    - target: {fileID: 363446494370335321, guid: 784eed2f0e169fd489880b051828cd66, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 603845225474068006, guid: 784eed2f0e169fd489880b051828cd66, type: 3}
       propertyPath: m_Name
       value: ReportingUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 603845225474068006, guid: 784eed2f0e169fd489880b051828cd66, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2686648399868689993, guid: 784eed2f0e169fd489880b051828cd66, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3500653261603193304, guid: 784eed2f0e169fd489880b051828cd66, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6296380790728473085, guid: 784eed2f0e169fd489880b051828cd66, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8214,8 +8230,12 @@ PrefabInstance:
       value: Managers
       objectReference: {fileID: 0}
     - target: {fileID: 968352137840703296, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: DRIncrease
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 968352137840703296, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: timeBeforeDRIncrease
-      value: 90
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: jumpscareZombie
