@@ -135,7 +135,7 @@ public class PlayerUI : MonoBehaviour
     }
 
     void Interact() {
-        if(Input.GetKeyDown(KeyCode.E)) { 
+        /*if(Input.GetKeyDown(KeyCode.E)) { 
             if(inJournal) {
                 SC_FPSController.Instance.canMove = true;
                 inJournal = false;
@@ -171,7 +171,7 @@ public class PlayerUI : MonoBehaviour
 
                 }
             }
-        }
+        }*/
     }
 
     private void openEscape() {

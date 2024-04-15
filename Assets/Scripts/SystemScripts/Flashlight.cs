@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Flashlight : MonoBehaviour
@@ -10,12 +11,14 @@ public class Flashlight : MonoBehaviour
     private float totalEnergyDrainPerSecond;
     public float energyDrainModifier = 1f;
     private float timer;
+    public static Flashlight Instance;
     // Start is called before the first frame update
     void Start() {
         beam.enabled = false;   
         float eps = PlayerPrefs.GetFloat("EPS");
         staticEnergyDrainPerSecond = eps * 1.5f;
         totalEnergyDrainPerSecond = staticEnergyDrainPerSecond * energyDrainModifier;
+        Instance = this;
     }
 
     // Update is called once per frame
