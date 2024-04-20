@@ -24,7 +24,7 @@ public class DynamicObject {
         divTime = -1f;
     }
 
-    public int DoAnomalyAction(bool enable) {
+    public bool DoAnomalyAction(bool enable) {
         Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.data.type) + 
         (enable ? " ENABLED" : " DISABLED"));
 
@@ -37,17 +37,15 @@ public class DynamicObject {
         
         if(Obj.GetComponent<CustomDivergence>() != null) {
             Obj.GetComponent<CustomDivergence>().DoDivergenceAction(enable, this);
-            return 1;
+            return true;
         }
 
         switch(this.data.type) {
             case ANOMALY_TYPE.Disappearance:
-                this.ObjectDisappearance(enable);
-                break;
+                return this.ObjectDisappearance(enable);
             
             case ANOMALY_TYPE.Replacement:
-                this.ObjectChange(enable);
-                break;
+                return this.ObjectChange(enable);
 
             case ANOMALY_TYPE.Creature:
                 //done through custom class
@@ -55,31 +53,44 @@ public class DynamicObject {
 
             case ANOMALY_TYPE.Audio:
                 //also done through custom class, but im bad at coding
-                this.Audio(enable);
-                break;
+                return this.Audio(enable);
 
             case ANOMALY_TYPE.Movement:
                 //done through custom class
                 break;
         }
-        return 1;
+        return true;
     }
 
 //Makes an object disappear or reappear based on the enable argument
-    private void ObjectDisappearance(bool enable) {
+    private bool ObjectDisappearance(bool enable) {
         float moveAmt = enable ? 100f : -100f;
         Vector3 vec = new Vector3(this.Obj.transform.position.x, this.Obj.transform.position.y+moveAmt, this.Obj.transform.position.z);
         this.Obj.transform.position = vec;
+
+        return true;
     }
-    private void Audio(bool enable) {
+    private bool Audio(bool enable) {
+        if(this.Obj.GetComponent<PlayAudio>() == null) {
+            Debug.Log("No audio script found on object " + this.Name + " in " + this.Room);
+            return false;
+        }
+
         this.Obj.GetComponent<PlayAudio>().enabled = enable;
+        return true;
     }
 
-    private void ObjectChange(bool enable) {
+    private bool ObjectChange(bool enable) {
         Transform replacement = this.Obj.transform.GetChild(0);
+        if(replacement == null) {
+            Debug.Log("No replacement object found on object " + this.Name + " in " + this.Room);
+            return false;
+        }
+
         Vector3 old = replacement.position;
         replacement.localPosition = new Vector3(0, enable ? 10f : -10f, 0);
         this.Obj.transform.position = old; 
+        return true;
     }
 
     public static List<string> GetAllAnomalyTypes() {

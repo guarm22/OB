@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System;
 
-public class MainMenu : MonoBehaviour, IDataPersistence
+public class MainMenu : MonoBehaviour
 {
     public GameObject DefaultMenu;
 
@@ -43,16 +43,6 @@ public class MainMenu : MonoBehaviour, IDataPersistence
 
     public string Difficulty;
     public int DivergenceRate;
-
-    public void LoadData(GameData data) {
-        this.AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
-        this.LevelsFailed = data.LevelsFailed;
-        this.LevelsWon = data.LevelsWon;
-    }
-
-    public void SaveData(ref GameData data) {
-        //data should not change on this scene
-    }
 
     // Start is called before the first frame update
     void Start()

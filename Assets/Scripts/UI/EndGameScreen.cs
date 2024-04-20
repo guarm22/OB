@@ -13,10 +13,12 @@ public class EndGameScreen : MonoBehaviour
     public Button ReturnToMenuButton;
     public Button RetryButton;
     public void ReturnToMenu() {
+        PlayerDataManager.Instance.SavePlayerData();
         SceneManager.LoadScene("MainMenuScene");
     }
 
     public void Retry() {
+        PlayerDataManager.Instance.SavePlayerData();
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }

@@ -36,10 +36,7 @@ public class SC_FPSController : MonoBehaviour
     public float FOV;
     [HideInInspector]
     public float originalFOV;
-
-    private bool isZoomed = false;
-    public float zoomCd = 0.6f;
-    private float lastZoom = 0f;
+    public float minFOV = 30;
 
     private bool mouseAccel;
     private Vector3 prevMousePosition;
@@ -179,29 +176,19 @@ public class SC_FPSController : MonoBehaviour
     }
 
     public void CameraZoom() {
-        if(Time.time - lastZoom < zoomCd) {
-            return;
+        if(Input.GetMouseButton(1)) {
+            SlowlyZoom(30);
         }
-
-        if(Input.GetMouseButtonDown(1)) {
-            isZoomed = !isZoomed;
-            lastZoom = Time.time;
-            if(isZoomed) {
-                StartCoroutine(SlowlyZoom(30));
-            }
-            else {
-                StartCoroutine(SlowlyZoom(originalFOV));
-            }
+        else {
+            SlowlyZoom(originalFOV);
         }
     }
 
-    private IEnumerator SlowlyZoom(float targetFOV, float duration = 0.35f) {
-        float timer = 0f;
-        while(timer < duration) {
-            timer += Time.deltaTime;
-            playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, timer/0.5f);
-            yield return null;
+    private void SlowlyZoom(float targetFOV) {
+        if(playerCamera.fieldOfView < minFOV) {
+            return;
         }
+        playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, 0.25f);
     }
 
     private void CheckOutOfMap() {
