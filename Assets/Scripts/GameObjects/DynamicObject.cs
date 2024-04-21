@@ -64,7 +64,7 @@ public class DynamicObject {
 
 //Makes an object disappear or reappear based on the enable argument
     private bool ObjectDisappearance(bool enable) {
-        float moveAmt = enable ? 100f : -100f;
+        float moveAmt = enable ? -100f : 100f;
         Vector3 vec = new Vector3(this.Obj.transform.position.x, this.Obj.transform.position.y+moveAmt, this.Obj.transform.position.z);
         this.Obj.transform.position = vec;
 
