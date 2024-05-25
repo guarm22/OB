@@ -262,13 +262,13 @@ public class GameSettings : MonoBehaviour
 
     private int GetDivergenceRate(string diff) {
         if(diff == "Easy") {
-            return 30;
+            return 33;
         }
         else if(diff == "Normal") {
-            return 25;
+            return 26;
         }
         else if(diff == "Hard") {
-            return 20;
+            return 21;
         }
         else if(diff == "Nightmare") {
             return 15;
@@ -319,7 +319,7 @@ public class GameSettings : MonoBehaviour
             return 1f;
         }
         else if(diff == "Normal") {
-            return 1.1f;
+            return 1.15f;
         }
         else if(diff == "Hard") {
             return 1.4f;

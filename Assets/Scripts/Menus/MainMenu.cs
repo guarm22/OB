@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System;
 
-public class MainMenu : MonoBehaviour, IDataPersistence
+public class MainMenu : MonoBehaviour
 {
     public GameObject DefaultMenu;
 
@@ -44,16 +44,6 @@ public class MainMenu : MonoBehaviour, IDataPersistence
     public string Difficulty;
     public int DivergenceRate;
 
-    public void LoadData(GameData data) {
-        this.AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
-        this.LevelsFailed = data.LevelsFailed;
-        this.LevelsWon = data.LevelsWon;
-    }
-
-    public void SaveData(ref GameData data) {
-        //data should not change on this scene
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -68,7 +58,7 @@ public class MainMenu : MonoBehaviour, IDataPersistence
         SettingsBack.onClick.AddListener(SettingsBackEvent);
         StatsButton.onClick.AddListener(StatsButtonEvent);
         StatsBack.onClick.AddListener(StatsBackEvent);
-        apartment.onClick.AddListener(delegate { LoadLevel("Apartment_safe"); });
+        apartment.onClick.AddListener(delegate { LoadLevel("Cabin"); });
         tutorial.onClick.AddListener(delegate { LoadLevel("Tutorial"); });
         mariaApartment.onClick.AddListener(delegate { LoadLevel("Maria's Apartment"); });
         DifficultyButton.onClick.AddListener(DifficultyButtonEvent);

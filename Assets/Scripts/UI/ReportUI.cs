@@ -26,9 +26,9 @@ public class ReportUI : MonoBehaviour {
 
     void Start() {
         CreateUI();
-        GetRooms();
         Instance = this;
         reportButton.onClick.AddListener(Report);
+        GetRooms();
     }
 
     void Update() {
@@ -73,26 +73,31 @@ public class ReportUI : MonoBehaviour {
         }
     }
     public void SelectRoom(GameObject room) {
-        Color roomColor = room.GetComponent<Image>().color;
-        if(roomColor == OriginalBGColor) {
+        if(SelectedRoom == null) {
+            room.GetComponent<Image>().color = SelectedBGColor;
+            SelectedRoom = room.name;
+        }
+
+        else if(SelectedRoom == room.name) {
+            room.GetComponent<Image>().color = OriginalBGColor;
+            SelectedRoom = null;
+        }
+
+        else if(SelectedRoom != room.name) {
             foreach (GameObject r in rooms) {
                 r.GetComponent<Image>().color = OriginalBGColor;
             }
             room.GetComponent<Image>().color = SelectedBGColor;
             SelectedRoom = room.name;
-            }
-            else {
-                room.GetComponent<Image>().color = OriginalBGColor;
-                SelectedRoom = null;
-            }
+        }
     }
 
     public void GetRooms() {
+        Debug.Log("Getting rooms");
         rooms = new List<GameObject>();
         foreach(GameObject child in GameObject.FindGameObjectsWithTag("RoomUI")) {
-            rooms.Add(child.gameObject);
             EventTrigger trigger = child.AddComponent<EventTrigger>();
-
+            rooms.Add(child.gameObject);
             // Create a new entry for the click event
             EventTrigger.Entry entry = new EventTrigger.Entry();
             entry.eventID = EventTriggerType.PointerClick;

@@ -18,6 +18,7 @@ public class PlayerUI : MonoBehaviour
     public GameObject escapeMenuUI;
     public GameObject EndGameUI;
     public GameObject debugUI;
+    public GameObject defaultBottomRight;
     public string targetTag = "Room";
     public string tutTag = "Tutorial";
     public string interactableTag;
@@ -105,12 +106,12 @@ public class PlayerUI : MonoBehaviour
         Cursor.visible = false;
         inMenu = false;
         selectionUI.SetActive(false);
-        defaultUI.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+        defaultBottomRight.SetActive(true);
         SC_FPSController.Instance.canMove = true;
     }
     private void turnOnSelection() {
         selectionUI.SetActive(true);
-        defaultUI.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+        defaultBottomRight.SetActive(false);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         inMenu = true;
@@ -134,7 +135,7 @@ public class PlayerUI : MonoBehaviour
     }
 
     void Interact() {
-        if(Input.GetKeyDown(KeyCode.E)) { 
+        /*if(Input.GetKeyDown(KeyCode.E)) { 
             if(inJournal) {
                 SC_FPSController.Instance.canMove = true;
                 inJournal = false;
@@ -170,7 +171,7 @@ public class PlayerUI : MonoBehaviour
 
                 }
             }
-        }
+        }*/
     }
 
     private void openEscape() {

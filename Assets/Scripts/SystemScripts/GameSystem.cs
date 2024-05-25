@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
-public class GameSystem : MonoBehaviour, IDataPersistence
+public class GameSystem : MonoBehaviour
 {
   public int GuessLockout;
   public static GameSystem Instance { get; private set; }
@@ -32,27 +32,37 @@ public class GameSystem : MonoBehaviour, IDataPersistence
   public float startTime = 60*15f;
   public float timeSinceLastDisappearance;
   private int AnomaliesSuccesfullyReported = 0;
+  [HideInInspector]
   public int AnomaliesSuccesfullyReportedThisGame;
+  [HideInInspector]
   public bool GameOver = false;
+  [HideInInspector]
   public bool Won = false;
   public float reportTextTimer = 5f;
   public float divergenceRandomnessMax = 1.5f;
   public float divergenceRandomnessMin = -2f;
+  [HideInInspector]
   public float currentRandomness;
+  [HideInInspector]
   public bool madeGuess;
   public List<DynamicObject> lockedObjects;
+  [HideInInspector]
   public static int totalDynamicObjectsInScene;
+  [HideInInspector]
   public bool wasLastGuessCorrect = false;
+  [HideInInspector]
+  public float lastCorrectGuessTime = 0f;
+  [HideInInspector]
   public string Difficulty;
 
-  public void LoadData(GameData data) {
-        AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported;
-  }
-  public void SaveData(ref GameData data) {
-        data.AnomaliesSuccesfullyReported = data.AnomaliesSuccesfullyReported + AnomaliesSuccesfullyReportedThisGame;
-  }
-  void Start()
-  {
+  [HideInInspector]
+  public int ReportsMade = 0;
+  [HideInInspector]
+  public int DivergencesReported = 0;
+  [HideInInspector]
+  public int CreaturesReported = 0;
+
+  void Start() {
     if (Instance != null) {
       Debug.LogError("There is more than one instance!");
       return;
@@ -186,7 +196,11 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             }
             while (randomObject == null || amt >= AnomaliesPerRoom);
         }
-        if(randomObject.DoAnomalyAction(true) == 0) {
+        //no objects in any room
+        else {
+            return;
+        }
+        if(!randomObject.DoAnomalyAction(true)) {
             return;
         }
         GetComponent<AudioSource>().Play();
@@ -226,6 +240,11 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         foreach(DynamicObject d in found) {
              totalCost -= Instance.EnergyPerGuess - d.data.energyCost;
         }
+        //if the player does:
+        //  not have enough energy
+        //  did not select a room
+        //  did not select any types
+        //play error sound and return
         if(Instance.CurrentEnergy < totalCost || room == null || types.Count < 1 || types == null) {
             Instance.StartCoroutine(SoundControl.Instance.guessFeedbackSound(false));
             return;
@@ -245,9 +264,15 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if(ReportUI.Instance) {
             ReportUI.Instance.ResetSelections();
         }
-
-        AnomaliesSuccesfullyReportedThisGame += found.Count;
         foreach(DynamicObject d in found) {CorrectObject.Add(d);}
+
+        if(CorrectObject.Where(d => d.data.type != ANOMALY_TYPE.Creature).Count() > 0) {
+            lastCorrectGuessTime = Time.time;
+        }
+
+        ReportsMade += 1;
+        DivergencesReported += CorrectObject.Count - CorrectObject.Count(d => d.data.type == ANOMALY_TYPE.Creature);
+        CreaturesReported += CorrectObject.Count(d => d.data.type == ANOMALY_TYPE.Creature);
     }
 
     /// <summary>
@@ -258,6 +283,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
             madeGuess = false;
             wasLastGuessCorrect = CorrectObject.Count > 0;
             if(wasLastGuessCorrect) {
+                AnomaliesSuccesfullyReportedThisGame += CorrectObject.Count;
                 StartCoroutine(SoundControl.Instance.guessFeedbackSound(true));
                 foreach(DynamicObject d in CorrectObject) {
                     d.DoAnomalyAction(false);
@@ -306,7 +332,7 @@ public class GameSystem : MonoBehaviour, IDataPersistence
         if (t > 0) {
             gameTime = t;
         }
-        if (gameTime <= 1) {
+        if (gameTime <= 0.5f) {
             Won = true;
             StartCoroutine(EndGame("won"));
             return;
@@ -352,18 +378,24 @@ public class GameSystem : MonoBehaviour, IDataPersistence
     }
     private void UpdateEnergy() {
         if(Time.time - LastEnergyCheck >= EnergyCheckInterval) {
-            if(CurrentEnergy >= 100) {
-                CurrentEnergy = 100;
-            }
-            else {
-                CurrentEnergy = CurrentEnergy + energyPerSecond;
-            }
+            ChangeEnergy(energyPerSecond);
             LastEnergyCheck = Time.time;
         }
     }
 
     public void ChangeEnergy(float amount) {
         CurrentEnergy += amount;
+
+        if(CurrentEnergy >= 100) {
+            CurrentEnergy = 100;
+        }
+        else if(CurrentEnergy <= 0) {
+            CurrentEnergy = 0;
+        }
+    }
+
+    public void ChangeDivergenceRate(int newTime) {
+        GameObjectDisappearanceInterval = newTime;
     }
 
   void Update()

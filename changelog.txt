@@ -190,7 +190,7 @@ Bug Fixes:
 -Fixed player being able to move when the game is over/jumpscare is playing
 -Fixed error sound not playing when the player hasn't selected a divergence type or room
 
-v0.5.0 (Apr 1, 2024):
+v0.5.0 (Apr 1, 2024) - Overhauling the look of the game:
 
 Changes:
 -Lighting Overhaul
@@ -201,9 +201,37 @@ Additions:
 -Lurker
 -Reporting UI Overhaul
 -You can now see where you are on the report UI
+-New floor and wall textures
 
 Bug Fixes:
 -Fixed hints not working on certain lights
 -Fixed flickering lights
 -Fixed camera clipping on higher FOVs
 -Flashlight can no longer cause energy to go below 0
+
+v0.5.1 ():
+
+Changes:
+-Changed 'Apartment' to 'Cabin'
+-Skybox in Cabin
+-Redid tutorial
+-Player data is tracked correctly, and new data is tracked
+
+Additions:
+-You can now see your energy outside of the report UI
+-Added dynamic difficulty, which will make the game easier if the player is doing bad (turned off by default)
+-Added UI for flashlight
+-If the player falls out of the map, they are teleported back inside the map
+-Added sensitivity options
+-Added mouse acceleration (currently no option to turn it on/off however. off by default)
+-Added the ability to zoom in with right click
+-Added Collectibles
+-Added sounds for doors
+
+Bug Fixes:
+-Fixed issue where room selection would need to be clicked twice on first open
+-Fixed cabin computer monitor showing a blank image
+-Fixed Cabin issue where reports would not count after reporting a specific divergence (kitchen bottle)
+-Fixed UI issue in Maria's Apartment
+-Report UI now correctly pauses
+-Fixed an issue in cabin where an object in the storage room had multiple types of movement attached to it

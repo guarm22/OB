@@ -19,6 +19,10 @@ public class MasterSettings : MonoBehaviour
     public Slider FOVSlider;
     public TMP_Text FOVText;
 
+    public Slider MouseSensitivitySlider;
+    public TMP_Text MouseSensitivityText;
+    public float MouseSensitivity;
+
     public Button applySettings;
     public Button backButton;
 
@@ -39,14 +43,13 @@ public class MasterSettings : MonoBehaviour
     private void SetUI() {
         volumeSlider.value = volume;
         FOVSlider.value = FOV;
+        MouseSensitivitySlider.value = MouseSensitivity;
     }
 
-    public void LoadSettings() {
+    private void LoadSettings() {
         volume = PlayerPrefs.GetFloat("Volume", 0.5f);
-        AudioListener.volume = volume;
-        volumeSlider.value = volume;
-        FOV = PlayerPrefs.GetFloat("FOV", 60);
-        FOVSlider.value = FOV;
+        FOV = PlayerPrefs.GetFloat("FOV", 60);    
+        MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 2);
     }
 
     void VolumeTest() {
@@ -55,12 +58,17 @@ public class MasterSettings : MonoBehaviour
     }
 
     void ApplySettings() {
+
         volume = volumeSlider.value;
         AudioListener.volume = volume;
         PlayerPrefs.SetFloat("Volume", volume);
         originalVolume = volume;
+
         FOV = FOVSlider.value;
         PlayerPrefs.SetFloat("FOV", FOV);
+
+        MouseSensitivity = MouseSensitivitySlider.value;
+        PlayerPrefs.SetFloat("MouseSensitivity", MouseSensitivity);
 
         StartCoroutine(AppliedTextFade());
     }
@@ -82,7 +90,11 @@ public class MasterSettings : MonoBehaviour
     {
         volume = volumeSlider.value;
         volumeText.text = (int)(volume * 100) + "%";
+
         FOV = FOVSlider.value;
         FOVText.text = (int)FOV + "";
+
+        MouseSensitivity = MouseSensitivitySlider.value;
+        MouseSensitivityText.text = MouseSensitivity.ToString("F1");
     }
 }

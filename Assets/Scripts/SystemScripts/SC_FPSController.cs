@@ -20,6 +20,7 @@ public class SC_FPSController : MonoBehaviour
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
     public static SC_FPSController Instance;
+
     [HideInInspector]
     public bool isCrouching = false;
     public float crouchAnimationTime = 0.15f;
@@ -28,11 +29,18 @@ public class SC_FPSController : MonoBehaviour
     public float originalCrouchSpeed;
     private bool isCrouchAnimation = false;
     [HideInInspector]
+
     public bool canMove = true;
+
     [HideInInspector]
     public float FOV;
     [HideInInspector]
     public float originalFOV;
+    public float minFOV = 30;
+
+    private bool mouseAccel;
+    private Vector3 prevMousePosition;
+    private float accelerationFactor = 0.01f;
 
     void Start() {
         characterController = GetComponent<CharacterController>();
@@ -44,8 +52,10 @@ public class SC_FPSController : MonoBehaviour
         originalWalkSpeed = walkingSpeed;
         originalCrouchSpeed = crouchSpeed;
         FOV = PlayerPrefs.GetFloat("FOV", 60);
+        lookSpeed = PlayerPrefs.GetFloat("MouseSensitivity", 2);
         originalFOV = FOV;
         playerCamera.fieldOfView = FOV;
+        mouseAccel = PlayerPrefs.GetInt("MouseAcceleration", 0) == 1 ? true : false;
     }
 
     private void PlayerMove() {
@@ -62,6 +72,11 @@ public class SC_FPSController : MonoBehaviour
         moveDirection = Vector3.ClampMagnitude(moveDirection, isRunning ? runningSpeed : walkingSpeed);
 
         CrouchLogic();
+        CameraZoom();
+
+        if(Input.GetKeyDown(KeyCode.E)) {
+            Interact();
+        }
 
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded) {
             moveDirection.y = jumpSpeed;
@@ -79,11 +94,20 @@ public class SC_FPSController : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
         // Player and Camera rotation
         if (canMove) {
+            float actualLookSpeed = lookSpeed;
+
+            if(mouseAccel) {
+                Vector3 mouseDelta = Input.mousePosition - prevMousePosition;
+                float mouseSpeed = mouseDelta.magnitude / Time.deltaTime;
+                actualLookSpeed = lookSpeed * (1 + mouseSpeed * accelerationFactor);
+            }
+
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * actualLookSpeed, 0);
         }
+        prevMousePosition = Input.mousePosition;
     }
 
     private void CrouchLogic() {
@@ -151,10 +175,48 @@ public class SC_FPSController : MonoBehaviour
         playerCamera.fieldOfView = FOV;
     }
 
+    public void CameraZoom() {
+        if(Input.GetMouseButton(1)) {
+            SlowlyZoom(30);
+        }
+        else {
+            SlowlyZoom(originalFOV);
+        }
+    }
+
+    private void SlowlyZoom(float targetFOV) {
+        if(playerCamera.fieldOfView < minFOV) {
+            return;
+        }
+        playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, 0.25f);
+    }
+
+    private void CheckOutOfMap() {
+        if(transform.position.y < -90) {
+            if(GameObject.Find("SPAWNPOINT")) {
+                transform.position = GameObject.Find("SPAWNPOINT").transform.position;
+            }
+            else {
+                transform.position = new Vector3(0, 0, 0);
+            }
+        }
+    }
+
+    private void Interact() {
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit)) {
+            if(hit.collider.gameObject.CompareTag("Collectible")) {
+                CollectibleControl.Instance.Collect(hit.collider.gameObject);
+            }
+        }
+    }
+
     void Update()  {   
         if(PlayerUI.paused || GameSystem.Instance.GameOver || CreatureControl.Instance.IsJumpscareFinished) {
             return;
         }
         PlayerMove();
+        CheckOutOfMap();
     }
 }
