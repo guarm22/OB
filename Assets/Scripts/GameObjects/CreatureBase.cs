@@ -83,10 +83,10 @@ public class CreatureBase : MonoBehaviour
         }
     }
 
-    protected bool canSeePlayer() {
+    protected bool canSeePlayer(float lookRange = 15f) {
         RaycastHit hit;
         Vector3 direction = player.transform.position - transform.position;
-        if (Physics.Raycast(transform.position, direction, out hit, sightRange, playerLayer)) {
+        if (Physics.Raycast(transform.position, direction, out hit, lookRange, playerLayer)) {
             //then check if there is a wall between
             if(Physics.Raycast(transform.position, direction, out hit, 
             Vector3.Distance(transform.position, player.transform.position), floorLayer)) {
@@ -130,6 +130,14 @@ public class CreatureBase : MonoBehaviour
             }
             soundTimerStart = 0f;
         }
+    }
+
+    protected virtual void FacePlayer() {
+        // Calculate the direction vector from the GameObject to the player
+        Vector3 direction = player.transform.position - transform.position;
+
+        // Set the GameObject's forward direction to this direction
+        transform.forward = direction;
     }
 
     // Start is called before the first frame update

@@ -99,7 +99,7 @@ public class CreatureControl : MonoBehaviour
             if (NavMesh.SamplePosition(furthestPoint, out hit, 5f, NavMesh.AllAreas)) {
                 furthestPoint = hit.position;
             } else {
-                // Handle case where no point could be found on the NavMesh
+                //handle case where no point could be found on the NavMesh
             }
             return furthestPoint;
     }
