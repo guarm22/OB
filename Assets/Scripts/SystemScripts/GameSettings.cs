@@ -54,9 +54,7 @@ public class GameSettings : MonoBehaviour
         LoadValues();
         SetTexts();
 
-        lowerDifficulty.onClick.AddListener(LowerDifficulty);
-        higherDifficulty.onClick.AddListener(HigherDifficulty);
-        higherDR.onClick.AddListener(() => setDR(higherDR));
+        /*higherDR.onClick.AddListener(() => setDR(higherDR));
         lowerDR.onClick.AddListener(() => setDR(lowerDR));
         highEPS.onClick.AddListener(() => setEPS(highEPS));
         lowEPS.onClick.AddListener(() => setEPS(lowEPS));
@@ -66,7 +64,7 @@ public class GameSettings : MonoBehaviour
         lowGP.onClick.AddListener(() => setGP(lowGP));
         highCS.onClick.AddListener(() => setCS(highCS));
         lowCS.onClick.AddListener(() => setCS(lowCS));
-        hints.onClick.AddListener(setHints);
+        hints.onClick.AddListener(setHints);*/
     }
 
     public void SetValues() {
@@ -193,46 +191,8 @@ public class GameSettings : MonoBehaviour
         SetTexts();
     }
 
-    void LowerDifficulty() {
-        if(Difficulty == "Easy") {
-            Difficulty = "Easy";
-        }
-        else if(Difficulty == "Normal") {
-            Difficulty = "Easy";
-        }
-        else if(Difficulty == "Hard") {
-            Difficulty = "Normal";
-        }
-        else if (Difficulty == "Nightmare") {
-            Difficulty = "Hard";
-        }
-        else if(Difficulty == "Custom") {
-            Difficulty = "Normal";
-        }
-        setDifficulty(Difficulty);
-    }
-    
-    void HigherDifficulty() {
-        if(Difficulty == "Easy") {
-            Difficulty = "Normal";
-        }
-        else if(Difficulty == "Normal") {
-            Difficulty = "Hard";
-        }
-        else if(Difficulty == "Hard") {
-            Difficulty = "Nightmare";
-        }
-        else if (Difficulty == "Nightmare") {
-            Difficulty = "Nightmare";
-        }
-        else if(Difficulty == "Custom") {
-            Difficulty = "Normal";
-        }
-        setDifficulty(Difficulty);
-    }
 
-
-    private void setDifficulty(string diff) {
+    public void setDifficulty(string diff) {
         DivergenceRate = GetDivergenceRate(diff);
         EPS = getEPS(diff);
         creatureThreshold = getCreatureThreshold(diff);

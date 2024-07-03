@@ -55,7 +55,6 @@ public class PlayerUI : MonoBehaviour
             return;
         }
         SelectionMenu();
-        Interact();
     }
 
     public string GetPlayerRoom() {
@@ -135,43 +134,7 @@ public class PlayerUI : MonoBehaviour
     }
 
     void Interact() {
-        /*if(Input.GetKeyDown(KeyCode.E)) { 
-            if(inJournal) {
-                SC_FPSController.Instance.canMove = true;
-                inJournal = false;
-                journalUI.SetActive(false);
-                return;
-            }
-            // Determine the direction that the player is looking
-            Vector3 lookDirection = Camera.main.transform.forward;
-
-            // Cast a ray in the look direction
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, lookDirection, out hit, maxDistance)) {
-                // Check if the object has the desired tag
-                if (hit.collider.gameObject.CompareTag(interactableTag)){
-                    // The ray hit an object with the target tag
-                    //hit.collider.gameObject.name
-                    GameObject found = Interactable.GetInteractableByName(hit.collider.gameObject.name);
-
-                    if(found != null) {
-                        Interactable script = found.GetComponent<Interactable>();
-                        string[] text = script.GetJournalText();
-
-                        JournalPopup journalScript = journalPanel.GetComponent<JournalPopup>();
-                        journalScript.SetText(text);
-
-                        journalUI.SetActive(true);
-                        inJournal = true;
-                        SC_FPSController.Instance.canMove = false;
-                    }
-                }
-                else {
-                    // The ray did not hit an object with the target tag
-
-                }
-            }
-        }*/
+   
     }
 
     private void openEscape() {
@@ -192,7 +155,7 @@ public class PlayerUI : MonoBehaviour
 
     private void EscapeMenu() {
         //CHANGE TO ESCAPE
-        if(Input.GetKeyDown(KeyCode.Q)) { 
+        if(Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)) { 
             if(!paused) {
                 openEscape();
             }
@@ -201,7 +164,13 @@ public class PlayerUI : MonoBehaviour
             }
         }
         if(Input.GetKeyDown(KeyCode.P)) {
-            Popup.Instance.OpenPopup("Test message!");
+            //disable all UI
+            if(defaultUI.activeSelf) {
+                defaultUI.SetActive(false);
+            }
+            else {
+                defaultUI.SetActive(true);
+            }
         }
         if(Input.GetKeyDown(KeyCode.O)) {
             debugUI.SetActive(!debugUI.activeSelf);

@@ -42,7 +42,7 @@ public class HintController : MonoBehaviour
     }
 
     void Start() {
-        if(PlayerPrefs.GetInt("HintsEnabled", 1) == 0) {
+        if(PlayerPrefs.GetString("VisualHints", "YES") == "NO") {
             //disable script
             this.enabled = false;
         }

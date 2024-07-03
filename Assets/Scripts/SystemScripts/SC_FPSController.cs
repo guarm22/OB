@@ -51,7 +51,7 @@ public class SC_FPSController : MonoBehaviour
         originalRunSpeed = runningSpeed;
         originalWalkSpeed = walkingSpeed;
         originalCrouchSpeed = crouchSpeed;
-        FOV = PlayerPrefs.GetFloat("FOV", 60);
+        FOV = PlayerPrefs.GetInt("FOV", 60);
         lookSpeed = PlayerPrefs.GetFloat("MouseSensitivity", 2);
         originalFOV = FOV;
         playerCamera.fieldOfView = FOV;

@@ -31,9 +31,6 @@ public class MainMenu : MonoBehaviour
     public Button SettingsBack;
     public Button StatsButton;
     public Button StatsBack;
-    public Button apartment;
-    public Button mariaApartment;
-    public Button tutorial;
     public Button DifficultyButton;
     public Button DifficultyBack;
     public Button AdvancedDifficulty;
@@ -53,18 +50,19 @@ public class MainMenu : MonoBehaviour
         this.GetComponent<AudioSource>().Play();
         ExitGame.onClick.AddListener(ExitButtonEvent);
         ChooseLevel.onClick.AddListener(LevelSelectionEvent);
-        LevelBack.onClick.AddListener(LevelBackEvent);
         SettingsButton.onClick.AddListener(SettingsButtonEvent);
-        SettingsBack.onClick.AddListener(SettingsBackEvent);
         StatsButton.onClick.AddListener(StatsButtonEvent);
         StatsBack.onClick.AddListener(StatsBackEvent);
-        apartment.onClick.AddListener(delegate { LoadLevel("Cabin"); });
-        tutorial.onClick.AddListener(delegate { LoadLevel("Tutorial"); });
-        mariaApartment.onClick.AddListener(delegate { LoadLevel("Maria's Apartment"); });
-        DifficultyButton.onClick.AddListener(DifficultyButtonEvent);
-        DifficultyBack.onClick.AddListener(DifficultyBackEvent);
+
         AdvancedDifficulty.onClick.AddListener(AdvancedDifficultyEvent);
         AdvancedBack.onClick.AddListener(AdvancedBackEvent);
+        
+        //add a hover listener for choose level
+        EventTrigger trigger = ChooseLevel.GetComponent<EventTrigger>();
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        entry.callback.AddListener((data) => { ChooseLevel.GetComponentInChildren<Text>().color = Color.red; });
+
         DefaultMenu.SetActive(true);
     }
 
@@ -103,7 +101,7 @@ public class MainMenu : MonoBehaviour
     }
     private void SettingsButtonEvent() {
         DefaultMenu.SetActive(false);
-        Settings.transform.localScale = new Vector3(1, 1, 1);
+        Settings.SetActive(true);
     }
     private void StatsButtonEvent() {
         DefaultMenu.SetActive(false);
