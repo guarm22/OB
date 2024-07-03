@@ -1,0 +1,95 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace SojaExiles {
+	public class opencloseDoor : MonoBehaviour {
+
+		public Animator openandclose;
+		public bool open;
+		public Transform Player;
+		public int minDistance = 15;
+		public bool locked = false;
+
+		public AudioClip closeSound;
+		public AudioClip openSound;
+		public AudioClip lockedSound;
+
+		private bool inAnim = false;
+
+		void Start()
+		{
+			open = false;
+			Player = GameObject.Find("Player").transform;
+
+			if(!closeSound){
+				closeSound = Resources.Load<AudioClip>("Sounds/door_close");
+			}
+			if(!openSound){
+				openSound = Resources.Load<AudioClip>("Sounds/door_open");
+			}
+			if(!lockedSound){
+				lockedSound = Resources.Load<AudioClip>("Sounds/door_locked");
+			}
+		}
+
+		void OnMouseOver() {
+			if(Cursor.lockState == CursorLockMode.Confined) {
+				return;
+        	}
+
+			if (Player) {
+				float dist = Vector3.Distance(Player.position, transform.position);
+
+				if (dist < minDistance  && !inAnim) {
+
+					if(locked) {
+						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)) {
+							StartCoroutine(PlayDoorSound(lockedSound, 0.0f));
+						}
+						return;
+					}
+
+					if (open == false) {
+
+						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)){
+							StartCoroutine(opening());
+							StartCoroutine(PlayDoorSound(openSound, 0.0f));
+						}
+					}
+					else {
+
+						if (open == true) {
+							if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)) {
+								StartCoroutine(closing());
+								StartCoroutine(PlayDoorSound(closeSound, 0.25f));
+							}
+						}
+					}
+				}
+			}
+		}
+
+		IEnumerator PlayDoorSound(AudioClip sound, float delay) {
+			yield return new WaitForSeconds(delay);
+			AudioSource.PlayClipAtPoint(sound, transform.GetComponent<MeshRenderer>().bounds.center);
+		}
+
+		IEnumerator opening() {
+			inAnim = true;
+			openandclose.Play("Opening");
+			open = true;
+			yield return new WaitForSeconds(.5f);
+
+			inAnim = false;
+		}
+
+		IEnumerator closing() {
+			inAnim = true;
+			openandclose.Play("Closing");
+			open = false;
+			yield return new WaitForSeconds(.5f);
+			inAnim = false;
+		}
+	}
+}
