@@ -14,10 +14,16 @@ public class BarSlider : MonoBehaviour
 
     public void SetValue(float newValue) {
         this.GetComponentInChildren<Slider>().value = newValue;
+        value = newValue;
+        valueText.text = newValue.ToString();
     }
 
     public float GetValue() {
         return value;
+    }
+
+    public int GetIntValue() {
+        return (int)value;
     }
 
     void Start() {

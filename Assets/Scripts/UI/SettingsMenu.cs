@@ -37,20 +37,48 @@ public class SettingsMenu : MonoBehaviour
 
     private void RevertChanges() {
         fullMenus[0].GetComponent<GameplaySettings>().RevertChanges();
-        //fullMenus[1].GetComponent<ControlsSettings>().Start();
-        //fullMenus[2].GetComponent<GraphicsSettings>().Start();
-        //fullMenus[3].GetComponent<AudioSettings>().Start();
+        fullMenus[1].GetComponent<ControlSettings>().RevertChanges();
+        fullMenus[2].GetComponent<GraphicsSettings>().RevertChanges();
+        fullMenus[3].GetComponent<AudioSettings>().RevertChanges();
+
+        this.gameObject.SetActive(false);
+        defaultMenu.SetActive(true);
     }
 
     private void BackEvent() {
+        fullMenus[0].GetComponent<GameplaySettings>().SaveSettings();
+        fullMenus[1].GetComponent<ControlSettings>().SaveSettings();
+        fullMenus[2].GetComponent<GraphicsSettings>().SaveSettings();
+        fullMenus[3].GetComponent<AudioSettings>().SaveSettings();
+
+        //update volume for main menu and music
+        GameObject.Find("MainScreen").GetComponent<AudioSource>().volume = PlayerPrefs.GetInt("MusicVolume") / 100f;
+        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
+
+        //update brightness
+        GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness"));
+
         this.gameObject.SetActive(false);
         defaultMenu.SetActive(true);
+    }
 
-        fullMenus[0].GetComponent<GameplaySettings>().SaveSettings();
-        //fullMenus[1].GetComponent<ControlsSettings>().SaveSettings();
-        //fullMenus[2].GetComponent<GraphicsSettings>().SaveSettings();
-        //fullMenus[3].GetComponent<AudioSettings>().SaveSettings();
+    public void Open() {
+        //initialize the sub menus
+        foreach(GameObject menu in fullMenus) {
+            menu.SetActive(true);
+        }
+        fullMenus[0].GetComponent<GameplaySettings>().SetValues();
+        fullMenus[1].GetComponent<ControlSettings>().SetValues();
+        fullMenus[2].GetComponent<GraphicsSettings>().SetValues();
+        fullMenus[3].GetComponent<AudioSettings>().SetValues();
 
+        SetMenu("Gameplay");
+
+        foreach(GameObject menu in fullMenus) {
+            if(menu.name != "GameplayMenu") {
+                menu.SetActive(false);
+            }
+        }
     }
 
     void Start() {
@@ -81,7 +109,6 @@ public class SettingsMenu : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Escape)) {
             RevertChanges();
-            BackEvent();
         }
     }
 }

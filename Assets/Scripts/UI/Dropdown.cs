@@ -19,19 +19,29 @@ public class Dropdown : MonoBehaviour
 
     public void SetOption(GameObject option) {
         currentOption = option;
-
         shownOption.GetComponentInChildren<TMP_Text>().text = option.GetComponentInChildren<TMP_Text>().text;
-
         //close dropdown
         List.SetActive(false);
+    }
+
+    public void SetOption(String option) {
+        //wait for the list to be created
+        foreach (Transform child in List.transform) {
+            //make sure child has tmp_text component
+            if(child.GetComponentInChildren<TMP_Text>() == null) continue;
+
+            if (child.GetComponentInChildren<TMP_Text>().text == option) {
+                SetOption(child.gameObject);
+                break;
+            }
+        }
     }
 
     public String GetCurrentOption() {
         return currentOption.GetComponentInChildren<TMP_Text>().text;
     }
 
-
-    void Start() {
+    void Awake() {
         //create a dropdown menu with the list of options
         foreach (String o in options) {
             GameObject option = new GameObject(o);
@@ -69,6 +79,7 @@ public class Dropdown : MonoBehaviour
             //extend the separator to fit the list
             RectTransform rt3 = separator.GetComponent<RectTransform>();
             rt3.sizeDelta = new Vector2(rt3.sizeDelta.x*1.95f, 2);
+            
         }
 
         //create a blank image background for the list
@@ -90,10 +101,13 @@ public class Dropdown : MonoBehaviour
         listBackground.transform.SetSiblingIndex(0);
 
         //add listener to the shown option to toggle the list
-        shownOption.onClick.AddListener(delegate { List.SetActive(!List.activeSelf); });
+        shownOption.onClick.AddListener(delegate { ToggleList(); });
         //set initial shown option
         shownOption.GetComponentInChildren<TMP_Text>().text = options[0];
+    }
 
+    private void ToggleList() {
+        List.SetActive(!List.activeSelf);
     }
 
     // Update is called once per frame

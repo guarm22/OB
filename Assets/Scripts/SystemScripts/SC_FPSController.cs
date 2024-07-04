@@ -52,10 +52,10 @@ public class SC_FPSController : MonoBehaviour
         originalWalkSpeed = walkingSpeed;
         originalCrouchSpeed = crouchSpeed;
         FOV = PlayerPrefs.GetInt("FOV", 60);
-        lookSpeed = PlayerPrefs.GetFloat("MouseSensitivity", 2);
+        lookSpeed = PlayerPrefs.GetFloat("MouseSens", 2);
         originalFOV = FOV;
         playerCamera.fieldOfView = FOV;
-        mouseAccel = PlayerPrefs.GetInt("MouseAcceleration", 0) == 1 ? true : false;
+        mouseAccel = PlayerPrefs.GetInt("MouseAccel", 0) == 1 ? true : false;
     }
 
     private void PlayerMove() {

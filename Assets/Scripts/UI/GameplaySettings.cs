@@ -8,7 +8,7 @@ public class GameplaySettings : MonoBehaviour
     public GameObject VisualHints;
     public GameObject FOV;
 
-    void Start() {
+    void Awake() {
         if(!PlayerPrefs.HasKey("VisualHints")) {
             PlayerPrefs.SetString("VisualHints", "YES");
         }
@@ -17,21 +17,20 @@ public class GameplaySettings : MonoBehaviour
             PlayerPrefs.SetInt("FOV", 75);
         }
 
+        SetValues();
+    }
+
+    public void SetValues() {
         VisualHints.GetComponentInChildren<SingleChoiceSection>().SetChoice(PlayerPrefs.GetString("VisualHints"));
         FOV.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetInt("FOV"));
     }
 
     public void RevertChanges() {
-        Start();
+        Awake();
     }
 
     public void SaveSettings() {
         PlayerPrefs.SetString("VisualHints", VisualHints.GetComponentInChildren<SingleChoiceSection>().GetCurrentChoice());
         PlayerPrefs.SetInt("FOV", (int)FOV.GetComponentInChildren<BarSlider>().GetValue());
-    }
-
-    // Update is called once per frame
-    void Update() {
-
     }
 }
