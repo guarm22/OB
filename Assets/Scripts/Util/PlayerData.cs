@@ -4,13 +4,13 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 [System.Serializable]
 public class PlayerData {
-    public int ReportsMade;
-    public int DivergencesReported;
-    public int CreaturesReported;
+    public Stat ReportsMade;
+    public Stat DivergencesReported;
+    public Stat CreaturesReported;
 
     public PlayerData() {
-        ReportsMade = 0;
-        DivergencesReported = 0;
-        CreaturesReported = 0;
+        ReportsMade = new Stat("Reports Made", 0);
+        DivergencesReported = new Stat("Divergences Reported", 0);
+        CreaturesReported = new Stat("Creatures Reported", 0);
     }
 }

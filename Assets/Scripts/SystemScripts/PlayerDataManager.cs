@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerDataManager : MonoBehaviour
 {
@@ -57,13 +59,30 @@ public class PlayerDataManager : MonoBehaviour
 
     private void UpdateData() {
         //update player data
-        playerData.ReportsMade += GameSystem.Instance.ReportsMade;
-        playerData.DivergencesReported += GameSystem.Instance.DivergencesReported;
-        playerData.CreaturesReported += GameSystem.Instance.CreaturesReported;
+        playerData.ReportsMade.value += GameSystem.Instance.ReportsMade;
+        playerData.DivergencesReported.value += GameSystem.Instance.DivergencesReported;
+        playerData.CreaturesReported.value += GameSystem.Instance.CreaturesReported;
 
         GameSystem.Instance.ReportsMade = 0;
         GameSystem.Instance.DivergencesReported = 0;
         GameSystem.Instance.CreaturesReported = 0;
+    }
+
+    public String GetDataValue(String name) {
+        if(playerData == null) {
+            return "0";
+        }
+
+        switch(name) {
+            case "ReportsMade":
+                return playerData.ReportsMade.value.ToString();
+            case "DivergencesReported":
+                return playerData.DivergencesReported.value.ToString();
+            case "CreaturesReported":
+                return playerData.CreaturesReported.value.ToString();
+            default:
+                return "0";
+        }
     }
 
     public static string GetProfile() {

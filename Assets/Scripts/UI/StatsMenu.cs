@@ -8,7 +8,7 @@ using TMPro;
 public class StatsMenu : MonoBehaviour
 {
     private String currentMenu;
-    private List<String> menus = new List<String> { "Stats", "Achievements", "Relics", "Compendium"};
+    private List<String> menus = new List<String> { "Stats", "Achievements", /*"Relics",*/ "Compendium"};
     public Image underline;
     public Button Back;
     public GameObject defaultMenu;

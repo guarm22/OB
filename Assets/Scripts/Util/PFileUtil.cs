@@ -11,6 +11,8 @@ public class PFileUtil {
         if(!Directory.Exists($"{Application.persistentDataPath}/{PlayerDataManager.GetProfile()}")) {
             CreateDirectoryForProfile();
         }
+
+        Debug.Log($"Saving to {path}");
         System.IO.File.WriteAllText(path, json);
     }
 

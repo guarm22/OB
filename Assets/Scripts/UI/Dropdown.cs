@@ -25,7 +25,6 @@ public class Dropdown : MonoBehaviour
     }
 
     public void SetOption(String option) {
-        //wait for the list to be created
         foreach (Transform child in List.transform) {
             //make sure child has tmp_text component
             if(child.GetComponentInChildren<TMP_Text>() == null) continue;
