@@ -18,11 +18,11 @@ public class MenuBackground : MonoBehaviour
         worlds[randomWorld].SetActive(true);
 
         //find all gameobjects with "sp" tag and choose a random one
-        //GameObject[] sp = GameObject.FindGameObjectsWithTag("sp");
-        //if(sp.Length == 0) {return;}
-        //int randomSP = Random.Range(0, sp.Length);
+        GameObject[] sp = GameObject.FindGameObjectsWithTag("MenuSpawnpoint");
+        if(sp.Length == 0) {return;}
+        int randomSP = Random.Range(0, sp.Length);
         //move the camera to that spawnpoint
-       // mainCamera.transform.position = sp[randomSP].transform.position;
+        mainCamera.transform.position = sp[randomSP].transform.position;
         
     }
 

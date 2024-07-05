@@ -9,10 +9,6 @@ public class GameSettings : MonoBehaviour
     public string Difficulty;
     public int DivergenceRate;
     public float EPS;
-
-    public Button lowerDifficulty;
-    public Button higherDifficulty;
-
     public TMP_Text DifficultyText;
     public TMP_Text divergenceRateText;
     public Button higherDR;
@@ -193,6 +189,7 @@ public class GameSettings : MonoBehaviour
 
 
     public void setDifficulty(string diff) {
+        PlayerPrefs.SetString("Difficulty", diff);
         DivergenceRate = GetDivergenceRate(diff);
         EPS = getEPS(diff);
         creatureThreshold = getCreatureThreshold(diff);
@@ -222,7 +219,7 @@ public class GameSettings : MonoBehaviour
 
     private int GetDivergenceRate(string diff) {
         if(diff == "Easy") {
-            return 33;
+            return 32;
         }
         else if(diff == "Normal") {
             return 26;

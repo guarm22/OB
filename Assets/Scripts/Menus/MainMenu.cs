@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         //change brightness
-       // GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness"));
+        GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness"));
         //change audio settings
         AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
 

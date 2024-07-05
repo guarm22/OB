@@ -113,7 +113,7 @@ public class GameSystem : MonoBehaviour
             break;
         default:
             Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
-            GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 22);
+            GameObjectDisappearanceInterval = PlayerPrefs.GetInt("DivergenceRate", 26);
             MaxDivergences = PlayerPrefs.GetInt("MaxDivergences", 4);
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
             GameStartTime = PlayerPrefs.GetInt("GameStartTime", 15);
