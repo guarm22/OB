@@ -62,10 +62,25 @@ public class PlayerDataManager : MonoBehaviour
         playerData.ReportsMade.value += GameSystem.Instance.ReportsMade;
         playerData.DivergencesReported.value += GameSystem.Instance.DivergencesReported;
         playerData.CreaturesReported.value += GameSystem.Instance.CreaturesReported;
+        playerData.TimesCrouched.value += SC_FPSController.Instance.timesCrouched;
+        playerData.TimesPlayedOnEasy.value += GameSystem.Instance.TimesPlayedOnEasy;
+        playerData.TimesPlayedOnNormal.value += GameSystem.Instance.TimesPlayedOnNormal;
+        playerData.TimesPlayedOnHard.value += GameSystem.Instance.TimesPlayedOnHard;
 
         GameSystem.Instance.ReportsMade = 0;
         GameSystem.Instance.DivergencesReported = 0;
         GameSystem.Instance.CreaturesReported = 0;
+        SC_FPSController.Instance.timesCrouched = 0;
+        GameSystem.Instance.TimesPlayedOnEasy = 0;
+        GameSystem.Instance.TimesPlayedOnNormal = 0;
+        GameSystem.Instance.TimesPlayedOnHard = 0;
+    }
+
+    public void EndGameStats(float endTime) {
+        playerData.TimeInLevel.value += ((int)Mathf.Ceil(endTime));
+
+        UpdateData();
+        SavePlayerData();
     }
 
     public String GetDataValue(String name) {

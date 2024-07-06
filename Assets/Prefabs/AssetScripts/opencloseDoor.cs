@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,10 +18,16 @@ namespace SojaExiles {
 
 		private bool inAnim = false;
 
+		public String doorType = "none";
+
 		void Start()
 		{
 			open = false;
 			Player = GameObject.Find("Player").transform;
+
+			if(doorType == "none") {
+				return;
+			}
 
 			if(!closeSound){
 				closeSound = Resources.Load<AudioClip>("Sounds/door_close");
@@ -45,7 +52,7 @@ namespace SojaExiles {
 
 					if(locked) {
 						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)) {
-							StartCoroutine(PlayDoorSound(lockedSound, 0.0f));
+							DoorSound(lockedSound, 0.0f);
 						}
 						return;
 					}
@@ -54,7 +61,7 @@ namespace SojaExiles {
 
 						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)){
 							StartCoroutine(opening());
-							StartCoroutine(PlayDoorSound(openSound, 0.0f));
+							DoorSound(openSound, 0.0f);
 						}
 					}
 					else {
@@ -62,12 +69,20 @@ namespace SojaExiles {
 						if (open == true) {
 							if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)) {
 								StartCoroutine(closing());
-								StartCoroutine(PlayDoorSound(closeSound, 0.25f));
+								DoorSound(closeSound, 0.25f);
 							}
 						}
 					}
 				}
 			}
+		}
+
+		private void DoorSound(AudioClip sound, float delay) {
+			if(sound == null) {
+				return;
+			}
+
+			StartCoroutine(PlayDoorSound(sound, 0.0f));
 		}
 
 		IEnumerator PlayDoorSound(AudioClip sound, float delay) {

@@ -15,6 +15,7 @@ public class AchievementManager : MonoBehaviour
     
     void Start() {
         //load list from file
+        Instance = this;
         if(PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json") == null) {
             Debug.Log("No achievement file found, creating new one");
             achievements = FirstTimeLoad();
@@ -33,12 +34,13 @@ public class AchievementManager : MonoBehaviour
 
     private void AddNewAchievements() {
         List<Achievement> newAchievements = new List<Achievement> {
-            new Achievement("Beat Tutorial", "Complete the tutorial", false, 1),
-            new Achievement("Beat Cabin", "Complete the cabin level", false, 1),
-            new Achievement("Beat Graveyard", "Complete the Graveyard level", false, 1),
-            new Achievement("Beat Normal", "Complete a level on normal", false, 1),
-            new Achievement("Beat Hard", "Complete a level on hard", false, 1),
+
         };
+
+        if(achievements.Count == 0) {
+            Debug.Log("No new achievements added");
+            return;
+        }
 
         foreach(Achievement a in newAchievements) {
             if(!achievements.Contains(a)) {
@@ -50,6 +52,28 @@ public class AchievementManager : MonoBehaviour
         Save();
     }
 
+    public void CheckLevelFinishAchievements(String level, String diff) {
+        foreach(Achievement a in achievements) {
+            if(a.Name == "Beat " + level) {
+                if(a.Unlocked) {
+                    return;
+                }
+                if(a.Name == "Beat " + level && a.Progress == 0) {
+                    UnlockAchievement(a.Name);
+                }
+            }
+
+            if(a.Name == "Beat " + diff) {
+                if(a.Unlocked) {
+                    return;
+                }
+                if(a.Name == "Beat " + diff && a.Progress == 0) {
+                    UnlockAchievement(a.Name);
+                }
+            }
+        }
+    }
+
     
     private List<Achievement> FirstTimeLoad() {
         List<Achievement> achievements = new List<Achievement>
@@ -57,6 +81,11 @@ public class AchievementManager : MonoBehaviour
             new Achievement("First Report", "Make your first report", false, 1),
             new Achievement("Five Reports", "Make five reports", false, 5),
             new Achievement("5 Creatures Reported", "Report 5 Creatures", false, 5),
+            new Achievement("Beat Tutorial", "Complete the tutorial", false, 1),
+            new Achievement("Beat Cabin", "Complete the cabin level", false, 1),
+            new Achievement("Beat Graveyard", "Complete the Graveyard level", false, 1),
+            new Achievement("Beat Normal", "Complete a level on normal", false, 1),
+            new Achievement("Beat Hard", "Complete a level on hard", false, 1),
         };
 
         return achievements;

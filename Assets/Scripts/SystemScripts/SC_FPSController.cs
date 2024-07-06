@@ -42,6 +42,8 @@ public class SC_FPSController : MonoBehaviour
     private Vector3 prevMousePosition;
     private float accelerationFactor = 0.01f;
 
+    public int timesCrouched = 0;
+
     void Start() {
         characterController = GetComponent<CharacterController>();
         Instance = this;
@@ -63,7 +65,7 @@ public class SC_FPSController : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         // Press Left Shift to run
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        bool isRunning = Input.GetKey(KeybindManager.instance.GetKeybind("Sprint"));
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
@@ -74,11 +76,11 @@ public class SC_FPSController : MonoBehaviour
         CrouchLogic();
         CameraZoom();
 
-        if(Input.GetKeyDown(KeyCode.E)) {
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
             Interact();
         }
 
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded) {
+        if (Input.GetKey(KeybindManager.instance.GetKeybind("Jump")) && canMove && characterController.isGrounded) {
             moveDirection.y = jumpSpeed;
         }
         else {
@@ -111,16 +113,17 @@ public class SC_FPSController : MonoBehaviour
     }
 
     private void CrouchLogic() {
-        if(Input.GetKeyDown(KeyCode.LeftControl) && !isCrouchAnimation) {
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Crouch")) && !isCrouchAnimation) {
+            timesCrouched++;
             StartCoroutine(Crouch(true));
         }
-        else if (Input.GetKeyUp(KeyCode.LeftControl) && !isCrouchAnimation && isCrouching) {
+        else if (Input.GetKeyUp(KeybindManager.instance.GetKeybind("Crouch")) && !isCrouchAnimation && isCrouching) {
             StartCoroutine(Crouch(false));
         }
         if(isCrouchAnimation && isCrouching) {
             return;
         }
-        if(!Input.GetKey(KeyCode.LeftControl) && isCrouching) {
+        if(!Input.GetKey(KeybindManager.instance.GetKeybind("Crouch")) && isCrouching) {
             StartCoroutine(Crouch(false));
         }
 
@@ -176,7 +179,7 @@ public class SC_FPSController : MonoBehaviour
     }
 
     public void CameraZoom() {
-        if(Input.GetMouseButton(1)) {
+        if(Input.GetKey(KeybindManager.instance.GetKeybind("Zoom"))) {
             SlowlyZoom(30);
         }
         else {

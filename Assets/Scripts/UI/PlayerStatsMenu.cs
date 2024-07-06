@@ -37,7 +37,7 @@ public class PlayerStatsMenu : MonoBehaviour
         //get first child, which is the name of the stat
         statBlock.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Total " + stat.name;
         //get second child, which is the value of the stat
-        statBlock.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = stat.value.ToString();
+        statBlock.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = stat.value.ToString() + " " + stat.stringRep;
     }
 
     void Awake() {

@@ -24,7 +24,9 @@ public class StatsMenu : MonoBehaviour
                 fullMenus[menus.IndexOf(l)].SetActive(true);
                 menuText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
                 //activate underline image
-                underline.transform.position = new Vector3(menuText.transform.position.x, menuText.transform.position.y - 50, menuText.transform.position.z);
+                underline.transform.position = 
+                new Vector3(menuText.transform.position.x, menuText.transform.position.y - 50, menuText.transform.position.z);
+
             } else {
                 fullMenus[menus.IndexOf(l)].SetActive(false);
                 menuText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Normal;

@@ -31,7 +31,7 @@ public class Flashlight : MonoBehaviour
             beam.enabled = false;
         }
 
-        if(Input.GetKeyDown(KeyCode.F)) {
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Flashlight"))) {
             beam.enabled = !beam.enabled;
         }
 
@@ -42,5 +42,10 @@ public class Flashlight : MonoBehaviour
                 GameSystem.Instance.ChangeEnergy(-totalEnergyDrainPerSecond);
             }
         }
+
+        //get the x rotation of the camera
+        float x = Camera.main.transform.eulerAngles.x;
+        //set the x rotation of the flashlight to the y rotation of the camera
+        transform.eulerAngles = Camera.main.transform.eulerAngles;
     }
 }

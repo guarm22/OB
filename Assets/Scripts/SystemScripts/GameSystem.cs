@@ -62,6 +62,15 @@ public class GameSystem : MonoBehaviour
   [HideInInspector]
   public int CreaturesReported = 0;
 
+  [HideInInspector]
+  public int TimesPlayedOnEasy = 0;
+
+    [HideInInspector]
+    public int TimesPlayedOnNormal = 0;
+
+    [HideInInspector]
+    public int TimesPlayedOnHard = 0;
+
   void Start() {
     if (Instance != null) {
       Debug.LogError("There is more than one instance!");
@@ -97,6 +106,7 @@ public class GameSystem : MonoBehaviour
 
   private void SetGameSettings() {
     if(InEditor()) {
+        Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
         return;
     }
     if(SceneManager.GetActiveScene().name == "Tutorial") {
@@ -118,6 +128,16 @@ public class GameSystem : MonoBehaviour
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
             GameStartTime = PlayerPrefs.GetInt("GameStartTime", 15);
             break;
+    }
+
+    if(Difficulty == "Easy") {
+        TimesPlayedOnEasy++;
+    }
+    else if(Difficulty == "Normal") {
+        TimesPlayedOnNormal++;
+    }
+    else if(Difficulty == "Hard") {
+        TimesPlayedOnHard++;
     }
   
   }
@@ -349,6 +369,8 @@ public class GameSystem : MonoBehaviour
             yield return StartCoroutine(CreatureControl.Instance.ZombieJumpscare());
         }
         CreatureControl.Instance.IsJumpscareFinished=true;
+        AchievementManager.Instance.CheckLevelFinishAchievements(SceneManager.GetActiveScene().name, Difficulty);
+        PlayerDataManager.Instance.EndGameStats(startTime-gameTime);
         cleanUpGame();
     }
 
