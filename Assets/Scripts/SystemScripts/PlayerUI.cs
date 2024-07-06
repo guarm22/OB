@@ -155,7 +155,7 @@ public class PlayerUI : MonoBehaviour
 
     private void EscapeMenu() {
         //CHANGE TO ESCAPE
-        if(Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)) { 
+        if(Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeybindManager.instance.GetKeybind("Escape"))) { 
             if(!paused) {
                 openEscape();
             }

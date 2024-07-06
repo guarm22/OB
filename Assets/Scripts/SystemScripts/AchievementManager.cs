@@ -6,12 +6,14 @@ using UnityEngine;
 public class AchievementManager : MonoBehaviour
 {
     public int checkFrequency = 20;
-    private int timeSinceLastCheck = 0;
+    private float timeSinceLastCheck = 0;
 
     public List<Achievement> achievements = new List<Achievement>();
     private JsonWrapperUtil<Achievement> wrapper;
 
     public static AchievementManager Instance;
+
+    private int unlocked = 0;
     
     void Start() {
         //load list from file
@@ -28,16 +30,28 @@ public class AchievementManager : MonoBehaviour
         AddNewAchievements();
     }
 
-    void Save() {
-        PFileUtil.Save("achievementList.json", new JsonWrapperUtil<Achievement>(achievements));
-    }
-
-    private void AddNewAchievements() {
-        List<Achievement> newAchievements = new List<Achievement> {
-
+    private List<Achievement> FirstTimeLoad() {
+        List<Achievement> achievements = new List<Achievement>
+        {
+            new Achievement("Divergence Hunter", "Make your first report.", false, 1),
+            new Achievement("Divergence Destroyer", "Make fifty reports.", false, 50),
+            new Achievement("Be Gone, Creatures", "Report twenty creatures.", false, 20),
+            new Achievement("First Steps", "Complete the tutorial.", false, 1),
+            new Achievement("A Night in the Woods", "Complete the cabin level.", false, 1),
+            new Achievement("Haunting Disappearences", "Complete the Graveyard level.", false, 1),
+            new Achievement("Beat Normal", "Complete a level on normal.", false, 1),
+            new Achievement("Beat Hard", "Complete a level on hard.", false, 1),
+            new Achievement("Eyes Peeled", "Beat a level on normal or harder without letting a divergence be active for more than 40 seconds.", false, 1),
         };
 
-        if(achievements.Count == 0) {
+        return achievements;
+    }
+    private void AddNewAchievements() {
+        List<Achievement> newAchievements = new List<Achievement> {
+            
+        };
+
+        if(newAchievements.Count == 0) {
             Debug.Log("No new achievements added");
             return;
         }
@@ -47,61 +61,82 @@ public class AchievementManager : MonoBehaviour
                 achievements.Add(a);
             }
         }
-
-        Debug.Log(newAchievements.Count + " New achievements added");
         Save();
     }
 
-    public void CheckLevelFinishAchievements(String level, String diff) {
+    public void CheckLevelFinishAchievements(String level, String diff, String reason) {
+        CheckAllAchievementProgress();
+        if(reason != "won") {
+            return;
+        }
+
         foreach(Achievement a in achievements) {
-            if(a.Name == "Beat " + level) {
+            if(a.Unlocked) {
+                continue;
+            }
+
+            if(a.Name == "A Night in the Woods") {
                 if(a.Unlocked) {
-                    return;
+                    
                 }
-                if(a.Name == "Beat " + level && a.Progress == 0) {
+                else if(level=="Cabin" && a.Progress == 0) {
+                    UnlockAchievement(a.Name);
+                }
+            }
+
+            if(a.Name == "Haunting Disappearences") {
+                if(a.Unlocked) {
+                    
+                }
+                else if(level=="Graveyard" && a.Progress == 0) {
+                    UnlockAchievement(a.Name);
+                }
+            }
+
+            if(a.Name == "First Steps") {
+                if(a.Unlocked) {
+                    
+                }
+                else if(level=="Tutorial" && a.Progress == 0) {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "Beat " + diff) {
                 if(a.Unlocked) {
-                    return;
+                    
                 }
-                if(a.Name == "Beat " + diff && a.Progress == 0) {
+                else if(a.Name == "Beat " + diff && a.Progress == 0) {
                     UnlockAchievement(a.Name);
                 }
             }
-        }
-    }
 
-    
-    private List<Achievement> FirstTimeLoad() {
-        List<Achievement> achievements = new List<Achievement>
-        {
-            new Achievement("First Report", "Make your first report", false, 1),
-            new Achievement("Five Reports", "Make five reports", false, 5),
-            new Achievement("5 Creatures Reported", "Report 5 Creatures", false, 5),
-            new Achievement("Beat Tutorial", "Complete the tutorial", false, 1),
-            new Achievement("Beat Cabin", "Complete the cabin level", false, 1),
-            new Achievement("Beat Graveyard", "Complete the Graveyard level", false, 1),
-            new Achievement("Beat Normal", "Complete a level on normal", false, 1),
-            new Achievement("Beat Hard", "Complete a level on hard", false, 1),
-        };
-
-        return achievements;
-    }
-
-    private void UnlockAchievement(string name) {
-        foreach(Achievement a in achievements) {
-            if(a.Name == name) {
-                a.dateEarned = DateTime.Now.ToString();
-                a.Unlocked = true;
-                a.Progress = a.Goal;
-                Debug.Log("Achievement unlocked: " + a.Name);
-                Save();
-                return;
+            if(a.Name == "Eyes Peeled") {
+                if(a.Unlocked || GameSystem.Instance.Difficulty == "Easy" || GameSystem.Instance.Difficulty == "Custom") {
+                    continue;
+                }
+                bool failed = false;
+                //check each report to make sure an item wasn't active for more than 40s
+                foreach(Report r in GameSystem.Instance.reports) {
+                    foreach(float f in r.itemActiveTime) {
+                        if(f > 40) {
+                            failed = true;
+                        }
+                    }
+                }
+                //check each divergence to make sure it hasn't been active for more than 40s
+                foreach(DynamicObject d in GameSystem.Instance.Anomalies) {
+                    if(Time.time - d.divTime > 40) {
+                        failed = true;
+                    }
+                }
+                if(!failed) {
+                    UnlockAchievement(a.Name);
+                }
             }
+
         }
+        Save();
     }
 
     public void CheckAllAchievementProgress() {
@@ -111,7 +146,7 @@ public class AchievementManager : MonoBehaviour
                 continue;
             }
             switch(a.Name) {
-                case "First Report":
+                case "Divergence Hunter":
                     if(int.Parse(data.GetDataValue("ReportsMade")) >= 1) {
                         UnlockAchievement(a.Name);
                     }
@@ -121,7 +156,7 @@ public class AchievementManager : MonoBehaviour
                     }
                     break;
 
-                case "Five Reports":
+                case "Divergence Destroyer":
                     if(int.Parse(data.GetDataValue("ReportsMade")) >= 5) {
                         UnlockAchievement(a.Name);
                     }
@@ -131,7 +166,7 @@ public class AchievementManager : MonoBehaviour
                     }
                     break;
 
-                case "5 Creatures Reported":
+                case "Be Gone, Creatures":
                     if(int.Parse(data.GetDataValue("CreaturesReported")) >= 5) {
                         UnlockAchievement(a.Name);
                     }
@@ -142,10 +177,31 @@ public class AchievementManager : MonoBehaviour
                     break;
             }
         }
+        if(unlocked > 0) {
+            Save();
+        }
     }
 
+    private void UnlockAchievement(string name) {
+        foreach(Achievement a in achievements) {
+            if(a.Name == name) {
+                this.unlocked = this.unlocked + 1;
+                a.dateEarned = DateTime.Now.ToString();
+                a.Unlocked = true;
+                a.Progress = a.Goal;
+                Debug.Log("Achievement unlocked: " + a.Name);
+                return;
+            }
+        }
+    }
+
+    void Save() {
+        PFileUtil.Save("achievementList.json", new JsonWrapperUtil<Achievement>(achievements));
+    }
+
+
     void Update() {
-        if(PlayerUI.paused) {
+        if(PlayerUI.paused || GameSystem.Instance.GameOver) {
             return;
         }
         if(timeSinceLastCheck >= checkFrequency) {
@@ -153,7 +209,7 @@ public class AchievementManager : MonoBehaviour
             timeSinceLastCheck = 0;
         }
         else {
-            timeSinceLastCheck += 1;
+            timeSinceLastCheck += Time.deltaTime;
         }
     }
 }

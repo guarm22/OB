@@ -12,6 +12,7 @@ public class PlayerData {
     public Stat TimesPlayedOnNormal;
     public Stat TimesPlayedOnHard;
     public Stat TimeInLevel;
+    public Stat FileSystemVer;
 
     public PlayerData() {
         ReportsMade = new Stat("Reports Made", 0);

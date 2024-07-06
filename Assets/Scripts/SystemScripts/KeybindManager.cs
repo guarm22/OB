@@ -44,7 +44,8 @@ public class KeybindManager : MonoBehaviour {
             new Keybind("Pause", KeyCode.Q),
             new Keybind("Report Menu", KeyCode.Tab),
             new Keybind("Flashlight", KeyCode.F),
-            new Keybind("Zoom", KeyCode.Mouse1)
+            new Keybind("Zoom", KeyCode.Mouse1),
+            new Keybind("FileSystemVersion", KeyCode.Mouse1)
         };
         return keybinds;
     }
@@ -52,6 +53,10 @@ public class KeybindManager : MonoBehaviour {
     private void Awake() {
         instance = this;
         LoadKeybinds();
+
+        if(GetKeybind("FileSystemVersion") != KeyCode.Mouse1 || GetKeybind("FileSystemVersion") == KeyCode.None) {
+            PFileUtil.ResetFiles();
+        }
     }    
 
 }

@@ -71,6 +71,9 @@ public class GameSystem : MonoBehaviour
     [HideInInspector]
     public int TimesPlayedOnHard = 0;
 
+    [HideInInspector]
+    public List<Report> reports;
+
   void Start() {
     if (Instance != null) {
       Debug.LogError("There is more than one instance!");
@@ -81,6 +84,7 @@ public class GameSystem : MonoBehaviour
     Instance = this;
     Anomalies = new List<DynamicObject>();
     DynamicObjects = new List<DynamicObject>();
+    reports = new List<Report>();
     Rooms = new Dictionary<string, int>();
     Guessed = false;
     LastGuess = -5;
@@ -290,6 +294,18 @@ public class GameSystem : MonoBehaviour
             lastCorrectGuessTime = Time.time;
         }
 
+        Report r = new Report(
+            types,
+            found.Select(d => d.Obj.name).ToList(),
+            found.Select(d => d.data.energyCost).ToList(),
+            DateTime.Now.ToString("HH:mm:ss"),
+            found.Select(d => (Time.time - d.divTime)+(GuessLockout/2)).ToList(),
+            found.Count > 0,
+            room,
+            totalCost
+        );
+        reports.Add(r);
+
         ReportsMade += 1;
         DivergencesReported += CorrectObject.Count - CorrectObject.Count(d => d.data.type == ANOMALY_TYPE.Creature);
         CreaturesReported += CorrectObject.Count(d => d.data.type == ANOMALY_TYPE.Creature);
@@ -369,7 +385,7 @@ public class GameSystem : MonoBehaviour
             yield return StartCoroutine(CreatureControl.Instance.ZombieJumpscare());
         }
         CreatureControl.Instance.IsJumpscareFinished=true;
-        AchievementManager.Instance.CheckLevelFinishAchievements(SceneManager.GetActiveScene().name, Difficulty);
+        AchievementManager.Instance.CheckLevelFinishAchievements(SceneManager.GetActiveScene().name, Difficulty, reason);
         PlayerDataManager.Instance.EndGameStats(startTime-gameTime);
         cleanUpGame();
     }

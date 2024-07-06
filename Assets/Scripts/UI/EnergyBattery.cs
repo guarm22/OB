@@ -10,7 +10,7 @@ public class EnergyBattery : MonoBehaviour
     public List<Image> batteryImages = new List<Image>();
     private float energy;
     void Update() {
-        if(GameSystem.Instance.CurrentEnergy < energy-1.5f) {
+        if(GameSystem.Instance.CurrentEnergy < energy-2.5f) {
             StartCoroutine(RedBattery());
         }
         energy = GameSystem.Instance.CurrentEnergy;
@@ -25,10 +25,22 @@ public class EnergyBattery : MonoBehaviour
             return;
         }
 
-        int currentTicks = (int) Mathf.Floor(energy/25);
-        int blinkingTick = (int) Mathf.Floor(energy/25);
+        int batteriesEnabled = 4;
+        if(energy >= 90) {
+            batteriesEnabled = 4;
+        } else if(energy >= 65) {
+            batteriesEnabled = 3;
+        } else if(energy >= 40) {
+            batteriesEnabled = 2;
+        } else if(energy >= 15) {
+            batteriesEnabled = 1;
+        }
+        else {
+            batteriesEnabled = 0;
+        }
+
         for(int i = 0; i < batteryImages.Count; i++) {
-            if(i < currentTicks) {
+            if(i < batteriesEnabled) {
                 batteryImages[i].enabled = true;
             } else {
                 batteryImages[i].enabled = false;

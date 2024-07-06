@@ -21,10 +21,10 @@ public class AchievementMenu : MonoBehaviour
     private int pnum = 1;
 
     private void LoadAchievements() {
-        achievements = PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json").list;
-        if(achievements == null) {
+        if(PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json") == null) {
             return;
         }
+                achievements = PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json").list;
         Debug.Log("Loaded " + achievements.Count + " achievements");
     } 
 
