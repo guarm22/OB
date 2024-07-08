@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class EndGameScreen : MonoBehaviour
 {
-    public Text ADetected;
-    public Text AMissed;
-    public Text GameOver;
+    public TMP_Text ADetected;
+    public TMP_Text AMissed;
+    public TMP_Text GameOver;
     public Button ReturnToMenuButton;
     public Button RetryButton;
     public void ReturnToMenu() {

@@ -24,7 +24,7 @@ public class AchievementMenu : MonoBehaviour
         if(PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json") == null) {
             return;
         }
-                achievements = PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json").list;
+        achievements = PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json").list;
         Debug.Log("Loaded " + achievements.Count + " achievements");
     } 
 

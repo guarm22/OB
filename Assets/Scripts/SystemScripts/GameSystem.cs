@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
+using TMPro;
 public class GameSystem : MonoBehaviour
 {
   public int GuessLockout;
@@ -28,7 +29,7 @@ public class GameSystem : MonoBehaviour
   public int EnergyPerGuess = 25;
   public Dictionary<string, int> Rooms;
   public float gameTime;
-  public Text gameTimer;
+  public TMP_Text gameTimer;
   public float startTime = 60*15f;
   public float timeSinceLastDisappearance;
   private int AnomaliesSuccesfullyReported = 0;

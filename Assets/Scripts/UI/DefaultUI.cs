@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class DefaultUI : MonoBehaviour
 {
-    public Text label;
+    public TMP_Text label;
     public TMP_Text flashlight;
     // Start is called before the first frame update
     void Start() {

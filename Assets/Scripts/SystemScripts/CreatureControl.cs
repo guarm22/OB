@@ -100,6 +100,19 @@ public class CreatureControl : MonoBehaviour
                 furthestPoint = hit.position;
             } else {
                 //handle case where no point could be found on the NavMesh
+                
+                //find navmesh of room
+                NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
+
+                //find center of navmesh
+                Vector3 center = Vector3.zero;
+                for (int i = 0; i < navMeshData.vertices.Length; i++) {
+                    center += navMeshData.vertices[i];
+                }
+                center /= navMeshData.vertices.Length;
+
+                furthestPoint = center;
+                
             }
             return furthestPoint;
     }
@@ -156,7 +169,7 @@ public class CreatureControl : MonoBehaviour
 
     void Start() {
         Instance = this;
-        specialCreatures.Add(lurkerPrefab);
+        //specialCreatures.Add(lurkerPrefab);
         specialCreatures.Add(chaserPrefab);
         setCreatureSettings();
     }

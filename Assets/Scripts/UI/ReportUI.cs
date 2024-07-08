@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class ReportUI : MonoBehaviour {
@@ -23,6 +25,8 @@ public class ReportUI : MonoBehaviour {
     public string SelectedRoom;
 
     public static ReportUI Instance;
+
+    public FontAsset fontAsset;
 
     void Start() {
         CreateUI();
@@ -124,7 +128,7 @@ public class ReportUI : MonoBehaviour {
             GameObject ui = Instantiate(togglePrefab, transform);
             ui.transform.SetParent(typeSelectionUI.transform);
             ui.transform.localPosition = new Vector3(iterX, iterY, 0f);
-            ui.transform.GetChild(1).gameObject.GetComponent<Text>().text = type;
+            ui.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = type;
             ui.transform.localScale = new Vector3(3f,3f,3f);
             ui.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
             ui.name = type;

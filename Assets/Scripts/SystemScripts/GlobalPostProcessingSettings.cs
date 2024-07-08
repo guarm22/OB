@@ -16,6 +16,9 @@ public class GlobalPostProcessingSettings : MonoBehaviour
 
         //gamma goes from 0-2, 1 is default
         SetGammaAlpha(PlayerPrefs.GetFloat("Brightness"));
+
+        //set master volume
+        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
     }
 
     public void SetGammaAlpha(float gammaAlpha) {

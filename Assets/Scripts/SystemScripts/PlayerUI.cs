@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +12,6 @@ public class PlayerUI : MonoBehaviour
     public GameObject selectionUI;
     public GameObject roomSelectionUI;
     public GameObject typeSelectionUI;
-    public GameObject journalUI;
-    public GameObject journalPanel;
     public GameObject togglePrefab;
     public GameObject roomText;
     public GameObject escapeMenuUI;
@@ -21,11 +20,8 @@ public class PlayerUI : MonoBehaviour
     public GameObject defaultBottomRight;
     public string targetTag = "Room";
     public string tutTag = "Tutorial";
-    public string interactableTag;
-    public bool inJournal = false;
     public bool inMenu = false;
     public static bool paused = false;
-    public float maxDistance = 5.0f;
     public static PlayerUI Instance;
 
     // Start is called before the first frame update
@@ -58,7 +54,7 @@ public class PlayerUI : MonoBehaviour
     }
 
     public string GetPlayerRoom() {
-        return roomText.GetComponent<Text>().text;
+        return roomText.GetComponent<TMP_Text>().text;
     }
 
     void PopulateSelectorUI() {
@@ -73,7 +69,7 @@ public class PlayerUI : MonoBehaviour
             GameObject ui = Instantiate(togglePrefab, transform);
             ui.transform.SetParent(roomSelectionUI.transform);
             ui.transform.localPosition = new Vector3(0f, iter, 0f);
-            ui.transform.GetChild(1).gameObject.GetComponent<Text>().text = rooms[i].name;
+            ui.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = rooms[i].name;
             //ui.transform.GetChild(1).gameObject.GetComponent<Text>().fontSize = 40;
 
             ui.GetComponent<Toggle>().onValueChanged.AddListener(
@@ -91,7 +87,7 @@ public class PlayerUI : MonoBehaviour
             GameObject ui = Instantiate(togglePrefab, transform);
             ui.transform.SetParent(typeSelectionUI.transform);
             ui.transform.localPosition = new Vector3(0f, iter, 0f);
-            ui.transform.GetChild(1).gameObject.GetComponent<Text>().text = type;
+            ui.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = type;
             ui.transform.localScale = new Vector3(3f,3f,3f);
             ui.name = type;
             iter+=100f;
@@ -118,9 +114,6 @@ public class PlayerUI : MonoBehaviour
     }
 
     void SelectionMenu() {
-        if(inJournal) {
-            return;
-        }
         bool beforeTimer = Time.time - GameSystem.LastGuess >= GameSystem.Instance.GuessLockout-GameSystem.Instance.reportTextTimer;
         //if menu is open, check if tab is pressed to close, otherwise stop movement
         if(inMenu) {
@@ -133,11 +126,8 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
-    void Interact() {
-   
-    }
-
     private void openEscape() {
+        PostProcessingControl.Instance.ActivateDepthOfField(true);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         escapeMenuUI.SetActive(true);
@@ -149,6 +139,7 @@ public class PlayerUI : MonoBehaviour
         paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        PostProcessingControl.Instance.ActivateDepthOfField(false);
         escapeMenuUI.SetActive(false);
         defaultUI.SetActive(true);
     }
@@ -187,7 +178,7 @@ public class PlayerUI : MonoBehaviour
         {
             // Player is within a GameObject with the specified tag
         //Debug.Log("Player is within a GameObject with the tag: " + targetTag + " with object name: " + other.gameObject.name);
-            roomText.GetComponent<Text>().text = other.gameObject.name;
+            roomText.GetComponent<TMP_Text>().text = other.gameObject.name;
         }
 
         if (other.tag.Equals(tutTag)) {
