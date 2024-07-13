@@ -41,7 +41,7 @@ public class Tutorial : MonoBehaviour
 
         if(GameSystem.Instance.gameTime < 180f && Instance.timer1) {
             Instance.timer1 = false;
-            GameSystem.Instance.ManuallyCreateDivergence("DivCan");
+            DivergenceControl.Instance.ManuallyActivateDivergence("DivCan");
         }
 
         if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 3 && Instance.endTrigger) {
@@ -62,7 +62,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("CreateFirstDiv")) {
-            GameSystem.Instance.ManuallyCreateDivergence("TutorialBox");
+            DivergenceControl.Instance.ManuallyActivateDivergence("TutorialBox");
         }
 
         if(hit.name.Equals("Trigger5")) {
@@ -81,7 +81,7 @@ public class Tutorial : MonoBehaviour
             Popup.Instance.OpenPopup("Each level has different divergences, make sure you are always watching AND listening for anything suspicious!\n\nSometimes you will get hints for divergences that have been around for a long time, look out for FLASHING LIGHTS.\n\nReport the divergence in this room to enter the final room.");
         }
         if(hit.name.Equals("TriggerToilet")) {
-            GameSystem.Instance.ManuallyCreateDivergence("tutorialToilet");
+            DivergenceControl.Instance.ManuallyActivateDivergence("tutorialToilet");
         }
         if(hit.name.Equals("Trigger9")) {
             Popup.Instance.OpenPopup("The divergence in this room will appear in 20 seconds.\n\nFamiliarize yourself with the room and report it when it appears.\n\n");

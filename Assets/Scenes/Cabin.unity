@@ -6733,7 +6733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b7acd93b4e04024f93b9959ad9070b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationsPerSecond: 10
+  rotationsPerSecond: 0.1
   rotationAxis: {x: 0, y: 1, z: 0}
 --- !u!4 &519800650 stripped
 Transform:
@@ -9080,7 +9080,15 @@ PrefabInstance:
       objectReference: {fileID: 4493914615434692733}
     - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: creatureSpawnRate
-      value: 22
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: zombieSpawnChance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: specialSpawnChance
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2507645383841417100, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: checkFrequency
@@ -9140,7 +9148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: MaxDivergences
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5783307706959938235, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: incorrectGuess
@@ -9209,6 +9217,10 @@ PrefabInstance:
     - target: {fileID: 6836218815995593257, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: dataUpdateFrequency
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9179173730353971060, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: DivergenceInterval
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3644676362518181232, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
@@ -25669,7 +25681,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8584123281821640870, guid: 6ab6af969cb643e44b67269676f36669, type: 3}
       insertIndex: 0
       addedObject: {fileID: 821408984}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8198272116638378021, guid: 6ab6af969cb643e44b67269676f36669, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1825640665}
   m_SourcePrefab: {fileID: 100100000, guid: 6ab6af969cb643e44b67269676f36669, type: 3}
 --- !u!4 &1766866236 stripped
 Transform:
@@ -26603,6 +26618,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1825640662 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8198272116638378021, guid: 6ab6af969cb643e44b67269676f36669, type: 3}
+  m_PrefabInstance: {fileID: 1766866235}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1825640665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825640662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  energyCost: 25
+  customDivergence: {fileID: 0}
 --- !u!1001 &1826898025
 PrefabInstance:
   m_ObjectHideFlags: 0

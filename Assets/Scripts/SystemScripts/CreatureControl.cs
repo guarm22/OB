@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,15 @@ public class CreatureControl : MonoBehaviour
     public bool IsJumpscareFinished = false;
     public AudioClip jumpscareSound;
     public float creatureSpawnRate = 20f;
-    private float timeSinceLastCreature = 0f;
+    public float timeSinceLastCreature = 0f;
     private List<GameObject> specialCreatures = new List<GameObject>();
     public float zombieSpawnChance = 50f;
     public float specialSpawnChance = 50f;
     [HideInInspector]
     public int TotalCreatures;
+    public int CreaturesReported = 0;
+
+    public List<GameObject> ActiveCreatures = new List<GameObject>();
 
 
     public IEnumerator ZombieJumpscare() {
@@ -74,7 +78,7 @@ public class CreatureControl : MonoBehaviour
             creature.transform.position = roomObj.transform.position;
         }
         TotalCreatures += 1;
-        GameSystem.Instance.CreateDivergence(creature);
+        ActiveCreatures.Add(creature);
     }
 
       private Vector3 FindSpawnPoint(string room, string type) {
@@ -132,26 +136,26 @@ public class CreatureControl : MonoBehaviour
     }
 
     private void doCreatureCheck() {
-        string room = GameSystem.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, GameSystem.Instance.Rooms.Count)).Key;
+        string room = DivergenceControl.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, DivergenceControl.Instance.Rooms.Count)).Key;
         if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
             CreaturesPerRoom.Add(room, 0);
         } 
 
         //lose condition - all rooms have max anomalies
-        if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.AnomaliesPerRoom*GameSystem.Instance.Rooms.Count) {
+        if(DivergenceControl.Instance.MaxDivergences >= DivergenceControl.Instance.DivergencesPerRoom*DivergenceControl.Instance.Rooms.Count) {
             if(!GameSystem.InEditor()) {
-                ManuallySpawnEnder(GameSystem.Instance.getRandomRoom());
+                ManuallySpawnEnder(room);
             }
         }
 
-        if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences) {
+        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences) {
             int spawnChance = UnityEngine.Random.Range(0,100);
             if(spawnChance < zombieSpawnChance) {
                 createCreature(zombiePrefab, room);
                 return;
             }
         }
-        if(GameSystem.Instance.TotalAnomalies >= GameSystem.Instance.MaxDivergences/2) {
+        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences/2) {
             int spawnChance = UnityEngine.Random.Range(0,100);
             int randomIndex = UnityEngine.Random.Range(0, specialCreatures.Count);
             if(spawnChance < specialSpawnChance) {
@@ -160,8 +164,20 @@ public class CreatureControl : MonoBehaviour
         }
     }
 
+    public int CreatureReport(String room) {
+        foreach(GameObject creature in ActiveCreatures) {
+            if(creature.name.Contains(room)) {
+                CreaturesReported += 1;
+                RemoveCreature(creature);
+                break;
+            }
+        }
+        return CreaturesReported;
+    }
+    
     public void RemoveCreature(GameObject creature) {
         string room = creature.name.Split('-')[1].Trim();
+        ActiveCreatures.Remove(creature);
         CreaturesPerRoom[room] -= 1;
         Destroy(creature);
         TotalCreatures -= 1;

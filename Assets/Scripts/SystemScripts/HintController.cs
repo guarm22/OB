@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class HintController : MonoBehaviour
-{
+public class HintController : MonoBehaviour {
     public float hintTimer = 10f;
     private float timer;
     public float hintChance = 40f;
@@ -13,10 +12,10 @@ public class HintController : MonoBehaviour
     public AudioClip hintSound;
 
     private IEnumerator findHint() {
-        List<DynamicObject> divs = new List<DynamicObject>(GameSystem.Instance.Anomalies);
+        List<DynamicObject> divs = new List<DynamicObject>(DivergenceControl.Instance.DivergenceList);
         foreach(DynamicObject div in divs.Where(div => Time.time - div.divTime > timeBeforeHint && div.divTime > 0f)) {
             if(Random.Range(0, 100) < hintChance) {
-                Debug.Log("Hinting");
+                //Debug.Log("Hinting");
                 doHint(div);
                 yield return new WaitForSeconds(hintDelay);
             }

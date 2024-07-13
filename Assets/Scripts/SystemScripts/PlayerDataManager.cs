@@ -49,7 +49,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SavePlayerData() {
         UpdateData();
-        Debug.Log("Saving player data");
+        //Debug.Log("Saving player data");
         PFileUtil.Save("playerData.json", playerData);
     }
 
@@ -61,7 +61,7 @@ public class PlayerDataManager : MonoBehaviour
         //update player data
         playerData.ReportsMade.value += GameSystem.Instance.ReportsMade;
         playerData.DivergencesReported.value += GameSystem.Instance.DivergencesReported;
-        playerData.CreaturesReported.value += GameSystem.Instance.CreaturesReported;
+        playerData.CreaturesReported.value += CreatureControl.Instance.CreaturesReported;
         playerData.TimesCrouched.value += SC_FPSController.Instance.timesCrouched;
         playerData.TimesPlayedOnEasy.value += GameSystem.Instance.TimesPlayedOnEasy;
         playerData.TimesPlayedOnNormal.value += GameSystem.Instance.TimesPlayedOnNormal;
@@ -69,7 +69,7 @@ public class PlayerDataManager : MonoBehaviour
 
         GameSystem.Instance.ReportsMade = 0;
         GameSystem.Instance.DivergencesReported = 0;
-        GameSystem.Instance.CreaturesReported = 0;
+        CreatureControl.Instance.CreaturesReported = 0;
         SC_FPSController.Instance.timesCrouched = 0;
         GameSystem.Instance.TimesPlayedOnEasy = 0;
         GameSystem.Instance.TimesPlayedOnNormal = 0;

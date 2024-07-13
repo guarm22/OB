@@ -75,11 +75,11 @@ public class GameSettings : MonoBehaviour
 
     private void LoadValues() {
         Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
-        DivergenceRate = PlayerPrefs.GetInt("DivergenceRate", 23);
-        EPS = PlayerPrefs.GetFloat("EPS", 1.1f);
-        creatureThreshold = PlayerPrefs.GetInt("MaxDivergences", 5);
-        gracePeriod = PlayerPrefs.GetInt("GracePeriod", 15);
-        creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
+        DivergenceRate = PlayerPrefs.GetInt("DivergenceRate", NormalDivergenceRate);
+        EPS = PlayerPrefs.GetFloat("EPS", NormalEPS);
+        creatureThreshold = PlayerPrefs.GetInt("MaxDivergences", NormalCreatureThreshold);
+        gracePeriod = PlayerPrefs.GetInt("GracePeriod", NormalGracePeriod);
+        creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", NormalCreatureSpawnRate);
         hintsEnabled = PlayerPrefs.GetInt("HintsEnabled", 1) == 1;
     }
     private void SetTexts() {

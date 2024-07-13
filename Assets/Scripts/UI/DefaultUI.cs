@@ -15,19 +15,19 @@ public class DefaultUI : MonoBehaviour
     }
 
     void SetText() {
-        bool beforeTimer = Time.time - GameSystem.LastGuess >= GameSystem.Instance.GuessLockout/2;
-        bool afterTimer = Time.time - GameSystem.LastGuess <= GameSystem.Instance.GuessLockout;
+        float reportTime = DivergenceControl.Instance.TimeOfLastreport;
+        float lockout = DivergenceControl.Instance.ReportLockout;
 
-        if(!GameSystem.Guessed) {
+        if(!DivergenceControl.Instance.PendingReport && Time.time - reportTime > lockout+5) {
             label.text = "TAB";
         }
-        else if(Time.time - GameSystem.LastGuess < GameSystem.Instance.GuessLockout/2 && GameSystem.Guessed) {
+        else if(Time.time - reportTime < lockout && DivergenceControl.Instance.PendingReport) {
             label.text = "Verifying...";
         }
-        else if(beforeTimer && GameSystem.Instance.wasLastGuessCorrect && afterTimer) {
+        else if(Time.time - reportTime > lockout && DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport) {
             label.text = "CORRECT";
         }
-        else if(beforeTimer && !GameSystem.Instance.wasLastGuessCorrect && afterTimer) {
+        else if(Time.time - reportTime > lockout && !DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport) {
             label.text = "WRONG";
         }
 

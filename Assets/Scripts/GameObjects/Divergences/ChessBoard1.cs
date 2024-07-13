@@ -23,7 +23,7 @@ public class ChessBoard1 : CustomDivergence
                 originalPositions.Add(piece.transform.position);
                 newPositions.Add(piece.transform.position + movements[pieces.IndexOf(piece)]);
             }
-            StartCoroutine(MovePieces(activate, 1f, GameSystem.Instance.GameObjectDisappearanceInterval));
+            StartCoroutine(MovePieces(activate, 1f, DivergenceControl.Instance.DivergenceInterval));
         }
         else {
             StopAllCoroutines();

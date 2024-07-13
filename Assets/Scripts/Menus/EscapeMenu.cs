@@ -13,7 +13,7 @@ public class EscapeMenu : MonoBehaviour
     public Button returnButton;
 
     public void ReturnToGame() {
-        PlayerUI.paused = false;
+        PlayerUI.Instance.PauseControl("resume");
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         defaultUI.SetActive(true);
@@ -21,8 +21,8 @@ public class EscapeMenu : MonoBehaviour
     }
 
     public void QuitGame() {
+        PlayerUI.Instance.PauseControl("quit");
         PlayerDataManager.Instance.SavePlayerData();
-        PlayerUI.paused = false;
         SceneManager.LoadScene("MainMenuScene");
     }
 

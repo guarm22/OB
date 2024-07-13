@@ -12,6 +12,6 @@ public class SubmitGuess : MonoBehaviour {
     void SubmitAnswer() {
         List<string> type = TypeSelection.CurrentlySelected;
         string room = RoomSelection.CurrentlySelected;
-        GameSystem.Instance.MakeSelection(type,room);
+        DivergenceControl.Instance.MakeSelection(type,room);
     }
 }

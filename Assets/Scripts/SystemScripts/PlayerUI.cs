@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -114,20 +115,18 @@ public class PlayerUI : MonoBehaviour
     }
 
     void SelectionMenu() {
-        bool beforeTimer = Time.time - GameSystem.LastGuess >= GameSystem.Instance.GuessLockout-GameSystem.Instance.reportTextTimer;
         //if menu is open, check if tab is pressed to close, otherwise stop movement
         if(inMenu) {
-            if(Input.GetKeyDown(KeyCode.Tab) || Time.time - GameSystem.LastGuess < 1) {
+            if(Input.GetKeyDown(KeyCode.Tab) || DivergenceControl.Instance.PendingReport) {
                 turnOffSelection();
             }
         }
-        else if(Input.GetKeyDown(KeyCode.Tab) && beforeTimer) {
+        else if(Input.GetKeyDown(KeyCode.Tab) && !DivergenceControl.Instance.PendingReport) {
             turnOnSelection();
         }
     }
 
     private void openEscape() {
-        PostProcessingControl.Instance.ActivateDepthOfField(true);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         escapeMenuUI.SetActive(true);
@@ -139,20 +138,28 @@ public class PlayerUI : MonoBehaviour
         paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        PostProcessingControl.Instance.ActivateDepthOfField(false);
         escapeMenuUI.SetActive(false);
         defaultUI.SetActive(true);
+    }
+
+    public void PauseControl(String src="") {
+        paused = !paused;
+        PostProcessingControl.Instance.ActivateDepthOfField(paused);
+
+        if(src=="escape") {
+            if(paused) {
+                openEscape();
+            }
+            else {
+                closeEscape();
+            }   
+        }
     }
 
     private void EscapeMenu() {
         //CHANGE TO ESCAPE
         if(Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeybindManager.instance.GetKeybind("Escape"))) { 
-            if(!paused) {
-                openEscape();
-            }
-            else {
-                closeEscape();
-            }
+            PauseControl("escape");
         }
         if(Input.GetKeyDown(KeyCode.P)) {
             //disable all UI

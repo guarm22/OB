@@ -125,7 +125,7 @@ public class AchievementManager : MonoBehaviour
                     }
                 }
                 //check each divergence to make sure it hasn't been active for more than 40s
-                foreach(DynamicObject d in GameSystem.Instance.Anomalies) {
+                foreach(DynamicObject d in DivergenceControl.Instance.DivergenceList) {
                     if(Time.time - d.divTime > 40) {
                         failed = true;
                     }

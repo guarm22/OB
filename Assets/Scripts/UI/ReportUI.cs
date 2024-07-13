@@ -40,7 +40,6 @@ public class ReportUI : MonoBehaviour {
     }
 
     public void findPlayerLoc() {
-        GameObject player = GameObject.Find("Player");
         foreach(GameObject room in rooms) {
             if(PlayerUI.Instance.GetPlayerRoom() == room.name) {
                 playerLoc.transform.position = room.transform.position - new Vector3(0,-50,0);
@@ -49,7 +48,7 @@ public class ReportUI : MonoBehaviour {
     }
 
     public void Report() {
-        GameSystem.Instance.MakeSelection(SelectedTypes, SelectedRoom);
+        DivergenceControl.Instance.MakeSelection(SelectedTypes, SelectedRoom);
     }
     
     public void ResetSelections() {

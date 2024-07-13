@@ -25,7 +25,7 @@ public class DynamicObject {
     }
 
     public bool DoAnomalyAction(bool enable) {
-        Debug.Log("Anomaly on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.data.type) + 
+        Debug.Log("Divergence on " + this.Name + " in " + this.Room + " of type " + AnomalyTypeToString(this.data.type) + 
         (enable ? " ENABLED" : " DISABLED"));
 
         if(enable) {
@@ -103,6 +103,23 @@ public class DynamicObject {
             "Movement"
         };
         return res;
+    }
+
+    /// <summary>
+    /// Searches through a GameObject's parents to find the room it is in.
+    /// The function does this by checking the tag of the parent object, if the tag is "Room" it returns the name of the room.
+    /// If no room is found, it searches that parent's parent, and so on.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string getRoomName(Transform obj) {
+        while (obj != null) {
+            if (obj.tag == "Room") {
+                return obj.name;
+            }
+            obj = obj.parent;
+        }
+        return "";
     }
 
       public static ANOMALY_TYPE GetAnomalyTypeByName(string name) {

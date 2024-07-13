@@ -15,7 +15,7 @@ public class Popup : MonoBehaviour
     public bool isPopupOpen = false;
 
     public void OpenPopup(string message) {
-        PlayerUI.paused = true;
+        PlayerUI.Instance.PauseControl("popup");
         isPopupOpen = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -24,6 +24,7 @@ public class Popup : MonoBehaviour
     }
 
     public void ClosePopup() {
+        PlayerUI.Instance.PauseControl("popup");
         PlayerUI.paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
