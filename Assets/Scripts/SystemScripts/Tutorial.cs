@@ -10,7 +10,8 @@ public class Tutorial : MonoBehaviour
     private bool blocker1 = true;
     private bool blocker3 = true;
     private bool timer1 = true;
-    private bool endTrigger = false;
+    private bool timer2 = true;
+    private bool endTrigger = true;
 
     public static Tutorial Instance;
     
@@ -32,7 +33,7 @@ public class Tutorial : MonoBehaviour
             }
         }
 
-         if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 2) {
+         if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 1) {
             if(Instance.blocker3) {
                 Instance.blocker3 = false;
                 Destroy(GameObject.Find("FinalBlocker"));
@@ -44,21 +45,32 @@ public class Tutorial : MonoBehaviour
             DivergenceControl.Instance.ManuallyActivateDivergence("DivCan");
         }
 
-        if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 3 && Instance.endTrigger) {
+        if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 2 && Instance.endTrigger) {
             endTrigger = false;
-            GameSystem.Instance.SetGameTime(5f);
+            GameSystem.Instance.SetGameTime(3f);
             Popup.Instance.OpenPopup("Congratulations! You have completed the tutorial.\n\n");
+        }
+
+        if(GameSystem.Instance.gameTime < 899f && timer2) {
+            timer2 = false;
+            Popup.Instance.OpenPopup("Welcome to The Puncture.\nYou can use the WASD keys to move around, and the mouse to look around.\n\nYou can also sprint by holding down the left shift key.\n\nYou may pause the game at any time by pressing ESC or Q.");
         }
     }
 
     public void ActivateTrigger(GameObject hit) {
-
-        if(hit.name.Equals("ControlsTrigger")) {
-            Popup.Instance.OpenPopup("Welcome to The Puncture\n\nControls:\nTAB: Opens and closes reporting menu.\nQ: Pauses game\nWASD: Movement\nSpace: Jump\nInteract: Left Click or E\nFlashlight:F\nCrouch: Left Ctrl");
+        if(hit.name.Equals("ControlsTrigger2")) {
+            Popup.Instance.OpenPopup("Some objects can be interacted with by pressing E or left clicking.");
         }
 
         if(hit.name.Equals("DivTrigger1")) {
-            Popup.Instance.OpenPopup("Moving forward will create a DIVERGENCE, these can be reported by pressing TAB.\n\nTo report, you need to select a room and divergence type (the current room is shown on the top right, and you can also see which room you are in on the report screen). ");
+            Popup.Instance.OpenPopup("Moving forward will create a 'Disappearence Divergence', these can be reported by pressing TAB."+ 
+            "\n\nTo report, you need to select a room and divergence type."+
+            "\n\nThe current room is shown on the top right, and you can also see which room you are in on the report screen. ");
+        }
+
+        if(hit.name.Equals("ControlsTrigger3")) {
+            Popup.Instance.OpenPopup("You can press F to turn on your flashlight. This will help you see in dark areas at the cost of some energy."+
+            "\n\nYou can also right click to zoom in.");
         }
 
         if(hit.name.Equals("CreateFirstDiv")) {
@@ -66,7 +78,9 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger5")) {
-            Popup.Instance.OpenPopup("If you let too many divergences appear without reporting them, creatures eventually become attracted to the area.\n\nYou can report these for a reduced energy cost.\n\n");
+            Popup.Instance.OpenPopup("If you let too many divergences appear without reporting them, creatures eventually become attracted to the area."+
+            "\n\nYou can report these for a reduced energy cost.\n\n"+
+            "\n\nNot every creature is the same, some are faster than others, and some are more deadly. Learn more about them in the Compendium.");
         }
 
         if(hit.name.Equals("Trigger6")) {
@@ -74,7 +88,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger7")) {
-            Popup.Instance.OpenPopup("You can see your energy on the bottom right. If you are running low on energy, you wont be able to report anything\n\nIf you are confident in your energy usage, you can also report multiple divergence types at once.\n\n");
+            Popup.Instance.OpenPopup("You can see your energy on the bottom right. If you are running low on energy, you wont be able to report anything.\n\nIf you are confident in your energy usage, you can also report multiple divergence types at once.\n\n");
         }
 
         if(hit.name.Equals("Trigger8")) {

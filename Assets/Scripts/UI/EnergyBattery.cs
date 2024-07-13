@@ -54,7 +54,7 @@ public class EnergyBattery : MonoBehaviour
         for(int i = 0; i < batteryImages.Count; i++) {
             batteryImages[i].color = Color.red;
         }
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         for(int i = 0; i < batteryImages.Count; i++) {
             batteryImages[i].color = Color.white;
         }

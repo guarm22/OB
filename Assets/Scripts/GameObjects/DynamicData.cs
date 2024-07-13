@@ -8,8 +8,4 @@ public class DynamicData : MonoBehaviour
     public int energyCost = 25;
     [HideInInspector]
     public CustomDivergence customDivergence;
-    
-    void Update() {
-
-    }
 }

@@ -85,6 +85,9 @@ public class DivergenceControl : MonoBehaviour {
     [HideInInspector]
     public bool WasMostRecentReportCorrect = false;
 
+    private float DivergenceTimer = 0f;
+    private float ReportTimer;
+
     [HideInInspector]
     /// <summary>
     /// A list of objects that were reported recently. These should be locked for a certain amount of time as to not have instant
@@ -134,6 +137,7 @@ public class DivergenceControl : MonoBehaviour {
     /// </summary>
     private void InitGame() {
         lastDivergenceTime -= GameSystem.Instance.GracePeriod;
+        DivergenceTimer -= GameSystem.Instance.GracePeriod;
         generateNewRandomness();
 
         if(GameSystem.InEditor()) {
@@ -237,7 +241,7 @@ public class DivergenceControl : MonoBehaviour {
         if(obj == null) {
             return;
         }
-        GetComponent<AudioSource>().Play(); 
+        GameSystem.Instance.PlayDivergenceSound();
         obj.DoAnomalyAction(true);
         DynamicObjectList.Remove(obj);
         DivergenceList.Add(obj);
@@ -339,14 +343,19 @@ public class DivergenceControl : MonoBehaviour {
 
                 d.DoAnomalyAction(false);
                 DivergenceList.Remove(d);
-
                 Rooms[d.Room] -= 1;       
+
+                //Lock the object for a certain amount of time
                 LockedObjects.Add(d);
+                
+                //If the list of locked objects is greater than 1/3 of the total number of dynamic objects in the scene, 
+                //remove the first object in the list (the one that has been locked the longest) and add it to the dynamic object list.
                 if(LockedObjects.Count >= totalDynamicObjectsInScene/3) {
                     DynamicObjectList.Add(LockedObjects[0]);
                     LockedObjects.RemoveAt(0);
                 }
             }
+            //reset the list of divergences reported correctly
             DivergencesReportedCorrectly = new List<DynamicObject>();
         }
         else {
@@ -354,17 +363,31 @@ public class DivergenceControl : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Checks if it is time to spawn a new divergence.
+    /// </summary>
     private void CheckDivergenceSpawn() {
-        if(Time.time - lastDivergenceTime > DivergenceInterval + currentRandomness) {
+        if(DivergenceTimer > DivergenceInterval + currentRandomness) {
             lastDivergenceTime = Time.time;
+            DivergenceTimer = 0;
             generateNewRandomness();
             ActivateRandomDivergence();
         }
+        else {
+            DivergenceTimer += Time.deltaTime;
+        }
     }
 
+    /// <summary>
+    /// Checks if a report is pending and if the lockout time has passed.
+    /// </summary>
     private void CheckReport() {
-        if(PendingReport && Time.time - TimeOfLastreport > ReportLockout) {
+        if(PendingReport && ReportTimer > ReportLockout) {
+            ReportTimer = 0;
             CheckPendingReport();
+        }
+        else if(PendingReport) {
+            ReportTimer += Time.deltaTime;
         }
     }
 
@@ -379,6 +402,10 @@ public class DivergenceControl : MonoBehaviour {
     }
 
     void Update() {
+        if(GameSystem.Instance.GameOver || PlayerUI.paused) {
+            return;
+        }
+
         CheckDivergenceSpawn();
         CheckReport();
     }

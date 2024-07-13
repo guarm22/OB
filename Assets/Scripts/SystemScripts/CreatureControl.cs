@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class CreatureControl : MonoBehaviour
 {
@@ -128,7 +129,7 @@ public class CreatureControl : MonoBehaviour
 
     
     public void ManuallySpawnCreature(string room) {
-        createCreature(zombiePrefab, room, "Zombie");
+        createCreature(chaserPrefab, room, "Chaser");
     }
 
     public void ManuallySpawnEnder(string room) {
@@ -185,7 +186,11 @@ public class CreatureControl : MonoBehaviour
 
     void Start() {
         Instance = this;
-        //specialCreatures.Add(lurkerPrefab);
+
+        if(SceneManager.GetActiveScene().name == "Cabin") {
+            specialCreatures.Add(lurkerPrefab);
+        }
+
         specialCreatures.Add(chaserPrefab);
         setCreatureSettings();
     }
@@ -195,7 +200,7 @@ public class CreatureControl : MonoBehaviour
             return;
         }
         creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
-        creatureMax = 3;
+        creatureMax = 4;
     }
 
     void Update() {

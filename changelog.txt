@@ -271,9 +271,12 @@ Changes:
 -Changed how pausing works in the backend to give other parts of the UI the ability to pause the game in the same way
 -Changed debug menu in the backend to be easier to add to
 -Rewrote all code for divergences
+-Made the duration of the battery icon turning red shorter
 
 Additions:
 
 
 Bug Fixes:
 -Fixed a hamper divergence spinning way too fast in Cabin bathroom
+-Fixed an issue with objects that moved where they could end up in the wrong position when reported
+-Fixed an issue where Lurkers would not spawn on Cabin

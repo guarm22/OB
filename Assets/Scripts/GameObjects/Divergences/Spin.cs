@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class Spin : CustomDivergence
@@ -15,6 +16,7 @@ public class Spin : CustomDivergence
         }
         else {
             StopAllCoroutines();
+            DOTween.Kill(this.gameObject);
             transform.localEulerAngles = originalRotation;
         }
     }

@@ -14,12 +14,12 @@ public class MoveContinous : CustomDivergence {
         }
         else {
             StopAllCoroutines();
+            DOTween.Kill(gameObject.transform);
             gameObject.transform.DOLocalMove(originalPosition, 0.5f);
         }
     }
 
-    IEnumerator Move(bool activate)
-    {
+    IEnumerator Move(bool activate) {
     while(activate) { 
         gameObject.transform.DOLocalMove(target, moveTime);
         yield return new WaitForSeconds(moveTime + 1f);

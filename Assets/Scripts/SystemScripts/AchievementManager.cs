@@ -157,7 +157,7 @@ public class AchievementManager : MonoBehaviour
                     break;
 
                 case "Divergence Destroyer":
-                    if(int.Parse(data.GetDataValue("ReportsMade")) >= 5) {
+                    if(int.Parse(data.GetDataValue("ReportsMade")) >= 50) {
                         UnlockAchievement(a.Name);
                     }
                     else {

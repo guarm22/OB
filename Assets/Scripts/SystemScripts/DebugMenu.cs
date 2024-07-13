@@ -36,7 +36,7 @@ public class DebugMenu : MonoBehaviour
         debugTextObjects[0].text = "Divergence Rate: " + DivergenceControl.Instance.DivergenceInterval;
         debugTextObjects[1].text = "Time Until Next Divergence: " + 
         (DivergenceControl.Instance.DivergenceInterval - 
-        (Time.time - DivergenceControl.Instance.lastDivergenceTime +DivergenceControl.Instance.currentRandomness))%10;
+        (Time.time - DivergenceControl.Instance.lastDivergenceTime +DivergenceControl.Instance.currentRandomness));
 
         debugTextObjects[2].text = "Current Divergences: " + DivergenceControl.Instance.DivergenceList.Count;
         debugTextObjects[3].text = "Creature Rate: " + CreatureControl.Instance.creatureSpawnRate;
