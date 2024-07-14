@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Chaser : CreatureBase
 {
     public float slowMultiplier = 0.3f;
     private float foundPlayerSoundTimer = 5f;
     private float lastTimesincePlayerFound = 0f;
+
+    public Volume disorientingLocalVolumePrefab;
 
     private bool amTouchingPlayer() {
         if(Vector3.Distance(transform.position, player.transform.position) < 1.3f) {
@@ -43,11 +46,17 @@ public class Chaser : CreatureBase
         base.Start();
     }
 
+    private void DisorientPlayer() {
+        Volume disorientingLocalVolume = Instantiate(disorientingLocalVolumePrefab, player.transform.position, Quaternion.identity);
+        Destroy(disorientingLocalVolume.gameObject, 5f);
+    }
+
     // Update is called once per frame
     protected override void Update() {
         base.Update();
         if(amTouchingPlayer()) {
             SC_FPSController.Instance.Debuff("Slow", slowMultiplier);
+            DisorientPlayer();
             CreatureControl.Instance.RemoveCreature(gameObject);
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SojaExiles;
 using UnityEngine;
 
 public class Tutorial : MonoBehaviour
@@ -12,8 +13,10 @@ public class Tutorial : MonoBehaviour
     private bool timer1 = true;
     private bool timer2 = true;
     private bool endTrigger = true;
-
     public static Tutorial Instance;
+
+    public GameObject door1;
+    public GameObject door2;
     
     // Start is called before the first frame update
     void Start() {
@@ -26,17 +29,14 @@ public class Tutorial : MonoBehaviour
 
         if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 0) {
             if(Instance.blocker1) {
-                Instance.blocker1 = false;
-                Destroy(GameObject.Find("DoorBlocker"));
-                Popup.Instance.OpenPopup("You successfully reported the divergence, and the area has returned to normal.\n\nYou can now open the door by left clicking or pressing E.\n\nYou can replay this tutorial at any time if you forget the controls.");
-
+                StartCoroutine(TutorialCoroutine1());
             }
         }
 
          if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 1) {
             if(Instance.blocker3) {
                 Instance.blocker3 = false;
-                Destroy(GameObject.Find("FinalBlocker"));
+                door2.GetComponent<opencloseDoor>().ChangeLockState(false);
             }
         }
 
@@ -46,15 +46,27 @@ public class Tutorial : MonoBehaviour
         }
 
         if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 2 && Instance.endTrigger) {
-            endTrigger = false;
-            GameSystem.Instance.SetGameTime(3f);
-            Popup.Instance.OpenPopup("Congratulations! You have completed the tutorial.\n\n");
+           StartCoroutine(TutorialCoroutine2());
         }
 
         if(GameSystem.Instance.gameTime < 899f && timer2) {
             timer2 = false;
             Popup.Instance.OpenPopup("Welcome to The Puncture.\nYou can use the WASD keys to move around, and the mouse to look around.\n\nYou can also sprint by holding down the left shift key.\n\nYou may pause the game at any time by pressing ESC or Q.");
         }
+    }
+    
+    IEnumerator TutorialCoroutine1() {
+        Instance.blocker1 = false;
+        yield return new WaitForSeconds(1f);
+        door1.GetComponent<opencloseDoor>().ChangeLockState(false);
+        Popup.Instance.OpenPopup("You successfully reported the divergence, and the area has returned to normal.\n\nYou can now open the door by left clicking or pressing E.\n\nYou can replay this tutorial at any time if you forget the controls.");
+    }
+
+    IEnumerator TutorialCoroutine2() {
+        endTrigger = false;
+        yield return new WaitForSeconds(1f);
+        GameSystem.Instance.SetGameTime(3f);
+        Popup.Instance.OpenPopup("Congratulations! You have completed the tutorial.\n\n");
     }
 
     public void ActivateTrigger(GameObject hit) {

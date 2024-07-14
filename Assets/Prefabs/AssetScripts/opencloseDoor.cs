@@ -40,6 +40,10 @@ namespace SojaExiles {
 			}
 		}
 
+		public void ChangeLockState(bool state) {
+			locked = state;
+		}
+
 		void OnMouseOver() {
 			if(Cursor.lockState == CursorLockMode.Confined) {
 				return;

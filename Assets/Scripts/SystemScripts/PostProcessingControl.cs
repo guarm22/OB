@@ -11,7 +11,7 @@ public class PostProcessingControl : MonoBehaviour
     private VolumeProfile profile;
 
     public void ActivateDepthOfField(bool active) {
-        Debug.Log("Depth of Field: " + active);
+        //Debug.Log("Depth of Field: " + active);
         if(active) {
             depthOfField.focalLength.Override(300);
             depthOfField.focusDistance.Override(1);
