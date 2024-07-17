@@ -137,17 +137,15 @@ public class CreatureControl : MonoBehaviour
     }
 
     private void doCreatureCheck() {
+        //pick a random room
         string room = DivergenceControl.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, DivergenceControl.Instance.Rooms.Count)).Key;
+        //make sure room exists in the list of rooms
         if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
             CreaturesPerRoom.Add(room, 0);
         } 
 
         //lose condition - all rooms have max anomalies
-        if(DivergenceControl.Instance.MaxDivergences >= DivergenceControl.Instance.DivergencesPerRoom*DivergenceControl.Instance.Rooms.Count) {
-            if(!GameSystem.InEditor()) {
-                ManuallySpawnEnder(room);
-            }
-        }
+        ShouldSpawnEnder(room);
 
         if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences) {
             int spawnChance = UnityEngine.Random.Range(0,100);
@@ -161,6 +159,32 @@ public class CreatureControl : MonoBehaviour
             int randomIndex = UnityEngine.Random.Range(0, specialCreatures.Count);
             if(spawnChance < specialSpawnChance) {
                 createCreature(specialCreatures[randomIndex], room, specialCreatures[randomIndex].name);
+            }
+        }
+    }
+
+    private void ShouldSpawnEnder(string room) {
+        if(DivergenceControl.Instance.MaxDivergences >= DivergenceControl.Instance.DivergencesPerRoom*DivergenceControl.Instance.Rooms.Count) {
+            if(!GameSystem.InEditor()) {
+                ManuallySpawnEnder(room);
+            }
+        }
+
+        //5% chance to spawn an ender within 80% of the max divergences
+        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences*0.8) {
+            int spawnChance = UnityEngine.Random.Range(0,100);
+            if(spawnChance < 5) {
+                ManuallySpawnEnder(room);
+                return;
+            }
+        }
+
+        //2% chance to spawn an ender within 70% of the max divergences
+        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences*0.7) {
+            int spawnChance = UnityEngine.Random.Range(0,100);
+            if(spawnChance < 2) {
+                ManuallySpawnEnder(room);
+                return;
             }
         }
     }
