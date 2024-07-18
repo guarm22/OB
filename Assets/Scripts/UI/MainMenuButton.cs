@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -21,6 +22,8 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     void Start() {
         this.GetComponent<Button>().onClick.AddListener(OnClick);
+
+        //set weight of text in button to 500
     }
 
     private void OnClick() {

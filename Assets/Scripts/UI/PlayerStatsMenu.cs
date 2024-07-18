@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Data.Common;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerStatsMenu : MonoBehaviour
 {
     
     private PlayerData data;
-    private int amountOfStats;
     public GameObject statBlockPrefab;
     public GameObject initialLocation;
+    public GameObject statList;
+    public List<Stat> stats = new List<Stat>();
+    private int statsPerPage = 9;
+
+    public Button nextButton;
+    public Button prevButton;
+    public TMP_Text pageText;
+    private int pnum = 1;
+
 
     private void loadData() {
         data = PFileUtil.Load<PlayerData>("playerData.json");
@@ -23,30 +33,56 @@ public class PlayerStatsMenu : MonoBehaviour
         }
     }
 
-    private void createStatblock(Stat stat, int index) {
-        GameObject statBlock = Instantiate(statBlockPrefab, initialLocation.transform.position, Quaternion.identity, this.transform);
-        //get location based on index value
-        //every 3rd index, we move down to the next row
-        statBlock.transform.position = 
-        new Vector3(
-            initialLocation.transform.position.x + (index % 3) * (Display.main.systemWidth / 3.4f), 
-            initialLocation.transform.position.y - (index / 3) * (Display.main.systemHeight / 3.4f), 
-            initialLocation.transform.position.z);
+    private void ShowPage(int num) {
+        foreach(Transform child in statList.transform) {
+            Destroy(child.gameObject);
+        }
 
-        //set the text of the statblock
-        //get first child, which is the name of the stat
-        statBlock.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Total " + stat.name;
-        //get second child, which is the value of the stat
-        statBlock.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = stat.value.ToString() + " " + stat.stringRep;
+        for(int i = 0; i < statsPerPage; i++) {
+            if(stats.Count > i + (num - 1) * statsPerPage) {
+                Stat stat = stats[i + (num - 1) * statsPerPage];
+                GameObject statBlock = Instantiate(statBlockPrefab, initialLocation.transform.position, Quaternion.identity, this.transform);
+                //get location based on index value
+                //every 3rd index, we move down to the next row
+                statBlock.transform.position = 
+                new Vector3(
+                    initialLocation.transform.position.x + (i % 3) * (Display.main.systemWidth / 3.4f), 
+                    initialLocation.transform.position.y - (i / 3) * (Display.main.systemHeight / 3.4f), 
+                    initialLocation.transform.position.z);
+
+                //set the text of the statblock
+                //get first child, which is the name of the stat
+                statBlock.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Total " + stat.name;
+                //get second child, which is the value of the stat
+                statBlock.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = stat.value.ToString() + " " + stat.stringRep;     
+                statBlock.transform.SetParent(statList.transform);      
+            }
+        }
+        pageText.text = "Page " + num + " of " + Mathf.Ceil(stats.Count / (statsPerPage*1.0f));
     }
 
     void Awake() {
         loadData();
-        amountOfStats = typeof(PlayerData).GetFields().Length;
-        
+        int amountOfStats = typeof(PlayerData).GetFields().Length;
         for(int i = 0; i < amountOfStats; i++) {
-            createStatblock((Stat)typeof(PlayerData).GetFields()[i].GetValue(data), i);
+            //add to stats list
+            stats.Add((Stat)typeof(PlayerData).GetFields()[i].GetValue(data));
         }
+        ShowPage(pnum);
+
+        nextButton.onClick.AddListener(() => {
+            if(stats.Count > pnum * statsPerPage) {
+                pnum++;
+                ShowPage(pnum);
+            }
+        });
+
+        prevButton.onClick.AddListener(() => {
+            if(pnum > 1) {
+                pnum--;
+                ShowPage(pnum);
+            }
+        });
     }
 
     void Update() {

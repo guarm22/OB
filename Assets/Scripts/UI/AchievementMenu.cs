@@ -14,10 +14,7 @@ public class AchievementMenu : MonoBehaviour
 
     public Button nextButton;
     public Button prevButton;
-
-
     public TMP_Text pageText;
-
     private int pnum = 1;
 
     private void LoadAchievements() {
