@@ -43,6 +43,7 @@ public class PFileUtil {
         }
 
         if(!File.Exists(path)) {
+            Debug.Log($"File {path} does not exist");
             return default;
         }
 

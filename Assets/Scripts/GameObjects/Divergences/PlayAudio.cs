@@ -22,7 +22,7 @@ public class PlayAudio : MonoBehaviour
             currentSound = sound;
         }
         isPlaying = true;
-        AudioSource.PlayClipAtPoint(currentSound, this.transform.position);
+        timeSinceLastSound = soundRepeatTimer - 1.5f; 
     }
 
     // Update is called once per frame
