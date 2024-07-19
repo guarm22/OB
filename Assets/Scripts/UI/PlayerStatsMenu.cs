@@ -46,8 +46,8 @@ public class PlayerStatsMenu : MonoBehaviour
                 //every 3rd index, we move down to the next row
                 statBlock.transform.position = 
                 new Vector3(
-                    initialLocation.transform.position.x + (i % 3) * (Display.main.systemWidth / 3.4f), 
-                    initialLocation.transform.position.y - (i / 3) * (Display.main.systemHeight / 3.4f), 
+                    initialLocation.transform.position.x + (i % 3) * (Display.main.systemWidth / 4f), 
+                    initialLocation.transform.position.y - (i / 3) * (Display.main.systemHeight / 5f), 
                     initialLocation.transform.position.z);
 
                 //set the text of the statblock

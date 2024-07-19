@@ -164,6 +164,10 @@ public class CreatureControl : MonoBehaviour
     }
 
     private void ShouldSpawnEnder(string room) {
+        if(GameSystem.InEditor()) {
+            return;
+        }
+
         if(DivergenceControl.Instance.MaxDivergences >= DivergenceControl.Instance.DivergencesPerRoom*DivergenceControl.Instance.Rooms.Count) {
             if(!GameSystem.InEditor()) {
                 ManuallySpawnEnder(room);
