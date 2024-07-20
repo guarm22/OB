@@ -4,15 +4,31 @@ using UnityEngine;
 
 public class CreepAnimController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public Animator anim;
+    public Chaser chaser;
+    
+    void Start() {
+        anim = GetComponentInChildren<Animator>();
+        chaser = GetComponent<Chaser>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void Update() {
+        //if paused, freeze animation
+        if(PlayerUI.paused) {
+            anim.enabled = false;
+            return;
+        }
+        else {
+            anim.enabled = true;
+        }
+
+        if(anim.isActiveAndEnabled) {
+            if(chaser.isPlayerSeen) {
+                anim.SetBool("playerSeen", true);
+            }
+            else {
+                anim.SetBool("playerSeen", false);
+            }
+        }
     }
 }

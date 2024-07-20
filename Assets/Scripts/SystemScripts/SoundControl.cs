@@ -12,18 +12,16 @@ public class SoundControl : MonoBehaviour
     public static SoundControl Instance;
     private Dictionary<AudioSource, float> pausedAudioSources = new Dictionary<AudioSource, float>();
     private bool justPaused = false;
-    // Start is called before the first frame update
-    void Start()
-    {
+
+    void Start() {
         Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         PauseSound();
         walking();
     }
+
     private void walking() {
         if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
             walkingSound.SetActive(true);

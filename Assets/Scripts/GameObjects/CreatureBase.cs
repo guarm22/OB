@@ -22,14 +22,12 @@ public class CreatureBase : MonoBehaviour
     public float soundTimerMax = 14f;
     public float creatureSpeed = 5f;
     public float closeSoundRange = 10f;
-
-    private Animator animator;
+    public bool isPlayerSeen = false;
 
     public void CreaturePatrol() {
         CreatureSounds();
         //if the creature can see the player, chasing the player takes priority over everything else
-        bool isPlayerSeen = canSeePlayer();
-        animator.SetBool("PlayerSeen", isPlayerSeen);
+        isPlayerSeen = canSeePlayer();
         
         Vector3 direction = dest - transform.position;
         Debug.DrawRay(transform.position, direction, Color.red);
@@ -38,12 +36,6 @@ public class CreatureBase : MonoBehaviour
             dest = player.transform.position;
             agent.SetDestination(player.transform.position);
             
-            try {
-                animator.SetBool("isDestinationSet", isDestSet);
-                animator.SetBool("isPlayerInRange", Vector3.Distance(player.transform.position, transform.position) < 4f);
-            } catch (Exception e) {
-                UnityEngine.Debug.Log(e);
-            }
             return;
         }
 
@@ -83,6 +75,13 @@ public class CreatureBase : MonoBehaviour
         }
     }
 
+    public bool amCloseToPlayer(float distance = 3.5f) {
+        if(Vector3.Distance(transform.position, player.transform.position) < distance) {
+            return true;
+        }
+        return false;
+    }
+
     protected bool canSeePlayer(float lookRange = 15f) {
         RaycastHit hit;
         Vector3 direction = player.transform.position - transform.position;
@@ -116,8 +115,8 @@ public class CreatureBase : MonoBehaviour
     }
     private void StopCreature() {
         agent.SetDestination(transform.position);
-        animator.enabled = false;
     }
+    
     protected virtual void CreatureSounds() {
         soundTimerStart += Time.deltaTime;
 
@@ -135,14 +134,12 @@ public class CreatureBase : MonoBehaviour
     protected virtual void FacePlayer() {
         // Calculate the direction vector from the GameObject to the player
         Vector3 direction = player.transform.position - transform.position;
-
         // Set the GameObject's forward direction to this direction
         transform.forward = direction;
     }
 
-    // Start is called before the first frame update
-    protected virtual void Start()
-    {
+
+    protected virtual void Awake() {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player");
         //hacky fix to stop navmeshagent from getting stuck
@@ -151,25 +148,20 @@ public class CreatureBase : MonoBehaviour
         posCheck = transform.position;
         agent.speed = creatureSpeed;
         agent.angularSpeed=3000;
-        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    protected virtual void Update()
-    {
+    protected virtual void Update() {
         if(PlayerUI.paused || GameSystem.Instance.GameOver) {
             StopCreature();
             return;
         }
-        animator.enabled = true;
         timeSinceLastStuckCheck += Time.deltaTime;
         CreaturePatrol();
     }
 
 
     #if UNITY_EDITOR
-    void OnDrawGizmos()
-    {
+    void OnDrawGizmos() {
         //Gizmos.DrawWireSphere(transform.position, radius);
     }
     #endif

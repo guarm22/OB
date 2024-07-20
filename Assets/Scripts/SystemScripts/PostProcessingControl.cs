@@ -10,6 +10,7 @@ public class PostProcessingControl : MonoBehaviour
     public DepthOfField depthOfField;
     public ChromaticAberration chromaticAberration;
     private VolumeProfile profile;
+    public LiftGammaGain liftGammaGain;
 
     private int divergenceCount = 0;
 
@@ -24,11 +25,16 @@ public class PostProcessingControl : MonoBehaviour
         }
     }
 
-    void Start() {
+    void Awake() {
         Instance = this;
         profile = GetComponent<Volume>().profile;
         profile.TryGet<DepthOfField>(out depthOfField);
         profile.TryGet<ChromaticAberration>(out chromaticAberration);
+        profile.TryGet<LiftGammaGain>(out liftGammaGain);
+    }
+
+    void Start() {
+        SetGammaAlpha(PlayerPrefs.GetInt("Brightness"));
     }
 
     private IEnumerator AddChromaticAbberation(float intensity, float duration=4f) {
@@ -55,5 +61,13 @@ public class PostProcessingControl : MonoBehaviour
                 StartCoroutine(AddChromaticAbberation(0.0000000001f));
             }
         }
+    }
+
+    public void SetGammaAlpha(float gammaAlpha) {
+        Debug.Log("Gamma Alpha: " + gammaAlpha);
+        //gamma goes from -1 to 1, 0 is default
+        gammaAlpha = (gammaAlpha - 50) / 50;
+        
+        liftGammaGain.gamma.Override(new Vector4(1f, 1f, 1f, gammaAlpha));
     }
 }

@@ -31,6 +31,8 @@ public class CreatureControl : MonoBehaviour
 
     public List<GameObject> ActiveCreatures = new List<GameObject>();
 
+    public List<GameObject> CreatureSpawnpoints = new List<GameObject>();
+
 
     public IEnumerator ZombieJumpscare() {
         GameObject player = GameObject.Find("Player");
@@ -64,10 +66,10 @@ public class CreatureControl : MonoBehaviour
         if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
             return;
         }
-        GameObject creature = Instantiate(prefab);
         Vector3 spawnPos = FindSpawnPoint(room, type);
         GameObject roomObj = GameObject.Find(room);
-        creature.transform.position = spawnPos;
+        GameObject creature = Instantiate(prefab, spawnPos, Quaternion.identity);
+        creature.GetComponent<NavMeshAgent>().Warp(spawnPos);
         creature.transform.SetParent(roomObj.transform);
         creature.name = type + " - " + room;
         CreaturesPerRoom[room] += 1;
@@ -88,38 +90,59 @@ public class CreatureControl : MonoBehaviour
             }
 
             GameObject roomObj = GameObject.Find(room);
-            BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
-            List<Vector3> roomPoints = new List<Vector3> {
-                new Vector3(roomObj.transform.position.x + roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z + roomCollider.bounds.size.z / 2), // Top right corner
-                new Vector3(roomObj.transform.position.x - roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z - roomCollider.bounds.size.z / 2), // Bottom left corner
-                new Vector3(roomObj.transform.position.x + roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z - roomCollider.bounds.size.z / 2), // Bottom right corner
-                new Vector3(roomObj.transform.position.x - roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z + roomCollider.bounds.size.z / 2), // Top left corner
-                roomObj.transform.position // Center
-            };
-
-            Vector3 playerPosition = GameObject.Find("Player").transform.position;
-            Vector3 furthestPoint = roomPoints.OrderByDescending(point => Vector3.Distance(playerPosition, point)).First();
             
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(furthestPoint, out hit, 5f, NavMesh.AllAreas)) {
-                furthestPoint = hit.position;
-            } else {
-                //handle case where no point could be found on the NavMesh
-                
-                //find navmesh of room
-                NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
-
-                //find center of navmesh
-                Vector3 center = Vector3.zero;
-                for (int i = 0; i < navMeshData.vertices.Length; i++) {
-                    center += navMeshData.vertices[i];
+            List<GameObject> possibleSpawns = new List<GameObject>();
+            foreach(GameObject spawnpoint in CreatureSpawnpoints) {
+                if(spawnpoint.name.Contains(room)) {
+                    possibleSpawns.Add(spawnpoint);
                 }
-                center /= navMeshData.vertices.Length;
-
-                furthestPoint = center;
-                
             }
-            return furthestPoint;
+            //if no predetermined spawns were found, get one based on room bounds
+            if(possibleSpawns.Count == 0) {
+                return GetRoomCornerFurthestFromPlayer(roomObj);
+            }
+
+            Vector3 point = new Vector3();
+            point = possibleSpawns[UnityEngine.Random.Range(0, possibleSpawns.Count)].transform.position;
+            //return the closest point of the navmesh to that point
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(point, out hit, 5f, NavMesh.AllAreas)) {
+                point = hit.position;
+            }
+            return point;
+    }
+
+    private Vector3 GetRoomCornerFurthestFromPlayer(GameObject roomObj) {
+        BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
+        List<Vector3> roomPoints = new List<Vector3> {
+            new Vector3(roomObj.transform.position.x + roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z + roomCollider.bounds.size.z / 2), // Top right corner
+            new Vector3(roomObj.transform.position.x - roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z - roomCollider.bounds.size.z / 2), // Bottom left corner
+            new Vector3(roomObj.transform.position.x + roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z - roomCollider.bounds.size.z / 2), // Bottom right corner
+            new Vector3(roomObj.transform.position.x - roomCollider.bounds.size.x / 2, roomObj.transform.position.y, roomObj.transform.position.z + roomCollider.bounds.size.z / 2), // Top left corner
+            roomObj.transform.position // Center
+        };
+
+        Vector3 playerPosition = GameObject.Find("Player").transform.position;
+        Vector3 furthestPoint = roomPoints.OrderByDescending(point => Vector3.Distance(playerPosition, point)).First();
+            
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(furthestPoint, out hit, 5f, NavMesh.AllAreas)) {
+            furthestPoint = hit.position;
+        } else {
+            //handle case where no point could be found on the NavMesh
+            
+            //find navmesh of room
+            NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
+
+            //find center of navmesh
+            Vector3 center = Vector3.zero;
+            for (int i = 0; i < navMeshData.vertices.Length; i++) {
+                center += navMeshData.vertices[i];
+            }
+            center /= navMeshData.vertices.Length;
+            furthestPoint = center;    
+        }
+        return furthestPoint;
     }
 
     private Vector3 FindLurkerSpawn(string room) {
@@ -197,6 +220,7 @@ public class CreatureControl : MonoBehaviour
         foreach(GameObject creature in ActiveCreatures) {
             if(creature.name.Contains(room)) {
                 CreaturesReported += 1;
+                GameSystem.Instance.ChangeEnergy(25 - creature.GetComponent<DynamicData>().energyCost);
                 RemoveCreature(creature);
                 break;
             }
@@ -215,9 +239,11 @@ public class CreatureControl : MonoBehaviour
     void Start() {
         Instance = this;
 
-        if(SceneManager.GetActiveScene().name == "Cabin") {
+        if(SceneManager.GetActiveScene().name == "Cabin"  || SceneManager.GetActiveScene().name == "Apartment") {
             specialCreatures.Add(lurkerPrefab);
         }
+
+        CreatureSpawnpoints = GameObject.FindGameObjectsWithTag("CreatureSpawnPoint").ToList();
 
         specialCreatures.Add(chaserPrefab);
         setCreatureSettings();

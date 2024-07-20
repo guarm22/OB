@@ -266,7 +266,7 @@ Bug Fixes:
 -Temporarily removed the apartment level
 
 
-v0.6.1 - Refactor
+v0.6.1 (Jul 18, 2024) - Refactor
 
 Changes:
 -Changed how pausing works in the backend to give other parts of the UI the ability to pause the game in the same way
@@ -295,3 +295,22 @@ Bug Fixes:
 Known Issues:
 -File saving doesn't work on certain machines (windows 11?)
 -Apartment creature spawning no worky
+
+
+v0.6.2 - Creature Refactor/Animations
+
+Changes:
+-Changed how animations are controlled for each creature
+-Changed the walking and running animation for the Zombie
+-Made the flashlight cost less energy on Apartment
+-Made disorienting effect stronger and apply over time
+
+Additions:
+-Added a new model for Chasers
+-Created fixed positions for creature spawns on certain maps where the terrain was too small/jagged for consistent creature spawns
+-Added a new footstep sound for Graveyard
+
+Bug Fixes:
+-Fixed an issue causing creatures to spawn incorrect (creature would warp before navmeshagent variable was initialized, causing creature to go to (0,0,0))
+-Fixed an issue where creatures could track through walls on Apartment
+-Fixed an issue where creatures would cost too much energy

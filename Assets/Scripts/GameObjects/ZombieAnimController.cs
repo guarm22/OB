@@ -4,19 +4,20 @@ using UnityEngine;
 public class ZombieAnimController : MonoBehaviour
 {
     private Animator animator;
+    private CreatureBase creature;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-     animator = GetComponent<Animator>();   
+    void Start() {
+        animator = GetComponent<Animator>();  
+        creature = GetComponent<CreatureBase>(); 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if(PlayerUI.paused) {
-            //set animation to idle
             return;
         }
+        animator.SetBool("isDestinationSet", creature.isDestSet);
+        animator.SetBool("isPlayerSeen", creature.isPlayerSeen);
+        animator.SetBool("isPlayerInRange", creature.amCloseToPlayer());
+
     }
 }

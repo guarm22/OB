@@ -9,7 +9,6 @@ namespace SojaExiles {
 		public Animator openandclose;
 		public bool open;
 		public Transform Player;
-		public int minDistance = 15;
 		public bool locked = false;
 
 		public AudioClip closeSound;
@@ -52,7 +51,7 @@ namespace SojaExiles {
 			if (Player) {
 				float dist = Vector3.Distance(Player.position, transform.position);
 
-				if (dist < minDistance  && !inAnim) {
+				if (dist < 3  && !inAnim) {
 
 					if(locked) {
 						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)) {

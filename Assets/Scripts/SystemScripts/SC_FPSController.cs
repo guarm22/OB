@@ -161,9 +161,9 @@ public class SC_FPSController : MonoBehaviour
         }
     }
 
-    public void Debuff(string type, float multiplier) {
+    public void Debuff(string type, float multiplier, float duration=0) {
         if(type == "Slow") {
-            StartCoroutine(PlayerDebuffs.Instance.Slow(multiplier));
+            StartCoroutine(PlayerDebuffs.Instance.Slow(multiplier, duration));
         }
         else if(type == "Energy") {
             PlayerDebuffs.Instance.Energy(multiplier);

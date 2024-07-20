@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2580186173610418435}
   - component: {fileID: 6937205311491471293}
   - component: {fileID: 266837347729469995}
+  - component: {fileID: 1025231331203344113}
   m_Layer: 0
   m_Name: DisorientingVolume
   m_TagString: Untagged
@@ -52,7 +53,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 8
+  m_Radius: 35
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &266837347729469995
 MonoBehaviour:
@@ -71,3 +72,19 @@ MonoBehaviour:
   blendDistance: 1
   weight: 1
   sharedProfile: {fileID: 11400000, guid: fa9e254a2dc0dfb4bb6fb6133681bb54, type: 2}
+--- !u!114 &1025231331203344113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5446252887028050646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d9ef925cdc885045abd2d221bc8d0eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vol: {fileID: 0}
+  vignetteStart: 0.5
+  lensDistortionStart: 0.5
+  duration: 5

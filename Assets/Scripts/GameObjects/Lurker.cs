@@ -25,9 +25,9 @@ public class Lurker : CreatureBase
         return false;
     }
 
-    protected override void Start() {
+    protected override void Awake() {
         spawnPos = transform.position;
-        base.Start();
+        base.Awake();
     }
 
     // Update is called once per frame
