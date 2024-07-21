@@ -19,7 +19,7 @@ public class DefaultUI : MonoBehaviour
         float lockout = DivergenceControl.Instance.ReportLockout;
 
         if(!DivergenceControl.Instance.PendingReport && Time.time - reportTime > lockout+5) {
-            label.text = "TAB";
+            label.text = "Report";
         }
         else if(Time.time - reportTime < lockout && DivergenceControl.Instance.PendingReport) {
             label.text = "Verifying...";
@@ -27,7 +27,7 @@ public class DefaultUI : MonoBehaviour
         else if(Time.time - reportTime > lockout && DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport) {
             label.text = "CORRECT";
         }
-        else if(Time.time - reportTime > lockout && !DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport) {
+        else if(Time.time - reportTime > lockout && !DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport && GameSystem.Instance.TimeInLevel > 10.5) {
             label.text = "WRONG";
         }
 

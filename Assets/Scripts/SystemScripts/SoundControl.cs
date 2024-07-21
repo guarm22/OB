@@ -13,8 +13,20 @@ public class SoundControl : MonoBehaviour
     private Dictionary<AudioSource, float> pausedAudioSources = new Dictionary<AudioSource, float>();
     private bool justPaused = false;
 
-    void Start() {
+    public float MasterVolume {
+        get {
+            return AudioListener.volume;
+        }
+        set {
+            AudioListener.volume = value;
+        }
+    }
+
+    void Awake() {
         Instance = this;
+
+        //set master volume
+        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
     }
 
     void Update() {

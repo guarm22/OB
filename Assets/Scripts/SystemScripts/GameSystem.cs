@@ -44,6 +44,8 @@ public class GameSystem : MonoBehaviour {
     [HideInInspector]
     public List<Report> reports = new List<Report>();
 
+    public float TimeInLevel = 0f;
+
   void Awake() {
     if (Instance != null) {
       Debug.LogError("There is more than one instance!");
@@ -119,6 +121,7 @@ public class GameSystem : MonoBehaviour {
             StartCoroutine(EndGame("won"));
             return;
         }
+        TimeInLevel += Time.deltaTime;
         gameTime -= Time.deltaTime;
         int minutes = Mathf.FloorToInt(gameTime / 60);
         int seconds = Mathf.FloorToInt(gameTime % 60);

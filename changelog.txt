@@ -302,15 +302,21 @@ v0.6.2 - Creature Refactor/Animations
 Changes:
 -Changed how animations are controlled for each creature
 -Changed the walking and running animation for the Zombie
--Made the flashlight cost less energy on Apartment
--Made disorienting effect stronger and apply over time
+-Made the Apartment slightly brighter
+-Made disorienting effect on the Chaser stronger and apply over time
+-Removed the ability to jump
+-Updated the in-game UI
 
 Additions:
 -Added a new model for Chasers
 -Created fixed positions for creature spawns on certain maps where the terrain was too small/jagged for consistent creature spawns
 -Added a new footstep sound for Graveyard
+-Added a new disorienting effect for the Lurker
+-The report button now changes color if you cannot send a report
 
 Bug Fixes:
 -Fixed an issue causing creatures to spawn incorrect (creature would warp before navmeshagent variable was initialized, causing creature to go to (0,0,0))
 -Fixed an issue where creatures could track through walls on Apartment
 -Fixed an issue where creatures would cost too much energy
+-Can no longer use flashlight or crouch while the reporting menu is open
+-Fixed an issue where clicking on the "YOU" indicator on the report screen would cause that room to not be selected

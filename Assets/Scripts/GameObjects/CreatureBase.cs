@@ -1,18 +1,25 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-public class CreatureBase : MonoBehaviour
-{
+public class CreatureBase : MonoBehaviour {
+    [HideInInspector]
     public GameObject player;
+    [HideInInspector]
     public float sightRange = 15;
+    [HideInInspector]
     public NavMeshAgent agent;
     [SerializeField] public LayerMask playerLayer;
     [SerializeField] public LayerMask floorLayer;
     public float stuckTimer = 3f;
+    [HideInInspector]
     public Vector3 posCheck;
+    [HideInInspector]
     public float timeSinceLastStuckCheck;
+    [HideInInspector]
     public bool playerInView = false;
+    [HideInInspector]
     Vector3 dest;
+    [HideInInspector]
     public bool isDestSet;
     [SerializeField] float walkRange;
 
@@ -22,6 +29,7 @@ public class CreatureBase : MonoBehaviour
     public float soundTimerMax = 14f;
     public float creatureSpeed = 5f;
     public float closeSoundRange = 10f;
+    [HideInInspector]
     public bool isPlayerSeen = false;
 
     public void CreaturePatrol() {

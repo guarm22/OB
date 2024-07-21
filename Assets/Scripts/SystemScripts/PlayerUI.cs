@@ -70,7 +70,7 @@ public class PlayerUI : MonoBehaviour
             GameObject ui = Instantiate(togglePrefab, transform);
             ui.transform.SetParent(roomSelectionUI.transform);
             ui.transform.localPosition = new Vector3(0f, iter, 0f);
-            ui.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = rooms[i].name;
+            ui.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = rooms[i].name;
             //ui.transform.GetChild(1).gameObject.GetComponent<Text>().fontSize = 40;
 
             ui.GetComponent<Toggle>().onValueChanged.AddListener(
@@ -119,9 +119,11 @@ public class PlayerUI : MonoBehaviour
         if(inMenu) {
             if(Input.GetKeyDown(KeyCode.Tab) || DivergenceControl.Instance.PendingReport) {
                 turnOffSelection();
+                PostProcessingControl.Instance.ActivateDepthOfField(false);
             }
         }
         else if(Input.GetKeyDown(KeyCode.Tab) && !DivergenceControl.Instance.PendingReport) {
+            PostProcessingControl.Instance.ActivateDepthOfField(true, 50, 1);
             turnOnSelection();
         }
     }

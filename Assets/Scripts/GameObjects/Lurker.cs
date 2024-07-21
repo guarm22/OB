@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Lurker : CreatureBase
 {
     public AudioClip yellSound;
+    [HideInInspector]
     private float timeSinceYell = -1f;
     private float yellCooldown = 5f;
+    [HideInInspector]
     private Vector3 spawnPos;
+    public Volume disorientPrefab;
 
     public void runTowardsPlayer() {
         agent.SetDestination(player.transform.position);
@@ -41,6 +45,7 @@ public class Lurker : CreatureBase
             base.FacePlayer();
         }
         if(amTouchingPlayer()) {
+            Instantiate(disorientPrefab, player.transform.position, Quaternion.identity);
             SC_FPSController.Instance.Debuff("Energy", 10f);
             CreatureControl.Instance.RemoveCreature(gameObject);
         }

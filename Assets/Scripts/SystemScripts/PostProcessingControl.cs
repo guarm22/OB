@@ -24,6 +24,16 @@ public class PostProcessingControl : MonoBehaviour
             depthOfField.focusDistance.Override(1);
         }
     }
+    public void ActivateDepthOfField(bool active, float focalLength=1, float focusDistance=1) {
+        //Debug.Log("Depth of Field: " + active);
+        if(active) {
+            depthOfField.focalLength.Override(focalLength);
+            depthOfField.focusDistance.Override(focusDistance);
+        } else {
+            depthOfField.focalLength.Override(focalLength);
+            depthOfField.focusDistance.Override(focusDistance);
+        }
+    }
 
     void Awake() {
         Instance = this;
@@ -64,7 +74,6 @@ public class PostProcessingControl : MonoBehaviour
     }
 
     public void SetGammaAlpha(float gammaAlpha) {
-        Debug.Log("Gamma Alpha: " + gammaAlpha);
         //gamma goes from -1 to 1, 0 is default
         gammaAlpha = (gammaAlpha - 50) / 50;
         

@@ -245,7 +245,7 @@ public class CreatureControl : MonoBehaviour
 
         CreatureSpawnpoints = GameObject.FindGameObjectsWithTag("CreatureSpawnPoint").ToList();
 
-        specialCreatures.Add(chaserPrefab);
+        //specialCreatures.Add(chaserPrefab);
         setCreatureSettings();
     }
 

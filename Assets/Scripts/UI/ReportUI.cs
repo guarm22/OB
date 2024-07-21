@@ -17,6 +17,9 @@ public class ReportUI : MonoBehaviour {
     public Color OriginalBGColor;
     public Color SelectedBGColor;
 
+    public Color NormalButtonColor;
+    public Color DisabledButtonColor;
+
     [HideInInspector]
     public List<GameObject> rooms;
     [HideInInspector]
@@ -25,8 +28,6 @@ public class ReportUI : MonoBehaviour {
     public string SelectedRoom;
 
     public static ReportUI Instance;
-
-    public FontAsset fontAsset;
 
     void Start() {
         CreateUI();
@@ -37,12 +38,22 @@ public class ReportUI : MonoBehaviour {
 
     void Update() {
         findPlayerLoc();
+        UpdateButton();
+    }
+
+    private void UpdateButton() {
+        if(SelectedTypes.Count*DivergenceControl.Instance.EnergyPerGuess > GameSystem.Instance.CurrentEnergy || SelectedRoom == null || SelectedTypes.Count == 0 || SelectedRoom == "") {
+            reportButton.GetComponent<Image>().color = DisabledButtonColor;
+        }
+        else {
+            reportButton.GetComponent<Image>().color = NormalButtonColor;
+        }
     }
 
     public void findPlayerLoc() {
         foreach(GameObject room in rooms) {
             if(PlayerUI.Instance.GetPlayerRoom() == room.name) {
-                playerLoc.transform.position = room.transform.position - new Vector3(0,-50,0);
+                playerLoc.transform.position = room.transform.position - new Vector3(0,Display.main.systemHeight*0.03f,0);
             }
         }
     }
@@ -58,7 +69,7 @@ public class ReportUI : MonoBehaviour {
             toggle.isOn = false;
         }
         foreach(GameObject room in rooms) {
-            room.GetComponent<Image>().color = OriginalBGColor;
+            ChangeBGColor(room, OriginalBGColor);
         }
     }
 
@@ -66,37 +77,36 @@ public class ReportUI : MonoBehaviour {
         Toggle toggle = obj.GetComponent<Toggle>();
         Image toggleBackground = toggle.targetGraphic as Image; // Get the Image component
         if(toggle.isOn) {
-            ChangeColorOfAllImages(obj, Color.gray); // Change the color of all images
+            toggle.transform.GetChild(2).GetComponent<Image>().color = SelectedBGColor; // Change the color of all images
             SelectedTypes.Add(obj.name);
         }
         else {
-            toggleBackground.color = Color.white; // Change the background color back
-            toggle.transform.GetChild(0).GetComponent<Image>().color = Color.black; // Change the color of the checkmark
+            toggle.transform.GetChild(2).GetComponent<Image>().color = OriginalBGColor; // Change the color of the checkmark
             SelectedTypes.Remove(obj.name);
         }
     }
     public void SelectRoom(GameObject room) {
         if(SelectedRoom == null) {
-            room.GetComponent<Image>().color = SelectedBGColor;
+            //change image alpha to max
+            ChangeBGColor(room, SelectedBGColor);
             SelectedRoom = room.name;
         }
 
         else if(SelectedRoom == room.name) {
-            room.GetComponent<Image>().color = OriginalBGColor;
+            ChangeBGColor(room, OriginalBGColor);
             SelectedRoom = null;
         }
 
         else if(SelectedRoom != room.name) {
             foreach (GameObject r in rooms) {
-                r.GetComponent<Image>().color = OriginalBGColor;
+                ChangeBGColor(r, OriginalBGColor);
             }
-            room.GetComponent<Image>().color = SelectedBGColor;
+            ChangeBGColor(room, SelectedBGColor);
             SelectedRoom = room.name;
         }
     }
 
     public void GetRooms() {
-        Debug.Log("Getting rooms");
         rooms = new List<GameObject>();
         foreach(GameObject child in GameObject.FindGameObjectsWithTag("RoomUI")) {
             EventTrigger trigger = child.AddComponent<EventTrigger>();
@@ -113,6 +123,11 @@ public class ReportUI : MonoBehaviour {
         }
     }
 
+    private void ChangeBGColor(GameObject room, Color color) {
+        room.transform.GetChild(0).GetComponent<Image>().color = color;
+
+    }
+
     public void CreateUI() {
         List<string> types = DynamicObject.GetAllAnomalyTypes();
         float iterY = 0f;
@@ -127,13 +142,25 @@ public class ReportUI : MonoBehaviour {
             GameObject ui = Instantiate(togglePrefab, transform);
             ui.transform.SetParent(typeSelectionUI.transform);
             ui.transform.localPosition = new Vector3(iterX, iterY, 0f);
-            ui.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = type;
+            ui.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = type;
             ui.transform.localScale = new Vector3(3f,3f,3f);
             ui.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
             ui.name = type;
             iterY+=100f;
-            ui.GetComponent<Toggle>().onValueChanged.AddListener(
-            delegate { SelectType(ui); });       
+            
+            //ui.GetComponent<Toggle>().onValueChanged.AddListener(
+            //delegate { SelectType(ui); });       
+
+            EventTrigger trigger = ui.AddComponent<EventTrigger>();
+            // Create a new entry for the click event
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerClick;
+
+            // Add a callback to the entry
+            entry.callback.AddListener(delegate { SelectType(ui); });
+
+            // Add the entry to the trigger
+            trigger.triggers.Add(entry);
         }
     }
 

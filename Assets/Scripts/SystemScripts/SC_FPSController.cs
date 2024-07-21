@@ -215,11 +215,11 @@ public class SC_FPSController : MonoBehaviour
         }
     }
 
-    void Update()  {   
-        if(PlayerUI.paused || GameSystem.Instance.GameOver || CreatureControl.Instance.IsJumpscareFinished) {
+    void Update()  { 
+        CheckOutOfMap();  
+        if(PlayerUI.paused || GameSystem.Instance.GameOver || CreatureControl.Instance.IsJumpscareFinished || PlayerUI.Instance.inMenu) {
             return;
         }
         PlayerMove();
-        CheckOutOfMap();
     }
 }

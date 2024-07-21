@@ -23,7 +23,7 @@ public class Flashlight : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if(GameSystem.Instance.GameOver || PlayerUI.paused) {
+        if(GameSystem.Instance.GameOver || PlayerUI.paused || PlayerUI.Instance.inMenu) {
             return;
         }
 

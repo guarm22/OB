@@ -289,7 +289,7 @@ public class DivergenceControl : MonoBehaviour {
         //  did not select a room
         //  did not select any types
         //play error sound and return
-        if(GameSystem.Instance.CurrentEnergy < totalCost || room == null || types.Count < 1 || types == null) {
+        if(GameSystem.Instance.CurrentEnergy < totalCost || room == null || types.Count < 1 || types == null||room == "") {
             StartCoroutine(SoundControl.Instance.guessFeedbackSound(false));
             return;
         }
