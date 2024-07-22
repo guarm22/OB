@@ -67,6 +67,7 @@ public class ReportUI : MonoBehaviour {
         SelectedRoom = null;
         foreach(Toggle toggle in typeSelectionUI.GetComponentsInChildren<Toggle>()) {
             toggle.isOn = false;
+            toggle.transform.GetChild(2).GetComponent<Image>().color = OriginalBGColor; // Change the color of the checkmark
         }
         foreach(GameObject room in rooms) {
             ChangeBGColor(room, OriginalBGColor);
@@ -75,7 +76,6 @@ public class ReportUI : MonoBehaviour {
 
     public void SelectType(GameObject obj) {
         Toggle toggle = obj.GetComponent<Toggle>();
-        Image toggleBackground = toggle.targetGraphic as Image; // Get the Image component
         if(toggle.isOn) {
             toggle.transform.GetChild(2).GetComponent<Image>().color = SelectedBGColor; // Change the color of all images
             SelectedTypes.Add(obj.name);

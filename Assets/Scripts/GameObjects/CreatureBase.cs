@@ -32,6 +32,8 @@ public class CreatureBase : MonoBehaviour {
     [HideInInspector]
     public bool isPlayerSeen = false;
 
+    public String HomeRoom;
+
     public void CreaturePatrol() {
         CreatureSounds();
         //if the creature can see the player, chasing the player takes priority over everything else

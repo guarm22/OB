@@ -23,6 +23,13 @@ public class Flashlight : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if(beam.enabled) {
+            timer += Time.deltaTime;
+            if(timer >= 1f) {
+                timer = 0;
+                GameSystem.Instance.ChangeEnergy(-totalEnergyDrainPerSecond);
+            }
+        }
         if(GameSystem.Instance.GameOver || PlayerUI.paused || PlayerUI.Instance.inMenu) {
             return;
         }
@@ -33,14 +40,6 @@ public class Flashlight : MonoBehaviour
 
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Flashlight"))) {
             beam.enabled = !beam.enabled;
-        }
-
-        if(beam.enabled) {
-            timer += Time.deltaTime;
-            if(timer >= 1f) {
-                timer = 0;
-                GameSystem.Instance.ChangeEnergy(-totalEnergyDrainPerSecond);
-            }
         }
 
         //get the x rotation of the camera

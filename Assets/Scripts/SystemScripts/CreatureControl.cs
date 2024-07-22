@@ -73,6 +73,7 @@ public class CreatureControl : MonoBehaviour
         creature.transform.SetParent(roomObj.transform);
         creature.name = type + " - " + room;
         CreaturesPerRoom[room] += 1;
+        creature.GetComponent<CreatureBase>().HomeRoom = room;
 
         BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
         if (roomCollider.bounds.Contains(creature.transform.position)) {
@@ -103,7 +104,8 @@ public class CreatureControl : MonoBehaviour
             }
 
             Vector3 point = new Vector3();
-            point = possibleSpawns[UnityEngine.Random.Range(0, possibleSpawns.Count)].transform.position;
+            //choose furthest point from player from possible points
+            point = possibleSpawns.OrderByDescending(spawn => Vector3.Distance(GameObject.Find("Player").transform.position, spawn.transform.position)).First().transform.position;
             //return the closest point of the navmesh to that point
             NavMeshHit hit;
             if (NavMesh.SamplePosition(point, out hit, 5f, NavMesh.AllAreas)) {
@@ -167,6 +169,11 @@ public class CreatureControl : MonoBehaviour
             CreaturesPerRoom.Add(room, 0);
         } 
 
+        //check if the player is in that room
+        if(PlayerUI.Instance.GetPlayerRoom() == room) {
+
+        }
+
         //lose condition - all rooms have max anomalies
         ShouldSpawnEnder(room);
 
@@ -218,7 +225,7 @@ public class CreatureControl : MonoBehaviour
 
     public int CreatureReport(String room) {
         foreach(GameObject creature in ActiveCreatures) {
-            if(creature.name.Contains(room)) {
+            if(creature.name.Contains(room) || creature.GetComponent<CreatureBase>().HomeRoom == room) {
                 CreaturesReported += 1;
                 GameSystem.Instance.ChangeEnergy(25 - creature.GetComponent<DynamicData>().energyCost);
                 RemoveCreature(creature);
@@ -245,7 +252,7 @@ public class CreatureControl : MonoBehaviour
 
         CreatureSpawnpoints = GameObject.FindGameObjectsWithTag("CreatureSpawnPoint").ToList();
 
-        //specialCreatures.Add(chaserPrefab);
+        specialCreatures.Add(chaserPrefab);
         setCreatureSettings();
     }
 

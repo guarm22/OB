@@ -81,7 +81,7 @@ public class SC_FPSController : MonoBehaviour
         }
 
         if (Input.GetKey(KeybindManager.instance.GetKeybind("Jump")) && canMove && characterController.isGrounded) {
-            moveDirection.y = jumpSpeed;
+            //moveDirection.y = jumpSpeed;
         }
         else {
             moveDirection.y = movementDirectionY;

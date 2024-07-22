@@ -26,7 +26,7 @@ public class ChaserDisorient : MonoBehaviour {
     }
 
     public IEnumerator Distort() {
-        SC_FPSController.Instance.Debuff("Slow", 0.3f, duration);
+        SC_FPSController.Instance.Debuff("Slow", 0.3f, duration-0.75f);
         float elapsed = 0f;
         float lensTarget = 1f;
         float vignetteTarget = 1f;
@@ -36,8 +36,8 @@ public class ChaserDisorient : MonoBehaviour {
             if(PlayerUI.paused) {
                 yield return null;
             }
-            lensDistortion.intensity.Override(Mathf.Lerp(lensDistortionStart, lensTarget, elapsed / duration));
-            vignette.intensity.Override(Mathf.Lerp(vignetteStart, vignetteTarget, elapsed / duration));
+            lensDistortion.intensity.Override(Mathf.Lerp(lensDistortionStart, lensTarget, elapsed / (duration*0.4f)));
+            vignette.intensity.Override(Mathf.Lerp(vignetteStart, vignetteTarget, elapsed / (duration*0.4f)));
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -54,8 +54,8 @@ public class ChaserDisorient : MonoBehaviour {
             if(PlayerUI.paused) {
                 yield return null;
             }
-            lensDistortion.intensity.Override(Mathf.Lerp(lensTarget, 0, elapsed / duration));
-            vignette.intensity.Override(Mathf.Lerp(vignetteTarget, 0, elapsed / duration));
+            lensDistortion.intensity.Override(Mathf.Lerp(lensTarget, 0, elapsed / (duration*0.4f)));
+            vignette.intensity.Override(Mathf.Lerp(vignetteTarget, 0, elapsed / (duration*0.4f)));
             elapsed += Time.deltaTime;
             yield return null;
         }

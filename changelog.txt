@@ -297,7 +297,7 @@ Known Issues:
 -Apartment creature spawning no worky
 
 
-v0.6.2 - Creature Refactor/Animations
+v0.6.2 (Jul 21, 2024) - Creature Refactor/Animations
 
 Changes:
 -Changed how animations are controlled for each creature
@@ -306,6 +306,7 @@ Changes:
 -Made disorienting effect on the Chaser stronger and apply over time
 -Removed the ability to jump
 -Updated the in-game UI
+-Changed the position of the battery icon to the top right
 
 Additions:
 -Added a new model for Chasers
@@ -315,8 +316,20 @@ Additions:
 -The report button now changes color if you cannot send a report
 
 Bug Fixes:
+-Creature spawning on Apartment fixed due to fixed spawn positions being added
 -Fixed an issue causing creatures to spawn incorrect (creature would warp before navmeshagent variable was initialized, causing creature to go to (0,0,0))
 -Fixed an issue where creatures could track through walls on Apartment
 -Fixed an issue where creatures would cost too much energy
 -Can no longer use flashlight or crouch while the reporting menu is open
 -Fixed an issue where clicking on the "YOU" indicator on the report screen would cause that room to not be selected
+
+v0.6.3:
+
+Changes:
+
+
+Additions:
+
+
+Bug Fixes:
+-Fixed a bug where certain spawn points would be real world colliders
