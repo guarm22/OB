@@ -225,7 +225,7 @@ public class CreatureControl : MonoBehaviour
             }
         }
 
-        //half chance to spawn an ender within 70% of the max divergences
+        //half chance to spawn an ender within 65% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.65f)) {
             int rnum = UnityEngine.Random.Range(0,100);
             if(rnum < spawnChance/2) {

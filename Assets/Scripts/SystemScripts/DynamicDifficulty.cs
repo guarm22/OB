@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DynamicDifficulty : MonoBehaviour
 {
-    private float TimeSinceLastReport=0;
+    private float TimeSinceLastCorrectReport=0;
 
     void Start() {
         
@@ -12,15 +12,15 @@ public class DynamicDifficulty : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        TimeSinceLastReport += Time.deltaTime;
+        TimeSinceLastCorrectReport += Time.deltaTime;
         if(DivergenceControl.Instance.reports.Count <= 0) {
             return;
         }
 
         Report lastReport = DivergenceControl.Instance.reports[DivergenceControl.Instance.reports.Count - 1];
         //check if report made recently
-        if(lastReport.timeMade - GameSystem.Instance.TimeInLevel < 1) {
-            TimeSinceLastReport = 0;
+        if(lastReport.timeMade - GameSystem.Instance.TimeInLevel < 1 && lastReport.correct) {
+            TimeSinceLastCorrectReport = 0;
         }
     }
 }
