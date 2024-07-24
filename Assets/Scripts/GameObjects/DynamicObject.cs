@@ -32,6 +32,7 @@ public class DynamicObject {
             this.divTime = Time.time;
         }
         else {
+            
             this.divTime = -1f;
         }
         

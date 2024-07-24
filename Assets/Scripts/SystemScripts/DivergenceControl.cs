@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Collections;
 
 public class DivergenceControl : MonoBehaviour {
 
@@ -101,6 +102,8 @@ public class DivergenceControl : MonoBehaviour {
     public float currentRandomness;
 
     public int MaxDivergences = 4;
+
+    public ParticleSystem divergenceParticle;
 
     /// <summary>
     /// Finds each game object with the DynamicData script and adds it to the DynamicObjectList.
@@ -315,7 +318,7 @@ public class DivergenceControl : MonoBehaviour {
             types,
             found.Select(d => d.Obj.name).ToList(),
             found.Select(d => d.data.energyCost).ToList(),
-            DateTime.Now.ToString("HH:mm:ss"),
+            GameSystem.Instance.TimeInLevel,
             found.Select(d => (Time.time - d.divTime)+(ReportLockout/2)).ToList(),
             found.Count > 0,
             room,
@@ -343,6 +346,7 @@ public class DivergenceControl : MonoBehaviour {
 
                 d.DoAnomalyAction(false);
                 DivergenceList.Remove(d);
+                StartCoroutine(DivergenceParticle(d.Obj));
                 Rooms[d.Room] -= 1;       
 
                 //Lock the object for a certain amount of time
@@ -361,6 +365,12 @@ public class DivergenceControl : MonoBehaviour {
         else {
             StartCoroutine(SoundControl.Instance.guessFeedbackSound(false));
         }
+    }
+
+    private IEnumerator DivergenceParticle(GameObject parent) {
+        GameObject o = Instantiate(divergenceParticle.gameObject, parent.transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(5);
+        Destroy(o);
     }
 
     /// <summary>

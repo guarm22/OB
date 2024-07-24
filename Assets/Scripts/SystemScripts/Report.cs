@@ -7,13 +7,13 @@ public class Report {
     public List<String> reportTypes;
     public List<String> itemNames;
     public List<int> itemEnergyCosts;
-    public String timeMade;
+    public float timeMade;
     public List<float> itemActiveTime;
     public bool correct;
     public String room;
     public int totalEnergyCost;
 
-    public Report(List<String> reportTypes, List<String> itemNames, List<int> itemEnergyCosts, String timeMade, List<float> itemActiveTime, bool correct, String room, int totalEnergyCost) {
+    public Report(List<String> reportTypes, List<String> itemNames, List<int> itemEnergyCosts, float timeMade, List<float> itemActiveTime, bool correct, String room, int totalEnergyCost) {
         this.reportTypes = reportTypes;
         this.itemNames = itemNames;
         this.itemEnergyCosts = itemEnergyCosts;

@@ -88,7 +88,7 @@ public class PlayerUI : MonoBehaviour
             GameObject ui = Instantiate(togglePrefab, transform);
             ui.transform.SetParent(typeSelectionUI.transform);
             ui.transform.localPosition = new Vector3(0f, iter, 0f);
-            ui.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = type;
+            ui.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = type;
             ui.transform.localScale = new Vector3(3f,3f,3f);
             ui.name = type;
             iter+=100f;

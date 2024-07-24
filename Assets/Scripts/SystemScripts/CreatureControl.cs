@@ -29,6 +29,9 @@ public class CreatureControl : MonoBehaviour
     public int TotalCreatures;
     public int CreaturesReported = 0;
 
+    [HideInInspector]
+    public float enderSpawnChance = 5f;
+
     public List<GameObject> ActiveCreatures = new List<GameObject>();
 
     public List<GameObject> CreatureSpawnpoints = new List<GameObject>();
@@ -204,19 +207,28 @@ public class CreatureControl : MonoBehaviour
             }
         }
 
-        //5% chance to spawn an ender within 80% of the max divergences
-        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences*0.8) {
-            int spawnChance = UnityEngine.Random.Range(0,100);
-            if(spawnChance < 5) {
+        int divCount = DivergenceControl.Instance.DivergenceList.Count;
+        int maxDivs = DivergenceControl.Instance.MaxDivergences;
+        //get amount of divergences that have been alive for more than x seconds
+        int x = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 90);
+        int y = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 150);
+        int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 200);
+        int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 260);
+        float spawnChance = enderSpawnChance + ((1.5f*x) + (3*y) + (4*z) + (5*w));
+
+        //chance to spawn an ender within 80% of the max divergences
+        if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {
+            int rnum = UnityEngine.Random.Range(0,100);
+            if(rnum < spawnChance) {
                 ManuallySpawnEnder(room);
                 return;
             }
         }
 
-        //2% chance to spawn an ender within 70% of the max divergences
-        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences*0.7) {
-            int spawnChance = UnityEngine.Random.Range(0,100);
-            if(spawnChance < 2) {
+        //half chance to spawn an ender within 70% of the max divergences
+        if(divCount >= Mathf.Ceil(maxDivs*0.65f)) {
+            int rnum = UnityEngine.Random.Range(0,100);
+            if(rnum < spawnChance/2) {
                 ManuallySpawnEnder(room);
                 return;
             }
