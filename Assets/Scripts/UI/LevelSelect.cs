@@ -44,7 +44,15 @@ public class LevelSelect : MonoBehaviour {
         return currentLevel;
     }
 
+    private void AddOnClick(GameObject button, String level) {
+        button.GetComponent<Button>().onClick.AddListener(() => SetLevel(level));
+    }
+
     void Start() {
+        foreach (String l in levels) {
+            GameObject b = GameObject.Find(l);
+            AddOnClick(b, l);
+        }
         SetLevel("Cabin");
     }
 

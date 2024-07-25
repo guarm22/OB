@@ -16,7 +16,7 @@ public class Flashlight : MonoBehaviour
     void Start() {
         beam.enabled = false;   
         float eps = PlayerPrefs.GetFloat("EPS");
-        staticEnergyDrainPerSecond = eps * 1.5f;
+        staticEnergyDrainPerSecond = eps * 1.25f;
         totalEnergyDrainPerSecond = staticEnergyDrainPerSecond * energyDrainModifier;
         Instance = this;
     }

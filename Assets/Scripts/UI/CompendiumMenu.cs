@@ -12,7 +12,7 @@ public class CompendiumMenu : MonoBehaviour {
         "Lurkers like to stalk their prey from the shadows. They are known to be able to siphon energy.",
         "Hiders attempt to get the jump on their targets by hiding around corners or objects. They attempt to disorient the target with a loud sound and then attack.",
         "Chasers are known for their speed and agility. With their small frame, they are hard to spot. However, their sounds give them away.",
-        "Enders are the most dangerous type of creature. They do not adhere to any known laws of physics, and their attacks are always lethal."
+        "Enders are the most dangerous type of creature. They do not adhere to any known laws of physics, and their attacks are always lethal. However, it seems they only appear in areas with massive energy fluctuations."
     };
 
     public GameObject outline;

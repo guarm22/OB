@@ -39,7 +39,15 @@ public class StatsMenu : MonoBehaviour
         defaultMenu.SetActive(true);
     }
 
+    private void AddOnClick(GameObject button, String level) {
+        button.GetComponent<Button>().onClick.AddListener(() => SetMenu(level));
+    }
+
     void Start() {
+         foreach (String l in menus) {
+            GameObject b = GameObject.Find(l);
+            AddOnClick(b, l);
+        }
         currentMenu = "Stats";
         SetMenu(currentMenu);
 

@@ -37,9 +37,9 @@ public class GameSettings : MonoBehaviour
     public TMP_Text hintsText;
     public bool hintsEnabled;
 
-    public const int NormalDivergenceRate = 28;
+    public const int NormalDivergenceRate = 29;
     public const int NormalCreatureThreshold = 4;
-    public const int NormalGracePeriod = 28;
+    public const int NormalGracePeriod = 25;
     public const float NormalEPS = 1.1f;
     public const float NormalCreatureSpawnRate = 23f;
 
@@ -204,7 +204,7 @@ public class GameSettings : MonoBehaviour
             return 30f;
         }
         else if(diff == "Normal") {
-            return 23f;
+            return 24f;
         }
         else if(diff == "Hard") {
             return 18f;
@@ -222,7 +222,7 @@ public class GameSettings : MonoBehaviour
             return 33;
         }
         else if(diff == "Normal") {
-            return 28;
+            return 29;
         }
         else if(diff == "Hard") {
             return 22;
@@ -240,7 +240,7 @@ public class GameSettings : MonoBehaviour
             return 30;
         }
         else if(diff == "Normal") {
-            return 28;
+            return 25;
         }
         else if(diff == "Hard") {
             return 16;

@@ -44,6 +44,8 @@ public class SC_FPSController : MonoBehaviour
 
     public int timesCrouched = 0;
 
+    public bool isRunning = false;
+
     void Start() {
         characterController = GetComponent<CharacterController>();
         Instance = this;
@@ -65,7 +67,7 @@ public class SC_FPSController : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         // Press Left Shift to run
-        bool isRunning = Input.GetKey(KeybindManager.instance.GetKeybind("Sprint"));
+        isRunning = Input.GetKey(KeybindManager.instance.GetKeybind("Sprint"));
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
