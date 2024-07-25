@@ -197,7 +197,7 @@ public class CreatureControl : MonoBehaviour
     }
 
     private void ShouldSpawnEnder(string room) {
-        if(GameSystem.InEditor()) {
+        if(GameSystem.InEditor() || SceneManager.GetActiveScene().name == "Tutorial") {
             return;
         }
 

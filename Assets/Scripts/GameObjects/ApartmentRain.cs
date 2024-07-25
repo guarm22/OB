@@ -12,7 +12,7 @@ public class ApartmentRain : MonoBehaviour {
     [HideInInspector]
     public GameObject player;
     public List<GameObject> windows;
-    private float distance = 5;
+    private float distance = 12;
     
     public float insideRainVolume = 2500f;
     public float outsideRainVolume = 10000f;
@@ -42,6 +42,14 @@ public class ApartmentRain : MonoBehaviour {
     
         //if player is close to open window, set lowpass filter to 22000
         foreach(GameObject window in windows) {
+            //raycast to window to check if player can see it
+            RaycastHit hit;
+            if(Physics.Raycast(player.transform.position, window.transform.position - player.transform.position, out hit, distance)) {
+                if(hit.collider.gameObject != window) {
+                    continue;
+                }
+            }
+
             if(Vector3.Distance(player.transform.position, window.transform.position) < distance 
             && window.GetComponent<opencloseWindowApt>().open) {
                 isCloseToWindow = true;

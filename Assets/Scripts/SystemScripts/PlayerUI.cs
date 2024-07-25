@@ -129,6 +129,7 @@ public class PlayerUI : MonoBehaviour
     }
 
     private void openEscape() {
+        turnOffSelection();
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         escapeMenuUI.SetActive(true);
@@ -155,6 +156,12 @@ public class PlayerUI : MonoBehaviour
             else {
                 closeEscape();
             }   
+        }
+
+        if(src=="popup") {
+            if(paused) {
+                turnOffSelection();
+            }
         }
     }
 
