@@ -26,8 +26,11 @@ public class ReportUI : MonoBehaviour {
     public List<string> SelectedTypes;
     [HideInInspector]
     public string SelectedRoom;
-
     public static ReportUI Instance;
+
+    public List<string> Statuses = new List<string> {"Good", "Warning", "Danger"};
+    public List<Color> StatusColors = new List<Color> {Color.green, Color.yellow, Color.red};
+    public TMP_Text StatusText;
 
     void Start() {
         CreateUI();
@@ -39,6 +42,26 @@ public class ReportUI : MonoBehaviour {
     void Update() {
         findPlayerLoc();
         UpdateButton();
+        UpdateStatus();
+    }
+
+    private void UpdateStatus() {
+        int divergences = DivergenceControl.Instance.DivergenceList.Count;
+        int maxDivergences = DivergenceControl.Instance.Rooms.Count;
+        float divergenceRatio = (float) divergences / maxDivergences;
+
+        if(divergenceRatio <= Warning.warningThreshold) {
+            StatusText.text = Statuses[0];
+            StatusText.color = StatusColors[0];
+        }
+        else if(divergenceRatio <= Warning.dangerThreshold) {
+            StatusText.text = Statuses[1];
+            StatusText.color = StatusColors[1];
+        }
+        else {
+            StatusText.text = Statuses[2];
+            StatusText.color = StatusColors[2];
+        }
     }
 
     private void UpdateButton() {
@@ -53,7 +76,7 @@ public class ReportUI : MonoBehaviour {
     public void findPlayerLoc() {
         foreach(GameObject room in rooms) {
             if(PlayerUI.Instance.GetPlayerRoom() == room.name) {
-                playerLoc.transform.position = room.transform.position - new Vector3(0,Display.main.systemHeight*0.03f,0);
+                playerLoc.transform.position = room.transform.position - new Vector3(0,Display.main.systemHeight*0.022f,0);
             }
         }
     }

@@ -214,7 +214,7 @@ public class CreatureControl : MonoBehaviour
         int y = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 150);
         int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 200);
         int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 260);
-        float spawnChance = enderSpawnChance + ((1.5f*x) + (3*y) + (4*z) + (5*w));
+        float spawnChance = enderSpawnChance + ((x) + (y) + (1.5f*z) + (2.5f*w));
 
         //chance to spawn an ender within 80% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {
@@ -225,10 +225,10 @@ public class CreatureControl : MonoBehaviour
             }
         }
 
-        //half chance to spawn an ender within 65% of the max divergences
+        //a third of the chance to spawn an ender within 65% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.65f)) {
             int rnum = UnityEngine.Random.Range(0,100);
-            if(rnum < spawnChance/2) {
+            if(rnum < spawnChance/3) {
                 ManuallySpawnEnder(room);
                 return;
             }

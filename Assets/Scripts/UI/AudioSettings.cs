@@ -14,26 +14,26 @@ public class AudioSettings : MonoBehaviour
 
     void Awake() {
         if(!PlayerPrefs.HasKey("MasterVolume")) {
-            PlayerPrefs.SetInt("MasterVolume", 100);
+            PlayerPrefs.SetInt("MasterVolume", 50);
         }
         if(!PlayerPrefs.HasKey("MusicVolume")) {
-            PlayerPrefs.SetInt("MusicVolume", 100);
+            PlayerPrefs.SetInt("MusicVolume", 50);
         }
 
         if(!PlayerPrefs.HasKey("SFXVolume")) {
-            PlayerPrefs.SetInt("SFXVolume", 100);
+            PlayerPrefs.SetInt("SFXVolume", 50);
         }
         if(!PlayerPrefs.HasKey("AmbienceVolume")) {
-            PlayerPrefs.SetInt("AmbienceVolume", 100);
+            PlayerPrefs.SetInt("AmbienceVolume", 50);
         }
         if(!PlayerPrefs.HasKey("AlertVolume")) {
-            PlayerPrefs.SetInt("AlertVolume", 100);
+            PlayerPrefs.SetInt("AlertVolume", 50);
         }
         if(!PlayerPrefs.HasKey("CreatureVolume")) {
-            PlayerPrefs.SetInt("CreatureVolume", 100);
+            PlayerPrefs.SetInt("CreatureVolume", 50);
         }
         if(!PlayerPrefs.HasKey("WeatherVolume")) {
-            PlayerPrefs.SetInt("WeatherVolume", 100);
+            PlayerPrefs.SetInt("WeatherVolume", 50);
         }
 
         SetValues();

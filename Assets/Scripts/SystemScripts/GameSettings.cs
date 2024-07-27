@@ -219,7 +219,7 @@ public class GameSettings : MonoBehaviour
 
     private int GetDivergenceRate(string diff) {
         if(diff == "Easy") {
-            return 33;
+            return 34;
         }
         else if(diff == "Normal") {
             return 29;
@@ -237,10 +237,10 @@ public class GameSettings : MonoBehaviour
 
     private int getGracePeriod(string diff) {
         if(diff == "Easy") {
-            return 30;
+            return 28;
         }
         else if(diff == "Normal") {
-            return 25;
+            return 22;
         }
         else if(diff == "Hard") {
             return 16;

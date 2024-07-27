@@ -212,7 +212,8 @@ public class SC_FPSController : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit)) {
             if(hit.collider.gameObject.CompareTag("Collectible")) {
-                CollectibleControl.Instance.Collect(hit.collider.gameObject);
+                Debug.Log("Collectible found");
+                //CollectibleControl.Instance.Collect(hit.collider.gameObject);
             }
         }
     }

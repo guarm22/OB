@@ -100,7 +100,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger7")) {
-            Popup.Instance.OpenPopup("You can see your energy on the bottom right. If you are running low on energy, you wont be able to report anything.\n\nIf you are confident in your energy usage, you can also report multiple divergence types at once.\n\n");
+            Popup.Instance.OpenPopup("You can see your energy on the top right. If you are running low on energy, you wont be able to report anything.\n\nIf you are confident in your energy usage, you can also report multiple divergence types at once.\n\n");
         }
 
         if(hit.name.Equals("Trigger8")) {

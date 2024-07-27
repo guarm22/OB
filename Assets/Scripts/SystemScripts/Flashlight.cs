@@ -16,7 +16,7 @@ public class Flashlight : MonoBehaviour
     void Start() {
         beam.enabled = false;   
         float eps = PlayerPrefs.GetFloat("EPS");
-        staticEnergyDrainPerSecond = eps * 1.25f;
+        staticEnergyDrainPerSecond = eps * 1.1f;
         totalEnergyDrainPerSecond = staticEnergyDrainPerSecond * energyDrainModifier;
         Instance = this;
     }
@@ -31,6 +31,11 @@ public class Flashlight : MonoBehaviour
             }
         }
         if(GameSystem.Instance.GameOver || PlayerUI.paused || PlayerUI.Instance.inMenu) {
+            if(Popup.Instance != null) {
+                if(Popup.Instance.isPopupOpen) {
+                    return;
+                }
+            }
             return;
         }
 

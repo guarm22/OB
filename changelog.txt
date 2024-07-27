@@ -328,7 +328,7 @@ v0.6.3:
 Changes:
 -Some divergences in the Apartment have changed
 -If the player pauses while the report menu is open, it is now closed. Same for popups in the tutorial
--The flashlight now takes 20% less energy per second to use
+-The flashlight now takes 30% less energy per second to use
 -Normal difficulty was made slightly easier (divergence rate + creature spawn rate increased by 1 second)
 -The menu/level selection for Levels, Options, and Extras are now all clickable instead of only being navigatable with Q and E
 
@@ -338,6 +338,9 @@ Additions:
 -Added rain effects and sounds to the Apartment map
 -Footstep sounds now sound faster if the player is sprinting
 -Added a new carpet walking sound for Cabin
+-Added warning indicator/sound effect depending on how many divergences are activated - by default they only play once
+-Added a status indicator to the report menu. Gives the player some information based on how many divergences are activated
+-Enabled the 'Relics' menu. Relics can now be found in-game by interacting with objects that have a white outline when looked at
 
 Bug Fixes:
 -Fixed a bug where certain spawn points would be real world colliders

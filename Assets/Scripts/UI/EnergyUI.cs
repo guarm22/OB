@@ -9,6 +9,6 @@ public class EnergyUI : MonoBehaviour
     public TMP_Text EnergyText;
     // Update is called once per frame
     void Update() {
-        EnergyText.text = "Energy = " + Mathf.RoundToInt(GameSystem.Instance.CurrentEnergy).ToString() + "%";
+        EnergyText.text = "Energy: " + Mathf.RoundToInt(GameSystem.Instance.CurrentEnergy).ToString() + "%";
     }
 }

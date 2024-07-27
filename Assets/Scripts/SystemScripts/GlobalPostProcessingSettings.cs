@@ -15,10 +15,10 @@ public class GlobalPostProcessingSettings : MonoBehaviour
         if (!renderingVolume.profile.TryGet(out liftGammaGain)) throw new System.NullReferenceException(nameof(liftGammaGain));
 
         //gamma goes from 0-2, 1 is default
-        SetGammaAlpha(PlayerPrefs.GetFloat("Brightness"));
+        SetGammaAlpha(PlayerPrefs.GetFloat("Brightness", 50));
 
         //set master volume
-        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
+        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume", 50) / 100f;
     }
 
     public void SetGammaAlpha(float gammaAlpha) {

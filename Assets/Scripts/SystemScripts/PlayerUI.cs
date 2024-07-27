@@ -107,6 +107,8 @@ public class PlayerUI : MonoBehaviour
     }
     private void turnOnSelection() {
         selectionUI.SetActive(true);
+        //turn off any currently playing warnings
+        Warning.Instance.TurnOffAlert();
         defaultBottomRight.SetActive(false);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
