@@ -192,10 +192,10 @@ public class PlayerUI : MonoBehaviour
     //Currently used for figuring out which room the player is in and displaying it on the top right
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals(targetTag))
+        if (other.tag.Equals(targetTag) || other.tag.Equals("FakeRoom"))
         {
             // Player is within a GameObject with the specified tag
-        //Debug.Log("Player is within a GameObject with the tag: " + targetTag + " with object name: " + other.gameObject.name);
+            //Debug.Log("Player is within a GameObject with the tag: " + targetTag + " with object name: " + other.gameObject.name);
             roomText.GetComponent<TMP_Text>().text = other.gameObject.name;
         }
 
