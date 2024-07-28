@@ -101,6 +101,9 @@ public class CreatureControl : MonoBehaviour
                     possibleSpawns.Add(spawnpoint);
                 }
             }
+            foreach(GameObject s in possibleSpawns) {
+                Debug.Log(s.name);
+            }
             //if no predetermined spawns were found, get one based on room bounds
             if(possibleSpawns.Count == 0) {
                 return GetRoomCornerFurthestFromPlayer(roomObj);
@@ -111,7 +114,7 @@ public class CreatureControl : MonoBehaviour
             point = possibleSpawns.OrderByDescending(spawn => Vector3.Distance(GameObject.Find("Player").transform.position, spawn.transform.position)).First().transform.position;
             //return the closest point of the navmesh to that point
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(point, out hit, 5f, NavMesh.AllAreas)) {
+            if (NavMesh.SamplePosition(point, out hit, 1f, NavMesh.AllAreas)) {
                 point = hit.position;
             }
             return point;
