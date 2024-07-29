@@ -217,7 +217,8 @@ public class CreatureControl : MonoBehaviour
         int y = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 150);
         int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 200);
         int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 260);
-        float spawnChance = enderSpawnChance + ((x) + (y) + (1.5f*z) + (2.5f*w));
+        int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 380);
+        float spawnChance = enderSpawnChance + ((x) + (1.2f*y) + (1.5f*z) + (3f*w) + (4f*v));
 
         //chance to spawn an ender within 80% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {

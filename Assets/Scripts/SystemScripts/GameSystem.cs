@@ -45,6 +45,7 @@ public class GameSystem : MonoBehaviour {
     public List<Report> reports = new List<Report>();
 
     public float TimeInLevel = 0f;
+    public String endReason = "";
 
   void Awake() {
     if (Instance != null) {
@@ -147,6 +148,7 @@ public class GameSystem : MonoBehaviour {
 
     public IEnumerator EndGame(string reason="") {
         GameOver = true;
+        endReason = reason;
         if(reason.Equals("zombie") || reason.Equals("yippie")) {
             yield return StartCoroutine(CreatureControl.Instance.ZombieJumpscare());
         }

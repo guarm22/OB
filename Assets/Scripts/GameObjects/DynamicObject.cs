@@ -8,6 +8,7 @@ public enum ANOMALY_TYPE {
     Movement,
     Creature,
     Audio,
+    Puncture,
 };
 
 public class DynamicObject {
@@ -59,6 +60,10 @@ public class DynamicObject {
             case ANOMALY_TYPE.Movement:
                 //done through custom class
                 break;
+
+            case ANOMALY_TYPE.Puncture:
+                //done through custom class
+                break;
         }
         return true;
     }
@@ -101,7 +106,8 @@ public class DynamicObject {
             "Replacement",
             "Creature",
             "Audio",
-            "Movement"
+            "Movement",
+            "Puncture"
         };
         return res;
     }
@@ -135,6 +141,8 @@ public class DynamicObject {
                 return ANOMALY_TYPE.Audio;
             case "Movement":
                 return ANOMALY_TYPE.Movement;
+            case "Puncture":
+                return ANOMALY_TYPE.Puncture;
             default:
                 return ANOMALY_TYPE.NONE;
         }

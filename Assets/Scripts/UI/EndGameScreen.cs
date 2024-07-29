@@ -24,6 +24,10 @@ public class EndGameScreen : MonoBehaviour
         SceneManager.LoadScene(scene.name);
     }
 
+    public void ChangeText(string text) {
+        GameOver.text = text;
+    }
+
     // Start is called before the first frame update
     void Start() {
         Cursor.lockState = CursorLockMode.Confined;
@@ -35,12 +39,15 @@ public class EndGameScreen : MonoBehaviour
         if(GameSystem.Instance.Won == true) {
             GameOver.text = "You Won!";
         }
+        if(GameSystem.Instance.GameOver == true) {
+            GameOver.text = "Game Over";
+        }
+        if(GameSystem.Instance.endReason == "puncture") {
+            GameOver.text = "Taken by the Puncture...";
+        }
+
         RetryButton.onClick.AddListener(Retry);
         ReturnToMenuButton.onClick.AddListener(ReturnToMenu);
 
-    }
-
-    // Update is called once per frame
-    void Update() {
     }
 }
