@@ -346,15 +346,22 @@ Bug Fixes:
 -Fixed a bug where certain spawn points would be real world colliders
 
 
-v0.7.0 - Cabin Revamp:
+v0.7.0 - Cabin Revamp/Audio Revamp:
 
 Changes: 
 -Completely reworked the Cabin map.
 -Major changes include removal of Storage, addition of Cellar Stairs and Cellar, and map was made generally smaller.
+-Completely reworked audio scripts to make them more consistent
 
 Additions:
 -Added many new divergences to Cabin
 -Added a new type of Divergence that can manifest in multiple ways
+-Added a system where certain divergences can be made to only appear on certain difficulties
+-A sound effect now plays when selecting rooms/types in the report menu
+-Added some additional reminders to the tutorial
 
 Bug Fixes:
 -Fixed an issue where creatures could spawn in the wrong room on Cabin
+-Creature and divergence audio should now pause and play correctly
+-Creature sound effects now follow the creature correctly, instead of staying at the location where it first played
+-Audio divergences now stop playing when deactivated after a report

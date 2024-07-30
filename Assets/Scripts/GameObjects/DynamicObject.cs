@@ -54,8 +54,8 @@ public class DynamicObject {
                 break;
 
             case ANOMALY_TYPE.Audio:
-                //also done through custom class, but im bad at coding
-                return this.Audio(enable);
+                //also done through custom class
+                break;
 
             case ANOMALY_TYPE.Movement:
                 //done through custom class
@@ -74,15 +74,6 @@ public class DynamicObject {
         Vector3 vec = new Vector3(this.Obj.transform.position.x, this.Obj.transform.position.y+moveAmt, this.Obj.transform.position.z);
         this.Obj.transform.position = vec;
 
-        return true;
-    }
-    private bool Audio(bool enable) {
-        if(this.Obj.GetComponent<PlayAudio>() == null) {
-            Debug.Log("No audio script found on object " + this.Name + " in " + this.Room);
-            return false;
-        }
-
-        this.Obj.GetComponent<PlayAudio>().enabled = enable;
         return true;
     }
 
@@ -162,6 +153,8 @@ public class DynamicObject {
                 return "Audio";
             case ANOMALY_TYPE.Movement:
                 return "Movement";
+            case ANOMALY_TYPE.Puncture:
+                return "Puncture";
             default:
                 return "Error";
         }

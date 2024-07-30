@@ -110,7 +110,14 @@ public class DivergenceControl : MonoBehaviour {
     /// </summary>
     private void InitializeAllDynamicObjects() {
         DynamicData[] objects = FindObjectsOfType<DynamicData>();
+        String diff = GameSystem.Instance.Difficulty.ToLower();
         foreach(DynamicData obj in objects) {
+            //check the difficulty of the object
+            //if the difficulty is not "all" and the difficulty of the object is not the same as the current difficulty, skip the object
+            if(obj.difficulty.ToLower() != "all" && !obj.difficulty.ToLower().Contains(diff) && diff!="custom") {
+                continue;
+            }
+
             InitNewDynamicObject(obj.gameObject);
         }
         totalDynamicObjectsInScene = DynamicObjectList.Count;
@@ -165,7 +172,6 @@ public class DivergenceControl : MonoBehaviour {
 
         InitializeAllDynamicObjects();
         InitRooms();
-
         InitGame();
     }
 
@@ -205,9 +211,10 @@ public class DivergenceControl : MonoBehaviour {
             }
         }
 
+        string room = "";
         if (availableRooms.Count > 0) {
             //Choose a random room from the list of available rooms
-            string room = availableRooms[UnityEngine.Random.Range(0, availableRooms.Count)];
+            room = availableRooms[UnityEngine.Random.Range(0, availableRooms.Count)];
             //Choose a random object from the list of dynamic objects in the chosen room
             List<DynamicObject> objectsInRoom = DynamicObjectList.FindAll(x => x.Room == room);
             if(objectsInRoom.Count > 0) {
@@ -217,6 +224,15 @@ public class DivergenceControl : MonoBehaviour {
         //no objects in any room
         else {
             return;
+        }
+
+        //if random object is still null, that means it chose a room with no available divergences
+        //therefore, pull a random object from the locked list that matches the chosen room
+        if(randomObject == null) {
+            List<DynamicObject> lockedObjectsInRoom = LockedObjects.FindAll(x => x.Room == room);
+            if(lockedObjectsInRoom.Count > 0) {
+                randomObject = lockedObjectsInRoom[UnityEngine.Random.Range(0, lockedObjectsInRoom.Count)];
+            }
         }
 
         //Activate divergence

@@ -101,9 +101,6 @@ public class CreatureControl : MonoBehaviour
                     possibleSpawns.Add(spawnpoint);
                 }
             }
-            foreach(GameObject s in possibleSpawns) {
-                Debug.Log(s.name);
-            }
             //if no predetermined spawns were found, get one based on room bounds
             if(possibleSpawns.Count == 0) {
                 return GetRoomCornerFurthestFromPlayer(roomObj);

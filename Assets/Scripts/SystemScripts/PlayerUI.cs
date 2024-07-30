@@ -150,6 +150,7 @@ public class PlayerUI : MonoBehaviour
     public void PauseControl(String src="") {
         paused = !paused;
         PostProcessingControl.Instance.ActivateDepthOfField(paused);
+        SoundControl.Instance.PauseSound(paused);
 
         if(src=="escape") {
             if(paused) {

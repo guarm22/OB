@@ -26,6 +26,9 @@ public class ExpandingSphere : CustomDivergence {
     public IEnumerator ExpandSphere(GameObject obj) {
         float time = 0;
         while (time < 100) {
+            if(PlayerUI.paused) {
+                yield return null;
+            }
             //if colliding with player, kill them (end game)
             if (Vector3.Distance(player.transform.position, obj.transform.position) < 1) {
                 StartCoroutine(GameSystem.Instance.EndGame("puncture"));

@@ -2,45 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayAudio : MonoBehaviour
-{
+public class PlayAudio : CustomDivergence {
     public AudioClip sound;
-    public AudioClip distantSound;
     public float soundRepeatTimer;
-    private float timeSinceLastSound;
     private GameObject player;
-    private AudioClip currentSound;
-    private bool isPlaying;
+    private AudioSource audioSource;
     // Start is called before the first frame update
-    void Start() {
+    void Awake() {
         player = GameObject.Find("Player");
-        
-        if(Vector3.Distance(this.transform.position, player.transform.position) > 10 && distantSound != null) {
-            currentSound = distantSound;
+        if(this.GetComponent<AudioSource>() == null) {
+            audioSource = this.gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.spatialBlend = 1f;
         }
         else {
-            currentSound = sound;
+            audioSource = this.GetComponent<AudioSource>();
         }
-        isPlaying = true;
-        timeSinceLastSound = soundRepeatTimer - 1.5f; 
+        audioSource.clip = sound;
     }
 
-    // Update is called once per frame
-    void Update() {
-        timeSinceLastSound += Time.deltaTime;
-        isPlaying = timeSinceLastSound >= currentSound.length;
-        if(!isPlaying) {
-            if(Vector3.Distance(this.transform.position, player.transform.position) > 10 && distantSound != null) {
-                currentSound = distantSound;
-            }
-            else {
-                currentSound = sound;
-            }
+    public override void DoDivergenceAction(bool enable, DynamicObject obj) {
+        if(enable) {
+            StartCoroutine(RepeatSound());
         }
+        else {
+            StopAllCoroutines();
+            audioSource.Stop();
+        }
+    }
 
-        if(timeSinceLastSound > soundRepeatTimer) {
-            timeSinceLastSound = 0f;
-            AudioSource.PlayClipAtPoint(currentSound, this.transform.position);
+    private IEnumerator RepeatSound() {
+        float elapsedTime = soundRepeatTimer-1.5f;
+        while(true) {
+            if(PlayerUI.paused || GameSystem.Instance.GameOver) {
+                yield return null;
+                continue;
+            }
+
+            elapsedTime += Time.deltaTime;
+            if(elapsedTime >= soundRepeatTimer) {
+                audioSource.Play();
+                elapsedTime = 0f;
+            }
+            yield return null;
         }
     }
 }

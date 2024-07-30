@@ -36,6 +36,10 @@ public class Lurker : CreatureBase
 
     // Update is called once per frame
     protected override void Update() {
+        if(GameSystem.Instance.GameOver || PlayerUI.paused) {
+            return;
+        }
+
         base.CreatureSounds();
         if(canSeePlayer()) {
             runTowardsPlayer();

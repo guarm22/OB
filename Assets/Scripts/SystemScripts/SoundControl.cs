@@ -30,7 +30,6 @@ public class SoundControl : MonoBehaviour
     }
 
     void Update() {
-        PauseSound();
         walking();
     }
 
@@ -49,21 +48,21 @@ public class SoundControl : MonoBehaviour
         }
     }
 
-    private void PauseSound() {
-        if(GameSystem.Instance.GameOver || PlayerUI.paused) {
-            justPaused = true;
-            foreach (var audioSource in FindObjectsOfType<AudioSource>()) {
+    public void PauseSound(bool pausing) {
+        if(pausing) {
+            AudioSource[] a = FindObjectsOfType<AudioSource>();
+            foreach (AudioSource audioSource in a) {
+
                 if (!audioSource.isPlaying || audioSource.gameObject.name.Equals("JumpscareAudioSource")) continue;
-                audioSource.loop = true;
-                pausedAudioSources[audioSource] = audioSource.time;
+                pausedAudioSources.Add(audioSource, audioSource.time);
                 audioSource.Pause();
             }
         }
-        else if(justPaused) {
-            justPaused = false;
+        else {
             foreach (var audioSource in pausedAudioSources.Keys) {
-                audioSource.loop = false;
-                audioSource.time = pausedAudioSources[audioSource];
+                if(audioSource == null) {
+                    continue;
+                }
                 audioSource.Play();
             }
             pausedAudioSources.Clear();

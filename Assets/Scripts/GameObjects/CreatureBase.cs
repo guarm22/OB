@@ -34,6 +34,8 @@ public class CreatureBase : MonoBehaviour {
 
     public String HomeRoom;
 
+    public AudioSource a;
+
     public void CreaturePatrol() {
         CreatureSounds();
         //if the creature can see the player, chasing the player takes priority over everything else
@@ -132,10 +134,12 @@ public class CreatureBase : MonoBehaviour {
 
         if(soundTimerStart >= soundTimerMax) {
             if(Vector3.Distance(player.transform.position, transform.position) < closeSoundRange) {
-                AudioSource.PlayClipAtPoint(closeSound, transform.position);
+                a.clip = closeSound;
+                a.Play();
             }
             else {
-                AudioSource.PlayClipAtPoint(farSound, transform.position);
+                a.clip = farSound;
+                a.Play();
             }
             soundTimerStart = 0f;
         }
@@ -158,6 +162,12 @@ public class CreatureBase : MonoBehaviour {
         posCheck = transform.position;
         agent.speed = creatureSpeed;
         agent.angularSpeed=3000;
+
+        if(a == null) {
+            a = this.gameObject.AddComponent<AudioSource>();
+            a.spatialBlend = 1f;
+            a.clip = closeSound;
+        }
     }
 
     protected virtual void Update() {

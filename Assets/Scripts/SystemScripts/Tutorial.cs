@@ -1,19 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using SojaExiles;
+using TMPro;
 using UnityEngine;
 
-public class Tutorial : MonoBehaviour
-{
-
-    public GameObject player;
-    public LayerMask triggerLayer;
+public class Tutorial : MonoBehaviour {
     private bool blocker1 = true;
     private bool blocker3 = true;
     private bool timer1 = true;
     private bool timer2 = true;
     private bool endTrigger = true;
     public static Tutorial Instance;
+    public GameObject tutorialReminder;
 
     public GameObject door1;
     public GameObject door2;
@@ -21,6 +19,7 @@ public class Tutorial : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         Instance = this;
+        tutorialReminder.SetActive(false);
     }
 
     // Update is called once per frame
@@ -34,6 +33,7 @@ public class Tutorial : MonoBehaviour
         }
 
          if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 1) {
+            tutorialReminder.SetActive(false);
             if(Instance.blocker3) {
                 Instance.blocker3 = false;
                 door2.GetComponent<opencloseDoor>().ChangeLockState(false);
@@ -42,7 +42,7 @@ public class Tutorial : MonoBehaviour
 
         if(GameSystem.Instance.gameTime < 180f && Instance.timer1) {
             Instance.timer1 = false;
-            DivergenceControl.Instance.ManuallyActivateDivergence("DivCan");
+            DivergenceControl.Instance.ManuallyActivateDivergence("DivChess");
         }
 
         if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 2 && Instance.endTrigger) {
@@ -60,6 +60,7 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(1f);
         door1.GetComponent<opencloseDoor>().ChangeLockState(false);
         Popup.Instance.OpenPopup("You successfully reported the divergence, and the area has returned to normal.\n\nYou can now open the door by left clicking or pressing E.\n\nYou can replay this tutorial at any time if you forget the controls.");
+        tutorialReminder.SetActive(false);
     }
 
     IEnumerator TutorialCoroutine2() {
@@ -87,11 +88,16 @@ public class Tutorial : MonoBehaviour
 
         if(hit.name.Equals("CreateFirstDiv")) {
             DivergenceControl.Instance.ManuallyActivateDivergence("TutorialBox");
+
+            tutorialReminder.GetComponentInChildren<TMP_Text>().text = 
+            "Press TAB to report the divergence. You can see the room you are in on the top right.";
+
+            tutorialReminder.SetActive(true);
         }
 
         if(hit.name.Equals("Trigger5")) {
             Popup.Instance.OpenPopup("If you let too many divergences appear without reporting them, creatures eventually become attracted to the area."+
-            "\n\nYou can report these for a reduced energy cost.\n\n"+
+            "\n\nYou can report these for a reduced energy cost."+
             "\n\nNot every creature is the same, some are faster than others, and some are more deadly. Learn more about them in the Compendium.");
         }
 
@@ -104,7 +110,10 @@ public class Tutorial : MonoBehaviour
         }
 
         if(hit.name.Equals("Trigger8")) {
-            Popup.Instance.OpenPopup("Each level has different divergences, make sure you are always watching AND listening for anything suspicious!\n\nSometimes you will get hints for divergences that have been around for a long time, look out for FLASHING LIGHTS.\n\nReport the divergence in this room to enter the final room.");
+            Popup.Instance.OpenPopup("Sometimes you will get hints for divergences that have been around for a long time, look out for FLASHING LIGHTS.\n\nReport the divergence in this room to enter the final room.");
+            tutorialReminder.SetActive(true);
+
+            tutorialReminder.GetComponentInChildren<TMP_Text>().text = "Press TAB to report the divergence. This one will be a different type than the one in the previous room.";
         }
         if(hit.name.Equals("TriggerToilet")) {
             DivergenceControl.Instance.ManuallyActivateDivergence("tutorialToilet");

@@ -20,6 +20,9 @@ public class ReportUI : MonoBehaviour {
     public Color NormalButtonColor;
     public Color DisabledButtonColor;
 
+    public AudioClip selectSound;
+    public AudioSource audioSource;
+
     [HideInInspector]
     public List<GameObject> rooms;
     [HideInInspector]
@@ -37,6 +40,7 @@ public class ReportUI : MonoBehaviour {
         Instance = this;
         reportButton.onClick.AddListener(Report);
         GetRooms();
+        audioSource = this.gameObject.GetComponent<AudioSource>();
     }
 
     void Update() {
@@ -99,6 +103,7 @@ public class ReportUI : MonoBehaviour {
 
     public void SelectType(GameObject obj) {
         Toggle toggle = obj.GetComponent<Toggle>();
+        audioSource.PlayOneShot(selectSound);
         if(toggle.isOn) {
             toggle.transform.GetChild(2).GetComponent<Image>().color = SelectedBGColor; // Change the color of all images
             SelectedTypes.Add(obj.name);
@@ -109,6 +114,8 @@ public class ReportUI : MonoBehaviour {
         }
     }
     public void SelectRoom(GameObject room) {
+        audioSource.PlayOneShot(selectSound);
+
         if(SelectedRoom == null) {
             //change image alpha to max
             ChangeBGColor(room, SelectedBGColor);
@@ -171,9 +178,6 @@ public class ReportUI : MonoBehaviour {
             ui.name = type;
             iterY+=100f;
             
-            //ui.GetComponent<Toggle>().onValueChanged.AddListener(
-            //delegate { SelectType(ui); });       
-
             EventTrigger trigger = ui.AddComponent<EventTrigger>();
             // Create a new entry for the click event
             EventTrigger.Entry entry = new EventTrigger.Entry();
@@ -184,13 +188,6 @@ public class ReportUI : MonoBehaviour {
 
             // Add the entry to the trigger
             trigger.triggers.Add(entry);
-        }
-    }
-
-    private void ChangeColorOfAllImages(GameObject gameObject, Color color) {
-        Image[] images = gameObject.GetComponentsInChildren<Image>();
-        foreach (Image image in images) {
-            image.color = color;
         }
     }
 }
