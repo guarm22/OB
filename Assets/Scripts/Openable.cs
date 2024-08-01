@@ -23,7 +23,7 @@ public class Openable: MonoBehaviour {
             float dist = Vector3.Distance(player.position, gameObject.transform.position);
             animator.SetBool("isOpen", dist < openDistance);
         } catch (Exception e) {
-            //Debug.Log(e);
+            Debug.Log(e);
         }
     }
 }

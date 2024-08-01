@@ -305,11 +305,11 @@ public class DivergenceControl : MonoBehaviour {
         
         //if the player does:
         //  not have enough energy
-        //  did not select a room
-        //  did not select any types
+        //  not select a room
+        //  not select any types
         //play error sound and return
         if(GameSystem.Instance.CurrentEnergy < totalCost || room == null || types.Count < 1 || types == null||room == "") {
-            StartCoroutine(SoundControl.Instance.guessFeedbackSound(false));
+            SoundControl.Instance.guessFeedbackSound(false);
             return;
         }
 
@@ -331,24 +331,24 @@ public class DivergenceControl : MonoBehaviour {
         foreach(DynamicObject d in found) {DivergencesReportedCorrectly.Add(d);}
 
         Report r = new Report(
-            types,
-            found.Select(d => d.Obj.name).ToList(),
-            found.Select(d => d.data.energyCost).ToList(),
-            GameSystem.Instance.TimeInLevel,
-            found.Select(d => (Time.time - d.divTime)+(ReportLockout/2)).ToList(),
-            found.Count > 0,
-            room,
-            totalCost
+            types,                                              //type of each obj
+            found.Select(d => d.Obj.name).ToList(),             //name of each obj
+            found.Select(d => d.data.energyCost).ToList(),      //energy cost of each obj
+            GameSystem.Instance.TimeInLevel,                    //time in level at time of report
+            found.Select(d => (Time.time - d.divTime)+(ReportLockout/2)).ToList(), //time since divergence appeared before report
+            found.Count > 0,                                    //how many divergence were correctly reported
+            room,                                               //room that was reported
+            totalCost                                           //total energy cost of report
         );
         reports.Add(r);
 
         GameSystem.Instance.ReportsMade += 1;
         GameSystem.Instance.DivergencesReported += found.Count;
+        StartCoroutine(PlayerSounds.Instance.PendingReport());
     }
 
     public void CheckPendingReport() {
         PendingReport = false;
-
         int correctCount = DivergencesReportedCorrectly.Count + 
         (reports.Last().reportTypes.Contains("Creature") ? CreatureControl.Instance.CreatureReport(reports.Last().room) : 0);
         WasMostRecentReportCorrect = correctCount > 0;
@@ -356,7 +356,7 @@ public class DivergenceControl : MonoBehaviour {
         if(correctCount > 0) {
 
             GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame += DivergencesReportedCorrectly.Count;
-            StartCoroutine(SoundControl.Instance.guessFeedbackSound(true));
+            SoundControl.Instance.guessFeedbackSound(true);
 
             foreach(DynamicObject d in DivergencesReportedCorrectly) {
 
@@ -379,7 +379,7 @@ public class DivergenceControl : MonoBehaviour {
             DivergencesReportedCorrectly = new List<DynamicObject>();
         }
         else {
-            StartCoroutine(SoundControl.Instance.guessFeedbackSound(false));
+            SoundControl.Instance.guessFeedbackSound(false);
         }
     }
 

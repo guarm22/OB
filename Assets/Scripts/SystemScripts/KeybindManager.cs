@@ -30,6 +30,15 @@ public class KeybindManager : MonoBehaviour {
         return KeyCode.None;
     }
 
+    public void SetKeybind(string action, KeyCode key) {
+        foreach(Keybind k in keybinds) {
+            if(k.action == action) {
+                k.key = key;
+                return;
+            }
+        }
+    }
+
     public List<Keybind> GetDefaultKeybinds() {
         keybinds = new List<Keybind>
         {
@@ -37,7 +46,6 @@ public class KeybindManager : MonoBehaviour {
             new Keybind("Back", KeyCode.S),
             new Keybind("Left", KeyCode.A),
             new Keybind("Right", KeyCode.D),
-            new Keybind("Jump", KeyCode.Space),
             new Keybind("Crouch", KeyCode.LeftControl),
             new Keybind("Sprint", KeyCode.LeftShift),
             new Keybind("Interact", KeyCode.E),

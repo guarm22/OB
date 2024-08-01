@@ -24,6 +24,7 @@ public class PlayerUI : MonoBehaviour
     public bool inMenu = false;
     public static bool paused = false;
     public static PlayerUI Instance;
+    public GameObject prompt;
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +57,11 @@ public class PlayerUI : MonoBehaviour
 
     public string GetPlayerRoom() {
         return roomText.GetComponent<TMP_Text>().text;
+    }
+
+    public void ChangePrompt(string text, bool activate) {
+        prompt.SetActive(activate);
+        prompt.GetComponent<TMP_Text>().text = text;
     }
 
     void PopulateSelectorUI() {
@@ -119,12 +125,12 @@ public class PlayerUI : MonoBehaviour
     void SelectionMenu() {
         //if menu is open, check if tab is pressed to close, otherwise stop movement
         if(inMenu) {
-            if(Input.GetKeyDown(KeyCode.Tab) || DivergenceControl.Instance.PendingReport) {
+            if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu")) || DivergenceControl.Instance.PendingReport) {
                 turnOffSelection();
                 PostProcessingControl.Instance.ActivateDepthOfField(false);
             }
         }
-        else if(Input.GetKeyDown(KeyCode.Tab) && !DivergenceControl.Instance.PendingReport) {
+        else if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu")) && !DivergenceControl.Instance.PendingReport) {
             PostProcessingControl.Instance.ActivateDepthOfField(true, 50, 1);
             turnOnSelection();
         }
@@ -170,7 +176,7 @@ public class PlayerUI : MonoBehaviour
 
     private void EscapeMenu() {
         //CHANGE TO ESCAPE
-        if(Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeybindManager.instance.GetKeybind("Escape"))) { 
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Pause")) || Input.GetKeyDown(KeyCode.Q)) { 
             PauseControl("escape");
         }
         if(Input.GetKeyDown(KeyCode.P)) {

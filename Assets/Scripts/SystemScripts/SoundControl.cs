@@ -11,7 +11,7 @@ public class SoundControl : MonoBehaviour
     public GameObject walkingSound;
     public static SoundControl Instance;
     private Dictionary<AudioSource, float> pausedAudioSources = new Dictionary<AudioSource, float>();
-    private bool justPaused = false;
+    public AudioSource audioSource;
 
     public float MasterVolume {
         get {
@@ -24,7 +24,7 @@ public class SoundControl : MonoBehaviour
 
     void Awake() {
         Instance = this;
-
+        audioSource = this.gameObject.AddComponent<AudioSource>();
         //set master volume
         AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
     }
@@ -69,19 +69,17 @@ public class SoundControl : MonoBehaviour
         }
     }
 
-    public IEnumerator guessFeedbackSound(bool correct) {
-        GameObject player = GameObject.Find("Player");
-        player.AddComponent<AudioSource>();
-        AudioSource audioSource = player.GetComponent<AudioSource>();
+    public void guessFeedbackSound(bool correct) {
         if(correct) {
+            audioSource.pitch = 1f;
+            audioSource.volume = 1f;
             audioSource.clip = correctGuess;
         }
         else {
-            audioSource.volume = 0.5f;
+            audioSource.pitch = 0.8f;
+            audioSource.volume = 0.8f;
             audioSource.clip = incorrectGuess;
         }
         audioSource.Play();
-        yield return new WaitForSeconds(audioSource.clip.length);
-        Destroy(audioSource);
     }
 }

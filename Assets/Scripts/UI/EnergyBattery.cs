@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class EnergyBattery : MonoBehaviour
-{
+public class EnergyBattery : MonoBehaviour {
 
-    private int currentlyBlinking = -1;
     public List<Image> batteryImages = new List<Image>();
     private float energy;
     void Update() {

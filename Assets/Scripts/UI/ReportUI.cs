@@ -21,6 +21,7 @@ public class ReportUI : MonoBehaviour {
     public Color DisabledButtonColor;
 
     public AudioClip selectSound;
+    public AudioClip pendingSound;
     public AudioSource audioSource;
 
     [HideInInspector]
@@ -86,6 +87,7 @@ public class ReportUI : MonoBehaviour {
     }
 
     public void Report() {
+        audioSource.PlayOneShot(selectSound);
         DivergenceControl.Instance.MakeSelection(SelectedTypes, SelectedRoom);
     }
     

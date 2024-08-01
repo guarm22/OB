@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ControlSettings : MonoBehaviour
-{
+public class ControlSettings : MonoBehaviour {
     public Button keybindButton;
     public GameObject MouseSens;
     public GameObject MouseAccel;
     public GameObject InvertMouse;
+    public GameObject KeybindsMenu;
+
+    public List<GameObject> otherMenus;
 
     void Awake() {
         if(!PlayerPrefs.HasKey("MouseSens")) {
@@ -22,6 +24,12 @@ public class ControlSettings : MonoBehaviour
         if(!PlayerPrefs.HasKey("InvertMouse")) {
             PlayerPrefs.SetString("InvertMouse", "OFF");
         }
+
+        keybindButton.onClick.AddListener(() => {
+            otherMenus.ForEach(m => m.SetActive(false));
+            KeybindsMenu.SetActive(true);
+            gameObject.SetActive(false);
+        });
 
         SetValues();
     }

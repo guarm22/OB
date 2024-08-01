@@ -78,10 +78,6 @@ public class SC_FPSController : MonoBehaviour
         CrouchLogic();
         CameraZoom();
 
-        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
-            Interact();
-        }
-
         if (Input.GetKey(KeybindManager.instance.GetKeybind("Jump")) && canMove && characterController.isGrounded) {
             //moveDirection.y = jumpSpeed;
         }
@@ -203,17 +199,6 @@ public class SC_FPSController : MonoBehaviour
             }
             else {
                 transform.position = new Vector3(0, 0, 0);
-            }
-        }
-    }
-
-    private void Interact() {
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit)) {
-            if(hit.collider.gameObject.CompareTag("Collectible")) {
-                //Debug.Log("Collectible found");
-                CollectibleControl.Instance.Collect(hit.collider.gameObject);
             }
         }
     }

@@ -83,11 +83,25 @@ public class DynamicObject {
             Debug.Log("No replacement object found on object " + this.Name + " in " + this.Room);
             return false;
         }
+        
+        if(enable) {
+            Vector3 loc = replacement.localPosition;
+            replacement.localPosition = new Vector3(0f, 0f, 0f);
+            replacement.parent = null;
+            Obj.transform.position = loc;
+            replacement.parent = Obj.transform;
+            replacement.transform.SetSiblingIndex(0);
+        }
+        else {
+            replacement.parent = null;
+            Obj.transform.position = replacement.position;
+            replacement.localPosition = new Vector3(-1000f, -1000f, -1000f);
+            replacement.parent = Obj.transform;
+            replacement.transform.SetSiblingIndex(0);
+        }
 
-        Vector3 old = replacement.position;
-        replacement.localPosition = new Vector3(0, enable ? 10f : -10f, 0);
-        this.Obj.transform.position = old; 
         return true;
+        
     }
 
     public static List<string> GetAllAnomalyTypes() {
