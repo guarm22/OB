@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +19,8 @@ public class Zombie : CreatureBase {
     protected override void Update() {
         base.Update();
         if(amTouchingPlayer()) {
-            StartCoroutine(GameSystem.Instance.EndGame("zombie"));
+            SC_FPSController.Instance.TeleportRoom(DivergenceControl.Instance.RoomObjects[Random.Range(0, DivergenceControl.Instance.RoomObjects.Count)]);
+            CreatureControl.Instance.RemoveCreature(gameObject);
         }
     }
 }

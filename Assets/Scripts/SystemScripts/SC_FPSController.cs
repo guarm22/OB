@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -169,6 +170,10 @@ public class SC_FPSController : MonoBehaviour
         else {
             Debug.LogError("Invalid debuff type: " + type);
         }
+    }
+
+    public void TeleportRoom(GameObject room) {
+        transform.position = new Vector3(room.transform.position.x, room.transform.position.y + 1, room.transform.position.z);
     }
 
     public void ChangeFOV(float fov) {

@@ -346,13 +346,14 @@ Bug Fixes:
 -Fixed a bug where certain spawn points would be real world colliders
 
 
-v0.7.0 - Cabin Revamp/Audio Revamp:
+v0.7.0 (Aug 5, 2024) - Cabin Revamp/Audio Revamp:
 
 Changes: 
 -Completely reworked the Cabin map.
 -Major changes include removal of Storage, addition of Cellar Stairs and Cellar, and map was made generally smaller.
 -Completely reworked audio scripts to make them more consistent
 -Changed the sounds for reports
+-Updated the preview images for each level
 
 Additions:
 -Added many new divergences to Cabin
@@ -363,6 +364,7 @@ Additions:
 -A prompt will appear when hovering over relics in addition to their normal outline
 -A new sound effect plays when a report is pending
 -Keybind menu is now functional (for most buttons)
+-Added a system for switching profiles. This will allow the player to reset stats/achievements/relics and certain settings (keybinds)
 
 Bug Fixes:
 -Fixed an issue where creatures could spawn in the wrong room on Cabin
@@ -370,8 +372,24 @@ Bug Fixes:
 -Creature sound effects now follow the creature correctly, instead of staying at the location where it first played
 -Audio divergences now stop playing when deactivated after a report
 -When a creature is reported, its audio correctly stops playing
+-Fixed an issue where items in the background of the main menu could be interacted with
 
 
+v0.7.1 - Endgame Rework
+
+Changes:
+-Instead of an Ender spawning and killing the player, an unreportable expanding sphere spawns in each room when the player is meant to lose.
+-Zombies no longer kill the player, they instead teleport the player to a random room
+-Door blockers no longer kill the player, they teleport the player to a random room
+-Removed Ender
+
+Additions:
+-Added a particle effect to expanding spheres when they spawn, so the player has some warning and doesn't instantly walk into it
+-Added the Hider to Cabin
+
+Bug Fixes:
+-Fixed an issue where certain checkboxes had a weird hitbox
+-The compendium menu now displays the creatures in the correct order, and changed the description for the Zombie.
 
 
 Future Plans:
@@ -379,7 +397,7 @@ Future Plans:
 Major:
 -Finish Graveyard
 -Finish The Puncture
--Rework Zombie and finish Hider
+-Rework Zombie (done) and finish Hider
 -Make a bigger tutorial
 -Decide on an overarching story
 
@@ -387,8 +405,8 @@ Minor:
 -Create more puncture divergences
 -Add a better particle effect for divergences deactivating
 -Add more collectibles
--Add a way to switch profiles
--Implement keybinds
+-Add a way to switch profiles - DONE
+-Implement keybinds - DONE
 -Implement the rest of the settings
 -Add more stats
 -Add more achievements

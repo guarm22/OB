@@ -28,7 +28,7 @@ public class PFileUtil {
         string path = $"{Application.persistentDataPath}/{PlayerDataManager.GetProfile()}/{fileName}";
 
         if(!Directory.Exists($"{Application.persistentDataPath}/{PlayerDataManager.GetProfile()}")) {
-            CreateDirectoryForProfile();
+            CreateDirectoryForProfile(PlayerDataManager.GetProfile());
         }
 
         //Debug.Log($"Saving to {path}");
@@ -39,7 +39,7 @@ public class PFileUtil {
         string path = $"{Application.persistentDataPath}/{PlayerDataManager.GetProfile()}/{fileName}";
 
         if(!Directory.Exists($"{Application.persistentDataPath}/{PlayerDataManager.GetProfile()}")) {
-            CreateDirectoryForProfile();
+            CreateDirectoryForProfile(PlayerDataManager.GetProfile());
         }
 
         if(!File.Exists(path)) {
@@ -52,12 +52,22 @@ public class PFileUtil {
         return JsonUtility.FromJson<T>(newJson);
     }
 
+    public static List<string> GetAllProfiles() {
+        List<string> profiles = new List<string>();
+        string[] directories = Directory.GetDirectories(Application.persistentDataPath);
+        foreach(string dir in directories) {
+            string[] split = dir.Split('\\');
+            profiles.Add(split[split.Length - 1]);
+        }
+        return profiles;
+    }
+
     public static string GetDataDirectory() {
         return $"{Application.persistentDataPath}/{PlayerDataManager.GetProfile()}/";
     }
 
-    private static void CreateDirectoryForProfile() {
-        string path = $"{Application.persistentDataPath}/{PlayerDataManager.GetProfile()}/";
+    public static void CreateDirectoryForProfile(String name) {
+        string path = $"{Application.persistentDataPath}/{name}/";
         Directory.CreateDirectory(path);
     }
 }

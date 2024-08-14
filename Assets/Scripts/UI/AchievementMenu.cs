@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,6 +17,8 @@ public class AchievementMenu : MonoBehaviour
     public Button prevButton;
     public TMP_Text pageText;
     private int pnum = 1;
+    
+    public String currentProfile;
 
     private void LoadAchievements() {
         if(PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json") == null) {
@@ -28,7 +31,12 @@ public class AchievementMenu : MonoBehaviour
     private void CreateAchievements() {
         if(achievements.Count == 0) {
             noAchievementsText.SetActive(true);
+            achievementParent.gameObject.SetActive(false);
             return;
+        }
+        else {
+            noAchievementsText.SetActive(false);
+            achievementParent.gameObject.SetActive(true);
         }
         ShowPage(pnum);
     }
@@ -50,13 +58,27 @@ public class AchievementMenu : MonoBehaviour
                 achievement.transform.GetChild(3).GetComponent<TMPro.TextMeshProUGUI>().text = "Date Earned: " + achievements[i + (num - 1) * 5].dateEarned;
             }
         }
-        pageText.text = "Page " + num + " of " + Mathf.Ceil(achievements.Count / 5f);
+        SetPageText();
     }
 
-    void Start() {
+    private void SetPageText() {
+        if(achievements.Count == 0) {
+            pageText.text = "Page 0 of 0";
+            return;
+        }
+
+        pageText.text = "Page " + pnum + " of " + Mathf.Ceil(achievements.Count / 5f);
+    }
+
+    void InitData() {
+        currentProfile = PlayerPrefs.GetString("currentProfile", "default");
         LoadAchievements();
 
         CreateAchievements();
+    }
+
+    void Start() {
+        InitData();
 
         nextButton.onClick.AddListener(() => {
             if(achievements.Count > pnum * 5) {
@@ -74,6 +96,11 @@ public class AchievementMenu : MonoBehaviour
     }
 
     void Update() {
-        
+        if(currentProfile != PlayerPrefs.GetString("currentProfile")) {
+            achievements.Clear();
+            InitData();
+            SetPageText();
+            currentProfile = PlayerPrefs.GetString("currentProfile");
+        }
     }
 }

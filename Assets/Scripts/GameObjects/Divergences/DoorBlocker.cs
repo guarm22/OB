@@ -15,7 +15,7 @@ public class DoorBlocker : CustomDivergence {
             return;
         }
         if(Vector3.Distance(player.transform.position, transform.position) < 1) {
-            StartCoroutine(GameSystem.Instance.EndGame("puncture"));
+            SC_FPSController.Instance.TeleportRoom(DivergenceControl.Instance.RoomObjects[Random.Range(0, DivergenceControl.Instance.RoomObjects.Count)]);
         }
     }
 

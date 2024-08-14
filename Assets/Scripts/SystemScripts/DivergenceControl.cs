@@ -30,6 +30,8 @@ public class DivergenceControl : MonoBehaviour {
     /// </summary>
     public Dictionary<String, int> Rooms = new Dictionary<String, int>();
 
+    public List<GameObject> RoomObjects = new List<GameObject>();
+
     /// <summary>
     /// The interval of time at which divergences are created.
     /// </summary>
@@ -138,6 +140,7 @@ public class DivergenceControl : MonoBehaviour {
     private void InitRooms() {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Room");
         foreach(GameObject obj in objs) {
+            RoomObjects.Add(obj);
             Rooms.Add(obj.name, 0);
         }
     }

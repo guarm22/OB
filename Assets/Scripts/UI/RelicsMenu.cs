@@ -25,6 +25,10 @@ public class RelicsMenu : MonoBehaviour {
     public Button softResetCollectibles;
     public Button unlockAllCollectibles;
 
+    public GameObject relicMenu;
+
+    public String currentProfile;
+
     private void LoadCollectibles() {
         String collectibleListPath = $"collectibles.json";
 
@@ -47,7 +51,7 @@ public class RelicsMenu : MonoBehaviour {
             if(collectibles.Count > i + (page - 1) * 5) {
                 Collectible c = collectibles[i + (page - 1) * 5];
 
-                GameObject relic = Instantiate(buttonPrefab, relicInitialLocation.transform.parent);
+                GameObject relic = Instantiate(buttonPrefab, relicInitialLocation.transform);
                 TMP_Text t = relic.GetComponentInChildren<TMP_Text>();
                 relic.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, y);
                 t.text = c.name;
@@ -71,7 +75,16 @@ public class RelicsMenu : MonoBehaviour {
         }
         
         SetRelic(firstShown);
-        pageText.text = "Page " + page + " of " + Mathf.Ceil(collectibles.Count / 5f);
+        SetPageText();
+    }
+
+    private void SetPageText() {
+        if(collectibles.Count == 0) {
+            pageText.text = "Page 0 of 0";
+            return;
+        }
+
+        pageText.text = "Page " + pnum + " of " + Mathf.Ceil(collectibles.Count / 5f);
     }
     
     private void SetRelic(Collectible c) {
@@ -83,23 +96,33 @@ public class RelicsMenu : MonoBehaviour {
         description.GetComponent<TMPro.TextMeshProUGUI>().text = c.description;
         //image.sprite = c.sprite;
     }
-    
-    void Start() {
+
+    void InitData() {
+        collectibles = new List<Collectible>();
         LoadCollectibles();
+        currentProfile = PlayerPrefs.GetString("currentProfile");
         if(collectibles.Count == 0) {
             noRelicsText.SetActive(true);
+            relicInitialLocation.SetActive(false);
             image.gameObject.SetActive(false);
             description.SetActive(false);
-
             return;
         }
+        else {
+            noRelicsText.SetActive(false);
+            relicInitialLocation.SetActive(true);
+            image.gameObject.SetActive(true);
+            description.SetActive(true);
+        }
+        ShowPage(1);
+    }
+    
+    void Start() {
+        InitData();
         
         hardResetCollectibles.onClick.AddListener(HardResetCollectibles);
         softResetCollectibles.onClick.AddListener(SoftResetCollectibles);
         unlockAllCollectibles.onClick.AddListener(UnlockAllCollectibles);
-
-        ShowPage(1);
-
     }
 
     private void HardResetCollectibles() {
@@ -131,6 +154,11 @@ public class RelicsMenu : MonoBehaviour {
         //if player presses O
         if(Input.GetKeyDown(KeyCode.O)) {
             devStuff.SetActive(!devStuff.activeSelf);
+        }
+
+        if(currentProfile != PlayerPrefs.GetString("currentProfile")) {
+            Start();
+            SetPageText();
         }
     }
 }

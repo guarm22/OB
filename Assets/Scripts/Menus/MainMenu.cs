@@ -4,21 +4,14 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     public GameObject DefaultMenu;
-
     public GameObject LevelSelectionMenu;
-
     public GameObject Settings;
-
     public GameObject Stats;
-    public GameObject GameSetting;
-    public GameObject AdvancedSettings;
 
     public Button ExitGame;
     public Button ChooseLevel;
     public Button SettingsButton;
     public Button StatsButton;
-    public Button AdvancedDifficulty;
-    public Button AdvancedBack;
 
     public AudioClip menuTheme;
 
@@ -28,9 +21,9 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         //change brightness
-        GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness"));
+        GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness", 50));
         //change audio settings
-        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
+        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume", 50) / 100f;
 
         //play menu theme
         this.GetComponent<AudioSource>().clip = menuTheme;
@@ -42,9 +35,6 @@ public class MainMenu : MonoBehaviour
         ChooseLevel.onClick.AddListener(LevelSelectionEvent);
         SettingsButton.onClick.AddListener(SettingsButtonEvent);
         StatsButton.onClick.AddListener(StatsButtonEvent);
-
-        AdvancedDifficulty.onClick.AddListener(AdvancedDifficultyEvent);
-        AdvancedBack.onClick.AddListener(AdvancedBackEvent);
 
         //initialize all objects
         foreach(GameObject obj in ObjToBeInitialized) {
@@ -58,16 +48,6 @@ public class MainMenu : MonoBehaviour
         DefaultMenu.SetActive(true);
     }
 
-    private void AdvancedBackEvent() {
-        AdvancedSettings.SetActive(false);
-        AdvancedBack.gameObject.SetActive(false);
-        AdvancedDifficulty.gameObject.SetActive(true);
-    }
-    private void AdvancedDifficultyEvent() {
-        AdvancedSettings.SetActive(true);
-        AdvancedBack.gameObject.SetActive(true);
-        AdvancedDifficulty.gameObject.SetActive(false);
-    }
     private void LevelSelectionEvent() {
         DefaultMenu.SetActive(false);
         LevelSelectionMenu.SetActive(true);

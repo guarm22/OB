@@ -7,11 +7,13 @@ using TMPro;
 
 public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public float defaultAlpha = 0.9f;
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         //Debug.Log("Pointer entered");
         //change highlighted color of button
-        this.GetComponent<Image>().color = new Color(155, 155, 155, 0.9f);
+        this.GetComponent<Image>().color = new Color(155, 155, 155, defaultAlpha);
     }
 
     public void OnPointerExit(PointerEventData eventData)

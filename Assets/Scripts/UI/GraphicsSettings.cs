@@ -26,10 +26,10 @@ public class GraphicsSettings : MonoBehaviour
     }
 
     public void SetValues() {
-        Resolution.GetComponentInChildren<Dropdown>().SetOption(PlayerPrefs.GetString("Resolution"));
+        //Resolution.GetComponentInChildren<Dropdown>().SetOption(PlayerPrefs.GetString("Resolution"));
         Brightness.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetInt("Brightness"));
-        AspectRatio.GetComponentInChildren<Dropdown>().SetOption(PlayerPrefs.GetString("AspectRatio"));
-        DisplayMode.GetComponentInChildren<Dropdown>().SetOption(PlayerPrefs.GetString("DisplayMode"));
+        //AspectRatio.GetComponentInChildren<Dropdown>().SetOption(PlayerPrefs.GetString("AspectRatio"));
+        //DisplayMode.GetComponentInChildren<Dropdown>().SetOption(PlayerPrefs.GetString("DisplayMode"));
     }
 
     void Start() {
@@ -37,10 +37,10 @@ public class GraphicsSettings : MonoBehaviour
     }
 
     public void SaveSettings() {
-        PlayerPrefs.SetString("Resolution", Resolution.GetComponentInChildren<Dropdown>().GetCurrentOption());
+        //PlayerPrefs.SetString("Resolution", Resolution.GetComponentInChildren<Dropdown>().GetCurrentOption());
         PlayerPrefs.SetInt("Brightness", Brightness.GetComponentInChildren<BarSlider>().GetIntValue());
-        PlayerPrefs.SetString("AspectRatio", AspectRatio.GetComponentInChildren<Dropdown>().GetCurrentOption());
-        PlayerPrefs.SetString("DisplayMode", DisplayMode.GetComponentInChildren<Dropdown>().GetCurrentOption());
+        //PlayerPrefs.SetString("AspectRatio", AspectRatio.GetComponentInChildren<Dropdown>().GetCurrentOption());
+        //PlayerPrefs.SetString("DisplayMode", DisplayMode.GetComponentInChildren<Dropdown>().GetCurrentOption());
     }
 
     public void RevertChanges() {

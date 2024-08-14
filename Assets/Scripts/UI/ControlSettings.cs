@@ -28,6 +28,7 @@ public class ControlSettings : MonoBehaviour {
         keybindButton.onClick.AddListener(() => {
             otherMenus.ForEach(m => m.SetActive(false));
             KeybindsMenu.SetActive(true);
+            KeybindMenu.Instance.isOpen = true;
             gameObject.SetActive(false);
         });
 

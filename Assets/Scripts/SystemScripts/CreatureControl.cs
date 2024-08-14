@@ -13,6 +13,7 @@ public class CreatureControl : MonoBehaviour
     public GameObject endCreaturePrefab;
     public GameObject chaserPrefab;
     public GameObject lurkerPrefab;
+    public GameObject hiderPrefab;
     public int maxCreaturesPerRoom = 1;
     public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
     public int creatureMax = 3;
@@ -28,9 +29,6 @@ public class CreatureControl : MonoBehaviour
     [HideInInspector]
     public int TotalCreatures;
     public int CreaturesReported = 0;
-
-    [HideInInspector]
-    public float enderSpawnChance = 5f;
 
     public List<GameObject> ActiveCreatures = new List<GameObject>();
 
@@ -72,18 +70,15 @@ public class CreatureControl : MonoBehaviour
         Vector3 spawnPos = FindSpawnPoint(room, type);
         GameObject roomObj = GameObject.Find(room);
         GameObject creature = Instantiate(prefab, spawnPos, Quaternion.identity);
-        creature.GetComponent<NavMeshAgent>().Warp(spawnPos);
+
+        if(type != "Hider") {
+            creature.GetComponent<NavMeshAgent>().Warp(spawnPos);
+        }
         creature.transform.SetParent(roomObj.transform);
         creature.name = type + " - " + room;
         CreaturesPerRoom[room] += 1;
         creature.GetComponent<CreatureBase>().HomeRoom = room;
 
-        BoxCollider roomCollider = roomObj.GetComponent<BoxCollider>();
-        if (roomCollider.bounds.Contains(creature.transform.position)) {
-        }
-        else {
-            creature.transform.position = roomObj.transform.position;
-        }
         TotalCreatures += 1;
         ActiveCreatures.Add(creature);
     }
@@ -91,6 +86,10 @@ public class CreatureControl : MonoBehaviour
       private Vector3 FindSpawnPoint(string room, string type) {
             if(type == "Lurker") {
                 return FindLurkerSpawn(room);
+            }
+
+            if(type == "Hider") {
+                return FindHiderSpawn(room);
             }
 
             GameObject roomObj = GameObject.Find(room);
@@ -115,6 +114,11 @@ public class CreatureControl : MonoBehaviour
                 point = hit.position;
             }
             return point;
+    }
+
+    public Vector3 FindHiderSpawn(String room) {
+        Vector3 spawnPos = GameObject.Find("HiderSpawn"+room).transform.position;
+        return spawnPos;
     }
 
     private Vector3 GetRoomCornerFurthestFromPlayer(GameObject roomObj) {
@@ -178,7 +182,7 @@ public class CreatureControl : MonoBehaviour
         }
 
         //lose condition - all rooms have max anomalies
-        ShouldSpawnEnder(room);
+        ShouldStartCollapse();
 
         if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences) {
             int spawnChance = UnityEngine.Random.Range(0,100);
@@ -196,15 +200,18 @@ public class CreatureControl : MonoBehaviour
         }
     }
 
-    private void ShouldSpawnEnder(string room) {
-        if(GameSystem.InEditor() || SceneManager.GetActiveScene().name == "Tutorial") {
+    private void ShouldStartCollapse() {
+        if(GameSystem.InEditor()) {
+            //return;
+        }
+
+        if(SceneManager.GetActiveScene().name == "Tutorial") {
             return;
         }
 
-        if(DivergenceControl.Instance.MaxDivergences >= DivergenceControl.Instance.DivergencesPerRoom*DivergenceControl.Instance.Rooms.Count) {
-            if(!GameSystem.InEditor()) {
-                ManuallySpawnEnder(room);
-            }
+
+        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.DivergencesPerRoom*DivergenceControl.Instance.Rooms.Count) {
+            StartCoroutine(PunctureCollapse.Instance.Collapse());
         }
 
         int divCount = DivergenceControl.Instance.DivergenceList.Count;
@@ -217,20 +224,19 @@ public class CreatureControl : MonoBehaviour
         int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 380);
         float spawnChance = 3.5f + ((0.66f*x) + (y) + (1.5f*z) + (1.8f*w) + (3f*v));
 
-        //chance to spawn an ender within 80% of the max divergences
+        //chance to start collapse within 80% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {
             int rnum = UnityEngine.Random.Range(0,100);
             if(rnum < spawnChance) {
-                ManuallySpawnEnder(room);
+                StartCoroutine(PunctureCollapse.Instance.Collapse());
                 return;
             }
         }
 
-        //a third of the chance to spawn an ender within 65% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.65f)) {
             int rnum = UnityEngine.Random.Range(0,100);
             if(rnum < spawnChance/3) {
-                ManuallySpawnEnder(room);
+                StartCoroutine(PunctureCollapse.Instance.Collapse());
                 return;
             }
         }
@@ -261,6 +267,9 @@ public class CreatureControl : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name == "Cabin"  || SceneManager.GetActiveScene().name == "Apartment") {
             specialCreatures.Add(lurkerPrefab);
+        }
+        if(SceneManager.GetActiveScene().name == "Cabin") {
+            specialCreatures.Add(hiderPrefab);
         }
 
         CreatureSpawnpoints = GameObject.FindGameObjectsWithTag("CreatureSpawnPoint").ToList();

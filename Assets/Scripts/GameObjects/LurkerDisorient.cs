@@ -24,8 +24,8 @@ public class LurkerDisorient : MonoBehaviour {
         vignette.intensity.Override(vignetteStart);
         lensDistortion.intensity.Override(lensDistortionStart);
 
-        StartCoroutine(Distort());
         StartCoroutine(DistortSound());
+        StartCoroutine(Distort());
     }
 
     private IEnumerator DistortSound() {
@@ -46,6 +46,7 @@ public class LurkerDisorient : MonoBehaviour {
             AudioListener.volume = Mathf.Lerp(0f, targetVol, elapsed/duration);
             yield return null;
         }
+        AudioListener.volume = targetVol;
     }
 
     private IEnumerator Distort() {
@@ -81,6 +82,8 @@ public class LurkerDisorient : MonoBehaviour {
             elapsed += Time.deltaTime;
             yield return null;
         }
+
+        yield return new WaitForSeconds(0.25f);
         Debug.Log("Destroying LurkerDisorient");
         Destroy(this.gameObject);
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Data.Common;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class PlayerStatsMenu : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class PlayerStatsMenu : MonoBehaviour
     public Button prevButton;
     public TMP_Text pageText;
     private int pnum = 1;
+
+    public String currentProfile;
 
 
     private void loadData() {
@@ -58,17 +61,31 @@ public class PlayerStatsMenu : MonoBehaviour
                 statBlock.transform.SetParent(statList.transform);      
             }
         }
-        pageText.text = "Page " + num + " of " + Mathf.Ceil(stats.Count / (statsPerPage*1.0f));
+        SetPageText();
     }
 
-    void Awake() {
+    private void SetPageText() {
+        if(stats.Count == 0) {
+            pageText.text = "Page 0 of 0";
+            return;
+        }
+
+        pageText.text = "Page " + pnum + " of " + Mathf.Ceil(stats.Count / statsPerPage);
+    }
+
+    void InitData() {
         loadData();
+        currentProfile = PlayerPrefs.GetString("currentProfile");
         int amountOfStats = typeof(PlayerData).GetFields().Length;
         for(int i = 0; i < amountOfStats; i++) {
             //add to stats list
             stats.Add((Stat)typeof(PlayerData).GetFields()[i].GetValue(data));
         }
         ShowPage(pnum);
+    }
+
+    void Awake() {
+        InitData();
 
         nextButton.onClick.AddListener(() => {
             if(stats.Count > pnum * statsPerPage) {
@@ -86,6 +103,11 @@ public class PlayerStatsMenu : MonoBehaviour
     }
 
     void Update() {
-        
+        if(currentProfile != PlayerPrefs.GetString("currentProfile")) {
+            stats.Clear();
+            InitData();
+            SetPageText();
+            currentProfile = PlayerPrefs.GetString("currentProfile");
+        }
     }
 }

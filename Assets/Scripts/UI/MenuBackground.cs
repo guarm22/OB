@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SojaExiles;
 using UnityEngine;
 
 public class MenuBackground : MonoBehaviour
@@ -23,6 +24,8 @@ public class MenuBackground : MonoBehaviour
         int randomSP = Random.Range(0, sp.Length);
         //move the camera to that spawnpoint
         mainCamera.transform.position = sp[randomSP].transform.position;
+
+        List<GameObject> worldObjs = new List<GameObject>();
         
     }
 

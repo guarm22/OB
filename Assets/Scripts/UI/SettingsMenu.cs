@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -117,6 +118,9 @@ public class SettingsMenu : MonoBehaviour
             }
         }
         if(Input.GetKeyDown(KeyCode.Escape)) {
+            if(KeybindMenu.Instance != null && KeybindMenu.Instance.isOpen) {
+                return;
+            }
             RevertChanges();
         }
     }

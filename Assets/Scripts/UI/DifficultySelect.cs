@@ -5,8 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DifficultySelect : MonoBehaviour
-{
+public class DifficultySelect : MonoBehaviour {
 
     public Button EasyButton;
     public Button MediumButton;

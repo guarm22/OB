@@ -21,13 +21,17 @@ public class KeybindMenu : MonoBehaviour {
     public Keybind currentlyEditing = null;
 
     public List<Keybind> keybindsList;
+
+    public bool isOpen = false;
     public static KeybindMenu Instance;
 
-    void Start() {
+    void Awake() {
         Instance = this;
         saveButton.onClick.AddListener(() => {
             SaveKeybinds();
+            otherMenus.ForEach(m => m.SetActive(true));
             settingsMenu.SetActive(true);
+            KeybindMenu.Instance.isOpen = false;            
             gameObject.SetActive(false);
         });
 
@@ -35,6 +39,7 @@ public class KeybindMenu : MonoBehaviour {
             DiscardChanges();
             otherMenus.ForEach(m => m.SetActive(true));
             settingsMenu.SetActive(true);
+            KeybindMenu.Instance.isOpen = false;
             gameObject.SetActive(false);
         });
         
@@ -54,12 +59,12 @@ public class KeybindMenu : MonoBehaviour {
         float x = 0;
         float y = 0;
         int items = 0;
-        int itemsPerColumn = 7;
+        int itemsPerColumn = 9;
         Vector3 initialLoc = keybindInitialLoc.transform.position;
 
         foreach(Keybind k in keybindsList) {
             if(items%itemsPerColumn == 0 && items != 0) {
-                x += Display.main.systemWidth / 3f;
+                x += Display.main.systemWidth / 2.8f;
                 y = 0;
             }
 
@@ -73,6 +78,7 @@ public class KeybindMenu : MonoBehaviour {
             GameObject newKeybind = Instantiate(keybindPrefab, new Vector3(initialLoc.x + x, initialLoc.y + y, initialLoc.z), Quaternion.identity, keybindInitialLoc.transform);
             TMP_Text action = newKeybind.transform.GetChild(0).GetComponent<TMP_Text>();
             TMP_Text key = newKeybind.transform.GetChild(1).GetComponentInChildren<TMP_Text>();
+            GameObject bg = newKeybind.transform.GetChild(2).gameObject;
             Button b = newKeybind.GetComponentInChildren<Button>();
 
             action.text = k.action;
@@ -89,9 +95,9 @@ public class KeybindMenu : MonoBehaviour {
             if(key.text == "Mouse2") {
                 key.text = "M Click";
             }
-            b.onClick.AddListener(delegate {StartEditKeybind(action, key);});
+            b.onClick.AddListener(delegate {StartEditKeybind(action, key, bg);});
             keybinds.Add(newKeybind);
-            y -= Display.main.systemHeight / 14.4f;
+            y -= Display.main.systemHeight / 15f;
             items+=1;
         }
     }
@@ -104,15 +110,16 @@ public class KeybindMenu : MonoBehaviour {
         InitKeybinds();
     }
 
-    private void StartEditKeybind(TMP_Text action, TMP_Text key) {
+    private void StartEditKeybind(TMP_Text action, TMP_Text key, GameObject bg) {
         // Change keybind
-        key.text = "";
+        key.text = "_";
         currentlyEditing = KeybindManager.instance.keybinds.Find(k => k.action == action.text);
+        bg.SetActive(true);
         StartCoroutine(WaitForKeyPress());
     }
 
     private IEnumerator WaitForKeyPress() {
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(Time.deltaTime+0.01f);
         bool pressed = false;
         while(!pressed) {
             foreach(KeyCode kcode in System.Enum.GetValues(typeof(KeyCode))) {
@@ -150,10 +157,11 @@ public class KeybindMenu : MonoBehaviour {
     }
 
     void Update() {
-        if(Input.GetKeyDown(KeyCode.Escape)) {
+        if(Input.GetKeyDown(KeyCode.Escape) && currentlyEditing != null) {
             DiscardChanges();
-            settingsMenu.SetActive(true);
             otherMenus.ForEach(m => m.SetActive(true));
+            settingsMenu.SetActive(true);
+            KeybindMenu.Instance.isOpen = false;
             gameObject.SetActive(false);
         }
     }
