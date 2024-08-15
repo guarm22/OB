@@ -220,9 +220,9 @@ public class CreatureControl : MonoBehaviour
         int x = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 85);
         int y = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 150);
         int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 200);
-        int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 260);
-        int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 380);
-        float spawnChance = 3.5f + ((0.66f*x) + (y) + (1.5f*z) + (1.8f*w) + (3f*v));
+        int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 240);
+        int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 360);
+        float spawnChance = 0.5f + ((0.66f*x) + (1.1f*y) + (1.33f*z) + (2f*w) + (3.33f*v));
 
         //chance to start collapse within 80% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {

@@ -14,7 +14,16 @@ public class SingleChoiceSection : MonoBehaviour
 
     public void SetChoice(Button choice) {
         currentChoice = choice;
-        underline.transform.position = new Vector3(choice.transform.position.x, choice.transform.position.y - 50, choice.transform.position.z);
+        foreach (Button b in choices) {
+            if (b.GetComponentInChildren<TMPro.TMP_Text>().text == choice.GetComponentInChildren<TMPro.TMP_Text>().text) {
+                b.GetComponentInChildren<TMPro.TMP_Text>().color = Color.white;
+                underline.transform.position = new Vector3(choice.transform.position.x, choice.transform.position.y - 50, choice.transform.position.z);
+            }
+            else {
+                //set color of button text
+                b.GetComponentInChildren<TMPro.TMP_Text>().color = new Color(172/255f, 187/255f, 207/255f, 1);
+            }
+        }
     }
 
     //Set this selections choice based on the string passed in
@@ -24,8 +33,12 @@ public class SingleChoiceSection : MonoBehaviour
         //make sure the choice matches one of the possible options
         foreach (Button b in choices) {
             if (b.GetComponentInChildren<TMPro.TMP_Text>().text == choice) {
+                b.GetComponentInChildren<TMPro.TMP_Text>().color = Color.white;
                 SetChoice(b);
-                break;
+            }
+            else {
+                //set color of button text
+                b.GetComponentInChildren<TMPro.TMP_Text>().color = new Color(172/255f, 187/255f, 207/255f, 1);
             }
         }
     }

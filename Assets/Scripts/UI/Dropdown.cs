@@ -17,12 +17,4 @@ public class Dropdown : MonoBehaviour {
         dropdown.AddOptions(options);
         dropdown.value = options.IndexOf(currentOption);
     }
-
-    void Awake() {
-        
-    }
-
-    void Update() {
-        
-    }
 }

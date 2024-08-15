@@ -70,7 +70,7 @@ public class PlayerStatsMenu : MonoBehaviour
             return;
         }
 
-        pageText.text = "Page " + pnum + " of " + Mathf.Ceil(stats.Count / statsPerPage);
+        pageText.text = "Page " + pnum + " of " + Mathf.Ceil((float)stats.Count / (float)statsPerPage);
     }
 
     void InitData() {

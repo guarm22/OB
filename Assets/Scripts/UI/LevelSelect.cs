@@ -16,6 +16,8 @@ public class LevelSelect : MonoBehaviour {
     public Image currentLevelImage;
     public Image underline;
 
+    public Image divider;
+
     private String currentLevel;
 
     private List<String> levels = new List<String> { "Tutorial", "Cabin", "Graveyard", "Apartment" };
@@ -30,8 +32,11 @@ public class LevelSelect : MonoBehaviour {
             if (l == level) {
                 levelText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
                 //activate underline image
-                underline.transform.position = new Vector3(levelText.transform.position.x, levelText.transform.position.y - 50, levelText.transform.position.z);
+                levelText.GetComponentInChildren<TMP_Text>().color = new Color(255f, 255f, 255f, 1);
+                underline.transform.position = new Vector3(levelText.transform.position.x, divider.transform.position.y, levelText.transform.position.z);
             } else {
+                //change text color
+                levelText.GetComponentInChildren<TMP_Text>().color = new Color(178/255f, 201/255f, 226/255f, 1);
                 levelText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Normal;
             }
         }

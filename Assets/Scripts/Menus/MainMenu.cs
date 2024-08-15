@@ -25,6 +25,9 @@ public class MainMenu : MonoBehaviour
         //change audio settings
         AudioListener.volume = PlayerPrefs.GetInt("MasterVolume", 50) / 100f;
 
+        string[] res = PlayerPrefs.GetString("Resolution").Split('x');
+        Screen.SetResolution(int.Parse(res[0]), int.Parse(res[1]), Screen.fullScreenMode);
+
         //play menu theme
         this.GetComponent<AudioSource>().clip = menuTheme;
         this.GetComponent<AudioSource>().loop = true;

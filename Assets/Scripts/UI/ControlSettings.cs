@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ControlSettings : MonoBehaviour {
@@ -8,9 +10,13 @@ public class ControlSettings : MonoBehaviour {
     public GameObject MouseSens;
     public GameObject MouseAccel;
     public GameObject InvertMouse;
+    public GameObject KeybindParent;
     public GameObject KeybindsMenu;
-
     public List<GameObject> otherMenus;
+
+    public Image selectedOptionOutline;
+    private GameObject selectedOption;
+    public TMP_Text selectedOptionDescription;
 
     void Awake() {
         if(!PlayerPrefs.HasKey("MouseSens")) {
@@ -33,6 +39,50 @@ public class ControlSettings : MonoBehaviour {
         });
 
         SetValues();
+
+        ChangeSelection(KeybindParent);
+
+        EventTrigger trigger = MouseSens.AddComponent<EventTrigger>();
+        // Create a new entry for the click event
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        // Add a callback to the entry
+        entry.callback.AddListener(delegate { ChangeSelection(MouseSens); });
+        // Add the entry to the trigger
+        trigger.triggers.Add(entry);
+
+        trigger = MouseAccel.AddComponent<EventTrigger>();
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        entry.callback.AddListener(delegate { ChangeSelection(MouseAccel); });
+        trigger.triggers.Add(entry);
+
+
+        trigger = InvertMouse.AddComponent<EventTrigger>();
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        entry.callback.AddListener(delegate { ChangeSelection(InvertMouse); });
+        trigger.triggers.Add(entry);
+
+        trigger = KeybindParent.AddComponent<EventTrigger>();
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        entry.callback.AddListener(delegate { ChangeSelection(KeybindParent); });
+        trigger.triggers.Add(entry);
+    }
+
+    private void ChangeSelection(GameObject selectedOption) {
+        this.selectedOption = selectedOption;
+        selectedOptionOutline.transform.position = new Vector3(selectedOption.transform.position.x, selectedOption.transform.position.y, selectedOption.transform.position.z);
+        if(selectedOption == MouseSens) {
+            selectedOptionDescription.text = "Controls the sensitivity of the mouse";
+        } else if(selectedOption == MouseAccel) {
+            selectedOptionDescription.text = "Controls mouse acceleration";
+        } else if(selectedOption == InvertMouse) {
+            selectedOptionDescription.text = "Invert Mouse";
+        } else if(selectedOption == KeybindParent) {
+            selectedOptionDescription.text = "Click to open the keybind menu";
+        }
     }
 
     public void SetValues() {

@@ -17,6 +17,7 @@ public class MenuBackground : MonoBehaviour
         //choose a random world to activate
         int randomWorld = Random.Range(0, worlds.Count);
         worlds[randomWorld].SetActive(true);
+        worlds[randomWorld].GetComponentInChildren<DynamicData>().gameObject.SetActive(false);
 
         //find all gameobjects with "sp" tag and choose a random one
         GameObject[] sp = GameObject.FindGameObjectsWithTag("MenuSpawnpoint");
@@ -25,8 +26,12 @@ public class MenuBackground : MonoBehaviour
         //move the camera to that spawnpoint
         mainCamera.transform.position = sp[randomSP].transform.position;
 
-        List<GameObject> worldObjs = new List<GameObject>();
-        
+        //destroy all other worlds
+        for(int i = 0; i < worlds.Count; i++) {
+            if(i != randomWorld) {
+                Destroy(worlds[i]);
+            }
+        }
     }
 
     // Update is called once per frame
