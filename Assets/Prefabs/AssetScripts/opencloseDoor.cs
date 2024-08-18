@@ -15,14 +15,20 @@ namespace SojaExiles {
 		public AudioClip openSound;
 		public AudioClip lockedSound;
 
+		public AudioSource audioSource;
+
 		private bool inAnim = false;
 
 		public String doorType = "none";
 
-		void Start()
-		{
+		void Start() {
 			open = false;
 			Player = GameObject.Find("Player").transform;
+			if(audioSource == null) {
+				audioSource = gameObject.AddComponent<AudioSource>();
+				audioSource.volume = PlayerPrefs.GetInt("SFXVolume", 50)/100f;
+				audioSource.spatialBlend = 1f;
+			}
 
 			if(doorType == "none") {
 				return;
@@ -90,7 +96,7 @@ namespace SojaExiles {
 
 		IEnumerator PlayDoorSound(AudioClip sound, float delay) {
 			yield return new WaitForSeconds(delay);
-			AudioSource.PlayClipAtPoint(sound, transform.GetComponent<MeshRenderer>().bounds.center);
+			audioSource.PlayOneShot(sound);
 		}
 
 		IEnumerator opening() {

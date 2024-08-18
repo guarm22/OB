@@ -342,6 +342,7 @@ MonoBehaviour:
   endCreaturePrefab: {fileID: 2174045631847333030, guid: 95c9f0faadc6c8c49aa4b09532e0e2e4, type: 3}
   chaserPrefab: {fileID: 2038817926838171811, guid: d98d773fe5a45564aa050d80b16a26fa, type: 3}
   lurkerPrefab: {fileID: 2174045631847333030, guid: e4d5c9a5989a0eb4c8f95009c99f7a36, type: 3}
+  hiderPrefab: {fileID: 0}
   maxCreaturesPerRoom: 1
   creatureMax: 4
   jumpscareZombie: {fileID: 7791008221772424225, guid: f0030c7861fe13b4cae25283ebfab3b4, type: 3}
@@ -353,7 +354,6 @@ MonoBehaviour:
   specialSpawnChance: 30
   TotalCreatures: 0
   CreaturesReported: 0
-  enderSpawnChance: 5
   ActiveCreatures: []
   CreatureSpawnpoints: []
 --- !u!1 &7169493951466275861
@@ -446,6 +446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4239ea56e29c4c4dbbc9a610b5091ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RoomObjects: []
   DivergenceInterval: 25
   totalDynamicObjectsInScene: 0
   lastDivergenceTime: 0
@@ -588,8 +589,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5820590235935395684, guid: 2eb0277be5b89d84087d39c9438b97dd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3694438953963197569}
   m_SourcePrefab: {fileID: 100100000, guid: 2eb0277be5b89d84087d39c9438b97dd, type: 3}
+--- !u!1 &5783307706959938229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5820590235935395684, guid: 2eb0277be5b89d84087d39c9438b97dd, type: 3}
+  m_PrefabInstance: {fileID: 37308958329343441}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3694438953963197569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5783307706959938229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef4bffeda13d7a748973ff9204401c07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5783307706959938234 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5820590235935395691, guid: 2eb0277be5b89d84087d39c9438b97dd, type: 3}

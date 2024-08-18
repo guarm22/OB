@@ -19,6 +19,7 @@ public class ApartmentRain : MonoBehaviour {
     void Start() {
         player = GameObject.Find("Player");
         rainSound = GetComponent<AudioSource>();
+        rainSound.volume = PlayerPrefs.GetInt("AmbienceVolume", 50)/100f;;
     }
 
     private IEnumerator ChangeLowPass(float endValue = 22000, float duration = 0.5f) {        

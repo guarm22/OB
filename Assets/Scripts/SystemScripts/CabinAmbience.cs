@@ -12,8 +12,8 @@ public class CabinAmbience : MonoBehaviour {
 
     private bool paused = false;
 
-    void Start() {
-        
+    void Awake() {
+        source.volume = PlayerPrefs.GetInt("AmbienceVolume", 50)/100f;;
     }
 
     private void PlayRandomClip() {

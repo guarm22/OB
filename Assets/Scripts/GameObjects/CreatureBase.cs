@@ -167,6 +167,7 @@ public class CreatureBase : MonoBehaviour {
             a = this.gameObject.AddComponent<AudioSource>();
             a.spatialBlend = 1f;
             a.clip = closeSound;
+            a.volume = PlayerPrefs.GetInt("CreatureVolume", 50)/100f;
         }
     }
 

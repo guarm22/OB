@@ -28,6 +28,8 @@ public class MainMenu : MonoBehaviour
         string[] res = PlayerPrefs.GetString("Resolution").Split('x');
         Screen.SetResolution(int.Parse(res[0]), int.Parse(res[1]), Screen.fullScreenMode);
 
+        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("Quality", 0));
+
         //play menu theme
         this.GetComponent<AudioSource>().clip = menuTheme;
         this.GetComponent<AudioSource>().loop = true;

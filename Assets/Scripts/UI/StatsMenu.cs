@@ -13,6 +13,8 @@ public class StatsMenu : MonoBehaviour
     public Button Back;
     public GameObject defaultMenu;
 
+    public GameObject divider;
+
     public List<GameObject> fullMenus = new List<GameObject>();
 
     private void SetMenu(String menu) {
@@ -23,12 +25,13 @@ public class StatsMenu : MonoBehaviour
             if (l == menu) {
                 fullMenus[menus.IndexOf(l)].SetActive(true);
                 menuText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
+                menuText.GetComponentInChildren<TMP_Text>().color = Color.white;
                 //activate underline image
-                underline.transform.position = 
-                new Vector3(menuText.transform.position.x, menuText.transform.position.y - 50, menuText.transform.position.z);
-
+                underline.transform.position = new Vector3(menuText.transform.position.x, divider.transform.position.y, menuText.transform.position.z);
             } else {
                 fullMenus[menus.IndexOf(l)].SetActive(false);
+                //change text color
+                menuText.GetComponentInChildren<TMP_Text>().color = new Color(178/255f, 201/255f, 226/255f, 1);
                 menuText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Normal;
             }
         }

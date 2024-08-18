@@ -85,7 +85,7 @@ public class DynamicObject {
         }
         
         if(enable) {
-            Vector3 loc = replacement.localPosition;
+            Vector3 loc = replacement.position;
             replacement.localPosition = new Vector3(0f, 0f, 0f);
             replacement.parent = null;
             Obj.transform.position = loc;

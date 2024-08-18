@@ -100,6 +100,17 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
+    public String SteamToPunctureValue(String s) {
+        switch(s) {
+            case "S_REPORTS":
+                return "ReportsMade";
+            case "S_CREATURESREPORTED":
+                return "CreaturesReported";
+            default:
+                return "ReportsMade";
+        }
+    }
+
     public static string GetProfile() {
         return PlayerPrefs.GetString("currentProfile", "default");
     }

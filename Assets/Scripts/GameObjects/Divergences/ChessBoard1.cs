@@ -11,12 +11,7 @@ public class ChessBoard1 : CustomDivergence
 
 
     public override void DoDivergenceAction(bool activate, DynamicObject gameObject) {
-        if (activate)
-        {
-            //instantly move back to original position
-            //this is in case this divergence was activated before and the pieces are not in their original position
-            StartCoroutine(MovePieces(false, .1f, .1f));
-
+        if (activate) {
             originalPositions = new List<Vector3>();
             newPositions = new List<Vector3>();
             foreach(GameObject piece in pieces) {
@@ -31,10 +26,8 @@ public class ChessBoard1 : CustomDivergence
         }
     }
 
-    private IEnumerator MovePieces(bool activate, float duration, float delay)
-    {
-        for (int i = 0; i < pieces.Count; i++)
-        {
+    private IEnumerator MovePieces(bool activate, float duration, float delay) {
+        for (int i = 0; i < pieces.Count; i++) {
             if(activate) {
                 if(pieces[i].transform.position == originalPositions[i]) {
                     StartCoroutine(MoveOverTime(pieces[i], newPositions[i], duration));
@@ -50,13 +43,11 @@ public class ChessBoard1 : CustomDivergence
         }
     }
 
-    private IEnumerator MoveOverTime(GameObject piece, Vector3 newPos, float duration)
-    {
+    private IEnumerator MoveOverTime(GameObject piece, Vector3 newPos, float duration) {
         Vector3 startPosition = piece.transform.position;
         float elapsed = 0f;
 
-        while (elapsed < duration)
-        {
+        while (elapsed < duration) {
             piece.transform.position = Vector3.Lerp(startPosition, newPos, elapsed / duration);
             elapsed += Time.deltaTime;
             yield return null;

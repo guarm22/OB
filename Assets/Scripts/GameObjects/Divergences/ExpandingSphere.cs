@@ -15,6 +15,8 @@ public class ExpandingSphere : CustomDivergence {
     void Awake() {
         expandScale = new Vector3(expansionSpeed, expansionSpeed, expansionSpeed);
         player = GameObject.Find("Player");
+        ads.volume = PlayerPrefs.GetInt("SFXVolume", 50)/100f;
+
         ExpandSphere(this.gameObject);
     }
 
@@ -38,7 +40,6 @@ public class ExpandingSphere : CustomDivergence {
         this.GetComponent<Collider>().enabled = false;
 
         ads.pitch = Random.Range(1.1f, 1.2f);
-        ads.volume = 0.6f;
         ads.PlayOneShot(spawnSound);
 
         float time = 0;
@@ -47,18 +48,21 @@ public class ExpandingSphere : CustomDivergence {
             float duration = spawnParticles.main.duration;
             spawnParticles.Play();
             while(time < duration-0.3f) {
+                if(PlayerUI.paused) {
+                    yield return new WaitUntil(() => !PlayerUI.paused);
+                }
+
                 time += Time.deltaTime;
                 yield return null;
             }
         }
-        ads.volume = 1f;
         ads.pitch = 1;
         this.GetComponent<Collider>().enabled = true;
 
         time = 0;
         while (time < 100) {
             if(PlayerUI.paused) {
-                yield return null;
+                yield return new WaitUntil(() => !PlayerUI.paused);
             }
             //if the distance between the player and the expanding sphere is less than the radius of the sphere, end the game
             if (Vector3.Distance(player.transform.position, obj.transform.position) < obj.transform.localScale.x/2) {

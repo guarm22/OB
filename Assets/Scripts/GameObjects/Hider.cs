@@ -19,6 +19,7 @@ public class Hider : CreatureBase {
     protected override void Awake() {
         player = GameObject.Find("Player");
         ads = this.gameObject.AddComponent<AudioSource>();
+        ads.volume = PlayerPrefs.GetInt("CreatureVolume", 50)/100f;
     }
 
     // Update is called once per frame
@@ -29,7 +30,6 @@ public class Hider : CreatureBase {
             base.FacePlayer();
             if(!firstLook) {
                 ads.pitch = 1f;
-                ads.volume = 0.25f;
                 ads.PlayOneShot(this.firstLookSound);
                 firstLook = true;
             }
@@ -46,7 +46,6 @@ public class Hider : CreatureBase {
 
         if(timeLookingAtPlayer >= 6.5f) {
             ads.pitch = Random.Range(1.65f, 1.8f);
-            ads.volume = 1f;
             ads.PlayOneShot(this.scareSound);
             SC_FPSController.Instance.Debuff("Energy", EnergyDrainAmount*2.5f);
             timeLookingAtPlayer = 1f;

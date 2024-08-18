@@ -47,18 +47,24 @@ public class GameSystem : MonoBehaviour {
     public float TimeInLevel = 0f;
     public String endReason = "";
 
+    private AudioSource audioSource;
+
   void Awake() {
     if (Instance != null) {
       Debug.LogError("There is more than one instance!");
       return;
     }
+
     Instance = this;
     SetGameSettings();
     gameTime = startTime;
     AnomaliesSuccesfullyReportedThisGame = 0;
     CurrentEnergy = MaxEnergy;
-    gameObject.AddComponent<AudioSource>();
+    audioSource = gameObject.AddComponent<AudioSource>();
     gameObject.GetComponent<AudioSource>().clip = DisappearSound;
+    //change volume
+    audioSource.volume = PlayerPrefs.GetInt("AlertVolume")/100f;
+
   }
 
   public static bool InEditor() {

@@ -22,6 +22,10 @@ public class PunctureCollapse : MonoBehaviour {
         isCollapsing = true;
 
         foreach (GameObject room in rooms) {
+            if(PlayerUI.paused) {
+                yield return new WaitUntil(() => !PlayerUI.paused);
+            }
+
             GameObject sphere = Instantiate(spherePrefab, room.transform.position, Quaternion.identity);
             sphere.transform.position = new Vector3(sphere.transform.position.x, sphere.transform.position.y + 1f, sphere.transform.position.z);
             sphere.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);

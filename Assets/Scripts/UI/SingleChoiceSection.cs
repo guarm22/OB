@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,10 +15,11 @@ public class SingleChoiceSection : MonoBehaviour
 
     public void SetChoice(Button choice) {
         currentChoice = choice;
+        float y = Display.main.systemHeight/42;
         foreach (Button b in choices) {
             if (b.GetComponentInChildren<TMPro.TMP_Text>().text == choice.GetComponentInChildren<TMPro.TMP_Text>().text) {
                 b.GetComponentInChildren<TMPro.TMP_Text>().color = Color.white;
-                underline.transform.position = new Vector3(choice.transform.position.x, choice.transform.position.y - 50, choice.transform.position.z);
+                underline.transform.position = new Vector3(choice.transform.position.x, choice.transform.position.y - y, choice.transform.position.z);
             }
             else {
                 //set color of button text

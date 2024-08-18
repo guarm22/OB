@@ -50,7 +50,7 @@ public class Chaser : CreatureBase
     }
 
     private void DisorientPlayer() {
-        Volume disorientingLocalVolume = Instantiate(disorientingLocalVolumePrefab, player.transform.position, Quaternion.identity);
+        Instantiate(disorientingLocalVolumePrefab, player.transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame

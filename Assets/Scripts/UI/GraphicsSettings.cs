@@ -11,14 +11,13 @@ public class GraphicsSettings : MonoBehaviour
     public GameObject Brightness;
     public GameObject AspectRatio;
     public GameObject DisplayMode;
+    public GameObject Quality;
 
     public Image selectedOptionOutline;
     private GameObject selectedOption;
     public TMP_Text selectedOptionDescription;
 
     public List<String> resolutions = new List<String> {
-        "800x600",
-        "1024x768",
         "1280x720",
         "1280x800",
         "1366x768",
@@ -31,6 +30,12 @@ public class GraphicsSettings : MonoBehaviour
         "2560x1600",
         "3840x2160",
         "5120x1440"
+    };
+
+    public List<String> qualities = new List<String> {
+        "High",
+        "Medium",
+        "Low",
     };
 
     public List<String> displayModes = new List<String> {
@@ -58,6 +63,9 @@ public class GraphicsSettings : MonoBehaviour
         }
         if(!PlayerPrefs.HasKey("DisplayMode")) {
             PlayerPrefs.SetString("DisplayMode", "Borderless Window");
+        }
+        if(!PlayerPrefs.HasKey("Quality")) {
+            PlayerPrefs.SetString("Quality", "High");
         }
 
         ChangeSelection(Brightness);
@@ -89,6 +97,12 @@ public class GraphicsSettings : MonoBehaviour
         entry.eventID = EventTriggerType.PointerEnter;
         entry.callback.AddListener(delegate { ChangeSelection(DisplayMode); });
         trigger.triggers.Add(entry);
+
+        trigger = Quality.AddComponent<EventTrigger>();
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        entry.callback.AddListener(delegate { ChangeSelection(Quality); });
+        trigger.triggers.Add(entry);
     }
 
     private void ChangeSelection(GameObject selectedOption) {
@@ -102,7 +116,10 @@ public class GraphicsSettings : MonoBehaviour
             selectedOptionDescription.text = "Change the aspect ratio";
         } else if(selectedOption == DisplayMode) {
             selectedOptionDescription.text = "Change the display mode";
+        } else if(selectedOption == Quality) {
+            selectedOptionDescription.text = "Change the graphics quality of the game. This can affect performance";
         }
+        
     }
 
     public void SetValues() {
@@ -110,6 +127,7 @@ public class GraphicsSettings : MonoBehaviour
         Brightness.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetInt("Brightness"));
         AspectRatio.GetComponentInChildren<Dropdown>().InitDropdown(aspectRatios,PlayerPrefs.GetString("AspectRatio"));
         DisplayMode.GetComponentInChildren<Dropdown>().InitDropdown(displayModes, PlayerPrefs.GetString("DisplayMode"));
+        Quality.GetComponentInChildren<Dropdown>().InitDropdown(qualities, PlayerPrefs.GetString("Quality"));
     }
 
     void Start() {
@@ -121,6 +139,7 @@ public class GraphicsSettings : MonoBehaviour
         PlayerPrefs.SetInt("Brightness", Brightness.GetComponentInChildren<BarSlider>().GetIntValue());
         PlayerPrefs.SetString("AspectRatio", AspectRatio.GetComponentInChildren<TMP_Dropdown>().captionText.text);
         PlayerPrefs.SetString("DisplayMode", DisplayMode.GetComponentInChildren<TMP_Dropdown>().captionText.text);
+        PlayerPrefs.SetString("Quality", Quality.GetComponentInChildren<TMP_Dropdown>().captionText.text);
 
         FullScreenMode fsMode = FullScreenMode.ExclusiveFullScreen;
         
@@ -137,6 +156,8 @@ public class GraphicsSettings : MonoBehaviour
             Screen.fullScreenMode = FullScreenMode.Windowed;
             fsMode = FullScreenMode.Windowed;
         }
+
+        QualitySettings.SetQualityLevel(qualities.IndexOf(PlayerPrefs.GetString("Quality")));
 
         string[] res = PlayerPrefs.GetString("Resolution").Split('x');
         Screen.SetResolution(int.Parse(res[0]), int.Parse(res[1]), fsMode);

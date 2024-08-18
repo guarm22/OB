@@ -20,6 +20,9 @@ public class AchievementMenu : MonoBehaviour
     
     public String currentProfile;
 
+    public GameObject adminMenu;
+    public Button resetAchievementsButton;
+
     private void LoadAchievements() {
         if(PFileUtil.Load<JsonWrapperUtil<Achievement>>("achievementList.json") == null) {
             return;
@@ -76,7 +79,7 @@ public class AchievementMenu : MonoBehaviour
 
         CreateAchievements();
     }
-
+    
     void Start() {
         InitData();
 
@@ -101,6 +104,10 @@ public class AchievementMenu : MonoBehaviour
             InitData();
             SetPageText();
             currentProfile = PlayerPrefs.GetString("currentProfile");
+        }
+
+        if(Input.GetKeyDown(KeyCode.A)) {
+            adminMenu.SetActive(!adminMenu.activeSelf);
         }
     }
 }
