@@ -33,13 +33,13 @@ public class GameplaySettings : MonoBehaviour
         }
 
         List<string> profiles = PFileUtil.GetAllProfiles();
-        profile.GetComponentInChildren<Dropdown>().InitDropdown(profiles, PlayerPrefs.GetString("currentProfile"));
+        profile.GetComponentInChildren<Dropdown>().InitDropdown(profiles, PlayerPrefs.GetString("currentProfile", "default"));
 
         newProfileButton.onClick.AddListener(CreateNewProfile);
 
         createProfileButton.onClick.AddListener(() => {
             PFileUtil.CreateDirectoryForProfile(newProfileName.text);
-            profile.GetComponentInChildren<Dropdown>().InitDropdown(PFileUtil.GetAllProfiles(), PlayerPrefs.GetString("currentProfile"));
+            profile.GetComponentInChildren<Dropdown>().InitDropdown(PFileUtil.GetAllProfiles(), PlayerPrefs.GetString("currentProfile", "defau;t"));
             newProfilePanel.SetActive(false);
         });
 
@@ -104,10 +104,6 @@ public class GameplaySettings : MonoBehaviour
     }
 
     public void SaveSettings() {
-        if(PlayerPrefs.GetString("currentProfile") != profile.GetComponentInChildren<TMP_Dropdown>().captionText.text) {
-            
-        }
-
         PlayerPrefs.SetString("VisualHints", VisualHints.GetComponentInChildren<SingleChoiceSection>().GetCurrentChoice());
         PlayerPrefs.SetInt("FOV", (int)FOV.GetComponentInChildren<BarSlider>().GetValue());
         PlayerPrefs.SetString("currentProfile", profile.GetComponentInChildren<TMP_Dropdown>().captionText.text);

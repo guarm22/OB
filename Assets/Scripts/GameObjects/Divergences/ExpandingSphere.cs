@@ -60,7 +60,7 @@ public class ExpandingSphere : CustomDivergence {
         this.GetComponent<Collider>().enabled = true;
 
         time = 0;
-        while (time < 100) {
+        while (time < 200) {
             if(PlayerUI.paused) {
                 yield return new WaitUntil(() => !PlayerUI.paused);
             }

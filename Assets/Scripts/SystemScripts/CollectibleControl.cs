@@ -63,6 +63,10 @@ public class CollectibleControl : MonoBehaviour {
         Save();
     }
 
+    public int TotalCollected() {
+        return collectibles.FindAll(c => c.isCollected).Count;
+    }
+
     private void Save() { 
         PFileUtil.Save(collectibleListPath, new JsonWrapperUtil<Collectible>(collectibles));
     }

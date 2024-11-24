@@ -14,6 +14,22 @@ public class AchievementManager : MonoBehaviour
     public static AchievementManager Instance;
 
     private int unlocked = 0;
+
+    private List<Achievement> allAchievements =
+    new List<Achievement>
+        {
+            new Achievement("Divergence Hunter", "Make your first report.", false, 1, "ACH_DIVERGENCEHUNTER"),
+            new Achievement("Divergence Destroyer", "Make fifty reports.", false, 50, "ACH_DIVERGENCEDESTROYER"),
+            new Achievement("Be Gone, Creatures", "Report twenty creatures.", false, 20, "ACH_BEGONECREATURES"),
+            new Achievement("First Steps", "Complete the tutorial.", false, 1, "ACH_FIRSTSTEPS"),
+            new Achievement("A Night in the Woods", "Complete the Cabin level.", false, 1, "ACH_ANIGHTINTHEWOODS"),
+            new Achievement("Haunting Disappearences", "Complete the Graveyard level.", false, 1, "ACH_HAUNTINGDISAPPEARENCES"),
+            new Achievement("Back Home", "Complete the Apartment level.", false, 1, "ACH_BACKHOME"),
+            new Achievement("Beat Normal", "Complete a level on normal.", false, 1, "ACH_BEATNORMAL"),
+            new Achievement("Beat Hard", "Complete a level on hard.", false, 1, "ACH_BEATHARD"),
+            new Achievement("Eyes Peeled", "Beat a level on normal or harder without letting a divergence be active for more than 40 seconds.", false, 1, "ACH_EYESPEELED"),
+            new Achievement("Collector", "Collect 5 relics.", false, 5, "ACH_COLLECTOR"),
+        };
     
     void Start() {
         //load list from file
@@ -31,33 +47,13 @@ public class AchievementManager : MonoBehaviour
     }
 
     private List<Achievement> FirstTimeLoad() {
-        List<Achievement> achievements = new List<Achievement>
-        {
-            new Achievement("Divergence Hunter", "Make your first report.", false, 1, "ACH_DIVERGENCEHUNTER"),
-            new Achievement("Divergence Destroyer", "Make fifty reports.", false, 50, "ACH_DIVERGENCEDESTROYER"),
-            new Achievement("Be Gone, Creatures", "Report twenty creatures.", false, 20, "ACH_BEGONECREATURES"),
-            new Achievement("First Steps", "Complete the tutorial.", false, 1, "ACH_FIRSTSTEPS"),
-            new Achievement("A Night in the Woods", "Complete the cabin level.", false, 1, "ACH_ANIGHTINTHEWOODS"),
-            new Achievement("Haunting Disappearences", "Complete the Graveyard level.", false, 1, "ACH_HAUNTINGDISAPPEARENCES"),
-            new Achievement("Beat Normal", "Complete a level on normal.", false, 1, "ACH_BEATNORMAL"),
-            new Achievement("Beat Hard", "Complete a level on hard.", false, 1, "ACH_BEATHARD"),
-            new Achievement("Eyes Peeled", "Beat a level on normal or harder without letting a divergence be active for more than 40 seconds.", false, 1, "ACH_EYESPEELED"),
-        };
-
-        return achievements;
+        return allAchievements;
     }
     private void AddNewAchievements() {
-        List<Achievement> newAchievements = new List<Achievement> {
-            
-        };
 
-        if(newAchievements.Count == 0) {
-            Debug.Log("No new achievements added");
-            return;
-        }
-
-        foreach(Achievement a in newAchievements) {
-            if(!achievements.Contains(a)) {
+        foreach(Achievement a in allAchievements) {
+            //if the name of the achievement isn't in the list, add it
+            if(!achievements.Exists(ach => ach.Name == a.Name)) {
                 achievements.Add(a);
             }
         }
@@ -73,6 +69,15 @@ public class AchievementManager : MonoBehaviour
         foreach(Achievement a in achievements) {
             if(a.Unlocked) {
                 continue;
+            }
+
+            if(a.Name == "Back Home") {
+                if(a.Unlocked) {
+                    
+                }
+                else if(level=="Apartment" && a.Progress == 0) {
+                    UnlockAchievement(a.Name);
+                }
             }
 
             if(a.Name == "A Night in the Woods") {
@@ -175,6 +180,16 @@ public class AchievementManager : MonoBehaviour
                         a.Progress = int.Parse(data.GetDataValue("CreaturesReported"));
                     }
                     break;
+                
+                case "Collector":
+                    if(CollectibleControl.Instance.TotalCollected() >= 5) {
+                        UnlockAchievement(a.Name);
+                    }
+                    else {
+                        //update progress
+                        a.Progress = CollectibleControl.Instance.TotalCollected();
+                    }
+                    break;
             }
         }
         if(unlocked > 0) {
@@ -214,7 +229,7 @@ public class AchievementManager : MonoBehaviour
 
 
     void Update() {
-        if(PlayerUI.paused || GameSystem.Instance.GameOver) {
+        if(PlayerUI.paused) {
             return;
         }
         if(timeSinceLastCheck >= checkFrequency) {

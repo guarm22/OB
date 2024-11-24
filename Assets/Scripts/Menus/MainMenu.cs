@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class MainMenu : MonoBehaviour
-{
+public class MainMenu : MonoBehaviour {
     public GameObject DefaultMenu;
     public GameObject LevelSelectionMenu;
     public GameObject Settings;
@@ -17,15 +17,14 @@ public class MainMenu : MonoBehaviour
 
     public List<GameObject> ObjToBeInitialized;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         //change brightness
         GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness", 50));
         //change audio settings
         AudioListener.volume = PlayerPrefs.GetInt("MasterVolume", 50) / 100f;
 
-        string[] res = PlayerPrefs.GetString("Resolution").Split('x');
+        String defaultRes = Screen.currentResolution.width + "x" + Screen.currentResolution.height;
+        string[] res = PlayerPrefs.GetString("Resolution", defaultRes).Split('x');
         Screen.SetResolution(int.Parse(res[0]), int.Parse(res[1]), Screen.fullScreenMode);
 
         QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("Quality", 0));

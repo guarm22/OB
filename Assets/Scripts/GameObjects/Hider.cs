@@ -29,6 +29,7 @@ public class Hider : CreatureBase {
         if(canSeePlayer(25f)) {
             base.FacePlayer();
             if(!firstLook) {
+                PlayerUI.Instance.ScrambleReportUI(true);
                 ads.pitch = 1f;
                 ads.PlayOneShot(this.firstLookSound);
                 firstLook = true;
@@ -40,6 +41,7 @@ public class Hider : CreatureBase {
             }
         }
         else {
+            PlayerUI.Instance.ScrambleReportUI(false);
             firstLook = false;
             timeLookingAtPlayer = 0f;
         }

@@ -18,6 +18,8 @@ public class PunctureCollapse : MonoBehaviour {
             yield break;
         }
 
+        PlayerUI.Instance.ScrambleReportUI(true);
+        
         rooms = DivergenceControl.Instance.RoomObjects;
         isCollapsing = true;
 
@@ -30,7 +32,7 @@ public class PunctureCollapse : MonoBehaviour {
             sphere.transform.position = new Vector3(sphere.transform.position.x, sphere.transform.position.y + 1f, sphere.transform.position.z);
             sphere.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             sphere.transform.SetParent(room.transform);
-            sphere.GetComponent<ExpandingSphere>().ManualActivation(0.65f);
+            sphere.GetComponent<ExpandingSphere>().ManualActivation(0.8f);
 
             float delay = Random.Range(.8f, 1.1f);
             yield return new WaitForSeconds(delay);

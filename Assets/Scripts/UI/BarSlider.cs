@@ -38,6 +38,8 @@ public class BarSlider : MonoBehaviour
             val = Mathf.Round(val);
         }
         value = val;
-        valueText.text = val.ToString();
+        //only show last 2 decimal places
+        
+        valueText.text = val.ToString(integer ? "" : "F1");
     }
 }

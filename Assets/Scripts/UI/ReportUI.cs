@@ -36,18 +36,70 @@ public class ReportUI : MonoBehaviour {
     public List<Color> StatusColors = new List<Color> {Color.green, Color.yellow, Color.red};
     public TMP_Text StatusText;
 
+    private bool ScrambledUI = false;
+    private bool CurrentlyScrambling = false;
+
     void Start() {
         CreateUI();
         Instance = this;
         reportButton.onClick.AddListener(Report);
         GetRooms();
         audioSource = this.gameObject.GetComponent<AudioSource>();
+
     }
 
     void Update() {
         findPlayerLoc();
         UpdateButton();
         UpdateStatus();
+
+        if(!CurrentlyScrambling && ScrambledUI) {
+            ScrambleUI();
+        }
+    }
+
+    public void ScrambleUI(bool active = true) {
+        ScrambledUI = active;
+        if(active) {
+            StartCoroutine(Scramble());
+        }
+        else {
+            StopAllCoroutines();
+            ResetSelections();
+        }
+    }
+
+    public void TurnOn(bool scramble) {
+        if(scramble && !ScrambledUI) {
+            ScrambleUI();
+        }
+    }
+
+    public void TurnOff() {
+        CurrentlyScrambling = false;
+        this.gameObject.SetActive(false);
+    }
+
+    private IEnumerator Scramble() {
+        //randomly select and deselect a few types and rooms
+        //wait a few seconds
+        //repeat
+        CurrentlyScrambling = true;
+        while(ScrambledUI) {
+            yield return new WaitForSeconds(0.15f);
+            foreach(Toggle toggle in typeSelectionUI.GetComponentsInChildren<Toggle>()) {
+                if(Random.Range(0, 2) == 0) {
+                    toggle.isOn = !toggle.isOn;
+                    SelectType(toggle.gameObject);
+                }
+            }
+            foreach(GameObject room in rooms) {
+                if(Random.Range(0, 2) == 0) {
+                    SelectRoom(room);
+                }
+            }
+        }
+        CurrentlyScrambling = false;
     }
 
     private void UpdateStatus() {
@@ -87,6 +139,8 @@ public class ReportUI : MonoBehaviour {
     }
 
     public void Report() {
+        if(ScrambledUI) {return;}
+
         audioSource.PlayOneShot(selectSound);
         DivergenceControl.Instance.MakeSelection(SelectedTypes, SelectedRoom);
     }
@@ -115,6 +169,7 @@ public class ReportUI : MonoBehaviour {
             SelectedTypes.Remove(obj.name);
         }
     }
+
     public void SelectRoom(GameObject room) {
         audioSource.PlayOneShot(selectSound);
 
@@ -157,7 +212,6 @@ public class ReportUI : MonoBehaviour {
 
     private void ChangeBGColor(GameObject room, Color color) {
         room.transform.GetChild(0).GetComponent<Image>().color = color;
-
     }
 
     public void CreateUI() {

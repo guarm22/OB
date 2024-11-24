@@ -152,7 +152,7 @@ public class RelicsMenu : MonoBehaviour {
 
     void Update() {
         //if player presses O
-        if(Input.GetKeyDown(KeyCode.O)) {
+        if(Input.GetKeyDown(KeyCode.O) && GameSystem.InEditor()) {
             devStuff.SetActive(!devStuff.activeSelf);
         }
 

@@ -58,11 +58,11 @@ public class SettingsMenu : MonoBehaviour
         fullMenus[3].GetComponent<AudioSettings>().SaveSettings();
 
         //update volume for main menu and music
-        GameObject.Find("MainScreen").GetComponent<AudioSource>().volume = PlayerPrefs.GetInt("MusicVolume") / 100f;
-        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
+        GameObject.Find("MainScreen").GetComponent<AudioSource>().volume = PlayerPrefs.GetInt("MusicVolume", 50) / 100f;
+        AudioListener.volume = PlayerPrefs.GetInt("MasterVolume", 50) / 100f;
 
         //update brightness
-        GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness"));
+        GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness", 50));
 
         this.gameObject.SetActive(false);
         defaultMenu.SetActive(true);

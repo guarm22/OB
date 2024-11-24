@@ -86,9 +86,9 @@ public class ControlSettings : MonoBehaviour {
     }
 
     public void SetValues() {
-        MouseSens.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetFloat("MouseSens"));
-        MouseAccel.GetComponentInChildren<SingleChoiceSection>().SetChoice(PlayerPrefs.GetString("MouseAccel"));
-        InvertMouse.GetComponentInChildren<SingleChoiceSection>().SetChoice(PlayerPrefs.GetString("InvertMouse"));
+        MouseSens.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetFloat("MouseSens", 2));
+        MouseAccel.GetComponentInChildren<SingleChoiceSection>().SetChoice(PlayerPrefs.GetString("MouseAccel", "OFF"));
+        InvertMouse.GetComponentInChildren<SingleChoiceSection>().SetChoice(PlayerPrefs.GetString("InvertMouse", "OFF"));
     }
 
     public void SaveSettings() {

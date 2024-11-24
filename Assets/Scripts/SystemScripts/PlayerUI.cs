@@ -26,6 +26,8 @@ public class PlayerUI : MonoBehaviour
     public static PlayerUI Instance;
     public GameObject prompt;
 
+    public bool reportScramble = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +64,15 @@ public class PlayerUI : MonoBehaviour
     public void ChangePrompt(string text, bool activate) {
         prompt.SetActive(activate);
         prompt.GetComponent<TMP_Text>().text = text;
+    }
+
+    public void ScrambleReportUI(bool activate) {
+        if(selectionUI.activeSelf && !activate) {
+            selectionUI.GetComponent<ReportUI>().ScrambleUI(activate);
+        }
+        else {
+            reportScramble = activate;
+        }
     }
 
     void PopulateSelectorUI() {
@@ -107,12 +118,20 @@ public class PlayerUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         inMenu = false;
-        selectionUI.SetActive(false);
+        if(selectionUI.GetComponent<ReportUI>() != null) {
+            selectionUI.GetComponent<ReportUI>().TurnOff();
+        }
+        else {
+            selectionUI.SetActive(false);
+        }
         defaultBottomRight.SetActive(true);
         SC_FPSController.Instance.canMove = true;
     }
     private void turnOnSelection() {
         selectionUI.SetActive(true);
+        if(selectionUI.GetComponent<ReportUI>() != null) {
+            selectionUI.GetComponent<ReportUI>().TurnOn(reportScramble);
+        }
         //turn off any currently playing warnings
         Warning.Instance.TurnOffAlert();
         defaultBottomRight.SetActive(false);

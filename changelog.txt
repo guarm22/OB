@@ -375,7 +375,7 @@ Bug Fixes:
 -Fixed an issue where items in the background of the main menu could be interacted with
 
 
-v0.7.1 - Endgame Rework
+v0.7.1 (Aug 18, 2024) - Endgame Rework/Finished Settings
 
 Changes:
 -Instead of an Ender spawning and killing the player, an unreportable expanding sphere spawns in each room when the player is meant to lose.
@@ -385,6 +385,8 @@ Changes:
 -The Puncture sphere divergence now has a different texture
 -Updated the UI of dropdowns and selections on the main menu
 -Updated UI of the play screen and settings screen
+-Updated some areas of the Graveyard, and added the reporting UI map
+-The endgame collapse spheres now expand slightly faster, and for a longer time (there were safe spots on larger maps)
 
 Additions:
 -Added a particle effect and delay to expanding spheres when they spawn, so the player has some warning and doesn't instantly walk into it
@@ -400,6 +402,18 @@ Bug Fixes:
 -The compendium menu now displays the creatures in the correct order, and changed the description for the Zombie
 -Fixed some more weird UI issues on lower resolutions
 -Fixed an issue where the objects in replacement divergences were randomly appearing in other parts of the map
+
+
+v0.7.2:
+
+Changes:
+-Float values in bar sliders are now clamped to the first decimal
+
+Additions:
+-The reporting UI now becomes 'scrambled' when certain events occur (end game collapse, hider, lurker), making it impossible to report for a duration
+
+Bug Fixes:
+-Fixed issue where user would not be able to hear or change settings on first launch
 
 
 Future Plans:
