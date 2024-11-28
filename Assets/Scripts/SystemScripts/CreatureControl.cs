@@ -34,6 +34,11 @@ public class CreatureControl : MonoBehaviour
 
     public List<GameObject> CreatureSpawnpoints = new List<GameObject>();
 
+    public bool ActivateZombie = true;
+    public bool ActivateLurker = true;
+    public bool ActivateHider = true;
+    public bool ActivateChaser = true;
+
 
     public IEnumerator ZombieJumpscare() {
         GameObject player = GameObject.Find("Player");
@@ -186,7 +191,7 @@ public class CreatureControl : MonoBehaviour
 
         if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences) {
             int spawnChance = UnityEngine.Random.Range(0,100);
-            if(spawnChance < zombieSpawnChance) {
+            if(spawnChance < zombieSpawnChance && ActivateZombie) {
                 createCreature(zombiePrefab, room);
                 return;
             }
@@ -265,16 +270,18 @@ public class CreatureControl : MonoBehaviour
     void Start() {
         Instance = this;
 
-        if(SceneManager.GetActiveScene().name == "Cabin"  || SceneManager.GetActiveScene().name == "Apartment") {
+        if((SceneManager.GetActiveScene().name == "Cabin"  || SceneManager.GetActiveScene().name == "Apartment") && ActivateLurker) {
             specialCreatures.Add(lurkerPrefab);
         }
-        if(SceneManager.GetActiveScene().name == "Cabin") {
+        if(SceneManager.GetActiveScene().name == "Cabin" && ActivateHider) {
             specialCreatures.Add(hiderPrefab);
         }
 
         CreatureSpawnpoints = GameObject.FindGameObjectsWithTag("CreatureSpawnPoint").ToList();
 
-        specialCreatures.Add(chaserPrefab);
+        if(ActivateChaser) {
+            specialCreatures.Add(chaserPrefab);
+        }
         setCreatureSettings();
     }
 

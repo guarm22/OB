@@ -54,11 +54,11 @@ public class ReportUI : MonoBehaviour {
         UpdateStatus();
 
         if(!CurrentlyScrambling && ScrambledUI) {
-            ScrambleUI();
+            ScrambleUI(true);
         }
     }
 
-    public void ScrambleUI(bool active = true) {
+    public void ScrambleUI(bool active) {
         ScrambledUI = active;
         if(active) {
             StartCoroutine(Scramble());
@@ -69,14 +69,22 @@ public class ReportUI : MonoBehaviour {
         }
     }
 
-    public void TurnOn(bool scramble) {
-        if(scramble && !ScrambledUI) {
-            ScrambleUI();
+    public void TurnOn() {
+        Debug.Log(PlayerUI.Instance.reportScramble);
+        if(PlayerUI.Instance.reportScramble) {
+            ScrambleUI(true);
+        }
+        else {
+            CurrentlyScrambling = false;
+            ScrambledUI = false;
         }
     }
 
     public void TurnOff() {
-        CurrentlyScrambling = false;
+        if(!PlayerUI.Instance.reportScramble) {
+            ScrambleUI(false);
+        }
+        CurrentlyScrambling =false;
         this.gameObject.SetActive(false);
     }
 
@@ -139,7 +147,7 @@ public class ReportUI : MonoBehaviour {
     }
 
     public void Report() {
-        if(ScrambledUI) {return;}
+        if(CurrentlyScrambling) {return;}
 
         audioSource.PlayOneShot(selectSound);
         DivergenceControl.Instance.MakeSelection(SelectedTypes, SelectedRoom);

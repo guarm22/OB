@@ -67,12 +67,7 @@ public class PlayerUI : MonoBehaviour
     }
 
     public void ScrambleReportUI(bool activate) {
-        if(selectionUI.activeSelf && !activate) {
-            selectionUI.GetComponent<ReportUI>().ScrambleUI(activate);
-        }
-        else {
-            reportScramble = activate;
-        }
+        reportScramble = activate;
     }
 
     void PopulateSelectorUI() {
@@ -130,7 +125,7 @@ public class PlayerUI : MonoBehaviour
     private void turnOnSelection() {
         selectionUI.SetActive(true);
         if(selectionUI.GetComponent<ReportUI>() != null) {
-            selectionUI.GetComponent<ReportUI>().TurnOn(reportScramble);
+            selectionUI.GetComponent<ReportUI>().TurnOn();
         }
         //turn off any currently playing warnings
         Warning.Instance.TurnOffAlert();

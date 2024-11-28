@@ -107,6 +107,8 @@ public class DivergenceControl : MonoBehaviour {
 
     public ParticleSystem divergenceParticle;
 
+    public bool ActivateEndgameCollapse = true;
+
     /// <summary>
     /// Finds each game object with the DynamicData script and adds it to the DynamicObjectList.
     /// </summary>

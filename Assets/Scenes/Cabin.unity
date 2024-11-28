@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1281587267}
-  m_IndirectSpecularColor: {r: 0.009012707, g: 0.013102867, b: 0.020503506, a: 1}
+  m_IndirectSpecularColor: {r: 0.009000461, g: 0.013100043, b: 0.02044897, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8004,12 +8004,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2174045631847333030, guid: eac5cf374ce9a7c48b88873629657aec, type: 3}
     - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: ActivateChaser
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: ActivateLurker
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: ActivateZombie
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: jumpscareZombie
       value: 
       objectReference: {fileID: 4493914615434692733}
     - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: creatureSpawnRate
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2474943944712441764, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: zombieSpawnChance
@@ -8149,7 +8161,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9179173730353971060, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
       propertyPath: DivergenceInterval
-      value: 50000
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9179173730353971060, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
+      propertyPath: ActivateEndgameCollapse
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3644676362518181232, guid: 98ff269e53f7845409e2f71e9d890052, type: 3}
@@ -10371,7 +10387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: All
@@ -13213,6 +13229,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7436444426147044138, guid: 9aac42a3890e27b479a5c73e54179197, type: 3}
   m_PrefabInstance: {fileID: 1100485124}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1022908987 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8551688276963470947, guid: 9a3a4f11bc9171343b5425ff5eb1d8dc, type: 3}
+  m_PrefabInstance: {fileID: 1689888873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1026336706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13232,6 +13253,18 @@ PrefabInstance:
     - target: {fileID: 2165897782381717986, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
       propertyPath: difficulty
       value: Hard
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281553620750634300, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281553620750634300, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281553620750634300, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5281553620750634300, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22957,7 +22990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: Easy
@@ -24156,7 +24189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8551688276963470947, guid: 9a3a4f11bc9171343b5425ff5eb1d8dc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 28.81
+      value: 34.37
       objectReference: {fileID: 0}
     - target: {fileID: 8551688276963470947, guid: 9a3a4f11bc9171343b5425ff5eb1d8dc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24195,11 +24228,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a3a4f11bc9171343b5425ff5eb1d8dc, type: 3}
---- !u!4 &1689888874 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8551688276963470947, guid: 9a3a4f11bc9171343b5425ff5eb1d8dc, type: 3}
-  m_PrefabInstance: {fileID: 1689888873}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1690014497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a820e1b77b7bafa49bee9c7ee927a26a, type: 3}
@@ -26036,7 +26064,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1459124771591896015}
-  - {fileID: 1689888874}
+  - {fileID: 1022908987}
   - {fileID: 2021586695}
   - {fileID: 1281587268}
   - {fileID: 1763811054}
@@ -28605,6 +28633,18 @@ PrefabInstance:
     - target: {fileID: 748209061606138457, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281553620750634300, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281553620750634300, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281553620750634300, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5281553620750634300, guid: 0852c5cb211c3564c95178459ab54d89, type: 3}
       propertyPath: m_LocalPosition.x
@@ -40291,7 +40331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6119517453442503493, guid: edf570990754269468089ad91638b6b3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.73
+      value: -19.49
       objectReference: {fileID: 0}
     - target: {fileID: 6119517453442503493, guid: edf570990754269468089ad91638b6b3, type: 3}
       propertyPath: m_LocalPosition.y

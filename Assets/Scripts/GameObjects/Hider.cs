@@ -15,6 +15,8 @@ public class Hider : CreatureBase {
 
     private bool firstLook = false;
 
+    private bool lookedLastFrame = false;
+
     // Start is called before the first frame update
     protected override void Awake() {
         player = GameObject.Find("Player");
@@ -28,6 +30,7 @@ public class Hider : CreatureBase {
         //if we can see the player, remove 1 energy per second
         if(canSeePlayer(25f)) {
             base.FacePlayer();
+            lookedLastFrame = true;
             if(!firstLook) {
                 PlayerUI.Instance.ScrambleReportUI(true);
                 ads.pitch = 1f;
@@ -40,8 +43,11 @@ public class Hider : CreatureBase {
                 timer = 0f;
             }
         }
-        else {
+        else if(!canSeePlayer() && lookedLastFrame) {
             PlayerUI.Instance.ScrambleReportUI(false);
+            lookedLastFrame = false;
+        }
+        else {
             firstLook = false;
             timeLookingAtPlayer = 0f;
         }

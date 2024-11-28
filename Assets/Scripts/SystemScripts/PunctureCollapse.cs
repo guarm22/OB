@@ -14,6 +14,10 @@ public class PunctureCollapse : MonoBehaviour {
     }
 
     public IEnumerator Collapse() {
+        if(!DivergenceControl.Instance.ActivateEndgameCollapse) {
+            yield break;
+        }
+
         if(isCollapsing) {
             yield break;
         }

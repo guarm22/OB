@@ -117,7 +117,8 @@ public class AchievementManager : MonoBehaviour
             }
 
             if(a.Name == "Eyes Peeled") {
-                if(a.Unlocked || GameSystem.Instance.Difficulty == "Easy" || GameSystem.Instance.Difficulty == "Custom") {
+                if(a.Unlocked || GameSystem.Instance.Difficulty == "Easy" || GameSystem.Instance.Difficulty == "Custom" 
+                || level=="Tutorial") {
                     continue;
                 }
                 bool failed = false;
