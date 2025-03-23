@@ -395,7 +395,7 @@ Additions:
 -Each setting now has a description that describes what it controls
 -The user can now change the quality settings of the game. The lowest setting nearly doubles FPS.
 -More volume settings have been added
--Added Steam achievement support
+-Added Steam achievements
 
 Bug Fixes:
 -Fixed an issue where certain checkboxes had a weird hitbox
@@ -409,9 +409,11 @@ v0.7.2:
 Changes:
 -Float values in bar sliders are now clamped to the first decimal
 -Updated the visuals for The Puncture
+-The chance for the endgame collapse to start even if not at max divergences has been dramatically decreased
 
 Additions:
 -The reporting UI now becomes 'scrambled' when certain events occur (end game collapse, hider, lurker), making it impossible to report for a duration
+-Added a small chance for the endgame collapse to not start even if at max divergences
 
 Bug Fixes:
 -Fixed issue where user would not be able to hear or change settings on first launch
@@ -419,6 +421,11 @@ Bug Fixes:
 -Fixed an issue where being seen by a Hider would prevent reporting for the rest of the level
 -Fixed an issue where the "Eyes Peeled" Achievement would trigger on the tutorial.
 -The Hider is now affected by volume options
+-If you report a Hider while it looks at you, it no longer permanently scrambles your reporting UI
+-Achievements earned before steam integration should be unlocked on steam once finishing a level
+
+Known Issues:
+-You can change menus while typing in a new profile name
 
 
 Future Plans:

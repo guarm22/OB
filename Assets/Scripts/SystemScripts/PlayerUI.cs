@@ -127,6 +127,11 @@ public class PlayerUI : MonoBehaviour
         if(selectionUI.GetComponent<ReportUI>() != null) {
             selectionUI.GetComponent<ReportUI>().TurnOn();
         }
+
+        if(CreatureControl.Instance.ActiveCreatures.FindAll(x => x.name.Contains("Hider")).Count == 0) {
+            ScrambleReportUI(false);
+        }
+
         //turn off any currently playing warnings
         Warning.Instance.TurnOffAlert();
         defaultBottomRight.SetActive(false);
@@ -190,7 +195,7 @@ public class PlayerUI : MonoBehaviour
 
     private void EscapeMenu() {
         //CHANGE TO ESCAPE
-        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Pause")) || Input.GetKeyDown(KeyCode.Q)) { 
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Pause"))) { 
             PauseControl("escape");
         }
         if(Input.GetKeyDown(KeyCode.P)) {

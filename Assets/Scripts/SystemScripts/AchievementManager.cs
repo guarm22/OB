@@ -67,7 +67,7 @@ public class AchievementManager : MonoBehaviour
         }
 
         foreach(Achievement a in achievements) {
-            if(a.Unlocked) {
+            if(a.Unlocked || DateTime.Compare(DateTime.Parse(a.dateEarned), DateTime.Now) < 0) {
                 continue;
             }
 

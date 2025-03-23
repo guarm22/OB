@@ -85,7 +85,7 @@ public class GameplaySettings : MonoBehaviour
         } else if(selectedOption == VisualHints) {
             selectedOptionDescription.text = "Determines if lights will flicker in game as a hint";
         } else if(selectedOption == profile) {
-            selectedOptionDescription.text = "Profile to save stats, achievements, and settings to";
+            selectedOptionDescription.text = "Profile to save stats, achievements, and keybinds";
         }
     }
 

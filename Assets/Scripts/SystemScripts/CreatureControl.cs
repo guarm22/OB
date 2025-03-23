@@ -216,18 +216,28 @@ public class CreatureControl : MonoBehaviour
 
 
         if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.DivergencesPerRoom*DivergenceControl.Instance.Rooms.Count) {
+            if(UnityEngine.Random.Range(0,100) > 95) {
+                return;
+            }
             StartCoroutine(PunctureCollapse.Instance.Collapse());
         }
 
         int divCount = DivergenceControl.Instance.DivergenceList.Count;
         int maxDivs = DivergenceControl.Instance.MaxDivergences;
-        //get amount of divergences that have been alive for more than x seconds
-        int x = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 85);
-        int y = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 150);
-        int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 200);
-        int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 240);
-        int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > 360);
-        float spawnChance = 0.5f + ((0.66f*x) + (1.1f*y) + (1.33f*z) + (2f*w) + (3.33f*v));
+        
+        //this code determines if the endgame collapse should start early or not
+        //based on if there are any divergences that have been active for a long time
+        int t1 = 75;
+        int t2 = 150;
+        int t3 = 200;
+        int t4 = 240;
+        int t5 = 360;
+        int x = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t1 && Time.time - div.divTime <= t2);
+        int y = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t2 && Time.time - div.divTime <= t3);
+        int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t3 && Time.time - div.divTime <= t4);
+        int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t4 && Time.time - div.divTime <= t5);
+        int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t5);
+        float spawnChance = (0.2f*x) + (0.2f*y) + (0.5f*z) + (1f*w) + (3f*v);
 
         //chance to start collapse within 80% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {
