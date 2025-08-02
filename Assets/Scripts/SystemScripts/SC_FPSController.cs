@@ -42,6 +42,7 @@ public class SC_FPSController : MonoBehaviour
     private bool mouseAccel;
     private Vector3 prevMousePosition;
     private float accelerationFactor = 0.01f;
+    private bool teleported = false;
 
     public int timesCrouched = 0;
 
@@ -64,6 +65,10 @@ public class SC_FPSController : MonoBehaviour
     }
 
     private void PlayerMove() {
+        if(teleported) {
+            teleported = false;
+            return;
+        }
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -173,6 +178,7 @@ public class SC_FPSController : MonoBehaviour
     }
 
     public void TeleportRoom(GameObject room) {
+        teleported = true;
         transform.position = new Vector3(room.transform.position.x, room.transform.position.y + 1, room.transform.position.z);
     }
 

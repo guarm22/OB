@@ -242,9 +242,9 @@ v0.6 (Started 6/28/24, finished 7/6) - UI Overhaul
 Changes:
 -Main menu UI overhauled
 -Made loading screen a little nicer
--Remade stat tracking, again. Now allows for any stat to be tracked without much extra work
+-Remade stat tracking, again. Now allows for any stat to be added without much extra work
 -Flashlight now follows where the player is looking
--The battery icon that represents energy now turns red when you lose any
+-The battery icon that represents energy now turns red when you lose a significant amount
 -All data saved on file is now encrypted
 -Remade certain in game screens (Game over, pause, reporting UI)
 
@@ -375,7 +375,7 @@ Bug Fixes:
 -Fixed an issue where items in the background of the main menu could be interacted with
 
 
-v0.7.1 (Aug 18, 2024) - Endgame Rework/Finished Settings
+v0.7.1 (Aug 18, 2024) - Endgame Rework/Finished Settings/Added Achievements
 
 Changes:
 -Instead of an Ender spawning and killing the player, an unreportable expanding sphere spawns in each room when the player is meant to lose.
@@ -404,7 +404,7 @@ Bug Fixes:
 -Fixed an issue where the objects in replacement divergences were randomly appearing in other parts of the map
 
 
-v0.7.2:
+v0.7.2 (Dec 2024):
 
 Changes:
 -Float values in bar sliders are now clamped to the first decimal
@@ -426,6 +426,24 @@ Bug Fixes:
 
 Known Issues:
 -You can change menus while typing in a new profile name
+
+
+
+v0.7.3 (Started 8/1/2025):
+
+Changes:
+-The flashlight is now more powerful, but covers a smaller section of the screen. 
+-The flashlight will no longer drain power, but cause it to generate slower. Current causes power to generate at 95% speed.
+-The Hider is now just a floating head instead of a whole body.
+
+Additions:
+-Added a physical flashlight. Only appears when flashlight is turned on.
+-Added some additional ambient sounds to Cabin.
+
+
+Bug Fixes:
+-The Zombie now correctly teleports the player upon contact
+-The flashlight no longer drains energy while the game is paused.
 
 
 Future Plans:

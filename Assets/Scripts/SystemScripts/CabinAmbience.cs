@@ -8,7 +8,10 @@ public class CabinAmbience : MonoBehaviour {
 
     private List<AudioClip> playedClips = new List<AudioClip>();
 
-    public float soundTimer = 30f;
+    public float soundTimer = 60f;
+
+    private float minSoundRandomness = 60f;
+    private float maxSoundRandomnesss = 90f;
 
     private bool paused = false;
 
@@ -43,7 +46,7 @@ public class CabinAmbience : MonoBehaviour {
 
         if(soundTimer <= 0) {
             PlayRandomClip();
-            soundTimer = Random.Range(60f, 90f);
+            soundTimer = Random.Range(minSoundRandomness, maxSoundRandomnesss);
         }
         else {
             soundTimer -= Time.deltaTime;

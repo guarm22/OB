@@ -122,7 +122,7 @@ public class CreatureControl : MonoBehaviour
     }
 
     public Vector3 FindHiderSpawn(String room) {
-        Vector3 spawnPos = GameObject.Find("HiderSpawn"+room).transform.position;
+        Vector3 spawnPos = GameObject.Find("HiderSpawn"+room).transform.position + new Vector3(0, -2, 0);
         return spawnPos;
     }
 
