@@ -119,6 +119,9 @@ public class DivergenceControl : MonoBehaviour {
             //check the difficulty of the object
             //if the difficulty is not "all" and the difficulty of the object is not the same as the current difficulty, skip the object
             if(obj.difficulty.ToLower() != "all" && !obj.difficulty.ToLower().Contains(diff) && diff!="custom") {
+                //Remove dynamic data from object
+                //This is so objects with multiple dynamic data scripts attached to it will not activate multiple scripts.
+                Destroy(obj);
                 continue;
             }
 
