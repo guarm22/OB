@@ -1895,7 +1895,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 22.378181, y: 3.6500955, z: 44.498108}
+  m_Size: {x: 22.378181, y: 15, z: 44.498108}
   m_Center: {x: 7.9774666, y: 1.3250477, z: 0.30194092}
 --- !u!114 &190857298
 MonoBehaviour:
@@ -5270,9 +5270,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 441433082}
+  - component: {fileID: 441433083}
   m_Layer: 0
   m_Name: AREA_MARSH
-  m_TagString: Untagged
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5299,6 +5300,27 @@ Transform:
   - {fileID: 1029346795}
   m_Father: {fileID: 1136641244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &441433083
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441433081}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 10, z: 35}
+  m_Center: {x: 15, y: 0, z: -15}
 --- !u!1001 &441771119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11949,7 +11971,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 36.36268, y: 3.6500955, z: 41.14154}
-  m_Center: {x: 0.32797623, y: 1.3250477, z: -0.28546143}
+  m_Center: {x: 0.32797623, y: 15, z: -0.28546143}
 --- !u!114 &1185104537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13810,7 +13832,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 41.06552, y: 5.64183, z: 42.629883}
+  m_Size: {x: 41.06552, y: 15, z: 42.629883}
   m_Center: {x: -1.673584, y: 2.320915, z: -10.404327}
 --- !u!114 &1369898472
 MonoBehaviour:
@@ -14773,7 +14795,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 29.36139, y: 3.6500955, z: 62.981323}
+  m_Size: {x: 29.36139, y: 15, z: 62.981323}
   m_Center: {x: 12.410309, y: 1.3250477, z: -2.7841797}
 --- !u!114 &1438415138
 MonoBehaviour:
@@ -21642,7 +21664,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 41.72277, y: 3.3442807, z: 19.748535}
+  m_Size: {x: 41.72277, y: 15, z: 19.748535}
   m_Center: {x: 0, y: 1.1721404, z: 0}
 --- !u!114 &2043436635
 MonoBehaviour:
