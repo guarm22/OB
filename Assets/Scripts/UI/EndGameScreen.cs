@@ -8,8 +8,7 @@ using TMPro;
 
 public class EndGameScreen : MonoBehaviour
 {
-    public TMP_Text ADetected;
-    public TMP_Text AMissed;
+    public TMP_Text score;
     public TMP_Text GameOver;
     public Button ReturnToMenuButton;
     public Button RetryButton;
@@ -33,8 +32,13 @@ public class EndGameScreen : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        ADetected.text = "Divergences Found: " + GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame;
-        AMissed.text = "Divergences Missed: " + DivergenceControl.Instance.DivergenceList.Count;
+        float finalScore = GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame * 10;
+        finalScore += CreatureControl.Instance.CreaturesReported * 5;
+        //decrease score based on how many divergences were leftover and for how long
+        finalScore += -DivergenceControl.Instance.RemainingDivergenceScore();
+        finalScore *= PlayerPrefs.GetFloat("CurrentScoreMultiplier", 1);
+
+        score.text = "Score: " + finalScore;
 
         if(GameSystem.Instance.Won == true) {
             GameOver.text = "You Won!";

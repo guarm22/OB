@@ -13,8 +13,12 @@ public class PlayMenu : MonoBehaviour
     public GameObject levelSelect;
     public GameObject difficultySelect;
 
+    public GameObject modifiersMenu;
+
     public Button playButton;
     public Button backButton;
+
+    public Button modifiersButton;
 
     private void PlayButtonEvent() {
         //Debug.Log("Play button pressed");
@@ -40,9 +44,15 @@ public class PlayMenu : MonoBehaviour
         defaultMenu.SetActive(true);
     }
 
+    private void ModifiersEvent() {
+        this.gameObject.SetActive(false);
+        modifiersMenu.SetActive(true);
+    }
+
     void Start() {
         playButton.onClick.AddListener(PlayButtonEvent);
         backButton.onClick.AddListener(BackButtonEvent);
+        modifiersButton.onClick.AddListener(ModifiersEvent);
     }
 
     // Update is called once per frame

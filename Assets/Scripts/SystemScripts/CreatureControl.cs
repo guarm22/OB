@@ -10,21 +10,17 @@ public class CreatureControl : MonoBehaviour
 {
     public static CreatureControl Instance;
     public GameObject zombiePrefab;
-    public GameObject endCreaturePrefab;
     public GameObject chaserPrefab;
     public GameObject lurkerPrefab;
     public GameObject hiderPrefab;
     public int maxCreaturesPerRoom = 1;
     public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
     public int creatureMax = 3;
-    public GameObject jumpscareZombie;
     [HideInInspector]
     public bool IsJumpscareFinished = false;
-    public AudioClip jumpscareSound;
     public float creatureSpawnRate = 20f;
     public float timeSinceLastCreature = 0f;
-    private List<GameObject> specialCreatures = new List<GameObject>();
-    public float zombieSpawnChance = 50f;
+    private List<GameObject> creatures = new List<GameObject>();
     public float specialSpawnChance = 50f;
     [HideInInspector]
     public int TotalCreatures;
@@ -39,39 +35,18 @@ public class CreatureControl : MonoBehaviour
     public bool ActivateHider = true;
     public bool ActivateChaser = true;
 
-
-    public IEnumerator ZombieJumpscare() {
-        GameObject player = GameObject.Find("Player");
-        player.transform.position = jumpscareZombie.transform.position - new Vector3(0, -1, -2f);
-        Vector3 direction = jumpscareZombie.transform.position - player.transform.position + new Vector3(0, 1, 0);
-        Quaternion rotation = Quaternion.LookRotation(direction);
-        player.transform.rotation = rotation;
-
-        float originalLightIntensity = GameObject.Find("JumpscareLight").GetComponent<Light>().intensity;
-        StartCoroutine(LightControl.Instance.FlickerLight(GameObject.Find("JumpscareLight").GetComponent<Light>(), 2, 4, 1.5f));
-
-        while(Vector3.Distance(player.transform.position, jumpscareZombie.transform.position) > 1.2f) {
-            player.transform.position = Vector3.MoveTowards(player.transform.position, 
-            jumpscareZombie.transform.position + new Vector3(0,1,0), 1.8f * Time.deltaTime);
-            yield return null;
-        }
-        GameObject audioSourceObject = new GameObject("JumpscareAudioSource");
-        AudioSource audioSource = audioSourceObject.AddComponent<AudioSource>();
-        audioSource.clip = jumpscareSound;
-        audioSource.transform.position = jumpscareZombie.transform.position;
-        audioSource.Play();
-
-        yield return new WaitForSeconds(1);
-        GameObject.Find("JumpscareLight").GetComponent<Light>().intensity = originalLightIntensity;
+    private List<string> GetRoomsWithNoCreatures() {
+        return CreaturesPerRoom.Keys.Where(k => CreaturesPerRoom[k] == 0).ToList();
     }
 
-    private void createCreature(GameObject prefab, string room, string type = "Zombie") {
-        if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
-            CreaturesPerRoom.Add(room, 0);
-        } 
-        if(CreaturesPerRoom[room] >= maxCreaturesPerRoom) {
+    private void createCreature(GameObject prefab, string type = "Zombie") {
+        if(GetRoomsWithNoCreatures().Count == 0) {
             return;
         }
+
+        int randomVal = UnityEngine.Random.Range(0, GetRoomsWithNoCreatures().Count);
+        string room = GetRoomsWithNoCreatures()[randomVal];
+
         Vector3 spawnPos = FindSpawnPoint(room, type);
         GameObject roomObj = GameObject.Find(room);
         GameObject creature = Instantiate(prefab, spawnPos, Quaternion.identity);
@@ -164,43 +139,20 @@ public class CreatureControl : MonoBehaviour
         return spawnPos;
     }
 
-    
     public void ManuallySpawnCreature(string room) {
-        createCreature(chaserPrefab, room, "Chaser");
-    }
-
-    public void ManuallySpawnEnder(string room) {
-        createCreature(endCreaturePrefab, room, "Ender");
+        createCreature(chaserPrefab, "Chaser");
     }
 
     private void doCreatureCheck() {
-        //pick a random room
-        string room = DivergenceControl.Instance.Rooms.ElementAt(UnityEngine.Random.Range(0, DivergenceControl.Instance.Rooms.Count)).Key;
-        //make sure room exists in the list of rooms
-        if(!CreaturesPerRoom.TryGetValue(room, out int v)) {
-            CreaturesPerRoom.Add(room, 0);
-        } 
-
-        //check if the player is in that room
-        if(PlayerUI.Instance.GetPlayerRoom() == room) {
-
-        }
-
         //lose condition - all rooms have max anomalies
         ShouldStartCollapse();
 
-        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences) {
-            int spawnChance = UnityEngine.Random.Range(0,100);
-            if(spawnChance < zombieSpawnChance && ActivateZombie) {
-                createCreature(zombiePrefab, room);
-                return;
-            }
-        }
         if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences/2) {
             int spawnChance = UnityEngine.Random.Range(0,100);
-            int randomIndex = UnityEngine.Random.Range(0, specialCreatures.Count);
-            if(spawnChance < specialSpawnChance) {
-                createCreature(specialCreatures[randomIndex], room, specialCreatures[randomIndex].name);
+            int randomIndex = UnityEngine.Random.Range(0, creatures.Count);
+
+            if(spawnChance < specialSpawnChance || PlayerPrefs.GetInt("CreatureOverrun",0)==1) {
+                createCreature(creatures[randomIndex],  creatures[randomIndex].name);
             }
         }
     }
@@ -214,9 +166,9 @@ public class CreatureControl : MonoBehaviour
             return;
         }
 
-
-        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.DivergencesPerRoom*DivergenceControl.Instance.Rooms.Count) {
-            if(UnityEngine.Random.Range(0,100) > 95) {
+        //if all rooms have a creature
+        if(CreaturesPerRoom.Values.All(v => v==1)) {
+            if(UnityEngine.Random.Range(0,100) > 97) {
                 return;
             }
             StartCoroutine(PunctureCollapse.Instance.Collapse());
@@ -237,7 +189,7 @@ public class CreatureControl : MonoBehaviour
         int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t3 && Time.time - div.divTime <= t4);
         int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t4 && Time.time - div.divTime <= t5);
         int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t5);
-        float spawnChance = (0.2f*x) + (0.2f*y) + (0.5f*z) + (1f*w) + (3f*v);
+        float spawnChance = (0.25f*x) + (0.3f*y) + (0.5f*z) + (1f*w) + (2.5f*v);
 
         //chance to start collapse within 80% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {
@@ -281,18 +233,26 @@ public class CreatureControl : MonoBehaviour
         Instance = this;
 
         if((SceneManager.GetActiveScene().name == "Cabin"  || SceneManager.GetActiveScene().name == "Apartment") && ActivateLurker) {
-            specialCreatures.Add(lurkerPrefab);
+            creatures.Add(lurkerPrefab);
         }
         if(SceneManager.GetActiveScene().name == "Cabin" && ActivateHider) {
-            specialCreatures.Add(hiderPrefab);
+            creatures.Add(hiderPrefab);
         }
+
+        creatures.Add(zombiePrefab);
 
         CreatureSpawnpoints = GameObject.FindGameObjectsWithTag("CreatureSpawnPoint").ToList();
 
         if(ActivateChaser) {
-            specialCreatures.Add(chaserPrefab);
+            creatures.Add(chaserPrefab);
         }
         setCreatureSettings();
+
+        //create rooms
+        List<GameObject> rooms = GameObject.FindGameObjectsWithTag("Room").ToList<GameObject>();
+        foreach(GameObject room in rooms) {
+            CreaturesPerRoom.Add(room.name, 0);
+        }
     }
 
     private void setCreatureSettings() {

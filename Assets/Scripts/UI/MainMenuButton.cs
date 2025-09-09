@@ -24,13 +24,26 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     void Start() {
         this.GetComponent<Button>().onClick.AddListener(OnClick);
-
         //set weight of text in button to 500
+    }
+
+    void OnEnable() {
+        ClearHighlight();
     }
 
     private void OnClick() {
         //remove highlight when clicked
         //this is because the buttons become unactive when clicked, so the onpointerexit event is not called
+        //ClearHighlight();
+    }
+
+    void Update() {
+            if (this == null || !gameObject.activeInHierarchy) {
+                ClearHighlight();
+            }
+    }
+
+    private void ClearHighlight() {
         this.GetComponent<Image>().color = new Color(155, 155, 155, 0);
     }
 }

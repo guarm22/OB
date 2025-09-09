@@ -429,22 +429,47 @@ Known Issues:
 
 
 
-v0.7.3 (Started 8/1/2025):
+v0.7.3 (Started 8/1/2025, Finished 8/3/2025):
 
 Changes:
 -The flashlight is now more powerful, but covers a smaller section of the screen. 
 -The flashlight will no longer drain power, but cause it to generate slower. Current causes power to generate at 95% speed.
 -The Hider is now just a floating head instead of a whole body.
+-Updated Graveyard map.
 
 Additions:
 -Added a physical flashlight. Only appears when flashlight is turned on.
 -Added some additional ambient sounds to Cabin.
 -Added more divergences to Cabin.
+-Added a modifier system. This can be used to add certain effects onto a level that make it harder in exchange for more score.
+-Added a scoring system. Score is based on divergences reported, creatures reported, and the length of time divergences were active in the level.
 
 
 Bug Fixes:
 -The Zombie now correctly teleports the player upon contact
 -The flashlight no longer drains energy while the game is paused.
+
+
+v0.8.0 (Started 8/4/2025) - The Replayability Update:
+
+Changes:
+-Changed the logic of choosing the room a creature will spawn in. The spawn will no longer fail if a room with a creature in it is chosen.
+-Creatures now refund 3 less energy when reported.
+
+Additions:
+-Added the Creature Overrun modifier. This will cause the creature spawn chance to be 100%.
+
+Bugfixes:
+-Fixed an issue where divergences around for longer increased score instead of decreased.
+-Fixed an issue where ambience noises were too loud
+
+Planned Additions for v0.8.0:
+-Level start sequence (something when the player first loads into the level. like SURVIVE or a weird sound)
+-create a mechanism where a player can complete a challenge of some sort during the level for a reward (reward: knowing which room has a divergence)
+-Speed modifier
+-No divergence alert modifier
+-Darkness with infinite flashlight modifier
+-Random teleport modifier
 
 
 Future Plans:

@@ -14,7 +14,6 @@ public class DifficultySelect : MonoBehaviour {
     private String difficulty;
 
     public Image underline;
-    public GameObject outline;
 
     private void SetDifficulty(String diff) {
         difficulty = diff;

@@ -355,6 +355,23 @@ public class DivergenceControl : MonoBehaviour {
         StartCoroutine(PlayerSounds.Instance.PendingReport());
     }
 
+    public float RemainingDivergenceScore() {
+        //this code determines if the endgame collapse should start early or not
+        //based on if there are any divergences that have been active for a long time
+        int t1 = 75;
+        int t2 = 150;
+        int t3 = 200;
+        int t4 = 240;
+        int t5 = 360;
+        int x = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t1 && Time.time - div.divTime <= t2);
+        int y = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t2 && Time.time - div.divTime <= t3);
+        int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t3 && Time.time - div.divTime <= t4);
+        int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t4 && Time.time - div.divTime <= t5);
+        int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t5);
+
+        return (x * 0.2f) + (y*0.4f) + (z*0.8f) + (w*1) + (v*3);
+    }
+
     public void CheckPendingReport() {
         PendingReport = false;
         int correctCount = DivergencesReportedCorrectly.Count + 

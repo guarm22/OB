@@ -103,8 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  energyCost: 7
+  energyCost: 10
   customDivergence: {fileID: 0}
+  difficulty: All
 --- !u!195 &7300923849410544344
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -153,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   sightRange: 15
+  agent: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -167,5 +169,10 @@ MonoBehaviour:
   walkRange: 10
   closeSound: {fileID: 8300000, guid: 2b268240d4c620947ae76619dec727c1, type: 3}
   farSound: {fileID: 8300000, guid: 3df8fd0a952e05640bf1b68ca27cf231, type: 3}
+  soundTimerStart: 13.8
   soundTimerMax: 14
   creatureSpeed: 6
+  closeSoundRange: 10
+  isPlayerSeen: 0
+  HomeRoom: 
+  a: {fileID: 0}

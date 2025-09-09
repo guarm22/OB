@@ -8,15 +8,15 @@ public class CabinAmbience : MonoBehaviour {
 
     private List<AudioClip> playedClips = new List<AudioClip>();
 
-    public float soundTimer = 60f;
+    public float soundTimer = 90f;
 
-    private float minSoundRandomness = 60f;
-    private float maxSoundRandomnesss = 90f;
+    private float minSoundRandomness = 120f;
+    private float maxSoundRandomnesss = 180f;
 
     private bool paused = false;
 
     void Awake() {
-        source.volume = PlayerPrefs.GetInt("AmbienceVolume", 50)/100f;;
+        source.volume = (PlayerPrefs.GetInt("AmbienceVolume", 50)/100f) - .2f;
     }
 
     private void PlayRandomClip() {

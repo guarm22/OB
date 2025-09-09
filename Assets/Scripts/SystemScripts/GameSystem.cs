@@ -155,12 +155,10 @@ public class GameSystem : MonoBehaviour {
     public IEnumerator EndGame(string reason="") {
         GameOver = true;
         endReason = reason;
-        if(reason.Equals("zombie") || reason.Equals("yippie")) {
-            yield return StartCoroutine(CreatureControl.Instance.ZombieJumpscare());
-        }
         CreatureControl.Instance.IsJumpscareFinished=true;
         AchievementManager.Instance.CheckLevelFinishAchievements(SceneManager.GetActiveScene().name, Difficulty, reason);
         PlayerDataManager.Instance.EndGameStats(startTime-gameTime);
+        yield return null;
     }
 
     void Update() {

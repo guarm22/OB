@@ -103,8 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  energyCost: 7
+  energyCost: 10
   customDivergence: {fileID: 0}
+  difficulty: All
 --- !u!195 &7300923849410544344
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -173,5 +174,7 @@ MonoBehaviour:
   creatureSpeed: 15
   closeSoundRange: 10
   isPlayerSeen: 0
+  HomeRoom: 
+  a: {fileID: 0}
   yellSound: {fileID: 8300000, guid: c6cd830ab236d48489cec3c3a38c44e0, type: 3}
   disorientPrefab: {fileID: 266837347729469995, guid: 1e0d301a30778dc4ab1bded467a2fb51, type: 3}
