@@ -32,7 +32,7 @@ public class ReportUI : MonoBehaviour {
     public string SelectedRoom;
     public static ReportUI Instance;
 
-    public List<string> Statuses = new List<string> {"Good", "Warning", "Danger"};
+    public List<string> Statuses = new List<string> {"Stable", "Unstable", "Danger"};
     public List<Color> StatusColors = new List<Color> {Color.green, Color.yellow, Color.red};
     public TMP_Text StatusText;
 
@@ -111,6 +111,12 @@ public class ReportUI : MonoBehaviour {
     }
 
     private void UpdateStatus() {
+        if(GameSystem.Instance.shouldPlaySound == false) {
+            StatusText.text = "Unknown";
+            StatusText.color = Color.grey;
+            return;
+        }
+
         int divergences = DivergenceControl.Instance.DivergenceList.Count;
         int maxDivergences = DivergenceControl.Instance.Rooms.Count;
         float divergenceRatio = (float) divergences / maxDivergences;

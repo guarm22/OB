@@ -60,6 +60,10 @@ public class Flashlight : MonoBehaviour
         beam.spotAngle = outerAngle;
 
         PhysicalFlashlight.transform.localPosition = offFlashlingPos;
+
+        if(PlayerPrefs.GetInt("Darkness",0) == 1) {
+            totalEnergyDrainPerSecond = 0.00001f;
+        }
     }
 
     // Update is called once per frame

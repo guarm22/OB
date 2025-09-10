@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using DG.Tweening;
+using System;
 
 public enum ANOMALY_TYPE {
     NONE,
@@ -17,12 +20,18 @@ public class DynamicObject {
     public string Name {get; set;}
     public GameObject Obj {get; set;}
     public float divTime;
+
+    private Vector3 originalPos;
+    private Vector3 originalScale;
     public DynamicObject(DynamicData data, string room, string name, GameObject obj) {
         this.data = data;
         Name = name;
         Room = room;
         Obj = obj;
         divTime = -1f;
+
+        originalPos = obj.gameObject.transform.position;
+        originalScale = obj.gameObject.transform.localScale;
     }
 
     public bool DoAnomalyAction(bool enable) {
@@ -68,12 +77,11 @@ public class DynamicObject {
         return true;
     }
 
-//Makes an object disappear or reappear based on the enable argument
+    //Makes an object disappear or reappear based on the enable argument
     private bool ObjectDisappearance(bool enable) {
         float moveAmt = enable ? -100f : 100f;
         Vector3 vec = new Vector3(this.Obj.transform.position.x, this.Obj.transform.position.y+moveAmt, this.Obj.transform.position.z);
         this.Obj.transform.position = vec;
-
         return true;
     }
 

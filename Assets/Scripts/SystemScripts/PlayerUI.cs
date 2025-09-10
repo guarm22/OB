@@ -133,7 +133,9 @@ public class PlayerUI : MonoBehaviour
         }
 
         //turn off any currently playing warnings
-        Warning.Instance.TurnOffAlert();
+        if(Warning.Instance != null) {
+            Warning.Instance.TurnOffAlert();
+        }
         defaultBottomRight.SetActive(false);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;

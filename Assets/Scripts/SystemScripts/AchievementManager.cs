@@ -29,6 +29,7 @@ public class AchievementManager : MonoBehaviour
             new Achievement("Beat Hard", "Complete a level on hard.", false, 1, "ACH_BEATHARD"),
             new Achievement("Eyes Peeled", "Beat a level on normal or harder without letting a divergence be active for more than 40 seconds.", false, 1, "ACH_EYESPEELED"),
             new Achievement("Collector", "Collect 5 relics.", false, 5, "ACH_COLLECTOR"),
+            new Achievement("Extra Hard Mode", "Beat a level on hard with the No Warnings modifier enabled.", false, 1, "ACH_EXTRAHARDMODE")
         };
     
     void Start() {
@@ -76,6 +77,15 @@ public class AchievementManager : MonoBehaviour
                     
                 }
                 else if(level=="Apartment" && a.Progress == 0) {
+                    UnlockAchievement(a.Name);
+                }
+            }
+
+            if(a.Name == "Extra Hard Mode") {
+                if(a.Unlocked) {
+
+                }
+                else if(diff == "Hard" && PlayerPrefs.GetInt("No Warnings",0)==1) {
                     UnlockAchievement(a.Name);
                 }
             }

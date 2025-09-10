@@ -1,5 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -48,6 +51,8 @@ public class SC_FPSController : MonoBehaviour
 
     public bool isRunning = false;
 
+    private List<GameObject> Rooms = new List<GameObject>();
+
     void Start() {
         characterController = GetComponent<CharacterController>();
         Instance = this;
@@ -62,13 +67,56 @@ public class SC_FPSController : MonoBehaviour
         originalFOV = FOV;
         playerCamera.fieldOfView = FOV;
         mouseAccel = PlayerPrefs.GetInt("MouseAccel", 0) == 1 ? true : false;
+
+        if(PlayerPrefs.GetInt("Speed Boost", 0) == 1) {
+            originalRunSpeed *= 1.5f;
+            originalCrouchSpeed *= 1.6f;
+            originalWalkSpeed *= 1.3f;
+        }
+
+        runningSpeed = originalRunSpeed;
+        walkingSpeed = originalWalkSpeed;
+        crouchSpeed = originalCrouchSpeed;
+
+        if(PlayerPrefs.GetInt("Teleport", 0) == 1) {
+            Rooms = DivergenceControl.Instance.RoomObjects;
+            foreach(GameObject r in Rooms) {
+            }
+            StartCoroutine(RandomTeleporting());
+        }
+    }
+
+    private IEnumerator RandomTeleporting() {
+        float tptimer = 0f;
+        float maxWait = 10f;
+        float minWait = 5f;
+
+        float currentWait = UnityEngine.Random.Range(minWait, maxWait);
+        while(true) {
+            if(tptimer > currentWait) {
+                teleported = true;
+                TeleportRoom(Rooms[UnityEngine.Random.Range(0, Rooms.Count)]);
+                tptimer = 0f;
+            }
+            else {
+                tptimer += Time.deltaTime;
+                yield return null;
+            }
+
+            if(GameSystem.Instance.GameOver == true) {
+                break;
+            }
+        }
+        yield return null;
     }
 
     private void PlayerMove() {
         if(teleported) {
             teleported = false;
+            characterController.enabled = true;
             return;
         }
+
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -135,6 +183,7 @@ public class SC_FPSController : MonoBehaviour
 
     private IEnumerator Crouch(bool enable) {
         float duration = 0f;
+        //uncrouch
         if(!enable) {
             isCrouchAnimation = true;
             runningSpeed = originalRunSpeed;
@@ -149,10 +198,11 @@ public class SC_FPSController : MonoBehaviour
             isCrouchAnimation = false;
             isCrouching = false;
         }
+        //crouch
         else {
             isCrouchAnimation = true;
-            runningSpeed = crouchSpeed;
-            walkingSpeed = crouchSpeed;
+            runningSpeed = originalCrouchSpeed;
+            walkingSpeed = originalCrouchSpeed;
             while(duration < crouchAnimationTime) {
                 duration += Time.deltaTime;
                 characterController.height = Mathf.Lerp(2, 1, duration/crouchAnimationTime);
@@ -179,7 +229,13 @@ public class SC_FPSController : MonoBehaviour
 
     public void TeleportRoom(GameObject room) {
         teleported = true;
-        transform.position = new Vector3(room.transform.position.x, room.transform.position.y + 1, room.transform.position.z);
+        Debug.Log("Teleporting to: " + room.name);
+        Vector3 tpLoc = GameObject.FindGameObjectsWithTag("Teleport").Where(x => x.name.Contains(room.name)).ElementAt(0).transform.position;
+        if(tpLoc == null) {
+            tpLoc = new Vector3(room.transform.position.x, room.transform.position.y + 1, room.transform.position.z);
+        }
+        transform.position = tpLoc;
+        characterController.enabled = false;
     }
 
     public void ChangeFOV(float fov) {

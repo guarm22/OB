@@ -40,6 +40,10 @@ public class Warning : MonoBehaviour {
 
         warningText = GetComponent<TMP_Text>();
         audioSource = GetComponent<AudioSource>();
+        if(GameSystem.Instance.shouldPlaySound == false) {
+            warningText.text = "";
+            Destroy(this);
+        }
     }
 
     public void TurnOffAlert() {

@@ -455,22 +455,24 @@ v0.8.0 (Started 8/4/2025) - The Replayability Update:
 Changes:
 -Changed the logic of choosing the room a creature will spawn in. The spawn will no longer fail if a room with a creature in it is chosen.
 -Creatures now refund 3 less energy when reported.
+-Updated the modifier menu
+-Removed the function where lights would dim if the level was maxed out on divergences.
 
 Additions:
 -Added the Creature Overrun modifier. This will cause the creature spawn chance to be 100%.
+-Added the Speed Boost modifier
+-Added a short intro sequence when starting a level
+-Added the No Warnings modifier
+-Added the Darkness modifier
+-Added the Random Telport modifier
 
 Bugfixes:
 -Fixed an issue where divergences around for longer increased score instead of decreased.
 -Fixed an issue where ambience noises were too loud
+-Fixed teleporting not working 100% of the time
 
 Planned Additions for v0.8.0:
--Level start sequence (something when the player first loads into the level. like SURVIVE or a weird sound)
 -create a mechanism where a player can complete a challenge of some sort during the level for a reward (reward: knowing which room has a divergence)
--Speed modifier
--No divergence alert modifier
--Darkness with infinite flashlight modifier
--Random teleport modifier
-
 
 Future Plans:
 

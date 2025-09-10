@@ -1874,6 +1874,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 534370179}
+  - {fileID: 1455748068}
   m_Father: {fileID: 1136641244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &190857297
@@ -5272,7 +5273,7 @@ GameObject:
   - component: {fileID: 441433082}
   - component: {fileID: 441433083}
   m_Layer: 0
-  m_Name: AREA_MARSH
+  m_Name: Marsh
   m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5298,6 +5299,7 @@ Transform:
   - {fileID: 215277079}
   - {fileID: 720728236}
   - {fileID: 1029346795}
+  - {fileID: 557392135}
   m_Father: {fileID: 1136641244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &441433083
@@ -6407,6 +6409,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5393543069186164675, guid: 45b31ea46b15c6043b5bf5b4e5f5231c, type: 3}
   m_PrefabInstance: {fileID: 1756337936}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &557392134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 557392135}
+  m_Layer: 0
+  m_Name: MarshTP
+  m_TagString: Teleport
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &557392135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557392134}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.28, y: 2.14, z: -20.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 441433082}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &565559587
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6913,6 +6946,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c932a78336cc8141b20d546e8aac817, type: 3}
+--- !u!1 &607060860
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 607060861}
+  m_Layer: 0
+  m_Name: Main PathTP
+  m_TagString: Teleport
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &607060861
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607060860}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.33, y: 0.92999995, z: 4.31}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2043436633}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &607355324 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5393543069186164675, guid: 45b31ea46b15c6043b5bf5b4e5f5231c, type: 3}
@@ -11949,6 +12013,7 @@ Transform:
   m_Children:
   - {fileID: 2068137586}
   - {fileID: 701291939}
+  - {fileID: 1883024791}
   m_Father: {fileID: 1136641244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1185104536
@@ -12380,6 +12445,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b5279371d2cec94ebf3ecb57999a980, type: 3}
+--- !u!1 &1220323976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1220323977}
+  m_Layer: 0
+  m_Name: PondTP
+  m_TagString: Teleport
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1220323977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220323976}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 14.17, y: 0.92999995, z: 11.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1438415136}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1221318846 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5393543069186164675, guid: 45b31ea46b15c6043b5bf5b4e5f5231c, type: 3}
@@ -13751,7 +13847,7 @@ GameObject:
   - component: {fileID: 1369898471}
   - component: {fileID: 1369898472}
   m_Layer: 4
-  m_Name: AREA_GRAVES
+  m_Name: Graves
   m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13770,6 +13866,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2102754228}
   - {fileID: 1585542446}
   - {fileID: 939160710}
   - {fileID: 1991936424}
@@ -14774,6 +14871,7 @@ Transform:
   m_Children:
   - {fileID: 899372371}
   - {fileID: 2048312815}
+  - {fileID: 1220323977}
   m_Father: {fileID: 1136641244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1438415137
@@ -15194,6 +15292,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4216106455828911098, guid: 7b5279371d2cec94ebf3ecb57999a980, type: 3}
   m_PrefabInstance: {fileID: 1614380249}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1455748067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1455748068}
+  m_Layer: 0
+  m_Name: Side PathTP
+  m_TagString: Teleport
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1455748068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455748067}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.7, y: 2.04, z: 7.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 190857296}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1458972521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19506,6 +19635,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3732896897906684883, guid: 35c341cc1730dfb4d8c122fcbc09ea9b, type: 3}
   m_PrefabInstance: {fileID: 1078686493}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1883024790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1883024791}
+  m_Layer: 0
+  m_Name: EntranceTP
+  m_TagString: Teleport
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1883024791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883024790}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.28, y: 0.93, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1185104535}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1887294518 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2703903776504695495, guid: 016072d9749b8fd48b622de49f2b22f3, type: 3}
@@ -21643,6 +21803,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1008042933}
+  - {fileID: 607060861}
   m_Father: {fileID: 1136641244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2043436634
@@ -22832,6 +22993,37 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!1 &2102754227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2102754228}
+  m_Layer: 0
+  m_Name: GravesTP
+  m_TagString: Teleport
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2102754228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102754227}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.449997, y: 7.65, z: -0.85}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1369898470}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2103598544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4697750072315605276, guid: 7c932a78336cc8141b20d546e8aac817, type: 3}

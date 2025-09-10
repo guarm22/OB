@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class DivergenceControl : MonoBehaviour {
 
@@ -204,7 +205,7 @@ public class DivergenceControl : MonoBehaviour {
         if(CanAnyDivergencesActivate() == false) {
             //Random chance to make the level darker
             if(UnityEngine.Random.Range(0, 100) < 50) {
-                LightControl.Instance.KillLights(0.40f);
+                //LightControl.Instance.KillLights(0.40f);
             } 
             return;
         }

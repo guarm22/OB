@@ -49,6 +49,8 @@ public class GameSystem : MonoBehaviour {
 
     private AudioSource audioSource;
 
+    public bool shouldPlaySound = true;
+
   void Awake() {
     if (Instance != null) {
       Debug.LogError("There is more than one instance!");
@@ -64,6 +66,7 @@ public class GameSystem : MonoBehaviour {
     gameObject.GetComponent<AudioSource>().clip = DisappearSound;
     //change volume
     audioSource.volume = PlayerPrefs.GetInt("AlertVolume")/100f;
+    shouldPlaySound = PlayerPrefs.GetInt("No Warnings", 0) == 1 ? false : true;
 
   }
 
@@ -109,6 +112,9 @@ public class GameSystem : MonoBehaviour {
   }
 
     public void PlayDivergenceSound() {
+        if(shouldPlaySound==false) {
+            return;
+        }
         GetComponent<AudioSource>().Play();
     }
 

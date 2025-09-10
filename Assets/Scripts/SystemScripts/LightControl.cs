@@ -13,6 +13,13 @@ public class LightControl : MonoBehaviour
     void Start() {
         Instance = this;
         lights = new List<Light>(GameObject.FindObjectsOfType<Light>());
+
+        if(PlayerPrefs.GetInt("Darkness",0) == 1) {
+            foreach(Light l in lights) {
+                l.intensity = l.intensity * 0.12f;
+                l.range = l.range * 0.65f;
+            }
+        }
     }
     public IEnumerator FlickerLight(Light light, float minIntensity, float maxIntensity, float duration) {
         float elapsedTime = 0f;

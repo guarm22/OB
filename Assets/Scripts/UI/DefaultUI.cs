@@ -1,17 +1,61 @@
 using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening.Core.Easing;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using DG.Tweening;
+using System;
 
-public class DefaultUI : MonoBehaviour
-{
+
+public class DefaultUI : MonoBehaviour {
     public TMP_Text label;
     public TMP_Text flashlight;
-    // Start is called before the first frame update
+    
+    public GameObject timer;
+    public GameObject crosshair;
+
+    public AudioClip writeBoop;
+
+    public TMP_Text startingText;
+
+    private AudioSource audioSource;
+
     void Start() {
-        
+        audioSource = this.gameObject.AddComponent<AudioSource>();
+        StartCoroutine(TimerAnimation());
+    }
+
+    private IEnumerator TimerAnimation() {
+        Debug.Log("starting timer animation");
+        Vector3 originalPos = timer.transform.position;
+        Vector3 originalScale = timer.transform.localScale;
+
+        //increase timer size
+        timer.transform.localScale = new Vector3(originalScale.x * 2.5f, originalScale.y * 2.5f, originalScale.z * 2.5f);
+        //move timer to the center of the screen
+        timer.transform.position = crosshair.transform.position + new Vector3(0, 50, 0);
+
+        String text = startingText.text;
+        startingText.text = "";
+        //have text appear in typewriter animation
+        yield return new WaitForSeconds(1.2f);
+        int element = 0;
+        while(startingText.text.Equals(text) == false) {
+            startingText.text += text[element];
+            if(char.IsLetterOrDigit(text[element])) {
+                audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.05f);
+                audioSource.PlayOneShot(writeBoop);
+            }
+            element += 1;
+            yield return new WaitForSeconds(0.15f);
+        }
+
+        //starting animations completed, now linger in center for a few seconds
+        yield return new WaitForSeconds(3.5f);
+        //slowly move timer back to normal position and normal size
+        timer.transform.DOMove(originalPos, 3f);
+        timer.transform.DOScale(originalScale, 2.5f);
+
+        //remove text
+        startingText.transform.DOScale(Vector3.zero, 0.5f);
     }
 
     void SetText() {

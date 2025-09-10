@@ -151,7 +151,7 @@ public class CreatureControl : MonoBehaviour
             int spawnChance = UnityEngine.Random.Range(0,100);
             int randomIndex = UnityEngine.Random.Range(0, creatures.Count);
 
-            if(spawnChance < specialSpawnChance || PlayerPrefs.GetInt("CreatureOverrun",0)==1) {
+            if(spawnChance < specialSpawnChance || PlayerPrefs.GetInt("Creature Overrun",0)==1) {
                 createCreature(creatures[randomIndex],  creatures[randomIndex].name);
             }
         }
