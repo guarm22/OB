@@ -25,6 +25,7 @@ public class PlayerUI : MonoBehaviour
     public static bool paused = false;
     public static PlayerUI Instance;
     public GameObject prompt;
+    public bool havePausedAtleastOnce = false;
 
     public bool reportScramble = false;
 
@@ -42,12 +43,9 @@ public class PlayerUI : MonoBehaviour
                 return;
             }
         }
-        if(CreatureControl.Instance.IsJumpscareFinished) {
-            EndingGame();
-            return;
-        }
         //now waiting for jumpscare to finish, if any
         if(GameSystem.Instance.GameOver) {
+            EndingGame();
             return;
         }
         EscapeMenu();
@@ -159,6 +157,7 @@ public class PlayerUI : MonoBehaviour
 
     private void openEscape() {
         turnOffSelection();
+        havePausedAtleastOnce = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         escapeMenuUI.SetActive(true);
@@ -172,6 +171,7 @@ public class PlayerUI : MonoBehaviour
         Cursor.visible = false;
         escapeMenuUI.SetActive(false);
         defaultUI.SetActive(true);
+
     }
 
     public void PauseControl(String src="") {
@@ -215,6 +215,9 @@ public class PlayerUI : MonoBehaviour
     }
 
     private void EndingGame() {
+        if(GameSystem.Instance.endReason == "quit") {
+            return;
+        }
         EndGameUI.SetActive(true);
     }
     //Currently used for figuring out which room the player is in and displaying it on the top right

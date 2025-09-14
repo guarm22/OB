@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,9 @@ public class EscapeMenu : MonoBehaviour
     }
 
     public void QuitGame() {
+        String Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
         PlayerUI.Instance.PauseControl("quit");
+        GameSystem.Instance.EndGame("quit");
         PlayerDataManager.Instance.SavePlayerData();
         SceneManager.LoadScene("MainMenuScene");
     }

@@ -29,7 +29,8 @@ public class AchievementManager : MonoBehaviour
             new Achievement("Beat Hard", "Complete a level on hard.", false, 1, "ACH_BEATHARD"),
             new Achievement("Eyes Peeled", "Beat a level on normal or harder without letting a divergence be active for more than 40 seconds.", false, 1, "ACH_EYESPEELED"),
             new Achievement("Collector", "Collect 5 relics.", false, 5, "ACH_COLLECTOR"),
-            new Achievement("Extra Hard Mode", "Beat a level on hard with the No Warnings modifier enabled.", false, 1, "ACH_EXTRAHARDMODE")
+            new Achievement("Extra Hard Mode", "Beat a level on hard with the No Warnings modifier enabled.", false, 1, "ACH_EXTRAHARDMODE"),
+            new Achievement("Modified", "Beat a level with any modifier enabled on normal or higher.", false, 1, "ACH_MODIFIED"),
         };
     
     void Start() {
@@ -68,67 +69,52 @@ public class AchievementManager : MonoBehaviour
         }
 
         foreach(Achievement a in achievements) {
-            if(a.Unlocked || DateTime.Compare(DateTime.Parse(a.dateEarned), DateTime.Now) < 0) {
-                continue;
-            }
-
             if(a.Name == "Back Home") {
-                if(a.Unlocked) {
-                    
-                }
-                else if(level=="Apartment" && a.Progress == 0) {
+                if(level=="Apartment" && a.Progress == 0) {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "Extra Hard Mode") {
-                if(a.Unlocked) {
-
+                if(diff == "Hard" && PlayerPrefs.GetInt("No Warnings",0)==1) {
+                    UnlockAchievement(a.Name);
                 }
-                else if(diff == "Hard" && PlayerPrefs.GetInt("No Warnings",0)==1) {
+            }
+
+            if(a.Name == "Modified") {
+                bool anyModifiers = PlayerPrefs.GetInt("Speed Boost",0)==1 || PlayerPrefs.GetInt("Creature Overrun",0)==1 ||
+                PlayerPrefs.GetInt("No Warnings",0)==1 || PlayerPrefs.GetInt("Darkness",0)==1 || PlayerPrefs.GetInt("Teleport",0)==1;
+                if((diff=="Hard" || diff=="Normal") && anyModifiers) {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "A Night in the Woods") {
-                if(a.Unlocked) {
-                    
-                }
-                else if(level=="Cabin" && a.Progress == 0) {
+                if(level=="Cabin" && a.Progress == 0) {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "Haunting Disappearences") {
-                if(a.Unlocked) {
-                    
-                }
-                else if(level=="Graveyard" && a.Progress == 0) {
+                if(level=="Graveyard" && a.Progress == 0) {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "First Steps") {
-                if(a.Unlocked) {
-                    
-                }
-                else if(level=="Tutorial" && a.Progress == 0) {
+                if(level=="Tutorial" && a.Progress == 0) {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "Beat " + diff) {
-                if(a.Unlocked) {
-                    
-                }
-                else if(a.Name == "Beat " + diff && a.Progress == 0) {
+                if(a.Name == "Beat " + diff && a.Progress == 0) {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "Eyes Peeled") {
-                if(a.Unlocked || GameSystem.Instance.Difficulty == "Easy" || GameSystem.Instance.Difficulty == "Custom" 
-                || level=="Tutorial") {
+                if(GameSystem.Instance.Difficulty == "Easy" || GameSystem.Instance.Difficulty == "Custom" || level=="Tutorial") {
                     continue;
                 }
                 bool failed = false;
@@ -158,9 +144,6 @@ public class AchievementManager : MonoBehaviour
     public void CheckAllAchievementProgress() {
         PlayerDataManager data = PlayerDataManager.Instance;
         foreach(Achievement a in achievements) {
-            if(a.Unlocked) {
-                continue;
-            }
             switch(a.Name) {
                 case "Divergence Hunter":
                     if(int.Parse(data.GetDataValue("ReportsMade")) >= 1) {
@@ -223,6 +206,11 @@ public class AchievementManager : MonoBehaviour
     private void UnlockAchievement(string name) {
         foreach(Achievement a in achievements) {
             if(a.Name == name) {
+                if(a.Unlocked) {
+                    SteamHelper.UnlockAchievement(a.steamID);
+                    return;
+                }
+ 
                 this.unlocked = this.unlocked + 1;
                 a.dateEarned = DateTime.Now.ToString();
                 a.Unlocked = true;

@@ -66,7 +66,8 @@ public class ExpandingSphere : CustomDivergence {
             }
             //if the distance between the player and the expanding sphere is less than the radius of the sphere, end the game
             if (Vector3.Distance(player.transform.position, obj.transform.position) < obj.transform.localScale.x/2) {
-                StartCoroutine(GameSystem.Instance.EndGame("puncture"));
+                GameSystem.Instance.EndGame("puncture");
+                yield return null;
                 break;
             }            
 

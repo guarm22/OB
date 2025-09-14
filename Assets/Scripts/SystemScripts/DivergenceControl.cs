@@ -289,7 +289,7 @@ public class DivergenceControl : MonoBehaviour {
     /// Checks if all rooms have the maximum amount of anomalies
     /// </summary>
     /// <returns>true if all rooms have maximum amount of anomalies, false if at least one room has room for an anomaly</returns>
-    private bool areAllRoomsFull() {
+    public bool areAllRoomsFull() {
         foreach (int amt in Rooms.Values) {
             if(amt >= DivergencesPerRoom) {
                 continue;

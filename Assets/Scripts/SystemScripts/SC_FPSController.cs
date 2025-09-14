@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 
@@ -68,7 +69,7 @@ public class SC_FPSController : MonoBehaviour
         playerCamera.fieldOfView = FOV;
         mouseAccel = PlayerPrefs.GetInt("MouseAccel", 0) == 1 ? true : false;
 
-        if(PlayerPrefs.GetInt("Speed Boost", 0) == 1) {
+        if(PlayerPrefs.GetInt("Speed Boost", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
             originalRunSpeed *= 1.5f;
             originalCrouchSpeed *= 1.6f;
             originalWalkSpeed *= 1.3f;
@@ -78,18 +79,16 @@ public class SC_FPSController : MonoBehaviour
         walkingSpeed = originalWalkSpeed;
         crouchSpeed = originalCrouchSpeed;
 
-        if(PlayerPrefs.GetInt("Teleport", 0) == 1) {
-            Rooms = DivergenceControl.Instance.RoomObjects;
-            foreach(GameObject r in Rooms) {
-            }
+        if(PlayerPrefs.GetInt("Teleport", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
+            Rooms = GameObject.FindGameObjectsWithTag("Room").ToList();
             StartCoroutine(RandomTeleporting());
         }
     }
 
     private IEnumerator RandomTeleporting() {
         float tptimer = 0f;
-        float maxWait = 10f;
-        float minWait = 5f;
+        float maxWait = 32f;
+        float minWait = 24f;
 
         float currentWait = UnityEngine.Random.Range(minWait, maxWait);
         while(true) {
@@ -229,7 +228,6 @@ public class SC_FPSController : MonoBehaviour
 
     public void TeleportRoom(GameObject room) {
         teleported = true;
-        Debug.Log("Teleporting to: " + room.name);
         Vector3 tpLoc = GameObject.FindGameObjectsWithTag("Teleport").Where(x => x.name.Contains(room.name)).ElementAt(0).transform.position;
         if(tpLoc == null) {
             tpLoc = new Vector3(room.transform.position.x, room.transform.position.y + 1, room.transform.position.z);

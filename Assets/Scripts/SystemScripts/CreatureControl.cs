@@ -35,6 +35,8 @@ public class CreatureControl : MonoBehaviour
     public bool ActivateHider = true;
     public bool ActivateChaser = true;
 
+    private float CollapseChance = 50f;
+
     private List<string> GetRoomsWithNoCreatures() {
         return CreaturesPerRoom.Keys.Where(k => CreaturesPerRoom[k] == 0).ToList();
     }
@@ -151,7 +153,7 @@ public class CreatureControl : MonoBehaviour
             int spawnChance = UnityEngine.Random.Range(0,100);
             int randomIndex = UnityEngine.Random.Range(0, creatures.Count);
 
-            if(spawnChance < specialSpawnChance || PlayerPrefs.GetInt("Creature Overrun",0)==1) {
+            if(spawnChance < specialSpawnChance || (PlayerPrefs.GetInt("Creature Overrun",0)==1)&& SceneManager.GetActiveScene().name != "Tutorial" ) {
                 createCreature(creatures[randomIndex],  creatures[randomIndex].name);
             }
         }
@@ -166,12 +168,18 @@ public class CreatureControl : MonoBehaviour
             return;
         }
 
-        //if all rooms have a creature
-        if(CreaturesPerRoom.Values.All(v => v==1)) {
-            if(UnityEngine.Random.Range(0,100) > 97) {
+        //if all rooms have a divergence
+        if(DivergenceControl.Instance.areAllRoomsFull()) {
+            if(UnityEngine.Random.Range(0,100) > CollapseChance) {
+                CollapseChance += 12;
                 return;
             }
             StartCoroutine(PunctureCollapse.Instance.Collapse());
+        }
+        else {
+            if(CollapseChance > 60) {
+                CollapseChance -= 8;
+            }
         }
 
         int divCount = DivergenceControl.Instance.DivergenceList.Count;
@@ -202,7 +210,7 @@ public class CreatureControl : MonoBehaviour
 
         if(divCount >= Mathf.Ceil(maxDivs*0.65f)) {
             int rnum = UnityEngine.Random.Range(0,100);
-            if(rnum < spawnChance/3) {
+            if(rnum < spawnChance/2) {
                 StartCoroutine(PunctureCollapse.Instance.Collapse());
                 return;
             }

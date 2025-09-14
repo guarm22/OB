@@ -26,7 +26,7 @@ public class CabinAmbience : MonoBehaviour {
 
         playedClips.Add(clip);
         clips.Remove(clip);
-        if(clips.Count == 0) {
+        if(clips.Count == 1) {
             clips.AddRange(playedClips);
             playedClips.Clear();
         }
