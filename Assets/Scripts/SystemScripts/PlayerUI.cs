@@ -19,6 +19,7 @@ public class PlayerUI : MonoBehaviour
     public GameObject EndGameUI;
     public GameObject debugUI;
     public GameObject defaultBottomRight;
+    public TMP_Text tabText;
     public string targetTag = "Room";
     public string tutTag = "Tutorial";
     public bool inMenu = false;
@@ -26,13 +27,21 @@ public class PlayerUI : MonoBehaviour
     public static PlayerUI Instance;
     public GameObject prompt;
     public bool havePausedAtleastOnce = false;
+    public String currentRoom;
 
     public bool reportScramble = false;
+
+    public bool isGlitching = false;
+
+    public AudioClip glitchSound;
+    private AudioSource audioSource;
+    private bool isReportTextGlitching = false;
 
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
+        audioSource = this.gameObject.AddComponent<AudioSource>();
         PopulateSelectorUI();
     }
 
@@ -53,10 +62,6 @@ public class PlayerUI : MonoBehaviour
             return;
         }
         SelectionMenu();
-    }
-
-    public string GetPlayerRoom() {
-        return roomText.GetComponent<TMP_Text>().text;
     }
 
     public void ChangePrompt(string text, bool activate) {
@@ -141,8 +146,42 @@ public class PlayerUI : MonoBehaviour
         SC_FPSController.Instance.canMove = false;
     }
 
+    private IEnumerator GlitchReportText() {
+        //for 0.5 seconds, change the tab text to random characters
+        float elapsedTime = 0f;
+        String originalText = tabText.text;
+        while(elapsedTime < 0.8f) {
+            elapsedTime += Time.deltaTime;
+            char[] chars = tabText.text.ToCharArray();
+            for(int i = 0; i < chars.Length; i++) {
+                if(UnityEngine.Random.Range(0, 5) == 0) {
+                    chars[i] = (char)UnityEngine.Random.Range(65, 91);
+                }
+            }
+            tabText.text = new string(chars);
+            yield return null;
+        }
+        tabText.text = originalText;
+        isReportTextGlitching = false;
+    }
+
     void SelectionMenu() {
+        if(isGlitching) {
+            if(inMenu) {
+                turnOffSelection();
+                PostProcessingControl.Instance.ActivateDepthOfField(false);
+            }
+            if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu"))) {
+                if(!isReportTextGlitching) {
+                    audioSource.PlayOneShot(glitchSound);
+                    isReportTextGlitching = true;
+                    StartCoroutine(GlitchReportText());
+                }
+            }
+            return;
+        }
         //if menu is open, check if tab is pressed to close, otherwise stop movement
+
         if(inMenu) {
             if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu")) || DivergenceControl.Instance.PendingReport) {
                 turnOffSelection();
@@ -153,6 +192,10 @@ public class PlayerUI : MonoBehaviour
             PostProcessingControl.Instance.ActivateDepthOfField(true, 50, 1);
             turnOnSelection();
         }
+    }
+
+    public String GetCurrentRoom() {
+        return currentRoom;
     }
 
     private void openEscape() {
@@ -228,6 +271,7 @@ public class PlayerUI : MonoBehaviour
             // Player is within a GameObject with the specified tag
             //Debug.Log("Player is within a GameObject with the tag: " + targetTag + " with object name: " + other.gameObject.name);
             roomText.GetComponent<TMP_Text>().text = other.gameObject.name;
+            currentRoom = other.gameObject.name;
         }
 
         if (other.tag.Equals(tutTag)) {

@@ -458,6 +458,12 @@ public class DivergenceControl : MonoBehaviour {
             return;
         }
 
+        if(GameSystem.InEditor()) {
+            if(Input.GetKeyDown(KeyCode.K)) {
+                ActivateRandomDivergence();
+            }
+        }
+
         CheckDivergenceSpawn();
         CheckReport();
     }

@@ -94,7 +94,7 @@ public class CreatureBase : MonoBehaviour {
         return false;
     }
 
-    protected bool canSeePlayer(float lookRange = 15f) {
+    protected bool canSeePlayer(float lookRange = 25f) {
         RaycastHit hit;
         Vector3 direction = player.transform.position - transform.position;
         if (Physics.Raycast(transform.position, direction, out hit, lookRange, playerLayer)) {

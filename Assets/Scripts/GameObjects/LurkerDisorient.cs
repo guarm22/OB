@@ -84,7 +84,6 @@ public class LurkerDisorient : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(0.25f);
-        Debug.Log("Destroying LurkerDisorient");
         Destroy(this.gameObject);
     }
 }

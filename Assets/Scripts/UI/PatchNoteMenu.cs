@@ -28,17 +28,25 @@ Changes:
 -Updated achievements menu
 -Updates relics menu
 -Removed aspect ratio as an option on the graphics menu
+-Changed some lighting on Cabin
 
 Additions:
 -Credits on main menu
+-Added a spot on the reporting UI that shows how much a report will cost
 -Added some additional stats
+-Two new divergence types, Extra Object and Glitch
+-New look for Cabin
 
 Bugfixes:
 -Modifiers should no longer work in the tutorial
 -The time in level stat should now correctly be tracked when a player uses the escape menu to exit the level
--Some stats will still be lost however if the player quits the application through other means (ALT+F4, task manager, crash, etc.)
+	-Some stats will still be lost however if the player quits the application through other means (ALT+F4, task manager, crash, etc.)
 -Fixed an issue on Cabin where Zombies wouldn't teleport the player upon contact
 -Fixed random teleporting modifier
+-Fixed steam achievements not unlocking (again)
+-Creatures should no longer spawn in a non intended room
+-Fixed an invisible Puncture orb on Cabin
+-Fixed some items not moving at all when a divergence activates
 
 
 v0.8.0.1:

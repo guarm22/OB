@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
@@ -47,12 +48,11 @@ public class SC_FPSController : MonoBehaviour
     private Vector3 prevMousePosition;
     private float accelerationFactor = 0.01f;
     private bool teleported = false;
-
     public int timesCrouched = 0;
-
     public bool isRunning = false;
-
     private List<GameObject> Rooms = new List<GameObject>();
+
+    public bool controlsGlitch = false;
 
     void Start() {
         characterController = GetComponent<CharacterController>();
@@ -163,7 +163,24 @@ public class SC_FPSController : MonoBehaviour
         prevMousePosition = Input.mousePosition;
     }
 
+    public void MoveCamera(Vector3 newRot) {
+        rotationX = newRot.x;
+        playerCamera.transform.DORotate(newRot, 0.2f);
+        transform.DORotate(new Vector3(0, newRot.y, 0), 0.2f);
+    }
+
+    public IEnumerator ForceCrouch(float duration) {
+        //crouch then uncrouch 2 seconds later
+        yield return StartCoroutine(Crouch(true));
+        yield return new WaitForSeconds(duration);
+        yield return StartCoroutine(Crouch(false));
+    }
+
     private void CrouchLogic() {
+        if(controlsGlitch) {
+            return;
+        }
+
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Crouch")) && !isCrouchAnimation) {
             timesCrouched++;
             StartCoroutine(Crouch(true));

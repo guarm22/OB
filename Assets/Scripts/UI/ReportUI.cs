@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -21,8 +22,9 @@ public class ReportUI : MonoBehaviour {
     public Color DisabledButtonColor;
 
     public AudioClip selectSound;
-    public AudioClip pendingSound;
     public AudioSource audioSource;
+
+    public TMP_Text energyCostText;
 
     [HideInInspector]
     public List<GameObject> rooms;
@@ -52,6 +54,7 @@ public class ReportUI : MonoBehaviour {
         findPlayerLoc();
         UpdateButton();
         UpdateStatus();
+        UpdateEnergyCost();
 
         if(!CurrentlyScrambling && ScrambledUI) {
             ScrambleUI(true);
@@ -70,7 +73,6 @@ public class ReportUI : MonoBehaviour {
     }
 
     public void TurnOn() {
-        Debug.Log(PlayerUI.Instance.reportScramble);
         if(PlayerUI.Instance.reportScramble) {
             ScrambleUI(true);
         }
@@ -94,21 +96,40 @@ public class ReportUI : MonoBehaviour {
         //repeat
         CurrentlyScrambling = true;
         while(ScrambledUI) {
-            yield return new WaitForSeconds(0.15f);
+
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.08f,0.18f));
             foreach(Toggle toggle in typeSelectionUI.GetComponentsInChildren<Toggle>()) {
-                if(Random.Range(0, 2) == 0) {
+                if(UnityEngine.Random.Range(0, 2) == 0) {
                     toggle.isOn = !toggle.isOn;
                     SelectType(toggle.gameObject);
                 }
             }
             foreach(GameObject room in rooms) {
-                if(Random.Range(0, 2) == 0) {
+                if(UnityEngine.Random.Range(0, 2) == 0) {
                     SelectRoom(room);
                 }
             }
         }
         CurrentlyScrambling = false;
     }
+
+    private void UpdateEnergyCost() {
+        if(SelectedTypes.Count*DivergenceControl.Instance.EnergyPerGuess > GameSystem.Instance.CurrentEnergy) {
+            energyCostText.color = Color.red;
+        }
+        else if(SelectedTypes.Count*DivergenceControl.Instance.EnergyPerGuess >= GameSystem.Instance.CurrentEnergy-6) {
+            energyCostText.color = Color.yellow;
+        }
+        else if(SelectedTypes.Count == 0) {
+            energyCostText.color = Color.grey;
+        }
+        else {
+            energyCostText.color = Color.green;
+        }
+        int totalCost = SelectedTypes.Count*DivergenceControl.Instance.EnergyPerGuess;
+        String creatureCost = SelectedTypes.Contains("Creature") ? "/"+(totalCost-15).ToString() : "";
+        energyCostText.text = "Energy Cost: " + (SelectedTypes.Count*DivergenceControl.Instance.EnergyPerGuess).ToString() + creatureCost + "%";
+    }   
 
     private void UpdateStatus() {
         if(GameSystem.Instance.shouldPlaySound == false) {
@@ -146,7 +167,7 @@ public class ReportUI : MonoBehaviour {
 
     public void findPlayerLoc() {
         foreach(GameObject room in rooms) {
-            if(PlayerUI.Instance.GetPlayerRoom() == room.name) {
+            if(PlayerUI.Instance.GetCurrentRoom() == room.name) {
                 playerLoc.transform.position = room.transform.position - new Vector3(0,Display.main.systemHeight*0.022f,0);
             }
         }
@@ -230,13 +251,13 @@ public class ReportUI : MonoBehaviour {
 
     public void CreateUI() {
         List<string> types = DynamicObject.GetAllAnomalyTypes();
-        float iterY = 0f;
+        float iterY = -100f;
         float iterX = 0f;
         //Creates each of the type selectors
         foreach(string type in types) {
             if(iterY >= 295f) {
                 iterX = 500f;
-                iterY = 0f;
+                iterY = -100f;
             }
 
             GameObject ui = Instantiate(togglePrefab, transform);
