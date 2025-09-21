@@ -13,6 +13,16 @@ Planned:
 -Make sure creatures work
 -Fix creature spawning. Sometimes creatures will have a spawn room, but actually spawn in a different room
 
+v0.8.2 (Started 9/21/2025):
+
+Changes:
+-Changed and added various objects on Cabin
+
+Additions:
+
+Bugfixes:
+-Fixed an issue on Cabin where entering the kitchen would not properly trigger a room change
+-The report UI will no longer stop being glitched during the puncture collapse
 
 
 
@@ -34,7 +44,7 @@ Additions:
 
 Bugfixes:
 -Modifiers should no longer work in the tutorial
--The "time in level" stat should now correctly be tracked when a player uses the escape menu to exit the level
+-The time in level stat should now correctly be tracked when a player uses the escape menu to exit the level
 	-Some stats will still be lost however if the player quits the application through other means (ALT+F4, task manager, crash, etc.)
 -Fixed an issue on Cabin where Zombies wouldn't teleport the player upon contact
 -Fixed random teleporting modifier
@@ -42,6 +52,7 @@ Bugfixes:
 -Creatures should no longer spawn in a non intended room
 -Fixed an invisible Puncture orb on Cabin
 -Fixed some items not moving at all when a divergence activates
+-Fixed an issue where objects would have Divergences from the wrong difficulty
 
 
 v0.8.0.1:

@@ -21,6 +21,8 @@ public class DebugMenu : MonoBehaviour
         debugTexts.Add("Creature Rate"); //3
         debugTexts.Add("Time Until Next Creature"); //4
         debugTexts.Add("Current Creatures"); //5
+        debugTexts.Add("Current Divergnces Active:"); //6
+        debugTexts.Add("Difficulty"); //7
 
         for(int i = 0; i < debugTexts.Count; i++) {
             TMP_Text text = Instantiate(chivoPrefab, spawnPoint.transform.position, Quaternion.identity);
@@ -33,15 +35,22 @@ public class DebugMenu : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        debugTextObjects[0].text = "Divergence Rate: " + DivergenceControl.Instance.DivergenceInterval;
+        //clip floats to 1 decimal place
+        debugTextObjects[0].text = "Divergence Rate: " + DivergenceControl.Instance.DivergenceInterval.ToString("F1") ;
         debugTextObjects[1].text = "Time Until Next Divergence: " + 
         (DivergenceControl.Instance.DivergenceInterval - 
-        (Time.time - DivergenceControl.Instance.lastDivergenceTime +DivergenceControl.Instance.currentRandomness));
+        (Time.time - DivergenceControl.Instance.lastDivergenceTime +DivergenceControl.Instance.currentRandomness)).ToString("F1");;
 
         debugTextObjects[2].text = "Current Divergences: " + DivergenceControl.Instance.DivergenceList.Count;
         debugTextObjects[3].text = "Creature Rate: " + CreatureControl.Instance.creatureSpawnRate;
-        debugTextObjects[4].text = "Time Until Next Creature: " + (CreatureControl.Instance.creatureSpawnRate - CreatureControl.Instance.timeSinceLastCreature);
+        debugTextObjects[4].text = "Time Until Next Creature: " + (CreatureControl.Instance.creatureSpawnRate - CreatureControl.Instance.timeSinceLastCreature).ToString("F1");;
         debugTextObjects[5].text = "Current Creatures: " + CreatureControl.Instance.TotalCreatures;
+
+        debugTextObjects[6].text = "Current Divergnces Active: ";
+        for(int i = 0; i < DivergenceControl.Instance.DivergenceList.Count; i++) {
+            debugTextObjects[6].text += DivergenceControl.Instance.DivergenceList[i].data.gameObject.name + ",\n ";
+        }
+        debugTextObjects[7].text = "Difficulty: " + GameSystem.Instance.Difficulty;
 
     }
 }

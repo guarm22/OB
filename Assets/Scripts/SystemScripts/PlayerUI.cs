@@ -132,7 +132,9 @@ public class PlayerUI : MonoBehaviour
         }
 
         if(CreatureControl.Instance.ActiveCreatures.FindAll(x => x.name.Contains("Hider")).Count == 0) {
-            ScrambleReportUI(false);
+            if(!PunctureCollapse.Instance.isCollapsing) {
+                ScrambleReportUI(false);
+            }
         }
 
         //turn off any currently playing warnings
@@ -167,6 +169,7 @@ public class PlayerUI : MonoBehaviour
 
     void SelectionMenu() {
         if(isGlitching) {
+            tabText.color = Color.red;
             if(inMenu) {
                 turnOffSelection();
                 PostProcessingControl.Instance.ActivateDepthOfField(false);
@@ -179,6 +182,9 @@ public class PlayerUI : MonoBehaviour
                 }
             }
             return;
+        }
+        else {
+            tabText.color = Color.white;
         }
         //if menu is open, check if tab is pressed to close, otherwise stop movement
 

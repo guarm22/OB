@@ -80,21 +80,21 @@ public class GameSystem : MonoBehaviour {
 
   private void SetGameSettings() {
     if(InEditor()) {
-        Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
+        Difficulty = PlayerPrefs.GetString("lastChosenDiff", "Normal");
         return;
     }
     if(SceneManager.GetActiveScene().name == "Tutorial") {
         return;
     }
-    Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
-    switch(PlayerPrefs.GetString("Difficulty", "NotLoaded")) {
+    Difficulty = PlayerPrefs.GetString("lastChosenDiff", "Normal");
+    switch(PlayerPrefs.GetString("lastChosenDiff", "NotLoaded")) {
         case "NotLoaded":
             Difficulty = "Normal";
             energyPerSecond = GameSettings.NormalEPS;
             GracePeriod = GameSettings.NormalGracePeriod;
             break;
         default:
-            Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
+            Difficulty = PlayerPrefs.GetString("lastChosenDiff", "Normal");
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
             GracePeriod = PlayerPrefs.GetInt("GracePeriod", 15);
             break;

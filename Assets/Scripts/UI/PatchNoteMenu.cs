@@ -47,6 +47,7 @@ Bugfixes:
 -Creatures should no longer spawn in a non intended room
 -Fixed an invisible Puncture orb on Cabin
 -Fixed some items not moving at all when a divergence activates
+-Fixed an issue where objects would have Divergences from the wrong difficulty
 
 
 v0.8.0.1:
