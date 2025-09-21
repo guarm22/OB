@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CameraGlitch : CustomDivergence {
 
-    public string roomName;
+    private string roomName;
     public float glitchFrequency = 5f;
     void Awake() {
         
     }
 
     public override void DoDivergenceAction(bool enable, DynamicObject obj) {
+        roomName = obj.Room;
         if(enable) {
             StartCoroutine(GlitchCamera());
         }

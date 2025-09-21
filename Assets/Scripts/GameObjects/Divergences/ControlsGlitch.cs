@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ControlsGlitch : CustomDivergence
 {
-    public String roomName;
+    private String roomName;
     private float crouchDuration = 2f;
     private float crouchCD = 3f;
     private bool active = false;
@@ -15,6 +15,7 @@ public class ControlsGlitch : CustomDivergence
     }
    
     public override void DoDivergenceAction(bool enable, DynamicObject obj) {
+        roomName = obj.Room;
         if(enable) {
             active = true;
             //invert the controls

@@ -9,8 +9,9 @@ public class RoomGlitch : CustomDivergence
 {
     private GameObject roomText;
     public float glitchFrequency = 0.25f;
-    public String roomName;
+    private String roomName;
     private List<String> roomNames = new List<String>();
+
     void Awake() {
         roomText = GameObject.Find("RoomText");
         foreach(String roomName in GameObject.FindGameObjectsWithTag("Room").ToList().Select(r => r.name)) {
@@ -19,6 +20,7 @@ public class RoomGlitch : CustomDivergence
     }
 
     public override void DoDivergenceAction(bool enable, DynamicObject obj) {
+        roomName = obj.Room;
         if(enable) {
             StartCoroutine(GlitchRoomText());
         }

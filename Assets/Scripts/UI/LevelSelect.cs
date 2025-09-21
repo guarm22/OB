@@ -20,7 +20,7 @@ public class LevelSelect : MonoBehaviour {
 
     private String currentLevel;
 
-    private List<String> levels = new List<String> { "Tutorial", "Cabin", "Graveyard", "Apartment" };
+    private List<String> levels = new List<String> { "Tutorial", "Cabin", "Graveyard", "Apartment", "The_Puncture" };
     private List<String> unavailableLevels = new List<String> { "ThePuncture"};
 
     private void SetLevel(String level) {

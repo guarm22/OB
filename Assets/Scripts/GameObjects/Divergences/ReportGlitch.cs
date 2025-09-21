@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class ReportGlitch : CustomDivergence {
-    public String roomName;
+    private String roomName;
     private bool active;
 
     void Awake() {
@@ -12,6 +9,7 @@ public class ReportGlitch : CustomDivergence {
     }
 
     public override void DoDivergenceAction(bool enable, DynamicObject obj) {
+        roomName = obj.Room;
         if(enable) {
             PlayerUI.Instance.isGlitching = true;
             active = true;
