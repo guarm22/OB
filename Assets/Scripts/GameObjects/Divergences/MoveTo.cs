@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class MoveTo : CustomDivergence
 {
@@ -27,8 +28,8 @@ public class MoveTo : CustomDivergence
             transform.localPosition = target;
         }
         else {
-            transform.localPosition = originalPosition;
-            transform.localEulerAngles = originalRotation;
+            transform.DORotate(originalRotation, 0.2f).SetEase(Ease.InOutSine);
+            transform.DOLocalMove(originalPosition, 0.2f).SetEase(Ease.InOutSine);
         }
     }
 }

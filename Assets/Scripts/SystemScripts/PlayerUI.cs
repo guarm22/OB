@@ -19,19 +19,29 @@ public class PlayerUI : MonoBehaviour
     public GameObject EndGameUI;
     public GameObject debugUI;
     public GameObject defaultBottomRight;
+    public TMP_Text tabText;
     public string targetTag = "Room";
     public string tutTag = "Tutorial";
     public bool inMenu = false;
     public static bool paused = false;
     public static PlayerUI Instance;
     public GameObject prompt;
+    public bool havePausedAtleastOnce = false;
+    public String currentRoom;
 
     public bool reportScramble = false;
+
+    public bool isGlitching = false;
+
+    public AudioClip glitchSound;
+    private AudioSource audioSource;
+    private bool isReportTextGlitching = false;
 
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
+        audioSource = this.gameObject.AddComponent<AudioSource>();
         PopulateSelectorUI();
     }
 
@@ -42,12 +52,9 @@ public class PlayerUI : MonoBehaviour
                 return;
             }
         }
-        if(CreatureControl.Instance.IsJumpscareFinished) {
-            EndingGame();
-            return;
-        }
         //now waiting for jumpscare to finish, if any
         if(GameSystem.Instance.GameOver) {
+            EndingGame();
             return;
         }
         EscapeMenu();
@@ -55,10 +62,6 @@ public class PlayerUI : MonoBehaviour
             return;
         }
         SelectionMenu();
-    }
-
-    public string GetPlayerRoom() {
-        return roomText.GetComponent<TMP_Text>().text;
     }
 
     public void ChangePrompt(string text, bool activate) {
@@ -129,7 +132,9 @@ public class PlayerUI : MonoBehaviour
         }
 
         if(CreatureControl.Instance.ActiveCreatures.FindAll(x => x.name.Contains("Hider")).Count == 0) {
-            ScrambleReportUI(false);
+            if(!PunctureCollapse.Instance.isCollapsing) {
+                ScrambleReportUI(false);
+            }
         }
 
         //turn off any currently playing warnings
@@ -143,8 +148,46 @@ public class PlayerUI : MonoBehaviour
         SC_FPSController.Instance.canMove = false;
     }
 
+    private IEnumerator GlitchReportText() {
+        //for 0.5 seconds, change the tab text to random characters
+        float elapsedTime = 0f;
+        String originalText = tabText.text;
+        while(elapsedTime < 0.8f) {
+            elapsedTime += Time.deltaTime;
+            char[] chars = tabText.text.ToCharArray();
+            for(int i = 0; i < chars.Length; i++) {
+                if(UnityEngine.Random.Range(0, 5) == 0) {
+                    chars[i] = (char)UnityEngine.Random.Range(65, 91);
+                }
+            }
+            tabText.text = new string(chars);
+            yield return null;
+        }
+        tabText.text = originalText;
+        isReportTextGlitching = false;
+    }
+
     void SelectionMenu() {
+        if(isGlitching) {
+            tabText.color = Color.red;
+            if(inMenu) {
+                turnOffSelection();
+                PostProcessingControl.Instance.ActivateDepthOfField(false);
+            }
+            if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu"))) {
+                if(!isReportTextGlitching) {
+                    audioSource.PlayOneShot(glitchSound);
+                    isReportTextGlitching = true;
+                    StartCoroutine(GlitchReportText());
+                }
+            }
+            return;
+        }
+        else {
+            tabText.color = Color.white;
+        }
         //if menu is open, check if tab is pressed to close, otherwise stop movement
+
         if(inMenu) {
             if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu")) || DivergenceControl.Instance.PendingReport) {
                 turnOffSelection();
@@ -157,8 +200,13 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    public String GetCurrentRoom() {
+        return currentRoom;
+    }
+
     private void openEscape() {
         turnOffSelection();
+        havePausedAtleastOnce = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         escapeMenuUI.SetActive(true);
@@ -172,6 +220,7 @@ public class PlayerUI : MonoBehaviour
         Cursor.visible = false;
         escapeMenuUI.SetActive(false);
         defaultUI.SetActive(true);
+
     }
 
     public void PauseControl(String src="") {
@@ -215,6 +264,9 @@ public class PlayerUI : MonoBehaviour
     }
 
     private void EndingGame() {
+        if(GameSystem.Instance.endReason == "quit") {
+            return;
+        }
         EndGameUI.SetActive(true);
     }
     //Currently used for figuring out which room the player is in and displaying it on the top right
@@ -225,6 +277,7 @@ public class PlayerUI : MonoBehaviour
             // Player is within a GameObject with the specified tag
             //Debug.Log("Player is within a GameObject with the tag: " + targetTag + " with object name: " + other.gameObject.name);
             roomText.GetComponent<TMP_Text>().text = other.gameObject.name;
+            currentRoom = other.gameObject.name;
         }
 
         if (other.tag.Equals(tutTag)) {

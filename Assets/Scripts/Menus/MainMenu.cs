@@ -7,11 +7,15 @@ public class MainMenu : MonoBehaviour {
     public GameObject LevelSelectionMenu;
     public GameObject Settings;
     public GameObject Stats;
+    public GameObject PatchNotes;
+    public GameObject Credits;
 
     public Button ExitGame;
     public Button ChooseLevel;
     public Button SettingsButton;
     public Button StatsButton;
+    public Button patchNoteButton;
+    public Button creditsButton;
 
     public AudioClip menuTheme;
 
@@ -39,6 +43,8 @@ public class MainMenu : MonoBehaviour {
         ChooseLevel.onClick.AddListener(LevelSelectionEvent);
         SettingsButton.onClick.AddListener(SettingsButtonEvent);
         StatsButton.onClick.AddListener(StatsButtonEvent);
+        patchNoteButton.onClick.AddListener(PatchNoteEvent);
+        creditsButton.onClick.AddListener(CreditsEvent);
 
         //initialize all objects
         foreach(GameObject obj in ObjToBeInitialized) {
@@ -52,9 +58,19 @@ public class MainMenu : MonoBehaviour {
         DefaultMenu.SetActive(true);
     }
 
+    private void CreditsEvent() {
+        Credits.SetActive(true);
+        DefaultMenu.SetActive(false);
+    }
+
     private void LevelSelectionEvent() {
         DefaultMenu.SetActive(false);
         LevelSelectionMenu.SetActive(true);
+    }
+
+    private void PatchNoteEvent() {
+        PatchNotes.SetActive(true);
+        DefaultMenu.SetActive(false);
     }
 
     private void ExitButtonEvent() {

@@ -15,7 +15,7 @@ public class PlayerStatsMenu : MonoBehaviour
     public GameObject initialLocation;
     public GameObject statList;
     public List<Stat> stats = new List<Stat>();
-    private int statsPerPage = 9;
+    private int statsPerPage = 15;
 
     public Button nextButton;
     public Button prevButton;
@@ -50,7 +50,7 @@ public class PlayerStatsMenu : MonoBehaviour
                 statBlock.transform.position = 
                 new Vector3(
                     initialLocation.transform.position.x + (i % 3) * (Display.main.systemWidth / 3.5f), 
-                    initialLocation.transform.position.y - (i / 3) * (Display.main.systemHeight / 5f), 
+                    initialLocation.transform.position.y - (i / 3) * (Display.main.systemHeight / 6.5f), 
                     initialLocation.transform.position.z);
 
                 //set the text of the statblock
@@ -84,20 +84,42 @@ public class PlayerStatsMenu : MonoBehaviour
         ShowPage(pnum);
     }
 
+    private void InitPgButtons() {
+        if(stats.Count <= 15) {
+            nextButton.gameObject.transform.localScale = new Vector3 (0,0,0);
+        }
+        prevButton.gameObject.transform.localScale = new Vector3 (0,0,0);
+    }
+
     void Awake() {
         InitData();
+        InitPgButtons();
 
         nextButton.onClick.AddListener(() => {
             if(stats.Count > pnum * statsPerPage) {
                 pnum++;
                 ShowPage(pnum);
+
+                //if there are not enough stats to show the next page, remove the button
+                if(stats.Count < pnum * statsPerPage) {
+                    nextButton.gameObject.transform.localScale = new Vector3 (0,0,0);
+                }
+                //if we are on at least the second page, enable the prev button
+                if(pnum >= 2) {
+                    prevButton.gameObject.transform.localScale = new Vector3 (1,1,1);
+                }
             }
+            
         });
 
         prevButton.onClick.AddListener(() => {
             if(pnum > 1) {
                 pnum--;
                 ShowPage(pnum);
+
+                if(pnum==1) {
+                    prevButton.gameObject.transform.localScale = Vector3.zero;
+                }
             }
         });
     }

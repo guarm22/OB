@@ -17,7 +17,7 @@ public class Spin : CustomDivergence
         else {
             StopAllCoroutines();
             DOTween.Kill(this.gameObject);
-            transform.localEulerAngles = originalRotation;
+            transform.DORotate(originalRotation, 0.2f).SetEase(Ease.InOutSine);
         }
     }
 

@@ -16,8 +16,6 @@ public class ExpandingSphere : CustomDivergence {
         expandScale = new Vector3(expansionSpeed, expansionSpeed, expansionSpeed);
         player = GameObject.Find("Player");
         ads.volume = PlayerPrefs.GetInt("SFXVolume", 50)/100f;
-
-        ExpandSphere(this.gameObject);
     }
 
     public override void DoDivergenceAction(bool activate, DynamicObject gameObject) {
@@ -26,7 +24,8 @@ public class ExpandingSphere : CustomDivergence {
         }
         else {
             StopAllCoroutines();
-            transform.localScale = Vector3.zero;
+            this.GetComponent<Collider>().enabled = false;
+            StartCoroutine(EndSphere());
         }
     }
 
@@ -36,12 +35,27 @@ public class ExpandingSphere : CustomDivergence {
         StartCoroutine(ExpandSphere(this.gameObject));
     }
 
+    public IEnumerator EndSphere(float shrinkTime = 0.5f) {
+        //slowly shrink the sphere
+        float time = 0;
+        Vector3 initialScale = this.transform.localScale;
+        while (time < shrinkTime) {
+            if(PlayerUI.paused) {
+                yield return new WaitUntil(() => !PlayerUI.paused);
+            }
+
+            time += Time.deltaTime;
+            this.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, time/shrinkTime);
+            yield return null;
+        }
+        
+        transform.localScale = Vector3.zero;
+    }
     public IEnumerator ExpandSphere(GameObject obj) {
         this.GetComponent<Collider>().enabled = false;
-
         ads.pitch = Random.Range(1.1f, 1.2f);
         ads.PlayOneShot(spawnSound);
-
+        this.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         float time = 0;
         //wait until particle system is done playing
         if(spawnParticles != null) {
@@ -66,7 +80,8 @@ public class ExpandingSphere : CustomDivergence {
             }
             //if the distance between the player and the expanding sphere is less than the radius of the sphere, end the game
             if (Vector3.Distance(player.transform.position, obj.transform.position) < obj.transform.localScale.x/2) {
-                StartCoroutine(GameSystem.Instance.EndGame("puncture"));
+                GameSystem.Instance.EndGame("puncture");
+                yield return null;
                 break;
             }            
 

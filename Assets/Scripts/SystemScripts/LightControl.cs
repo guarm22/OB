@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class LightControl : MonoBehaviour
-{
+public class LightControl : MonoBehaviour {
     private bool killedLights = false;
     private Dictionary<Light, Coroutine> flickeringLights = new Dictionary<Light, Coroutine>();
     private List<Light> lights = new List<Light>();
@@ -14,7 +13,7 @@ public class LightControl : MonoBehaviour
         Instance = this;
         lights = new List<Light>(GameObject.FindObjectsOfType<Light>());
 
-        if(PlayerPrefs.GetInt("Darkness",0) == 1) {
+        if(PlayerPrefs.GetInt("Darkness",0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
             foreach(Light l in lights) {
                 l.intensity = l.intensity * 0.12f;
                 l.range = l.range * 0.65f;

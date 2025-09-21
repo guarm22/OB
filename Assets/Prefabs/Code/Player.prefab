@@ -933,6 +933,7 @@ MonoBehaviour:
   crosshair: {fileID: 623447711046459514}
   writeBoop: {fileID: 8300000, guid: 1036e18a55743694e8a73f3f5d632e75, type: 3}
   startingText: {fileID: 446214276599169339}
+  isTimerAnimFinished: 0
 --- !u!1 &1239884626473302801
 GameObject:
   m_ObjectHideFlags: 0
@@ -3154,7 +3155,7 @@ GameObject:
   - component: {fileID: 96617178137495147}
   - component: {fileID: 8765954439897948038}
   m_Layer: 7
-  m_Name: Room
+  m_Name: RoomText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3764,11 +3765,16 @@ MonoBehaviour:
   EndGameUI: {fileID: 7760866587858621164}
   debugUI: {fileID: 3587059926079662790}
   defaultBottomRight: {fileID: 317526761319369388}
+  tabText: {fileID: 2975901058054354930}
   targetTag: Room
   tutTag: Tutorial
   inMenu: 0
   prompt: {fileID: 8125740287308217550}
+  havePausedAtleastOnce: 0
+  currentRoom: 
   reportScramble: 0
+  isGlitching: 0
+  glitchSound: {fileID: 8300000, guid: fc9ecb832bab8b24e9a6cb008458d821, type: 3}
 --- !u!1 &7760866587858621164
 GameObject:
   m_ObjectHideFlags: 0

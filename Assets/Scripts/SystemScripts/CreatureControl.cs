@@ -13,9 +13,9 @@ public class CreatureControl : MonoBehaviour
     public GameObject chaserPrefab;
     public GameObject lurkerPrefab;
     public GameObject hiderPrefab;
-    public int maxCreaturesPerRoom = 1;
+    public int divergenceThreshold = 2;
+
     public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
-    public int creatureMax = 3;
     [HideInInspector]
     public bool IsJumpscareFinished = false;
     public float creatureSpawnRate = 20f;
@@ -35,6 +35,8 @@ public class CreatureControl : MonoBehaviour
     public bool ActivateHider = true;
     public bool ActivateChaser = true;
 
+    private float CollapseChance = 60f;
+
     private List<string> GetRoomsWithNoCreatures() {
         return CreaturesPerRoom.Keys.Where(k => CreaturesPerRoom[k] == 0).ToList();
     }
@@ -43,16 +45,16 @@ public class CreatureControl : MonoBehaviour
         if(GetRoomsWithNoCreatures().Count == 0) {
             return;
         }
-
         int randomVal = UnityEngine.Random.Range(0, GetRoomsWithNoCreatures().Count);
         string room = GetRoomsWithNoCreatures()[randomVal];
 
         Vector3 spawnPos = FindSpawnPoint(room, type);
         GameObject roomObj = GameObject.Find(room);
-        GameObject creature = Instantiate(prefab, spawnPos, Quaternion.identity);
+        GameObject creature = Instantiate(prefab, spawnPos, Quaternion.identity, roomObj.transform);
+        Debug.Log("Spawning " + type + " in " + room + " at " + spawnPos);
 
         if(type != "Hider") {
-            creature.GetComponent<NavMeshAgent>().Warp(spawnPos);
+            //creature.GetComponent<NavMeshAgent>().Warp(spawnPos);
         }
         creature.transform.SetParent(roomObj.transform);
         creature.name = type + " - " + room;
@@ -76,8 +78,7 @@ public class CreatureControl : MonoBehaviour
             
             List<GameObject> possibleSpawns = new List<GameObject>();
             foreach(GameObject spawnpoint in CreatureSpawnpoints) {
-                if(spawnpoint.name.Contains(room)) {
-                    possibleSpawns.Add(spawnpoint);
+                if(spawnpoint.name.Contains(room)) {                    possibleSpawns.Add(spawnpoint);
                 }
             }
             //if no predetermined spawns were found, get one based on room bounds
@@ -147,11 +148,14 @@ public class CreatureControl : MonoBehaviour
         //lose condition - all rooms have max anomalies
         ShouldStartCollapse();
 
-        if(DivergenceControl.Instance.DivergenceList.Count >= DivergenceControl.Instance.MaxDivergences/2) {
-            int spawnChance = UnityEngine.Random.Range(0,100);
+        if(DivergenceControl.Instance.DivergenceList.Count >= divergenceThreshold) {
+            int rng = UnityEngine.Random.Range(0,100);
             int randomIndex = UnityEngine.Random.Range(0, creatures.Count);
 
-            if(spawnChance < specialSpawnChance || PlayerPrefs.GetInt("Creature Overrun",0)==1) {
+            bool coEnabled = PlayerPrefs.GetInt("Creature Overrun",0) == 1;
+            bool onTutorial = SceneManager.GetActiveScene().name == "Tutorial";
+
+            if(rng < specialSpawnChance || (coEnabled && !onTutorial))  {
                 createCreature(creatures[randomIndex],  creatures[randomIndex].name);
             }
         }
@@ -166,12 +170,18 @@ public class CreatureControl : MonoBehaviour
             return;
         }
 
-        //if all rooms have a creature
-        if(CreaturesPerRoom.Values.All(v => v==1)) {
-            if(UnityEngine.Random.Range(0,100) > 97) {
+        //if all rooms have a divergence
+        if(DivergenceControl.Instance.areAllRoomsFull()) {
+            if(UnityEngine.Random.Range(0,100) > CollapseChance) {
+                CollapseChance += 12;
                 return;
             }
             StartCoroutine(PunctureCollapse.Instance.Collapse());
+        }
+        else {
+            if(CollapseChance > 60) {
+                CollapseChance -= 8;
+            }
         }
 
         int divCount = DivergenceControl.Instance.DivergenceList.Count;
@@ -202,7 +212,7 @@ public class CreatureControl : MonoBehaviour
 
         if(divCount >= Mathf.Ceil(maxDivs*0.65f)) {
             int rnum = UnityEngine.Random.Range(0,100);
-            if(rnum < spawnChance/3) {
+            if(rnum < spawnChance/2) {
                 StartCoroutine(PunctureCollapse.Instance.Collapse());
                 return;
             }
@@ -260,7 +270,6 @@ public class CreatureControl : MonoBehaviour
             return;
         }
         creatureSpawnRate = PlayerPrefs.GetFloat("CreatureSpawnRate", 20f);
-        creatureMax = 4;
     }
 
     void Update() {

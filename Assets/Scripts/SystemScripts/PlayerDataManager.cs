@@ -66,6 +66,9 @@ public class PlayerDataManager : MonoBehaviour
         playerData.TimesPlayedOnEasy.value += GameSystem.Instance.TimesPlayedOnEasy;
         playerData.TimesPlayedOnNormal.value += GameSystem.Instance.TimesPlayedOnNormal;
         playerData.TimesPlayedOnHard.value += GameSystem.Instance.TimesPlayedOnHard;
+        playerData.ReportAcc.value = 
+                (int)MathF.Ceiling
+                (((float)(playerData.DivergencesReported.value+playerData.CreaturesReported.value) / playerData.ReportsMade.value) * 100f);
 
         GameSystem.Instance.ReportsMade = 0;
         GameSystem.Instance.DivergencesReported = 0;
@@ -78,6 +81,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public void EndGameStats(float endTime) {
         playerData.TimeInLevel.value += ((int)Mathf.Ceil(endTime));
+        playerData.EnergyUsed.value += (int)GameSystem.Instance.EnergyUsed *-1;
 
         UpdateData();
         SavePlayerData();

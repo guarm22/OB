@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using System.Linq;
 
 
 public class DefaultUI : MonoBehaviour {
@@ -17,26 +18,31 @@ public class DefaultUI : MonoBehaviour {
     public TMP_Text startingText;
 
     private AudioSource audioSource;
+    private String originalText;
+    public bool isTimerAnimFinished = false;
+
+    Vector3 originalPos;
+    Vector3 originalScale;
 
     void Start() {
+        originalText = startingText.text;
+        originalPos = timer.transform.position;
+        originalScale = timer.transform.localScale;
+        startingText.text = "";
         audioSource = this.gameObject.AddComponent<AudioSource>();
         StartCoroutine(TimerAnimation());
     }
 
-    private IEnumerator TimerAnimation() {
-        Debug.Log("starting timer animation");
-        Vector3 originalPos = timer.transform.position;
-        Vector3 originalScale = timer.transform.localScale;
-
+    public IEnumerator TimerAnimation() {
         //increase timer size
         timer.transform.localScale = new Vector3(originalScale.x * 2.5f, originalScale.y * 2.5f, originalScale.z * 2.5f);
         //move timer to the center of the screen
         timer.transform.position = crosshair.transform.position + new Vector3(0, 50, 0);
 
-        String text = startingText.text;
+        String text = originalText;
         startingText.text = "";
-        //have text appear in typewriter animation
         yield return new WaitForSeconds(1.2f);
+        //have text appear in typewriter animation
         int element = 0;
         while(startingText.text.Equals(text) == false) {
             startingText.text += text[element];
@@ -56,6 +62,17 @@ public class DefaultUI : MonoBehaviour {
 
         //remove text
         startingText.transform.DOScale(Vector3.zero, 0.5f);
+
+        yield return new WaitForSeconds(3f);
+        isTimerAnimFinished = true;
+    }
+
+    private void forceFinishAnim() {
+        timer.transform.DOMove(originalPos, 0.1f);
+        timer.transform.DOScale(originalScale, 0.1f);
+        //remove text
+        startingText.transform.DOScale(Vector3.zero, 0.1f);
+        isTimerAnimFinished = true;
     }
 
     void SetText() {
@@ -87,6 +104,9 @@ public class DefaultUI : MonoBehaviour {
     void Update() {
         if(PlayerUI.paused || GameSystem.Instance.GameOver) {
             return;
+        }
+        if(PlayerUI.Instance.havePausedAtleastOnce && isTimerAnimFinished==false) {
+            forceFinishAnim();
         }
         SetText();
     }

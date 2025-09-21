@@ -61,7 +61,7 @@ public class Flashlight : MonoBehaviour
 
         PhysicalFlashlight.transform.localPosition = offFlashlingPos;
 
-        if(PlayerPrefs.GetInt("Darkness",0) == 1) {
+        if(PlayerPrefs.GetInt("Darkness",0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
             totalEnergyDrainPerSecond = 0.00001f;
         }
     }

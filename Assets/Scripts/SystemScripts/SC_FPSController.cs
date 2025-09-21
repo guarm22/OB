@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 
@@ -46,12 +48,11 @@ public class SC_FPSController : MonoBehaviour
     private Vector3 prevMousePosition;
     private float accelerationFactor = 0.01f;
     private bool teleported = false;
-
     public int timesCrouched = 0;
-
     public bool isRunning = false;
-
     private List<GameObject> Rooms = new List<GameObject>();
+
+    public bool controlsGlitch = false;
 
     void Start() {
         characterController = GetComponent<CharacterController>();
@@ -68,7 +69,7 @@ public class SC_FPSController : MonoBehaviour
         playerCamera.fieldOfView = FOV;
         mouseAccel = PlayerPrefs.GetInt("MouseAccel", 0) == 1 ? true : false;
 
-        if(PlayerPrefs.GetInt("Speed Boost", 0) == 1) {
+        if(PlayerPrefs.GetInt("Speed Boost", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
             originalRunSpeed *= 1.5f;
             originalCrouchSpeed *= 1.6f;
             originalWalkSpeed *= 1.3f;
@@ -78,18 +79,16 @@ public class SC_FPSController : MonoBehaviour
         walkingSpeed = originalWalkSpeed;
         crouchSpeed = originalCrouchSpeed;
 
-        if(PlayerPrefs.GetInt("Teleport", 0) == 1) {
-            Rooms = DivergenceControl.Instance.RoomObjects;
-            foreach(GameObject r in Rooms) {
-            }
+        if(PlayerPrefs.GetInt("Teleport", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
+            Rooms = GameObject.FindGameObjectsWithTag("Room").ToList();
             StartCoroutine(RandomTeleporting());
         }
     }
 
     private IEnumerator RandomTeleporting() {
         float tptimer = 0f;
-        float maxWait = 10f;
-        float minWait = 5f;
+        float maxWait = 32f;
+        float minWait = 24f;
 
         float currentWait = UnityEngine.Random.Range(minWait, maxWait);
         while(true) {
@@ -164,7 +163,24 @@ public class SC_FPSController : MonoBehaviour
         prevMousePosition = Input.mousePosition;
     }
 
+    public void MoveCamera(Vector3 newRot) {
+        rotationX = newRot.x;
+        playerCamera.transform.DORotate(newRot, 0.2f);
+        transform.DORotate(new Vector3(0, newRot.y, 0), 0.2f);
+    }
+
+    public IEnumerator ForceCrouch(float duration) {
+        //crouch then uncrouch 2 seconds later
+        yield return StartCoroutine(Crouch(true));
+        yield return new WaitForSeconds(duration);
+        yield return StartCoroutine(Crouch(false));
+    }
+
     private void CrouchLogic() {
+        if(controlsGlitch) {
+            return;
+        }
+
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Crouch")) && !isCrouchAnimation) {
             timesCrouched++;
             StartCoroutine(Crouch(true));
@@ -229,7 +245,6 @@ public class SC_FPSController : MonoBehaviour
 
     public void TeleportRoom(GameObject room) {
         teleported = true;
-        Debug.Log("Teleporting to: " + room.name);
         Vector3 tpLoc = GameObject.FindGameObjectsWithTag("Teleport").Where(x => x.name.Contains(room.name)).ElementAt(0).transform.position;
         if(tpLoc == null) {
             tpLoc = new Vector3(room.transform.position.x, room.transform.position.y + 1, room.transform.position.z);

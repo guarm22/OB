@@ -18,7 +18,7 @@ public class EndCreature : MonoBehaviour
         timeSinceLastYip += Time.deltaTime;
 
         if(amTouchingPlayer()) {
-            StartCoroutine(GameSystem.Instance.EndGame("yippie"));
+            //StartCoroutine(GameSystem.Instance.EndGame("yippie"));
         }
     }
 

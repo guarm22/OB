@@ -12,6 +12,8 @@ public enum ANOMALY_TYPE {
     Creature,
     Audio,
     Puncture,
+    Addition,
+    Glitch
 };
 
 public class DynamicObject {
@@ -73,15 +75,22 @@ public class DynamicObject {
             case ANOMALY_TYPE.Puncture:
                 //done through custom class
                 break;
+            case ANOMALY_TYPE.Addition:
+                ExtraObject(enable);
+                break;
+            case ANOMALY_TYPE.Glitch:
+                //done through custom class
+                break;
+
         }
         return true;
     }
 
     //Makes an object disappear or reappear based on the enable argument
     private bool ObjectDisappearance(bool enable) {
-        float moveAmt = enable ? -100f : 100f;
-        Vector3 vec = new Vector3(this.Obj.transform.position.x, this.Obj.transform.position.y+moveAmt, this.Obj.transform.position.z);
-        this.Obj.transform.position = vec;
+        Vector3 scale = enable ? new Vector3(0f, 0f, 0f) : originalScale;
+        float scaletime = enable ? 0.1f : 0.25f;
+        Obj.transform.DOScale(scale, scaletime).SetEase(Ease.InOutSine);
         return true;
     }
 
@@ -107,9 +116,21 @@ public class DynamicObject {
             replacement.parent = Obj.transform;
             replacement.transform.SetSiblingIndex(0);
         }
+        return true;   
+    }
 
-        return true;
-        
+    private void ExtraObject(bool enable) {
+        Transform extra = this.Obj.transform.GetChild(0);
+        if(extra == null) {
+            Debug.Log("No extra object found on object " + this.Name + " in " + this.Room);
+            return;
+        }
+        if(enable) {
+            extra.gameObject.SetActive(true);
+        }
+        else {
+            extra.gameObject.SetActive(false);
+        }
     }
 
     public static List<string> GetAllAnomalyTypes() {
@@ -120,7 +141,9 @@ public class DynamicObject {
             "Creature",
             "Audio",
             "Movement",
-            "Puncture"
+            "Puncture",
+            "Addition",
+            "Glitch"
         };
         return res;
     }
@@ -156,6 +179,10 @@ public class DynamicObject {
                 return ANOMALY_TYPE.Movement;
             case "Puncture":
                 return ANOMALY_TYPE.Puncture;
+            case "Addition":
+                return ANOMALY_TYPE.Addition;
+            case "Glitch":
+                return ANOMALY_TYPE.Glitch;
             default:
                 return ANOMALY_TYPE.NONE;
         }
@@ -177,6 +204,10 @@ public class DynamicObject {
                 return "Movement";
             case ANOMALY_TYPE.Puncture:
                 return "Puncture";
+            case ANOMALY_TYPE.Addition:
+                return "Addition";
+            case ANOMALY_TYPE.Glitch:
+                return "Glitch";
             default:
                 return "Error";
         }

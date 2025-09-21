@@ -51,6 +51,8 @@ public class GameSystem : MonoBehaviour {
 
     public bool shouldPlaySound = true;
 
+    public float EnergyUsed = 0;
+
   void Awake() {
     if (Instance != null) {
       Debug.LogError("There is more than one instance!");
@@ -66,8 +68,7 @@ public class GameSystem : MonoBehaviour {
     gameObject.GetComponent<AudioSource>().clip = DisappearSound;
     //change volume
     audioSource.volume = PlayerPrefs.GetInt("AlertVolume")/100f;
-    shouldPlaySound = PlayerPrefs.GetInt("No Warnings", 0) == 1 ? false : true;
-
+    shouldPlaySound = PlayerPrefs.GetInt("No Warnings", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial" ? false : true;
   }
 
   public static bool InEditor() {
@@ -79,21 +80,21 @@ public class GameSystem : MonoBehaviour {
 
   private void SetGameSettings() {
     if(InEditor()) {
-        Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
+        Difficulty = PlayerPrefs.GetString("lastChosenDiff", "Normal");
         return;
     }
     if(SceneManager.GetActiveScene().name == "Tutorial") {
         return;
     }
-    Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty", "Normal"));
-    switch(PlayerPrefs.GetString("Difficulty", "NotLoaded")) {
+    Difficulty = PlayerPrefs.GetString("lastChosenDiff", "Normal");
+    switch(PlayerPrefs.GetString("lastChosenDiff", "NotLoaded")) {
         case "NotLoaded":
             Difficulty = "Normal";
             energyPerSecond = GameSettings.NormalEPS;
             GracePeriod = GameSettings.NormalGracePeriod;
             break;
         default:
-            Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
+            Difficulty = PlayerPrefs.GetString("lastChosenDiff", "Normal");
             energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
             GracePeriod = PlayerPrefs.GetInt("GracePeriod", 15);
             break;
@@ -123,7 +124,7 @@ public class GameSystem : MonoBehaviour {
     ///</summary>
     public void SetGameTime(float t=-1) {
         if (Input.GetKeyDown(KeyCode.N)) {
-            StartCoroutine(EndGame("manual"));
+            EndGame("manual");
             return;
         }
         if (t > 0) {
@@ -131,7 +132,7 @@ public class GameSystem : MonoBehaviour {
         }
         if (gameTime <= 0.5f) {
             Won = true;
-            StartCoroutine(EndGame("won"));
+            EndGame("won");
             return;
         }
         TimeInLevel += Time.deltaTime;
@@ -150,6 +151,10 @@ public class GameSystem : MonoBehaviour {
 
     public void ChangeEnergy(float amount) {
         CurrentEnergy += amount;
+        if(amount < 0) {
+            EnergyUsed += amount;
+        }
+
         if(CurrentEnergy >= 100) {
             CurrentEnergy = 100;
         }
@@ -158,13 +163,12 @@ public class GameSystem : MonoBehaviour {
         }
     }
 
-    public IEnumerator EndGame(string reason="") {
+    public void EndGame(string reason="") {
+        Debug.Log("Reason:" + reason);
         GameOver = true;
         endReason = reason;
-        CreatureControl.Instance.IsJumpscareFinished=true;
         AchievementManager.Instance.CheckLevelFinishAchievements(SceneManager.GetActiveScene().name, Difficulty, reason);
-        PlayerDataManager.Instance.EndGameStats(startTime-gameTime);
-        yield return null;
+        PlayerDataManager.Instance.EndGameStats(TimeInLevel);
     }
 
     void Update() {

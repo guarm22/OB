@@ -65,7 +65,7 @@ public class GameSettings : MonoBehaviour
             return 30f;
         }
         else if(diff == "Normal") {
-            return NormalCreatureSpawnRate;
+            return 23f;
         }
         else if(diff == "Hard") {
             return 18f;
@@ -83,7 +83,7 @@ public class GameSettings : MonoBehaviour
             return 34;
         }
         else if(diff == "Normal") {
-            return NormalDivergenceRate;
+            return 28;
         }
         else if(diff == "Hard") {
             return 22;
@@ -101,10 +101,10 @@ public class GameSettings : MonoBehaviour
             return 28;
         }
         else if(diff == "Normal") {
-            return 22;
+            return 20;
         }
         else if(diff == "Hard") {
-            return 16;
+            return 14;
         }
         else if(diff == "Nightmare") {
             return 8;
@@ -119,7 +119,7 @@ public class GameSettings : MonoBehaviour
             return 5;
         }
         else if(diff == "Normal") {
-            return NormalCreatureThreshold;
+            return 4;
         }
         else if(diff == "Hard") {
             return 3;
@@ -134,10 +134,10 @@ public class GameSettings : MonoBehaviour
 
     private float getEPS(string diff) {
         if(diff == "Easy") {
-            return 1f;
+            return 1.2f;
         }
         else if(diff == "Normal") {
-            return NormalEPS;
+            return 1.3f;
         }
         else if(diff == "Hard") {
             return 1.45f;

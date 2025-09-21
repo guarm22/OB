@@ -119,7 +119,7 @@ public class DivergenceControl : MonoBehaviour {
         foreach(DynamicData obj in objects) {
             //check the difficulty of the object
             //if the difficulty is not "all" and the difficulty of the object is not the same as the current difficulty, skip the object
-            if(obj.difficulty.ToLower() != "all" && !obj.difficulty.ToLower().Contains(diff) && diff!="custom") {
+            if(obj.difficulty.ToLower() != "all" && !obj.difficulty.ToLower().Contains(diff.ToLower())) {
                 //Remove dynamic data from object
                 //This is so objects with multiple dynamic data scripts attached to it will not activate multiple scripts.
                 Destroy(obj);
@@ -171,7 +171,7 @@ public class DivergenceControl : MonoBehaviour {
                 DivergenceInterval = GameSettings.NormalDivergenceRate;
                 break;
             default:
-                DivergenceInterval = PlayerPrefs.GetInt("DivergenceRate", 26);
+                DivergenceInterval = PlayerPrefs.GetInt("DivergenceRate", 28);
                 break;
         }
     }
@@ -289,7 +289,7 @@ public class DivergenceControl : MonoBehaviour {
     /// Checks if all rooms have the maximum amount of anomalies
     /// </summary>
     /// <returns>true if all rooms have maximum amount of anomalies, false if at least one room has room for an anomaly</returns>
-    private bool areAllRoomsFull() {
+    public bool areAllRoomsFull() {
         foreach (int amt in Rooms.Values) {
             if(amt >= DivergencesPerRoom) {
                 continue;
@@ -456,6 +456,12 @@ public class DivergenceControl : MonoBehaviour {
     void Update() {
         if(GameSystem.Instance.GameOver || PlayerUI.paused) {
             return;
+        }
+
+        if(GameSystem.InEditor()) {
+            if(Input.GetKeyDown(KeyCode.K)) {
+                ActivateRandomDivergence();
+            }
         }
 
         CheckDivergenceSpawn();
