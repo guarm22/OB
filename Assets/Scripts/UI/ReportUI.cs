@@ -231,6 +231,7 @@ public class ReportUI : MonoBehaviour {
     public void GetRooms() {
         rooms = new List<GameObject>();
         foreach(GameObject child in GameObject.FindGameObjectsWithTag("RoomUI")) {
+
             EventTrigger trigger = child.AddComponent<EventTrigger>();
             rooms.Add(child.gameObject);
             // Create a new entry for the click event

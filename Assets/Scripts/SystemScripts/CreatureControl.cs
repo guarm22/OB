@@ -277,6 +277,10 @@ public class CreatureControl : MonoBehaviour
             return;
         }
 
+        if(GameSystem.InEditor() && Input.GetKeyDown(KeyCode.Delete)) {
+            StartCoroutine(PunctureCollapse.Instance.Collapse());
+        }
+
         timeSinceLastCreature += Time.deltaTime;
         if(timeSinceLastCreature > creatureSpawnRate) {
             timeSinceLastCreature = 0;

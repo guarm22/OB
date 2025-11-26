@@ -9,13 +9,19 @@ public class CollectibleOutline : MonoBehaviour {
 
     public GameObject player;
     List<Material> materials = new List<Material>();
-    Material shader;
+    public Material shader;
 
     private bool hovering = false;
     
     void Start() {
         player = GameObject.Find("Player");
         materials.AddRange(GetComponent<Renderer>().materials);
+
+        if(materials.Count < 2) {
+            shader = Resources.Load<Material>("Materials/Outline_MAT");
+            materials.Add(shader);
+        }
+
         shader = materials[1];
         materials.RemoveAt(1);
         GetComponent<Renderer>().materials = materials.ToArray();
