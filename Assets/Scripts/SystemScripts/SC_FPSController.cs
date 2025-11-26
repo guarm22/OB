@@ -56,6 +56,7 @@ public class SC_FPSController : MonoBehaviour
 
     void Start() {
         characterController = GetComponent<CharacterController>();
+        characterController.stepOffset = 0.4f; // Increase step height here
         Instance = this;
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;

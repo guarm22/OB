@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1281587267}
-  m_IndirectSpecularColor: {r: 0.009000461, g: 0.013100043, b: 0.02044897, a: 1}
+  m_IndirectSpecularColor: {r: 0.009012707, g: 0.013102867, b: 0.020503506, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1079,7 +1079,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a8e5262da4caa74d8bb8a3fc6e1ffcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: Office
 --- !u!1001 &74556711
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3836,7 +3835,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00904210e39029149a999a3597fd35a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: Bathroom
 --- !u!114 &296624906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9595,7 +9593,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glitchFrequency: 0.25
-  roomName: Kitchen
 --- !u!114 &673914117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19130,7 +19127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f95e1481a22aeae4ab717d8751dad592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: Entrance
   glitchFrequency: 4
 --- !u!1001 &1191991056
 PrefabInstance:
@@ -46996,6 +46992,10 @@ PrefabInstance:
     - target: {fileID: 5972568551523419304, guid: 9a3a4f11bc9171343b5425ff5eb1d8dc, type: 3}
       propertyPath: m_Name
       value: Puncture
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615184841524367960, guid: 9a3a4f11bc9171343b5425ff5eb1d8dc, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8551688276963470947, guid: 9a3a4f11bc9171343b5425ff5eb1d8dc, type: 3}
       propertyPath: m_LocalPosition.x
