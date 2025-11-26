@@ -28,8 +28,14 @@ public class CollectibleControl : MonoBehaviour {
         int l = collectibles.Count;
         Debug.Log($"Loaded {l} collectibles from file");
         foreach(GameObject mapC in collectiblesOnMap) {
+
+            //check if collectible from file exists on map
             if (collectibles.Exists(c => c.name == mapC.name)) {
                 Collectible c = collectibles.Find(col => col.name == mapC.name);
+
+                //this is for development purposes, to update descriptions if they change
+                UpdateCollectible(c, mapC);
+
                 //collectible previously loaded into list
                 if(c.isCollected) {
                     mapC.SetActive(false);
@@ -41,15 +47,38 @@ public class CollectibleControl : MonoBehaviour {
                 Collectible newCollectible = new Collectible(mapC.name, desc, false, SceneManager.GetActiveScene().name);
                 collectibles.Add(newCollectible);
             }
+
+            //if the object doesnt have the outline script, add it
+            if(mapC.GetComponent<CollectibleOutline>() == null) {
+                mapC.AddComponent<CollectibleOutline>();
+            }
         }
 
-        //if we've added new collectibles, save the file so we don't have to do it again
-        if(l < collectibles.Count) {
-            Debug.Log($"{collectibles.Count-l} New collectibles found, saving file");
+        //check through the list of collectibles to see if any are no longer on the map
+        List<Collectible> toRemove = new List<Collectible>();
+        foreach(Collectible c in collectibles) {
+            //for each collectible c, see if there is a gameobject with a matching name
+            if(!collectiblesOnMap.Exists(mc => mc.name == c.name) && c.map == SceneManager.GetActiveScene().name) {
+                toRemove.Add(c);
+                Debug.Log($"Removing collectible {c.name} from list, no longer on map");
+            }
+        }
+        foreach(Collectible c in toRemove) {
+            collectibles.Remove(c);
+        }
+        Save();
+
+        int amountCollected = collectibles.FindAll(c => c.isCollected).Count;
+    }
+
+    private void UpdateCollectible(Collectible c, GameObject mapC) {
+        if(c.description != mapC.GetComponent<CollectibleData>().description || c.name != mapC.name) {
+            c.description = mapC.GetComponent<CollectibleData>().description;
+            c.name = mapC.name; //in case the name changed
+            Debug.Log($"Updating description for {c.name}");
             Save();
         }
 
-        int amountCollected = collectibles.FindAll(c => c.isCollected).Count;
     }
 
     public void Collect(GameObject obj) {

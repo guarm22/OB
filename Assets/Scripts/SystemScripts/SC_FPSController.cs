@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
@@ -44,6 +45,8 @@ public class SC_FPSController : MonoBehaviour
     public float originalFOV;
     public float minFOV = 30;
 
+    public GameObject blacknessPanel;
+
     private bool mouseAccel;
     private Vector3 prevMousePosition;
     private float accelerationFactor = 0.01f;
@@ -75,13 +78,13 @@ public class SC_FPSController : MonoBehaviour
             originalCrouchSpeed *= 1.6f;
             originalWalkSpeed *= 1.3f;
         }
+        Rooms = GameObject.FindGameObjectsWithTag("Room").ToList();
 
         runningSpeed = originalRunSpeed;
         walkingSpeed = originalWalkSpeed;
         crouchSpeed = originalCrouchSpeed;
 
         if(PlayerPrefs.GetInt("Teleport", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
-            Rooms = GameObject.FindGameObjectsWithTag("Room").ToList();
             StartCoroutine(RandomTeleporting());
         }
     }
@@ -245,6 +248,25 @@ public class SC_FPSController : MonoBehaviour
     }
 
     public void TeleportRoom(GameObject room) {
+        StartCoroutine(TeleportEffects(room));
+    }
+
+    private IEnumerator TeleportEffects(GameObject room) {
+        blacknessPanel.SetActive(true);
+        blacknessPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        //slowly turn up alpha of panel over 0.5 seconds
+        float timer = 0f;
+        while(timer < 0.5f) {
+            timer += Time.deltaTime;
+            blacknessPanel.GetComponent<Image>().color += new Color(0, 0, 0, Time.deltaTime / 0.5f);
+
+            //warp fov
+            playerCamera.fieldOfView = Mathf.Lerp(FOV, 35, timer / 0.5f);
+
+            yield return null;
+        }
+        //return fov
+        playerCamera.fieldOfView = FOV;
         teleported = true;
         Vector3 tpLoc = GameObject.FindGameObjectsWithTag("Teleport").Where(x => x.name.Contains(room.name)).ElementAt(0).transform.position;
         if(tpLoc == null) {
@@ -252,6 +274,18 @@ public class SC_FPSController : MonoBehaviour
         }
         transform.position = tpLoc;
         characterController.enabled = false;
+        
+        yield return new WaitForSeconds(1f);
+        timer = 0f;
+        //slowly turn down alpha of panel
+        while(timer < 4f) {
+            timer += Time.deltaTime;
+            blacknessPanel.GetComponent<Image>().color -= new Color(0, 0, 0, Time.deltaTime / 4f);
+            yield return null;
+        }
+        blacknessPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        blacknessPanel.SetActive(false);
+
     }
 
     public void ChangeFOV(float fov) {
@@ -286,11 +320,21 @@ public class SC_FPSController : MonoBehaviour
         }
     }
 
+    public void LockMovement(bool lockMove) {
+        canMove = !lockMove;
+    }
+
     void Update()  { 
         CheckOutOfMap();  
         if(PlayerUI.paused || GameSystem.Instance.GameOver || CreatureControl.Instance.IsJumpscareFinished || PlayerUI.Instance.inMenu) {
             return;
         }
+        
+        //if in dev mode and press g, teleport to random room
+        if(GameSystem.InEditor() && Input.GetKeyDown(KeyCode.G)) {
+            TeleportRoom(Rooms[UnityEngine.Random.Range(0, Rooms.Count)]);
+        }
+
         PlayerMove();
     }
 }

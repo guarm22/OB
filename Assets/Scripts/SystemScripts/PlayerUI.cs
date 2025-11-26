@@ -37,12 +37,9 @@ public class PlayerUI : MonoBehaviour
     private AudioSource audioSource;
     private bool isReportTextGlitching = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         Instance = this;
         audioSource = this.gameObject.AddComponent<AudioSource>();
-        PopulateSelectorUI();
     }
 
     // Update is called once per frame
@@ -73,64 +70,17 @@ public class PlayerUI : MonoBehaviour
         reportScramble = activate;
     }
 
-    void PopulateSelectorUI() {
-        GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
-        //Float that determines height between each selector
-        float iter = 0f;
-        //for getting each element in the list
-        int i = 0;
-
-        //Creates each of the room selectors in the selection UI
-        foreach(GameObject room in rooms) {
-            GameObject ui = Instantiate(togglePrefab, transform);
-            ui.transform.SetParent(roomSelectionUI.transform);
-            ui.transform.localPosition = new Vector3(0f, iter, 0f);
-            ui.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = rooms[i].name;
-            //ui.transform.GetChild(1).gameObject.GetComponent<Text>().fontSize = 40;
-
-            ui.GetComponent<Toggle>().onValueChanged.AddListener(
-                delegate { RoomSelection.Instance.Select(ui); });
-
-            ui.transform.localScale = new Vector3(3f,3f,3f);
-            ui.name = rooms[i++].name;
-            iter+=100f;
-        }
-
-        List<string> types = DynamicObject.GetAllAnomalyTypes();
-        iter = 0f;
-        //Creates each of the type selectors
-        foreach(string type in types) {
-            GameObject ui = Instantiate(togglePrefab, transform);
-            ui.transform.SetParent(typeSelectionUI.transform);
-            ui.transform.localPosition = new Vector3(0f, iter, 0f);
-            ui.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = type;
-            ui.transform.localScale = new Vector3(3f,3f,3f);
-            ui.name = type;
-            iter+=100f;
-            ui.GetComponent<Toggle>().onValueChanged.AddListener(
-            delegate { TypeSelection.Instance.Select(ui); });       
-        }
-    }
-
     private void turnOffSelection() {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         inMenu = false;
-        if(selectionUI.GetComponent<ReportUI>() != null) {
-            selectionUI.GetComponent<ReportUI>().TurnOff();
-        }
-        else {
-            selectionUI.SetActive(false);
-        }
+        selectionUI.GetComponent<ReportUI>().TurnOff();
         defaultBottomRight.SetActive(true);
         SC_FPSController.Instance.canMove = true;
     }
     private void turnOnSelection() {
         selectionUI.SetActive(true);
-        if(selectionUI.GetComponent<ReportUI>() != null) {
-            selectionUI.GetComponent<ReportUI>().TurnOn();
-        }
-
+        selectionUI.GetComponent<ReportUI>().TurnOn();
         if(CreatureControl.Instance.ActiveCreatures.FindAll(x => x.name.Contains("Hider")).Count == 0) {
             if(!PunctureCollapse.Instance.isCollapsing) {
                 ScrambleReportUI(false);
@@ -168,26 +118,11 @@ public class PlayerUI : MonoBehaviour
     }
 
     void SelectionMenu() {
-        if(isGlitching) {
-            tabText.color = Color.red;
-            if(inMenu) {
-                turnOffSelection();
-                PostProcessingControl.Instance.ActivateDepthOfField(false);
-            }
-            if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu"))) {
-                if(!isReportTextGlitching) {
-                    audioSource.PlayOneShot(glitchSound);
-                    isReportTextGlitching = true;
-                    StartCoroutine(GlitchReportText());
-                }
-            }
-            return;
-        }
-        else {
-            tabText.color = Color.white;
-        }
-        //if menu is open, check if tab is pressed to close, otherwise stop movement
+        //if the report is glitching, change the tab text to red and do not allow menu interaction
+        if(isGlitching) { MenuSelectionGlitch(); return; }
+        else { tabText.color = Color.white; }
 
+        //if menu is open, check if tab is pressed to close, otherwise stop movement
         if(inMenu) {
             if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu")) || DivergenceControl.Instance.PendingReport) {
                 turnOffSelection();
@@ -197,6 +132,21 @@ public class PlayerUI : MonoBehaviour
         else if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu")) && !DivergenceControl.Instance.PendingReport) {
             PostProcessingControl.Instance.ActivateDepthOfField(true, 50, 1);
             turnOnSelection();
+        }
+    }
+
+    private void MenuSelectionGlitch() {
+        tabText.color = Color.red;
+        if(inMenu) {
+            turnOffSelection();
+            PostProcessingControl.Instance.ActivateDepthOfField(false);
+        }
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu"))) {
+            if(!isReportTextGlitching) {
+                audioSource.PlayOneShot(glitchSound);
+                isReportTextGlitching = true;
+                StartCoroutine(GlitchReportText());
+            }
         }
     }
 
@@ -246,7 +196,7 @@ public class PlayerUI : MonoBehaviour
 
     private void EscapeMenu() {
         //CHANGE TO ESCAPE
-        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Pause"))) { 
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Pause")) || Input.GetKeyDown(KeyCode.Escape)) { 
             PauseControl("escape");
         }
         if(Input.GetKeyDown(KeyCode.P)) {

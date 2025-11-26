@@ -21,6 +21,8 @@ public class DefaultUI : MonoBehaviour {
     private String originalText;
     public bool isTimerAnimFinished = false;
 
+    public TMP_Text prevReport;
+
     Vector3 originalPos;
     Vector3 originalScale;
 
@@ -78,18 +80,37 @@ public class DefaultUI : MonoBehaviour {
     void SetText() {
         float reportTime = DivergenceControl.Instance.TimeOfLastreport;
         float lockout = DivergenceControl.Instance.ReportLockout;
+        Report lastReport = DivergenceControl.Instance.reports.LastOrDefault();
+
+        //If in the first 5 seconds of the level, none of the if statements will be true
+        //this causes the report text to be stuck on "Verifying..." if a report was made right at the start
 
         if(!DivergenceControl.Instance.PendingReport && Time.time - reportTime > lockout+5) {
+            prevReport.text = "";
+            label.color = Color.white;
             label.text = "Report";
         }
         else if(Time.time - reportTime < lockout && DivergenceControl.Instance.PendingReport) {
             label.text = "Verifying...";
+
+            String types = "";
+            foreach(String type in lastReport.reportTypes) {
+                types += type;
+                if(type != lastReport.reportTypes.Last()) {
+                    types += ", ";
+                }
+            }
+
+            prevReport.text = "Reported " + types + " at " + lastReport.room;
         }
         else if(Time.time - reportTime > lockout && DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport) {
+            label.color = Color.green;
             label.text = "CORRECT";
         }
-        else if(Time.time - reportTime > lockout && !DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport && GameSystem.Instance.TimeInLevel > 10.5) {
+        else if(Time.time - reportTime > lockout && !DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport) {
             label.text = "WRONG";
+            label.color = Color.red;
+
         }
 
         if(Flashlight.Instance.beam.enabled) {

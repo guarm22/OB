@@ -33,7 +33,7 @@ public class CreditsMenu : MonoBehaviour {
         Nolan Bohn
         Faith Laliberte
         REEE Gang Members - Doc, Chickin, and CStan
-        Aggressive Napkin Members - Silver, Arcima, and Rabboni
+        Aggressive Napkin Members - Silver, Arcima, Noley, and Rabboni
 
         Music
         Main Menu Theme - 'atmosphärischer loop 128 bpm 8972' by van_Wiese on pixabay
