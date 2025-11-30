@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayAudio : CustomDivergence {
     public AudioClip sound;
     public float soundRepeatTimer;
+    public float audioRange = 100f;
     private AudioSource audioSource;
     // Start is called before the first frame update
     void Awake() {
@@ -12,6 +13,7 @@ public class PlayAudio : CustomDivergence {
             audioSource = this.gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
             audioSource.spatialBlend = 1f;
+            audioSource.maxDistance = audioRange;
         }
         else {
             audioSource = this.GetComponent<AudioSource>();

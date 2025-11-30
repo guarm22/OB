@@ -203,10 +203,6 @@ public class DivergenceControl : MonoBehaviour {
     private void ActivateRandomDivergence() {
         //Check if any divergences are allowed to spawn
         if(CanAnyDivergencesActivate() == false) {
-            //Random chance to make the level darker
-            if(UnityEngine.Random.Range(0, 100) < 50) {
-                //LightControl.Instance.KillLights(0.40f);
-            } 
             return;
         }
 

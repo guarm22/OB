@@ -30,9 +30,6 @@ public class GameSystem : MonoBehaviour {
     [HideInInspector]
     public int DivergencesReported = 0;
     [HideInInspector]
-    public int CreaturesReported = 0;
-
-    [HideInInspector]
     public int TimesPlayedOnEasy = 0;
 
     [HideInInspector]
