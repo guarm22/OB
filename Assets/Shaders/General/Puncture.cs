@@ -16,6 +16,5 @@ public class Puncture : MonoBehaviour {
     void Update() {
         count += Time.deltaTime * 0.6f;
         Shader.SetGlobalFloat("_angle", count);
-        Debug.Log(count);
     }
 }
