@@ -20,7 +20,28 @@ public class PatchNoteMenu : MonoBehaviour {
 
     void Start() {
         backButton.onClick.AddListener(BackButtonEvent);
-        patchNotes.text = @"
+        patchNotes.text = @"v0.8.2 (Started 9/21/2025):
+
+Changes:
+-Changed and added various objects on Cabin
+-The effect when being teleported is different
+-New background for Apartment
+-New fog effect on Graveyard
+
+Additions:
+-Started on The Puncture map
+-Updated Graveyard map
+-Added a secret collectible on Cabin
+-Added new text describing what report the player last did
+-Added a system for playing voice lines from files
+-Added subtitles
+
+Bugfixes:
+-Fixed an issue on Cabin where entering the kitchen would not properly trigger a room change
+-The report UI will no longer stop being glitched during the puncture collapse
+-The Puncture had incorrect material and shader applied to it
+
+
 v0.8.1 (Started 9/13/2025):
 
 Changes:

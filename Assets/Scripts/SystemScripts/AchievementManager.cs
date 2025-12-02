@@ -70,7 +70,7 @@ public class AchievementManager : MonoBehaviour
 
         foreach(Achievement a in achievements) {
             if(a.Name == "Back Home") {
-                if(level=="Apartment" && a.Progress == 0) {
+                if(level=="Apartment") {
                     UnlockAchievement(a.Name);
                 }
             }
@@ -90,25 +90,25 @@ public class AchievementManager : MonoBehaviour
             }
 
             if(a.Name == "A Night in the Woods") {
-                if(level=="Cabin" && a.Progress == 0) {
+                if(level=="Cabin") {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "Haunting Disappearences") {
-                if(level=="Graveyard" && a.Progress == 0) {
+                if(level=="Graveyard") {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "First Steps") {
-                if(level=="Tutorial" && a.Progress == 0) {
+                if(level=="Tutorial") {
                     UnlockAchievement(a.Name);
                 }
             }
 
             if(a.Name == "Beat " + diff) {
-                if(a.Name == "Beat " + diff && a.Progress == 0) {
+                if(a.Name == "Beat " + diff) {
                     UnlockAchievement(a.Name);
                 }
             }
