@@ -350,7 +350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4172469706349380, guid: 937d3a138c549c24e9d5e5352d774e77, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13605237
+      value: 0.172
       objectReference: {fileID: 0}
     - target: {fileID: 4172469706349380, guid: 937d3a138c549c24e9d5e5352d774e77, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1290,6 +1290,7 @@ Transform:
   - {fileID: 1610048555}
   - {fileID: 507278257}
   - {fileID: 163124835}
+  - {fileID: 779615500}
   - {fileID: 368303590}
   - {fileID: 1486891822}
   - {fileID: 1524596204}
@@ -1303,7 +1304,6 @@ Transform:
   - {fileID: 682992900}
   - {fileID: 1195428466}
   - {fileID: 1896526536}
-  - {fileID: 779615500}
   - {fileID: 93174186}
   m_Father: {fileID: 1961479190}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12371,7 +12371,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6315095918279648575, guid: 582abf97ecb4a1d4c8e99e763a493630, type: 3}
       propertyPath: m_Name
-      value: ShelvesTallA
+      value: ShelvesTallA - D
       objectReference: {fileID: 0}
     - target: {fileID: 6694718407815970693, guid: 582abf97ecb4a1d4c8e99e763a493630, type: 3}
       propertyPath: m_LocalScale.x
@@ -12424,13 +12424,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6315095918279648575, guid: 582abf97ecb4a1d4c8e99e763a493630, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 779615502}
   m_SourcePrefab: {fileID: 100100000, guid: 582abf97ecb4a1d4c8e99e763a493630, type: 3}
 --- !u!4 &779615500 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6694718407815970693, guid: 582abf97ecb4a1d4c8e99e763a493630, type: 3}
   m_PrefabInstance: {fileID: 779615499}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &779615501 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6315095918279648575, guid: 582abf97ecb4a1d4c8e99e763a493630, type: 3}
+  m_PrefabInstance: {fileID: 779615499}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &779615502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779615501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  energyCost: 25
+  customDivergence: {fileID: 0}
+  difficulty: All
 --- !u!1001 &780791458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18547,7 +18571,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1159585271464706, guid: 356b1d37aedb571479e6cff7bda80568, type: 3}
       propertyPath: m_Name
-      value: Paint_09 - D (easy)
+      value: aint_09 - D
       objectReference: {fileID: 0}
     - target: {fileID: 4962838275866674, guid: 356b1d37aedb571479e6cff7bda80568, type: 3}
       propertyPath: m_LocalScale.x
@@ -22387,7 +22411,7 @@ MonoBehaviour:
   type: 1
   energyCost: 25
   customDivergence: {fileID: 0}
-  difficulty: Easy
+  difficulty: All
 --- !u!1 &1281587265
 GameObject:
   m_ObjectHideFlags: 0
@@ -27826,7 +27850,7 @@ MonoBehaviour:
   type: 1
   energyCost: 25
   customDivergence: {fileID: 0}
-  difficulty: Hard
+  difficulty: All
 --- !u!1001 &1554309860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55367,7 +55391,7 @@ GameObject:
   - component: {fileID: 6998527034750487431}
   - component: {fileID: 6998527034750487428}
   m_Layer: 0
-  m_Name: Bed_Apt_02_01 - D (hard)
+  m_Name: 'Bed_Apt_02_01 - D '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

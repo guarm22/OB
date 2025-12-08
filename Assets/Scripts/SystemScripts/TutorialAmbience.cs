@@ -47,7 +47,6 @@ public class TutorialAmbience : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if(PlayerUI.paused) return;
-        Debug.Log(ambienceTimer);
 
         if(ambienceTimer >= ambienceReplayDelay) {
             StopAllCoroutines();

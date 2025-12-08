@@ -60,7 +60,7 @@ namespace SojaExiles {
 				if (dist < 4  && !inAnim) {
 
 					if(locked) {
-						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)) {
+						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
 							DoorSound(lockedSound, 0.0f);
 						}
 						return;
@@ -68,7 +68,7 @@ namespace SojaExiles {
 
 					if (open == false) {
 
-						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)){
+						if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))){
 							StartCoroutine(opening());
 							DoorSound(openSound, 0.0f);
 						}
@@ -76,7 +76,7 @@ namespace SojaExiles {
 					else {
 
 						if (open == true) {
-							if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)) {
+							if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
 								StartCoroutine(closing());
 								DoorSound(closeSound, 0.25f);
 							}
