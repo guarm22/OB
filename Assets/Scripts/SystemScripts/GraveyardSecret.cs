@@ -5,8 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 
 public class GraveyardSecret : MonoBehaviour {
-    public GameObject lockedDoorLeft;
-    public GameObject lockedDoorRight;
+    public GameObject gate;
 
     public AudioSource audioSource;
 
@@ -27,17 +26,8 @@ public class GraveyardSecret : MonoBehaviour {
     }
 
     private void UnlockGate() {
-        lockedDoorRight.transform.DORotate(new Vector3(-90, 0, -270), 6f);
-        lockedDoorLeft.transform.DORotate(new Vector3(-90 , 0, 90), 6f);
-
-        lockedDoorLeft.transform.DOMove(new Vector3(lockedDoorLeft.transform.position.x + 0.8f, 1, lockedDoorLeft.transform.position.z+1), 2f);
-        lockedDoorRight.transform.DOMove(new Vector3(lockedDoorRight.transform.position.x - 0.8f, 1, lockedDoorRight.transform.position.z+1), 2f);
-
-        foreach(GameObject padlock in padlocks) {
-            padlock.SetActive(false);
-        }
-
-        audioSource.Play();
+        gate.GetComponentInChildren<MetalGateOpen>().OpenGate();
+        padlocks.ForEach(p => p.SetActive(false));
     }
 
    
@@ -56,8 +46,7 @@ public class GraveyardSecret : MonoBehaviour {
             }
 
             if(keys.Where(k => k.activeInHierarchy).ToList().Count == 0) {
-                Debug.Log("Unlocking door");
-                //add door unlocking logic here
+                UnlockGate();
             }
         }
     }

@@ -42,6 +42,19 @@ public class MetalGateOpen : MonoBehaviour {
         inAnim = false;
     }
 
+    public void OpenGate() {
+        if(inAnim || opened) {
+            return;
+        }
+        StartCoroutine(animationTimer());
+        gateSound.Play();
+        Debug.Log("Opening Gate");
+        closeColliders.ForEach(collider => collider.enabled = true);
+        openCollider.enabled = false;
+        gateRight.transform.DOLocalRotate(rightOpenRotation, openTime);
+        gateLeft.transform.DOLocalRotate(leftOpenRotation, openTime);
+    }
+
     void OnMouseOver() {
         if(Vector3.Distance(this.transform.position, Player.transform.position) < 4f) {
             if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
