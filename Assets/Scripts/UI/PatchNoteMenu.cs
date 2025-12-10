@@ -20,7 +20,32 @@ public class PatchNoteMenu : MonoBehaviour {
 
     void Start() {
         backButton.onClick.AddListener(BackButtonEvent);
-        patchNotes.text = @"v0.8.2 (Started 9/21/2025):
+        patchNotes.text = @"v0.9.0.2:
+
+Changes:
+-Switched to Unity Editor version 6000.3.0f1. This was to fix an issue with terrain details
+-Removed a few objects on Cabin that were not compatible with the new Unity version
+
+Bugfixes:
+-Fixed an issue where terrain details would not load
+
+
+v0.9.0.1 (Started 12/1/2025) - The Graveyard/Tutorial Update:
+
+Changes:
+-The Puncture collapse spheres now expand faster on all maps, 2.5x faster on Graveyard
+-Graveyard now has a secret unlockable area
+-Level select level images updated
+
+Additions:
+-New Graveyard divergences
+-Tutorial completely remade
+
+Bugfixes:
+-Fixed an issue where certain doors would not be interactable if the player had rebound their interact key
+
+
+v0.8.2 (Started 9/21/2025):
 
 Changes:
 -Changed and added various objects on Cabin

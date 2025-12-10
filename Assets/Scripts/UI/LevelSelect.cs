@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 using UnityEngine.UI;
+using NUnit.Framework.Constraints;
 
 public class LevelSelect : MonoBehaviour {
 
@@ -16,15 +18,27 @@ public class LevelSelect : MonoBehaviour {
     public Image currentLevelImage;
     public Image underline;
 
+    public GameObject levelImageLeft;
+    public GameObject levelImageRight;
+
     public Image divider;
 
+    public Image background;
+
     private String currentLevel;
+
+    private bool inAnim = false;
 
     private List<String> levels = new List<String> { "Tutorial", "Cabin", "Graveyard", "Apartment", "The_Puncture" };
     private List<String> unavailableLevels = new List<String> { "ThePuncture"};
 
     private void SetLevel(String level) {
+        if(inAnim) {
+            return;
+        }
+        int currentLevelNum = levels.IndexOf(currentLevel);
         currentLevel = level;
+        int newLevelNum = levels.IndexOf(level);
 
         //Bold the selected level and create a line underneath by using the list of levels
         foreach (String l in levels) {
@@ -40,9 +54,33 @@ public class LevelSelect : MonoBehaviour {
                 levelText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Normal;
             }
         }
-        //update level image
-        currentLevelImage.sprite = levelImages[levels.IndexOf(currentLevel)];
+        //update level image on initial open
+        if(currentLevelImage.sprite == null) {
+            currentLevelImage.sprite = levelImages[levels.IndexOf(currentLevel)];
+            return;
+        }
+        bool left = newLevelNum > currentLevelNum;
+        StartCoroutine(LevelAnimation(left));
+    }
 
+    private IEnumerator LevelAnimation(bool left) {
+        inAnim = true;
+        float moveDuration = 0.75f;
+
+        currentLevelImage.transform.DOComplete();
+        Vector3 originalLocation = background.transform.position;
+
+        Vector3 movePos = left ? levelImageRight.transform.position : levelImageLeft.transform.position;
+
+        background.transform.DOMove(movePos, moveDuration);
+        yield return new WaitForSeconds(moveDuration);
+        currentLevelImage.sprite = levelImages[levels.IndexOf(currentLevel)];
+        yield return new WaitForSeconds(0.1f);
+        background.transform.DOMove(originalLocation, moveDuration);
+        yield return new WaitForSeconds(moveDuration);
+        
+        inAnim = false;
+        yield break;
     }
 
     public String GetLevel() {
