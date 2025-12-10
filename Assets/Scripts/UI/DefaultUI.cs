@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 
 public class DefaultUI : MonoBehaviour {
@@ -36,6 +37,10 @@ public class DefaultUI : MonoBehaviour {
     }
 
     public IEnumerator TimerAnimation() {
+        if(SceneManager.GetActiveScene().name == "Tutorial") {
+            forceFinishAnim();
+            yield break;
+        }
         //increase timer size
         timer.transform.localScale = new Vector3(originalScale.x * 2.5f, originalScale.y * 2.5f, originalScale.z * 2.5f);
         //move timer to the center of the screen

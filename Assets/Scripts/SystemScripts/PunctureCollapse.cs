@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PunctureCollapse : MonoBehaviour {
     public static PunctureCollapse Instance;
@@ -36,7 +37,14 @@ public class PunctureCollapse : MonoBehaviour {
             sphere.transform.position = new Vector3(sphere.transform.position.x, sphere.transform.position.y + 1f, sphere.transform.position.z);
             sphere.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             sphere.transform.SetParent(room.transform);
-            sphere.GetComponent<ExpandingSphere>().ManualActivation(0.8f);
+
+            //change expansion speed based map
+            float expansionSpeed = 1f;
+            if(SceneManager.GetActiveScene().name == "Graveyard") {
+                expansionSpeed = 2.5f;
+            }
+
+            sphere.GetComponent<ExpandingSphere>().ManualActivation(expansionSpeed);
 
             float delay = Random.Range(.8f, 1.1f);
             yield return new WaitForSeconds(delay);

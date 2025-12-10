@@ -12899,7 +12899,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: v0.8.1
+  m_text: v0.8.2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9d1e1857b8f7b424cb5f4a9e225b539a, type: 2}
   m_sharedMaterial: {fileID: 6774795204957673895, guid: 9d1e1857b8f7b424cb5f4a9e225b539a, type: 2}
@@ -21515,6 +21515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 72ed728920be53940b31b2a4bd2f4de3, type: 3}
   soundRepeatTimer: 15
+  audioRange: 100
 --- !u!1001 &676166894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22148,9 +22149,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'GRAVEYARD
-
-    Warning - WIP no Divergences'
+  m_text: GRAVEYARD
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9d1e1857b8f7b424cb5f4a9e225b539a, type: 2}
   m_sharedMaterial: {fileID: 6774795204957673895, guid: 9d1e1857b8f7b424cb5f4a9e225b539a, type: 2}
@@ -57599,6 +57598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 08975a96e04a9804698c52699c2cf669, type: 3}
   soundRepeatTimer: 20
+  audioRange: 100
 --- !u!114 &1582410031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59696,6 +59696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 49d89beae7403904983b01f33f02770a, type: 3}
   soundRepeatTimer: 0
+  audioRange: 100
 --- !u!114 &1639299331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64873,6 +64874,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 72ed728920be53940b31b2a4bd2f4de3, type: 3}
   soundRepeatTimer: 15
+  audioRange: 100
 --- !u!1 &1762282778
 GameObject:
   m_ObjectHideFlags: 0
@@ -66698,6 +66700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: edd47ed59dcda714c8f5da29dd91a57c, type: 3}
   soundRepeatTimer: 20
+  audioRange: 100
 --- !u!4 &1793389530 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6013539216398759900, guid: cf7020acbae0bd1409bb4ddd819c4569, type: 3}
@@ -73688,6 +73691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 4c5d0a9b43e964a4d85dcaf423f15a1c, type: 3}
   soundRepeatTimer: 18
+  audioRange: 100
 --- !u!1 &1991483533
 GameObject:
   m_ObjectHideFlags: 0
@@ -74715,11 +74719,11 @@ MonoBehaviour:
   ThePuncture: {fileID: 477319394}
   Tutorial: {fileID: 899627038}
   levelImages:
-  - {fileID: 21300000, guid: 157ecd390ba13694dbf8d2e6c520a23c, type: 3}
-  - {fileID: 21300000, guid: f4a765a94e274a24e8f2ed864a0310f7, type: 3}
-  - {fileID: 21300000, guid: b7027493ecc5d5844b22a1bd07016d4e, type: 3}
-  - {fileID: 21300000, guid: 830b9b7b84e79754d9439c1e7f2c2a33, type: 3}
-  - {fileID: 21300000, guid: f80d1800a64007f4a82076399ac2d203, type: 3}
+  - {fileID: 21300000, guid: 90872ab124a593f4694f099531891a01, type: 3}
+  - {fileID: 21300000, guid: d78886cd5725bf14fa9e257bdf893f3b, type: 3}
+  - {fileID: 21300000, guid: a886e259cc207a241a3f4d1a51e78cfb, type: 3}
+  - {fileID: 21300000, guid: 5c20a7f23bf56f4449b453ad36501da0, type: 3}
+  - {fileID: 21300000, guid: cc6889e0f0e3f4546b7e5a813ce985b3, type: 3}
   currentLevelImage: {fileID: 463052098}
   underline: {fileID: 2145843361}
   divider: {fileID: 1445534608}
@@ -80487,6 +80491,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 08975a96e04a9804698c52699c2cf669, type: 3}
   soundRepeatTimer: 9
+  audioRange: 100
 --- !u!114 &2146763268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112811,6 +112816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 2b3ebe912a1ea944288524d76523ebf8, type: 3}
   soundRepeatTimer: 12
+  audioRange: 100
 --- !u!33 &808951037570876232
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -156159,6 +156165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 08975a96e04a9804698c52699c2cf669, type: 3}
   soundRepeatTimer: 15
+  audioRange: 100
 --- !u!114 &8105049399491776805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159513,7 +159520,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8955700066347956512, guid: 40b962dd12cf3004cb1ef4de81f88e42, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

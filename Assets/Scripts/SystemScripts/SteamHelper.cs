@@ -2,7 +2,6 @@ using Steamworks;
 using UnityEngine;
 
 public class SteamHelper : MonoBehaviour {
-
     public static void IsAchievementUnlocked(string id) {
         if(!SteamManager.Initialized) {
             return;
@@ -17,8 +16,11 @@ public class SteamHelper : MonoBehaviour {
             return;
         }
         SteamUserStats.SetAchievement(id);
+        Debug.Log("a" + id);
         SteamUserStats.StoreStats();
+
     }
+    
 
     public static void ResetAchievements() {
         if(!SteamManager.Initialized) {

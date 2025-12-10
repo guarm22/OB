@@ -41,12 +41,15 @@ public class CreatureControl : MonoBehaviour
         return CreaturesPerRoom.Keys.Where(k => CreaturesPerRoom[k] == 0).ToList();
     }
 
-    private void createCreature(GameObject prefab, string type = "Zombie") {
+    private void createCreature(GameObject prefab, string type = "Zombie", string roomPref = "") {
         if(GetRoomsWithNoCreatures().Count == 0) {
             return;
         }
         int randomVal = UnityEngine.Random.Range(0, GetRoomsWithNoCreatures().Count);
         string room = GetRoomsWithNoCreatures()[randomVal];
+        if(roomPref != "") {
+            room = roomPref;
+        }
 
         Vector3 spawnPos = FindSpawnPoint(room, type);
         GameObject roomObj = GameObject.Find(room);
@@ -78,7 +81,8 @@ public class CreatureControl : MonoBehaviour
             
             List<GameObject> possibleSpawns = new List<GameObject>();
             foreach(GameObject spawnpoint in CreatureSpawnpoints) {
-                if(spawnpoint.name.Contains(room)) {                    possibleSpawns.Add(spawnpoint);
+                if(spawnpoint.name.Contains(room)) {                   
+                    possibleSpawns.Add(spawnpoint);
                 }
             }
             //if no predetermined spawns were found, get one based on room bounds
@@ -141,7 +145,7 @@ public class CreatureControl : MonoBehaviour
     }
 
     public void ManuallySpawnCreature(string room) {
-        createCreature(chaserPrefab, "Chaser");
+        createCreature(chaserPrefab, "Chaser", room);
     }
 
     private void doCreatureCheck() {
