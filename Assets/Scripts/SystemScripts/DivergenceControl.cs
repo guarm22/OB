@@ -323,14 +323,8 @@ public class DivergenceControl : MonoBehaviour {
         PendingReport = true;
         TimeOfLastreport = Time.time;
 
-        //Reset UI elements
-        if(TypeSelection.Instance) {
-            TypeSelection.CurrentlySelected.Clear();
-            TypeSelection.Instance.ResetToggles();
-            RoomSelection.Instance.ResetToggles();
-        }
-
         if(ReportUI.Instance) {
+            PlayerUI.Instance.PhysicalUI();
             ReportUI.Instance.ResetSelections();
         }
         foreach(DynamicObject d in found) {DivergencesReportedCorrectly.Add(d);}

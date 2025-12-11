@@ -52,6 +52,10 @@ public class CreatureControl : MonoBehaviour
         }
 
         Vector3 spawnPos = FindSpawnPoint(room, type);
+        //special case for if no spawn point is found for hider or lurker
+        //in this case, a zombie should spawn in its place using a recursive function call
+        if(spawnPos == new Vector3(-1,-1,-1)){ return; }
+
         GameObject roomObj = GameObject.Find(room);
         GameObject creature = Instantiate(prefab, spawnPos, Quaternion.identity, roomObj.transform);
         Debug.Log("Spawning " + type + " in " + room + " at " + spawnPos);
@@ -102,7 +106,11 @@ public class CreatureControl : MonoBehaviour
     }
 
     public Vector3 FindHiderSpawn(String room) {
-        Vector3 spawnPos = GameObject.Find("HiderSpawn"+room).transform.position + new Vector3(0, -2, 0);
+        if(!GameObject.Find("HiderSpawn"+room)) {
+            createCreature(zombiePrefab, "Zombie", room);
+            return new Vector3(-1, -1, -1);
+        }
+        Vector3 spawnPos = GameObject.Find("HiderSpawn"+room).transform.position;
         return spawnPos;
     }
 
@@ -140,6 +148,10 @@ public class CreatureControl : MonoBehaviour
     }
 
     private Vector3 FindLurkerSpawn(string room) {
+        if(!GameObject.Find("LurkerSpawn"+room)) {
+            createCreature(zombiePrefab, "Zombie", room);
+        }
+
         Vector3 spawnPos = GameObject.Find("LurkerSpawn"+room).transform.position;
         return spawnPos;
     }
@@ -246,15 +258,16 @@ public class CreatureControl : MonoBehaviour
     void Start() {
         Instance = this;
 
-        if((SceneManager.GetActiveScene().name == "Cabin"  || SceneManager.GetActiveScene().name == "Apartment") && ActivateLurker) {
+        if(ActivateLurker) {
             creatures.Add(lurkerPrefab);
         }
-        if(SceneManager.GetActiveScene().name == "Cabin" && ActivateHider) {
+        if(ActivateHider) {
             creatures.Add(hiderPrefab);
         }
 
-        creatures.Add(zombiePrefab);
-
+        if(ActivateZombie) {
+            creatures.Add(zombiePrefab);
+        }
         CreatureSpawnpoints = GameObject.FindGameObjectsWithTag("CreatureSpawnPoint").ToList();
 
         if(ActivateChaser) {

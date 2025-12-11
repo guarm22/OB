@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
@@ -41,13 +42,16 @@ public class ReportUI : MonoBehaviour {
     private bool ScrambledUI = false;
     private bool CurrentlyScrambling = false;
 
+    public Light greenLight;
+    public Light yellowLight;
+    public Light redLight;
+
     void Start() {
         CreateUI();
         Instance = this;
         reportButton.onClick.AddListener(Report);
         GetRooms();
         audioSource = this.gameObject.GetComponent<AudioSource>();
-
     }
 
     void Update() {
@@ -56,8 +60,33 @@ public class ReportUI : MonoBehaviour {
         UpdateStatus();
         UpdateEnergyCost();
 
-        if(!CurrentlyScrambling && ScrambledUI) {
-            ScrambleUI(true);
+        if(PunctureCollapse.Instance.isCollapsing) {
+            if(!PlayerUI.Instance.reportDeviceUp) {return;}
+            if(ScrambledUI == false) {
+                ScrambledUI = true;
+                ScrambleUI(true);
+            }
+            else if(!CurrentlyScrambling){
+                ScrambleUI(true);
+            }
+            return;
+        }
+
+        if(PlayerUI.Instance.reportDeviceUp) {
+            if(!ScrambledUI) {
+                if(CanAnyHidersSeePlayer()){
+                    ScrambleUI(true);
+                }
+            }
+        }
+
+        if(ScrambledUI) {
+            if(!CanAnyHidersSeePlayer()) {
+                ScrambleUI(false);
+            }
+            else if(CurrentlyScrambling == false){
+                ScrambleUI(true);
+            }
         }
     }
 
@@ -73,7 +102,7 @@ public class ReportUI : MonoBehaviour {
     }
 
     public void TurnOn() {
-        if(PlayerUI.Instance.reportScramble) {
+        if(CanAnyHidersSeePlayer()) {
             ScrambleUI(true);
         }
         else {
@@ -82,12 +111,19 @@ public class ReportUI : MonoBehaviour {
         }
     }
 
-    public void TurnOff() {
-        if(!PlayerUI.Instance.reportScramble) {
-            ScrambleUI(false);
+    public bool CanAnyHidersSeePlayer() {
+        List<Hider> hiders = FindObjectsByType<Hider>(FindObjectsSortMode.None).ToList();
+        foreach(Hider hider in hiders) {
+            if(hider.currentlySeeingPlayer){
+                return true;
+            }
         }
-        CurrentlyScrambling =false;
-        this.gameObject.SetActive(false);
+        return false;
+    }
+
+    public void TurnOff() {
+        ScrambleUI(false);
+        CurrentlyScrambling = false;
     }
 
     private IEnumerator Scramble() {
@@ -110,7 +146,6 @@ public class ReportUI : MonoBehaviour {
                 }
             }
         }
-        CurrentlyScrambling = false;
     }
 
     private void UpdateEnergyCost() {
@@ -143,33 +178,45 @@ public class ReportUI : MonoBehaviour {
         float divergenceRatio = (float) divergences / maxDivergences;
 
         if(divergenceRatio <= Warning.warningThreshold) {
-            StatusText.text = Statuses[0];
+            StatusText.text = " " + Statuses[0];
             StatusText.color = StatusColors[0];
+            greenLight.gameObject.SetActive(true);
+            yellowLight.gameObject.SetActive(false);
+            redLight.gameObject.SetActive(false);
         }
         else if(divergenceRatio <= Warning.dangerThreshold) {
-            StatusText.text = Statuses[1];
+            StatusText.text = " " + Statuses[1];
             StatusText.color = StatusColors[1];
+            greenLight.gameObject.SetActive(false);
+            yellowLight.gameObject.SetActive(true);
+            redLight.gameObject.SetActive(false);
         }
         else {
-            StatusText.text = Statuses[2];
+            StatusText.text = " " + Statuses[2];
             StatusText.color = StatusColors[2];
+            greenLight.gameObject.SetActive(false);
+            yellowLight.gameObject.SetActive(false);
+            redLight.gameObject.SetActive(true);
         }
     }
 
     private void UpdateButton() {
         if(SelectedTypes.Count*DivergenceControl.Instance.EnergyPerGuess > GameSystem.Instance.CurrentEnergy || SelectedRoom == null || SelectedTypes.Count == 0 || SelectedRoom == "") {
-            reportButton.GetComponent<Image>().color = DisabledButtonColor;
+            reportButton.GetComponentInChildren<TMP_Text>().color = DisabledButtonColor;
         }
         else {
-            reportButton.GetComponent<Image>().color = NormalButtonColor;
+            reportButton.GetComponentInChildren<TMP_Text>().color = NormalButtonColor;
         }
     }
 
     public void findPlayerLoc() {
         foreach(GameObject room in rooms) {
             if(PlayerUI.Instance.GetCurrentRoom() == room.name) {
-                playerLoc.transform.position = room.transform.position - new Vector3(0,Display.main.systemHeight*0.022f,0);
+                playerLoc.transform.localPosition = room.transform.localPosition - new Vector3(0,50,0);
+                room.GetComponent<Image>().color = Color.green;
+                continue;
             }
+            room.GetComponent<Image>().color = Color.white;
         }
     }
 

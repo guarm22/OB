@@ -26,7 +26,7 @@ public class Flashlight : MonoBehaviour
 
     private float flashlightMoveTime = 0.2f;
 
-    private bool isOn;
+    public bool isOn;
 
     private float bobSpeed = 2f;
     private float bobAmount = 0.01f;
@@ -87,25 +87,26 @@ public class Flashlight : MonoBehaviour
             }
         }
 
-        if(GameSystem.Instance.CurrentEnergy <= 1) {
+        if(GameSystem.Instance.CurrentEnergy <= 1 && isOn) {
             TurnOffLight();
             return;
         }
 
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Flashlight"))) {
-            AudioSource.PlayClipAtPoint(flashOn, this.gameObject.transform.position);
             if(!isOn) { TurnOnLight(); }
             else { TurnOffLight(); }
         }
     }
 
     private void TurnOnLight() {
+        AudioSource.PlayClipAtPoint(flashOn, this.gameObject.transform.position);
         StartCoroutine(MoveOverTime(PhysicalFlashlight.transform, offFlashlingPos, defaultFlashlightPos, flashlightMoveTime));
         beam.enabled = true;
         isOn = true;
     }
 
-    private void TurnOffLight() {
+    public void TurnOffLight() {
+        AudioSource.PlayClipAtPoint(flashOn, this.gameObject.transform.position);
         StartCoroutine(MoveOverTime(PhysicalFlashlight.transform, defaultFlashlightPos, offFlashlingPos, flashlightMoveTime));
         beam.enabled = false;
         isOn = false;

@@ -107,7 +107,7 @@ MonoBehaviour:
   farSound: {fileID: 8300000, guid: 77f8bff6e7bcae84787189ad5fd64fd4, type: 3}
   soundTimerStart: 9.9
   soundTimerMax: 10
-  creatureSpeed: 7
+  creatureSpeed: 10
   closeSoundRange: 10
   isPlayerSeen: 0
   HomeRoom: 
@@ -220,7 +220,7 @@ PrefabInstance:
       value: Creep_mesh_lod1
       objectReference: {fileID: 0}
     - target: {fileID: 1630794972795428178, guid: af69d37b180cc2f49b87e760dfaa46bb, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1eff00a24882aa346bc0c59972ff7f68, type: 2}
     m_RemovedComponents: []
@@ -243,7 +243,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &2054124028668145362
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -257,6 +257,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

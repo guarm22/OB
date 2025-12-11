@@ -12,7 +12,7 @@ namespace NavKeypad
         [SerializeField] private UnityEvent onAccessGranted;
         [SerializeField] private UnityEvent onAccessDenied;
         [Header("Combination Code (9 Numbers Max)")]
-        [SerializeField] private int keypadCombo = 1234576;
+        [SerializeField] public int keypadCombo = 1234576;
 
         public UnityEvent OnAccessGranted => onAccessGranted;
         public UnityEvent OnAccessDenied => onAccessDenied;
@@ -47,6 +47,13 @@ namespace NavKeypad
         {
             ClearInput();
             panelMesh.material.SetVector("_EmissionColor", screenNormalColor * screenIntensity);
+        }
+
+        public void SetCombo(string newCombo)
+        {
+            keypadCombo = Int32.Parse(newCombo);
+            Debug.Log(keypadCombo);
+;
         }
 
 

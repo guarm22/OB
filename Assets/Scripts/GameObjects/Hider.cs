@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class Hider : CreatureBase {
@@ -12,27 +13,43 @@ public class Hider : CreatureBase {
 
     public AudioClip scareSound;
     public AudioClip firstLookSound;
+    public GameObject eyeball;
 
     private bool firstLook = false;
 
-    private bool lookedLastFrame = false;
+    public float lookRange = 45f;
+
+    public bool currentlySeeingPlayer = false;
 
     // Start is called before the first frame update
     protected override void Awake() {
         player = GameObject.Find("Player");
         ads = this.gameObject.AddComponent<AudioSource>();
         ads.volume = PlayerPrefs.GetInt("CreatureVolume", 50)/100f;
+        StartCoroutine(MoveBody());
+    }
+
+    private IEnumerator MoveBody() {
+        float moveDuration = 3f;
+        float movDirection = 0.2f;
+        Vector3 currentPos = eyeball.transform.position;
+        while (true) {
+            eyeball.transform.DOMove(new Vector3(currentPos.x, currentPos.y+movDirection, currentPos.z), moveDuration);
+            yield return new WaitForSeconds(moveDuration);
+            movDirection*=-1;
+        }
     }
 
     // Update is called once per frame
     protected override void Update() {
+        if(PlayerUI.paused) { return; }
+
         timer += Time.deltaTime;
         //if we can see the player, remove 1 energy per second
-        if(canSeePlayer(25f)) {
+        if(canSeePlayer(lookRange)) {
             base.FacePlayer();
-            lookedLastFrame = true;
+            currentlySeeingPlayer = true;
             if(!firstLook) {
-                PlayerUI.Instance.ScrambleReportUI(true);
                 ads.pitch = 1f;
                 ads.PlayOneShot(this.firstLookSound);
                 firstLook = true;
@@ -43,9 +60,8 @@ public class Hider : CreatureBase {
                 timer = 0f;
             }
         }
-        else if(!canSeePlayer() && lookedLastFrame) {
-            PlayerUI.Instance.ScrambleReportUI(false);
-            lookedLastFrame = false;
+        else if(!canSeePlayer() && currentlySeeingPlayer) {
+            currentlySeeingPlayer = false;
         }
         else {
             firstLook = false;

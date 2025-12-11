@@ -46,7 +46,7 @@ public class ElevatorDoor : MonoBehaviour{
     }
 
     void Update() {
-        if(Input.GetKeyDown(KeyCode.O)) {
+        if(Input.GetKeyDown(KeyCode.O) && GameSystem.InEditor()) {
             if(open){
                 open = false;
                 StartCoroutine(CloseDoors());

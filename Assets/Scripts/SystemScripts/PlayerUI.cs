@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,10 +11,7 @@ public class PlayerUI : MonoBehaviour
     ///Default UI that appears on the bottom right of the players screen
     public GameObject defaultUI;
     //UI that appears on the bottom right when the player presses tab
-    public GameObject selectionUI;
-    public GameObject roomSelectionUI;
-    public GameObject typeSelectionUI;
-    public GameObject togglePrefab;
+
     public GameObject roomText;
     public GameObject escapeMenuUI;
     public GameObject EndGameUI;
@@ -28,14 +26,15 @@ public class PlayerUI : MonoBehaviour
     public GameObject prompt;
     public bool havePausedAtleastOnce = false;
     public String currentRoom;
-
-    public bool reportScramble = false;
-
     public bool isGlitching = false;
 
     public AudioClip glitchSound;
     private AudioSource audioSource;
     private bool isReportTextGlitching = false;
+    public GameObject crosshair;
+
+    public GameObject reportDevice;
+    public bool reportDeviceUp = false;
 
     void Start() {
         Instance = this;
@@ -66,38 +65,6 @@ public class PlayerUI : MonoBehaviour
         prompt.GetComponent<TMP_Text>().text = text;
     }
 
-    public void ScrambleReportUI(bool activate) {
-        reportScramble = activate;
-    }
-
-    private void turnOffSelection() {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        inMenu = false;
-        selectionUI.GetComponent<ReportUI>().TurnOff();
-        defaultBottomRight.SetActive(true);
-        SC_FPSController.Instance.canMove = true;
-    }
-    private void turnOnSelection() {
-        selectionUI.SetActive(true);
-        selectionUI.GetComponent<ReportUI>().TurnOn();
-        if(CreatureControl.Instance.ActiveCreatures.FindAll(x => x.name.Contains("Hider")).Count == 0) {
-            if(!PunctureCollapse.Instance.isCollapsing) {
-                ScrambleReportUI(false);
-            }
-        }
-
-        //turn off any currently playing warnings
-        if(Warning.Instance != null) {
-            Warning.Instance.TurnOffAlert();
-        }
-        defaultBottomRight.SetActive(false);
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
-        inMenu = true;
-        SC_FPSController.Instance.canMove = false;
-    }
-
     private IEnumerator GlitchReportText() {
         //for 0.5 seconds, change the tab text to random characters
         float elapsedTime = 0f;
@@ -117,29 +84,66 @@ public class PlayerUI : MonoBehaviour
         isReportTextGlitching = false;
     }
 
+    private void TurnOnPhysicalUI() {
+    
+        if(DivergenceControl.Instance.PendingReport) {
+            return;
+        }
+        if(Warning.Instance != null) {
+            Warning.Instance.TurnOffAlert();
+        }
+        if(Flashlight.Instance.isOn) {
+            Flashlight.Instance.TurnOffLight();
+        }  
+        crosshair.SetActive(false);
+        Vector3 onPos = new Vector3(0.47f, -.08f, .6f);
+        reportDeviceUp = true;
+        inMenu = true;
+        reportDevice.transform.DOLocalMove(onPos, 0.5f);
+        reportDevice.transform.DOLocalRotate(new Vector3 (0, -90, 0), 0.9f);
+
+        defaultBottomRight.SetActive(false);
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        SC_FPSController.Instance.canMove = false;
+        ReportUI.Instance.TurnOn();
+    }
+
+    private void TurnOffPhysicalUI() {
+
+        Vector3 offPos = new Vector3(0, -5, 0);
+        reportDeviceUp = false;
+        reportDevice.transform.DOLocalMove(offPos, 0.5f);
+        reportDevice.transform.DOLocalRotate(new Vector3 (0, -90, -45), 0.7f);
+        crosshair.SetActive(true);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        inMenu = false;
+        defaultBottomRight.SetActive(true);
+        SC_FPSController.Instance.canMove = true; 
+        ReportUI.Instance.TurnOff();
+    }
+
+    public void PhysicalUI() {
+        if(!inMenu) {TurnOnPhysicalUI();}
+        else {TurnOffPhysicalUI();}
+    }
+
     void SelectionMenu() {
         //if the report is glitching, change the tab text to red and do not allow menu interaction
         if(isGlitching) { MenuSelectionGlitch(); return; }
         else { tabText.color = Color.white; }
 
-        //if menu is open, check if tab is pressed to close, otherwise stop movement
-        if(inMenu) {
-            if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu")) || DivergenceControl.Instance.PendingReport) {
-                turnOffSelection();
-                PostProcessingControl.Instance.ActivateDepthOfField(false);
-            }
-        }
-        else if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu")) && !DivergenceControl.Instance.PendingReport) {
-            PostProcessingControl.Instance.ActivateDepthOfField(true, 50, 1);
-            turnOnSelection();
+        //test code for physical report menu
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu"))) {
+            PhysicalUI();
         }
     }
 
     private void MenuSelectionGlitch() {
         tabText.color = Color.red;
-        if(inMenu) {
-            turnOffSelection();
-            PostProcessingControl.Instance.ActivateDepthOfField(false);
+        if(reportDeviceUp) {
+            PhysicalUI();
         }
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Report Menu"))) {
             if(!isReportTextGlitching) {
@@ -155,7 +159,9 @@ public class PlayerUI : MonoBehaviour
     }
 
     private void openEscape() {
-        turnOffSelection();
+        if(reportDeviceUp) {
+            PhysicalUI();
+        }
         havePausedAtleastOnce = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -170,7 +176,6 @@ public class PlayerUI : MonoBehaviour
         Cursor.visible = false;
         escapeMenuUI.SetActive(false);
         defaultUI.SetActive(true);
-
     }
 
     public void PauseControl(String src="") {
@@ -189,7 +194,7 @@ public class PlayerUI : MonoBehaviour
 
         if(src=="popup") {
             if(paused) {
-                turnOffSelection();
+                PhysicalUI();
             }
         }
     }

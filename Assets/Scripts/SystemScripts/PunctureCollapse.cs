@@ -18,13 +18,9 @@ public class PunctureCollapse : MonoBehaviour {
         if(!DivergenceControl.Instance.ActivateEndgameCollapse) {
             yield break;
         }
-
         if(isCollapsing) {
             yield break;
-        }
-
-        PlayerUI.Instance.ScrambleReportUI(true);
-        
+        }        
         rooms = DivergenceControl.Instance.RoomObjects;
         isCollapsing = true;
 

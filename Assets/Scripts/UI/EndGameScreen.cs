@@ -37,7 +37,7 @@ public class EndGameScreen : MonoBehaviour
         score.text = "Score: " + finalScore;
 
         if(GameSystem.Instance.Won == true) {
-            GameOver.text = "You Won!";
+            GameOver.text = "Puncture Stabilized!";
         }
         else if(GameSystem.Instance.GameOver == true) {
             GameOver.text = "Game Over";
