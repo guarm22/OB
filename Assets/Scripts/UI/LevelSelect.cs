@@ -32,13 +32,16 @@ public class LevelSelect : MonoBehaviour {
     private List<String> levels = new List<String> { "Tutorial", "Cabin", "Graveyard", "Apartment", "The_Puncture" };
     private List<String> unavailableLevels = new List<String> { "ThePuncture"};
 
-    private void SetLevel(String level) {
+    private void SetLevel(String level, bool firstTime = false) {
         if(inAnim) {
             return;
         }
         int currentLevelNum = levels.IndexOf(currentLevel);
         currentLevel = level;
         int newLevelNum = levels.IndexOf(level);
+
+        float moveTime = 0.5f;
+        if(firstTime) {moveTime = 0.01f;}
 
         //Bold the selected level and create a line underneath by using the list of levels
         foreach (String l in levels) {
@@ -47,7 +50,7 @@ public class LevelSelect : MonoBehaviour {
                 levelText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
                 //activate underline image
                 levelText.GetComponentInChildren<TMP_Text>().color = new Color(255f, 255f, 255f, 1);
-                underline.transform.position = new Vector3(levelText.transform.position.x, divider.transform.position.y, levelText.transform.position.z);
+                MoveUnderline(levelText, moveTime);
             } else {
                 //change text color
                 levelText.GetComponentInChildren<TMP_Text>().color = new Color(178/255f, 201/255f, 226/255f, 1);
@@ -61,6 +64,12 @@ public class LevelSelect : MonoBehaviour {
         }
         bool left = newLevelNum > currentLevelNum;
         StartCoroutine(LevelAnimation(left));
+    }
+
+    private void MoveUnderline(GameObject parent, float moveTime=0.5f) {
+        underline.transform.DOKill();
+        underline.transform.DOMove(new Vector3(parent.transform.position.x, 
+        divider.transform.position.y, parent.transform.position.z), moveTime);
     }
 
     private IEnumerator LevelAnimation(bool left) {
@@ -96,7 +105,7 @@ public class LevelSelect : MonoBehaviour {
             GameObject b = GameObject.Find(l);
             AddOnClick(b, l);
         }
-        SetLevel("Cabin");
+        SetLevel("Cabin", true);
     }
 
     void Update() {

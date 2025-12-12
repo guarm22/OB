@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -20,8 +21,10 @@ public class SettingsMenu : MonoBehaviour
 
     public List<GameObject> fullMenus = new List<GameObject>();
 
-    private void SetMenu(String menu) {
+    private void SetMenu(String menu, bool firstTime = false) {
         currentMenu = menu;
+        float moveTime = 0.25f;
+        if(firstTime) {moveTime = 0.01f;}
         //Bold the selected menu and create a line underneath by using the list of levels
         foreach (String l in menus) {
             GameObject menuText = GameObject.Find(l);
@@ -30,8 +33,8 @@ public class SettingsMenu : MonoBehaviour
                 menuText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
                 menuText.GetComponentInChildren<TMP_Text>().color = Color.white;
                 //activate underline image
-                underline.transform.position = new Vector3(menuText.transform.position.x, divider.transform.position.y, menuText.transform.position.z);
-            } else {
+                MoveUnderline(menuText, moveTime);
+                } else {
                 fullMenus[menus.IndexOf(l)].SetActive(false);
                 //change text color
                 menuText.GetComponentInChildren<TMP_Text>().color = new Color(178/255f, 201/255f, 226/255f, 1);
@@ -39,6 +42,13 @@ public class SettingsMenu : MonoBehaviour
             }
         }
 
+    }
+
+    private void MoveUnderline(GameObject parent, float moveTime=0.5f) {
+        underline.transform.DOKill();
+        float y = Display.main.systemHeight/42f;
+        underline.transform.DOMove(new Vector3(parent.transform.position.x, 
+        divider.transform.position.y, parent.transform.position.z), moveTime);
     }
 
     private void RevertChanges() {
@@ -98,7 +108,7 @@ public class SettingsMenu : MonoBehaviour
         }
 
         currentMenu = "Gameplay";
-        SetMenu(currentMenu);
+        SetMenu(currentMenu, true);
         Back.onClick.AddListener(BackEvent);
         Revert.onClick.AddListener(RevertChanges);
     }

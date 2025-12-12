@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class StatsMenu : MonoBehaviour
 {
@@ -17,9 +18,11 @@ public class StatsMenu : MonoBehaviour
 
     public List<GameObject> fullMenus = new List<GameObject>();
 
-    private void SetMenu(String menu) {
+    private void SetMenu(String menu, bool firstTime = false) {
         currentMenu = menu;
         //Bold the selected menu and create a line underneath by using the list of levels
+        float moveTime = 0.25f;
+        if (firstTime) {moveTime = 0.01f;}
         foreach (String l in menus) {
             GameObject menuText = GameObject.Find(l);
             if (l == menu) {
@@ -27,7 +30,7 @@ public class StatsMenu : MonoBehaviour
                 menuText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
                 menuText.GetComponentInChildren<TMP_Text>().color = Color.white;
                 //activate underline image
-                underline.transform.position = new Vector3(menuText.transform.position.x, divider.transform.position.y, menuText.transform.position.z);
+                MoveUnderline(menuText, moveTime);
             } else {
                 fullMenus[menus.IndexOf(l)].SetActive(false);
                 //change text color
@@ -35,6 +38,13 @@ public class StatsMenu : MonoBehaviour
                 menuText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Normal;
             }
         }
+    }
+
+    private void MoveUnderline(GameObject parent, float moveTime=0.5f) {
+        underline.transform.DOKill();
+        float y = Display.main.systemHeight/42f;
+        underline.transform.DOMove(new Vector3(parent.transform.position.x, 
+        divider.transform.position.y, parent.transform.position.z), moveTime);
     }
 
     private void BackEvent() {
@@ -52,7 +62,7 @@ public class StatsMenu : MonoBehaviour
             AddOnClick(b, l);
         }
         currentMenu = "Stats";
-        SetMenu(currentMenu);
+        SetMenu(currentMenu, true);
 
         Back.onClick.AddListener(BackEvent);
     }
