@@ -39,12 +39,16 @@ public class ReportUI : MonoBehaviour {
     public List<Color> StatusColors = new List<Color> {Color.green, Color.yellow, Color.red};
     public TMP_Text StatusText;
 
+    private Coroutine slowBlink;
+    private Coroutine fastBlink;
+
     private bool ScrambledUI = false;
     private bool CurrentlyScrambling = false;
 
     public Light greenLight;
     public Light yellowLight;
     public Light redLight;
+    private float originalIntensity;
 
     void Start() {
         CreateUI();
@@ -52,6 +56,7 @@ public class ReportUI : MonoBehaviour {
         reportButton.onClick.AddListener(Report);
         GetRooms();
         audioSource = this.gameObject.GetComponent<AudioSource>();
+        originalIntensity = greenLight.intensity;
     }
 
     void Update() {
@@ -166,6 +171,17 @@ public class ReportUI : MonoBehaviour {
         energyCostText.text = "Energy Cost: " + (SelectedTypes.Count*DivergenceControl.Instance.EnergyPerGuess).ToString() + creatureCost + "%";
     }   
 
+
+    private IEnumerator BlinkLight(Light light, float speed, float normalIntensity) {
+        Debug.Log("Starting blink on " + light.name);
+        while(true) {
+            light.intensity = normalIntensity;
+            yield return new WaitForSeconds(speed);
+            light.intensity = 0;
+            yield return new WaitForSeconds(speed);
+        }
+    }
+
     private void UpdateStatus() {
         if(GameSystem.Instance.shouldPlaySound == false) {
             StatusText.text = "Unknown";
@@ -183,6 +199,11 @@ public class ReportUI : MonoBehaviour {
             greenLight.gameObject.SetActive(true);
             yellowLight.gameObject.SetActive(false);
             redLight.gameObject.SetActive(false);
+
+            if(slowBlink != null) {
+                StopCoroutine(slowBlink);
+                slowBlink=null;
+            }
         }
         else if(divergenceRatio <= Warning.dangerThreshold) {
             StatusText.text = " " + Statuses[1];
@@ -190,6 +211,11 @@ public class ReportUI : MonoBehaviour {
             greenLight.gameObject.SetActive(false);
             yellowLight.gameObject.SetActive(true);
             redLight.gameObject.SetActive(false);
+            if(slowBlink == null) {
+                slowBlink = StartCoroutine(BlinkLight(yellowLight, 0.7f, originalIntensity));
+                fastBlink = null;
+                return;
+            }
         }
         else {
             StatusText.text = " " + Statuses[2];
@@ -197,6 +223,12 @@ public class ReportUI : MonoBehaviour {
             greenLight.gameObject.SetActive(false);
             yellowLight.gameObject.SetActive(false);
             redLight.gameObject.SetActive(true);
+
+            if(fastBlink == null) {
+                StopCoroutine(slowBlink);
+                slowBlink = null;
+                fastBlink = StartCoroutine(BlinkLight(redLight, 0.25f, originalIntensity));
+            }
         }
     }
 

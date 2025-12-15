@@ -13,6 +13,7 @@ public class TutorialAmbience : MonoBehaviour {
     public AudioSource audioPlayer;
 
     public List<AudioClip> ambienceClips;
+    public AudioSource backgroundNoise;
 
     public GameObject Player;
 
@@ -21,6 +22,7 @@ public class TutorialAmbience : MonoBehaviour {
         originalPosition = audioPlayer.transform.localPosition;
         ambienceTimer = ambienceReplayDelay - 8f;
         audioPlayer.volume = PlayerPrefs.GetInt("AmbienceVolume") / 100f;
+        backgroundNoise.volume = PlayerPrefs.GetInt("AmbienceVolume") / 1000f;
     }
 
     private void ChangeAudioDirection() {

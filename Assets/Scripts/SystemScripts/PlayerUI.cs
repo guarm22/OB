@@ -96,7 +96,7 @@ public class PlayerUI : MonoBehaviour
             Flashlight.Instance.TurnOffLight();
         }  
         crosshair.SetActive(false);
-        Vector3 onPos = new Vector3(0.47f, -.08f, .6f);
+        Vector3 onPos = new Vector3(0.47f, -.108f, .6f);
         reportDeviceUp = true;
         inMenu = true;
         reportDevice.transform.DOLocalMove(onPos, 0.5f);
@@ -105,7 +105,6 @@ public class PlayerUI : MonoBehaviour
         defaultBottomRight.SetActive(false);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
-        SC_FPSController.Instance.canMove = false;
         ReportUI.Instance.TurnOn();
     }
 
@@ -120,7 +119,6 @@ public class PlayerUI : MonoBehaviour
         Cursor.visible = false;
         inMenu = false;
         defaultBottomRight.SetActive(true);
-        SC_FPSController.Instance.canMove = true; 
         ReportUI.Instance.TurnOff();
     }
 
@@ -193,7 +191,7 @@ public class PlayerUI : MonoBehaviour
         }
 
         if(src=="popup") {
-            if(paused) {
+            if(paused && reportDeviceUp) {
                 PhysicalUI();
             }
         }

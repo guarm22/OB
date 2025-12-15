@@ -26,7 +26,7 @@ public class CollectibleControl : MonoBehaviour {
         collectiblesOnMap.AddRange(GameObject.FindGameObjectsWithTag("Collectible"));
 
         int l = collectibles.Count;
-        Debug.Log($"Loaded {l} collectibles from file");
+        Debug.Log($"Loaded {l} collectibles from file. There are {collectiblesOnMap.Count} collectibles on map.");
         foreach(GameObject mapC in collectiblesOnMap) {
 
             //check if collectible from file exists on map
@@ -43,6 +43,7 @@ public class CollectibleControl : MonoBehaviour {
             }
             else {
                 //first time collectible is being loaded
+                Debug.Log("Adding new collectible " + mapC.name);
                 string desc = mapC.GetComponent<CollectibleData>().description;
                 Collectible newCollectible = new Collectible(mapC.name, desc, false, SceneManager.GetActiveScene().name);
                 collectibles.Add(newCollectible);
@@ -72,12 +73,10 @@ public class CollectibleControl : MonoBehaviour {
     }
 
     private void UpdateCollectible(Collectible c, GameObject mapC) {
-        if(c.description != mapC.GetComponent<CollectibleData>().description || c.name != mapC.name) {
-            c.description = mapC.GetComponent<CollectibleData>().description;
-            c.name = mapC.name; //in case the name changed
-            Debug.Log($"Updating description for {c.name}");
-            Save();
-        }
+        c.description = mapC.GetComponent<CollectibleData>().description;
+        c.obj = mapC;
+        c.name = mapC.name; //in case the name changed
+        Save();
 
     }
 

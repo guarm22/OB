@@ -13,6 +13,12 @@ public class ApartmentRain : MonoBehaviour {
     public GameObject player;
     public List<GameObject> windows;
     private float distance = 12;
+
+    public List<AudioClip> thunderSounds = new List<AudioClip>();
+
+    public float thunderTimer = 0f;
+    public float thunderMax = 2f;
+    public float thunderRandomness = 45f;
     
     public float insideRainVolume = 2500f;
     public float outsideRainVolume = 10000f;
@@ -38,8 +44,13 @@ public class ApartmentRain : MonoBehaviour {
     }
 
     void Update() {
-        
+        if(PlayerUI.paused) {return;}
+        thunderTimer += Time.deltaTime;
         bool isCloseToWindow = false;
+        if(thunderTimer > thunderMax) {
+            rainSound.PlayOneShot(thunderSounds[Random.Range(0,thunderSounds.Count)]);
+            thunderTimer = 0;
+        }
     
         //if player is close to open window, set lowpass filter to 22000
         foreach(GameObject window in windows) {

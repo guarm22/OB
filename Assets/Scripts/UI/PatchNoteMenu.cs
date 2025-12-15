@@ -20,7 +20,47 @@ public class PatchNoteMenu : MonoBehaviour {
 
     void Start() {
         backButton.onClick.AddListener(BackButtonEvent);
-        patchNotes.text = @"v0.9.0.2:
+        patchNotes.text = @"v0.9.4:
+Changes:
+-Certain objects that were missing colliders now should have them
+-The player can now move while the report device is open
+-The default FOV is changed from 60 to 85
+-The FOV now has a different range of values. From 60-105 to 80-95. This is due to the new reporting device appearing weirdly on certain FOVs.
+-Zombies and Chasers are now faster and turn more quickly
+
+Additions:
+-Added some new animations to the menu UI
+-New backgrounds now appear on the main menu
+-Added a highlight around the room the player is in
+-Added a blinking light on the reporting device that is determined by the current status
+-There are some new thunder sound effects on Apartment
+
+Bugfixes:
+-If your FOV was set to a value below 80, after this update it will automatically be changed to 85.
+-Fixed an issue where the logo was partially blocking the play button
+-Fixed an issue where the level would not be changeable if you exited the level selection screen as the first half of the select animation was playing
+-Removed an incorrect divergence in Cabin
+-The text on the bottom right of the screen will no longer say 'WRONG' in the first 10 seconds of a level
+
+
+v0.9.3:
+Changes:
+-The report screen is now a physical device
+-Updated the visual of the Hider
+
+Additions:
+-Added a Hallway to Apartment
+-Apartment now has a secret area
+-Added more divergences to each level
+-Apartment has new outside scenery
+
+Bugfixes:
+-Fixed an issue where creatures would spawn too often on Apartment
+-Fixed an issue where the Flashlight click sound would play too many times if your energy was in the negative
+-The scrambling of the report screen in certain instances should work more consistently now
+
+
+v0.9.0.2:
 
 Changes:
 -Switched to Unity Editor version 6000.3.0f1. This was to fix an issue with terrain details

@@ -40,11 +40,13 @@ public class PlayMenu : MonoBehaviour
     }
     
     private void BackButtonEvent() {
+        levelSelect.GetComponent<LevelSelect>().ForceFinishAnimations();
         this.gameObject.SetActive(false);
         defaultMenu.SetActive(true);
     }
 
     private void ModifiersEvent() {
+        levelSelect.GetComponent<LevelSelect>().ForceFinishAnimations();
         this.gameObject.SetActive(false);
         modifiersMenu.SetActive(true);
     }

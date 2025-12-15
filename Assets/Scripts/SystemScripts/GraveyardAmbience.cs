@@ -11,6 +11,7 @@ public class GraveyardAmbience : MonoBehaviour {
     public List<AudioClip> audioClips = new List<AudioClip>();
     private List<AudioClip> playedClips = new List<AudioClip>();
     public float audioTimer = 60f;
+    public AudioSource backgroundNoise;
 
     public float audioTimerMax = 90f;
 
@@ -19,7 +20,7 @@ public class GraveyardAmbience : MonoBehaviour {
     void Awake() {
         ps = new List<ParticleSystem>(GameObject.FindObjectsOfType<ParticleSystem>());
         audioTimer = audioTimer + Random.Range(-audioRandomOffset, audioRandomOffset);
-
+        backgroundNoise.volume = PlayerPrefs.GetInt("AmbienceVolume", 50) / 100f;
         audioSources.ForEach(p => p.volume = (PlayerPrefs.GetInt("AmbienceVolume", 50)/100f) - .2f);
         audioSources.ForEach(p => p.playOnAwake = false);
         audioSources.ForEach(p => p.spatialBlend = 1f);

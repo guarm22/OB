@@ -67,11 +67,16 @@ public class SC_FPSController : MonoBehaviour
         originalRunSpeed = runningSpeed;
         originalWalkSpeed = walkingSpeed;
         originalCrouchSpeed = crouchSpeed;
-        FOV = PlayerPrefs.GetInt("FOV", 60);
+        FOV = PlayerPrefs.GetInt("FOV", 85);
+        if(FOV < 80) {
+            FOV = 85;
+            PlayerPrefs.SetInt("FOV", 85);
+        }
         lookSpeed = PlayerPrefs.GetFloat("MouseSens", 2);
         originalFOV = FOV;
         playerCamera.fieldOfView = FOV;
         mouseAccel = PlayerPrefs.GetInt("MouseAccel", 0) == 1 ? true : false;
+
 
         if(PlayerPrefs.GetInt("Speed Boost", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
             originalRunSpeed *= 1.5f;
@@ -150,7 +155,7 @@ public class SC_FPSController : MonoBehaviour
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
         // Player and Camera rotation
-        if (canMove) {
+        if (canMove && !PlayerUI.Instance.reportDeviceUp) {
             float actualLookSpeed = lookSpeed;
 
             if(mouseAccel) {
@@ -326,7 +331,7 @@ public class SC_FPSController : MonoBehaviour
 
     void Update()  { 
         CheckOutOfMap();  
-        if(PlayerUI.paused || GameSystem.Instance.GameOver || CreatureControl.Instance.IsJumpscareFinished || PlayerUI.Instance.inMenu) {
+        if(PlayerUI.paused || GameSystem.Instance.GameOver || CreatureControl.Instance.IsJumpscareFinished) {
             return;
         }
         

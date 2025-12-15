@@ -48,7 +48,7 @@ public class GameplaySettings : MonoBehaviour
         });
 
         if(!PlayerPrefs.HasKey("FOV")) {
-            PlayerPrefs.SetInt("FOV", 75);
+            PlayerPrefs.SetInt("FOV", 85);
         }
 
         SetValues();

@@ -62,10 +62,10 @@ public class GameSettings : MonoBehaviour
 
     private float GetCreatureSpawnRate(string diff) {
         if(diff == "Easy") {
-            return 30f;
+            return 32f;
         }
         else if(diff == "Normal") {
-            return 23f;
+            return 24f;
         }
         else if(diff == "Hard") {
             return 18f;
@@ -80,10 +80,10 @@ public class GameSettings : MonoBehaviour
 
     private int GetDivergenceRate(string diff) {
         if(diff == "Easy") {
-            return 34;
+            return 36;
         }
         else if(diff == "Normal") {
-            return 28;
+            return 29;
         }
         else if(diff == "Hard") {
             return 22;
@@ -98,13 +98,13 @@ public class GameSettings : MonoBehaviour
 
     private int getGracePeriod(string diff) {
         if(diff == "Easy") {
-            return 28;
+            return 30;
         }
         else if(diff == "Normal") {
-            return 20;
+            return 25;
         }
         else if(diff == "Hard") {
-            return 14;
+            return 15;
         }
         else if(diff == "Nightmare") {
             return 8;

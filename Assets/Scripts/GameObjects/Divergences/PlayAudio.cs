@@ -6,6 +6,7 @@ public class PlayAudio : CustomDivergence {
     public AudioClip sound;
     public float soundRepeatTimer;
     public float audioRange = 100f;
+    public float soundDelay = 1.5f;
     private AudioSource audioSource;
     // Start is called before the first frame update
     void Awake() {
@@ -32,7 +33,7 @@ public class PlayAudio : CustomDivergence {
     }
 
     private IEnumerator RepeatSound() {
-        float elapsedTime = soundRepeatTimer-1.5f;
+        float elapsedTime = soundRepeatTimer-soundDelay;
         while(true) {
             if(PlayerUI.paused || GameSystem.Instance.GameOver) {
                 yield return null;

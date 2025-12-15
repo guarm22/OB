@@ -26,6 +26,7 @@ public class LevelSelect : MonoBehaviour {
     public Image background;
 
     private String currentLevel;
+    public Vector3 backgroundOrigLocation;
 
     private bool inAnim = false;
 
@@ -74,22 +75,32 @@ public class LevelSelect : MonoBehaviour {
 
     private IEnumerator LevelAnimation(bool left) {
         inAnim = true;
-        float moveDuration = 0.75f;
+        float moveDuration = 0.6f;
 
         currentLevelImage.transform.DOComplete();
-        Vector3 originalLocation = background.transform.position;
 
         Vector3 movePos = left ? levelImageRight.transform.position : levelImageLeft.transform.position;
 
         background.transform.DOMove(movePos, moveDuration);
         yield return new WaitForSeconds(moveDuration);
         currentLevelImage.sprite = levelImages[levels.IndexOf(currentLevel)];
-        yield return new WaitForSeconds(0.1f);
-        background.transform.DOMove(originalLocation, moveDuration);
+        yield return new WaitForSeconds(0.05f);
+        background.transform.DOMove(backgroundOrigLocation, moveDuration);
         yield return new WaitForSeconds(moveDuration);
         
         inAnim = false;
         yield break;
+    }
+
+    public void ForceFinishAnimations() {
+        background.DOKill();
+        underline.DOKill();
+        StopAllCoroutines();
+        currentLevelImage.sprite = levelImages[levels.IndexOf(currentLevel)];
+        inAnim = false;
+        background.transform.position = backgroundOrigLocation;
+        underline.transform.position = 
+        new Vector3(GameObject.Find(currentLevel).transform.position.x, divider.transform.position.y, GameObject.Find(currentLevel).transform.position.z);
     }
 
     public String GetLevel() {
@@ -105,6 +116,7 @@ public class LevelSelect : MonoBehaviour {
             GameObject b = GameObject.Find(l);
             AddOnClick(b, l);
         }
+        backgroundOrigLocation = background.transform.position;
         SetLevel("Cabin", true);
     }
 
@@ -126,7 +138,7 @@ public class LevelSelect : MonoBehaviour {
                 SetLevel(levels[index + 1]);
             }
         }
-
+        if(background.transform.position != backgroundOrigLocation && !inAnim) {background.transform.position = backgroundOrigLocation;}
 
     }
 }

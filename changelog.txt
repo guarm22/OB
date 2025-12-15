@@ -3,16 +3,45 @@ Planned:
 -Add collectibles to Apartment
 -Add story to collectibles
 
-v0.9.4:
+
+v0.9.5 (12/15/2025):
+Changes:
+-Updated the Relics menu
+-Added the rest of the puzzle for the secret collectible in Cabin
+
+Additions:
+-Added new collectibles on all maps
+-Added new ambience effects to Graveyard and Tutorial
+
+Bugfixes:
+-You can no longer walk through the elevator door on Cabin
+
+
+v0.9.4 (12/13/2025):
 Changes:
 -Certain objects that were missing colliders now should have them
+-The player can now move while the report device is open
+-The default FOV is changed from 60 to 85
+-The FOV now has a different range of values. From 60-105 to 80-95. This is due to the new reporting device appearing weirdly on certain FOVs.
+-Zombies and Chasers are now faster and turn more quickly
 
 Additions:
 -Added some new animations to the menu UI
 -New backgrounds now appear on the main menu
+-Added a highlight around the room the player is in
+-Added a blinking light on the reporting device that is determined by the current status
+-There are some new thunder sound effects on Apartment
 
-Bug Fixes:
--
+Bugfixes:
+-If your FOV was set to a value below 80, after this update it will automatically be changed to 85.
+-Fixed an issue where the logo was partially blocking the play button
+-Fixed an issue where the level would not be changeable if you exited the level selection screen as the first half of the select animation was playing
+-Removed an incorrect divergence in Cabin
+-The text on the bottom right of the screen will no longer say "WRONG" in the first 10 seconds of a level
+-The flashlight now creates much less weird shadows
+-Fixed an issue where the report device would appear every time a popup would appear during the tutorial
+-Rain sounds will no longer play if you get the Apartment background on the main menu
+-Fixed some broken movement divergences in Apartment
 
 
 v0.9.3:
@@ -24,6 +53,7 @@ Additions:
 -Added a Hallway to Apartment
 -Apartment now has a secret area
 -Added more divergences to each level
+-Apartment has new outside scenery
 
 Bugfixes:
 -Fixed an issue where creatures would spawn too often on Apartment

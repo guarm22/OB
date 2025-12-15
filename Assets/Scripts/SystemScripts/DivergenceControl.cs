@@ -81,7 +81,7 @@ public class DivergenceControl : MonoBehaviour {
     /// <summary>
     /// Time of the last report made.
     /// </summary>
-    public float TimeOfLastreport = 0f;
+    public float TimeOfLastreport = -10f;
 
     [HideInInspector]
     public List<DynamicObject> DivergencesReportedCorrectly = new List<DynamicObject>();
@@ -158,6 +158,8 @@ public class DivergenceControl : MonoBehaviour {
         lastDivergenceTime -= GameSystem.Instance.GracePeriod;
         DivergenceTimer -= GameSystem.Instance.GracePeriod;
         generateNewRandomness();
+        Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty"));
+        Debug.Log(PlayerPrefs.GetInt("DivergenceRate", 29));
 
         if(GameSystem.InEditor()) {
             return;
@@ -171,7 +173,7 @@ public class DivergenceControl : MonoBehaviour {
                 DivergenceInterval = GameSettings.NormalDivergenceRate;
                 break;
             default:
-                DivergenceInterval = PlayerPrefs.GetInt("DivergenceRate", 28);
+                DivergenceInterval = PlayerPrefs.GetInt("DivergenceRate", 29);
                 break;
         }
     }

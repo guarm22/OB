@@ -89,6 +89,10 @@ public class DefaultUI : MonoBehaviour {
 
         //If in the first 5 seconds of the level, none of the if statements will be true
         //this causes the report text to be stuck on "Verifying..." if a report was made right at the start
+        if(lastReport == null)
+        {
+            return;
+        }
 
         if(!DivergenceControl.Instance.PendingReport && Time.time - reportTime > lockout+5) {
             prevReport.text = "";

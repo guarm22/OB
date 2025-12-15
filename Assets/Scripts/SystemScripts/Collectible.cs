@@ -8,6 +8,7 @@ public class Collectible {
     public string description; 
     public bool isCollected; 
     public string map; 
+    public GameObject obj;
 
     public Collectible(string name, string description, bool isCollected, string map) {
         this.name = name;
