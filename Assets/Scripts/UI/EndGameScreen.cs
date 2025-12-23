@@ -27,12 +27,7 @@ public class EndGameScreen : MonoBehaviour
     void Start() {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
-
-        float finalScore = GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame * 10;
-        finalScore += CreatureControl.Instance.CreaturesReported * 5;
-        //decrease score based on how many divergences were leftover and for how long
-        finalScore += -DivergenceControl.Instance.RemainingDivergenceScore();
-        finalScore *= PlayerPrefs.GetFloat("CurrentScoreMultiplier", 1);
+        float finalScore = GameSystem.Instance.CalculateScore();
 
         score.text = "Score: " + finalScore;
 

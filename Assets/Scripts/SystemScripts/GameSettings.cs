@@ -21,8 +21,8 @@ public class GameSettings : MonoBehaviour
     public const int NormalDivergenceRate = 30;
     public const int NormalCreatureThreshold = 4;
     public const int NormalGracePeriod = 24;
-    public const float NormalEPS = 1.28f;
-    public const float NormalCreatureSpawnRate = 23f;
+    public const float NormalEPS = 1.65f;
+    public const float NormalCreatureSpawnRate = 28f;
 
 
     void Start() {
@@ -62,13 +62,13 @@ public class GameSettings : MonoBehaviour
 
     private float GetCreatureSpawnRate(string diff) {
         if(diff == "Easy") {
-            return 32f;
+            return 34f;
         }
         else if(diff == "Normal") {
-            return 24f;
+            return 27f;
         }
         else if(diff == "Hard") {
-            return 18f;
+            return 20f;
         }
         else if(diff == "Nightmare") {
             return 16f;
@@ -80,13 +80,13 @@ public class GameSettings : MonoBehaviour
 
     private int GetDivergenceRate(string diff) {
         if(diff == "Easy") {
-            return 36;
+            return 45;
         }
         else if(diff == "Normal") {
-            return 29;
+            return 32;
         }
         else if(diff == "Hard") {
-            return 22;
+            return 24;
         }
         else if(diff == "Nightmare") {
             return 15;
@@ -98,10 +98,10 @@ public class GameSettings : MonoBehaviour
 
     private int getGracePeriod(string diff) {
         if(diff == "Easy") {
-            return 30;
+            return 45;
         }
         else if(diff == "Normal") {
-            return 25;
+            return 30;
         }
         else if(diff == "Hard") {
             return 15;
@@ -134,16 +134,16 @@ public class GameSettings : MonoBehaviour
 
     private float getEPS(string diff) {
         if(diff == "Easy") {
-            return 1.2f;
+            return 1.7f;
         }
         else if(diff == "Normal") {
-            return 1.3f;
+            return 1.75f;
         }
         else if(diff == "Hard") {
-            return 1.45f;
+            return 1.8f;
         }
         else if(diff == "Nightmare") {
-            return 1.8f;
+            return 2f;
         }
         else {
             return EPS;

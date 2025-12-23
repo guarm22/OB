@@ -36,6 +36,8 @@ public class PlayerUI : MonoBehaviour
     public GameObject reportDevice;
     public bool reportDeviceUp = false;
 
+    public TMP_Text acquisitionText;
+
     void Start() {
         Instance = this;
         audioSource = this.gameObject.AddComponent<AudioSource>();
@@ -53,7 +55,7 @@ public class PlayerUI : MonoBehaviour
             EndingGame();
             return;
         }
-        EscapeMenu();
+        EscapeMenuControl();
         if(paused) {
             return;
         }
@@ -82,6 +84,15 @@ public class PlayerUI : MonoBehaviour
         }
         tabText.text = originalText;
         isReportTextGlitching = false;
+    }
+
+    public IEnumerator Acquisition(String itemName, String postString = "View information about it in the Relic menu.", float waitTime = 8f) {
+        if(acquisitionText.IsActive()) {yield return new WaitUntil(() =>!acquisitionText.IsActive());}
+
+        acquisitionText.text = "Acquired: " + itemName + ". " + postString;
+        acquisitionText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(waitTime);
+        acquisitionText.gameObject.SetActive(false);
     }
 
     private void TurnOnPhysicalUI() {
@@ -172,11 +183,40 @@ public class PlayerUI : MonoBehaviour
         paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        EscapeMenu.Instance.CloseEscapeMenu();
         escapeMenuUI.SetActive(false);
         defaultUI.SetActive(true);
     }
 
     public void PauseControl(String src="") {
+        if(src=="EndGame") {
+            if (reportDeviceUp){
+                PhysicalUI();
+                return;
+            }
+        }
+
+        if(EscapeMenu.Instance != null){          
+            if(src=="escape" && EscapeMenu.Instance.inExtrasMenu){
+                if(Input.GetKeyDown(KeyCode.Q)) {return;}
+                EscapeMenu.Instance.CloseExtras();
+                return;
+            }
+        }
+        //lazy copy pasted solution
+        if(EscapeMenu.Instance != null){    
+            if(src=="escape" && EscapeMenu.Instance.inOptionsMenu){
+                if(Input.GetKeyDown(KeyCode.Q)) {return;}
+                if(KeybindMenu.Instance != null) { if(KeybindMenu.Instance.isOpen) {return;};}
+                if(SettingsMenu.Instance != null) {if(!SettingsMenu.Instance.isPopupOpen) {Debug.Log("here1"); SettingsMenu.Instance.ShowPopup(); return;};}
+                if(SettingsMenu.Instance != null) {if(SettingsMenu.Instance.isPopupOpen) {Debug.Log("here2");SettingsMenu.Instance.closePopup(); return;};}
+                Debug.Log("escape menu control");      
+                SettingsMenu.Instance.ShowPopup();
+                return;
+            }
+        }
+        
+
         paused = !paused;
         PostProcessingControl.Instance.ActivateDepthOfField(paused);
         SoundControl.Instance.PauseSound(paused);
@@ -197,7 +237,7 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
-    private void EscapeMenu() {
+    private void EscapeMenuControl() {
         //CHANGE TO ESCAPE
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Pause")) || Input.GetKeyDown(KeyCode.Escape)) { 
             PauseControl("escape");

@@ -16,7 +16,6 @@ public class SteamHelper : MonoBehaviour {
             return;
         }
         SteamUserStats.SetAchievement(id);
-        Debug.Log("a" + id);
         SteamUserStats.StoreStats();
 
     }

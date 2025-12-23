@@ -15,7 +15,7 @@ public class MetalGateOpen : MonoBehaviour {
 
     public GameObject Player;
 
-    private bool opened = false;
+    public bool opened = false;
     private bool inAnim = false;
 
     public Vector3 leftOpenRotation = new Vector3(0, -90, 0);
@@ -57,7 +57,7 @@ public class MetalGateOpen : MonoBehaviour {
 
     void OnMouseOver() {
         if(Vector3.Distance(this.transform.position, Player.transform.position) < 4f) {
-            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
+            if(Input.GetKeyDown(KeyCode.Mouse0)|| Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
                 if(locked) {
                     gateSound.PlayOneShot(lockedSound);
                     return;

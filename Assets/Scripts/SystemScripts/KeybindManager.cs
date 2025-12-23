@@ -49,7 +49,7 @@ public class KeybindManager : MonoBehaviour {
             new Keybind("Crouch", KeyCode.LeftControl),
             new Keybind("Sprint", KeyCode.LeftShift),
             new Keybind("Interact", KeyCode.E),
-            new Keybind("Pause", KeyCode.Q),
+            new Keybind("Pause", KeyCode.Escape),
             new Keybind("Report Menu", KeyCode.Tab),
             new Keybind("Flashlight", KeyCode.F),
             new Keybind("Zoom", KeyCode.Mouse1),

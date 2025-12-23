@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SingleChoiceSection : MonoBehaviour
 {
     //fill out list in the inspector
     public List<Button> choices;
-    [HideInInspector]
     public Button currentChoice;
     public Image underline;
 
@@ -19,13 +19,24 @@ public class SingleChoiceSection : MonoBehaviour
         foreach (Button b in choices) {
             if (b.GetComponentInChildren<TMPro.TMP_Text>().text == choice.GetComponentInChildren<TMPro.TMP_Text>().text) {
                 b.GetComponentInChildren<TMPro.TMP_Text>().color = Color.white;
-                underline.transform.position = new Vector3(choice.transform.position.x, choice.transform.position.y - y, choice.transform.position.z);
+                MoveUnderline(choice.gameObject);
             }
             else {
                 //set color of button text
                 b.GetComponentInChildren<TMPro.TMP_Text>().color = new Color(172/255f, 187/255f, 207/255f, 1);
             }
         }
+    }
+
+    private void MoveUnderline(GameObject parent ) {
+        float y = Display.main.systemHeight/42;
+        underline.transform.DOKill();
+        underline.transform.DOMove(new Vector3(parent.transform.position.x, 
+        parent.transform.position.y - y, parent.transform.position.z), .25f);
+
+        parent.GetComponentInChildren<TMP_Text>().ForceMeshUpdate();
+        float newX = parent.GetComponentInChildren<TMP_Text>().GetRenderedValues(true).x;
+        underline.rectTransform.DOSizeDelta(new Vector2(newX, underline.rectTransform.sizeDelta.y), 25f);
     }
 
     //Set this selections choice based on the string passed in

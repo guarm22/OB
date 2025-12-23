@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class CabinSecret : MonoBehaviour {
+    public static CabinSecret Instance;
     
     public GameObject cellarDoor;
     private opencloseDoor doorScript;
@@ -20,9 +21,11 @@ public class CabinSecret : MonoBehaviour {
     public GameObject wall;
     private int currentLight=0;
 
+    public bool finished = false;
+
     void Start() {
         doorScript = cellarDoor.GetComponent<opencloseDoor>();
-        
+        Instance = this;
     }
 
     private void UnlockPadlock() {
@@ -40,12 +43,16 @@ public class CabinSecret : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.H)) {
             doorScript.ChangeLockState(!doorScript.locked);
         }
+        if(Input.GetKeyDown(KeyCode.V)) {
+            wall.SetActive(false);
+            finished = true;
+        }
         float gameTime = GameSystem.Instance.gameTime;
         int minutes = Mathf.FloorToInt(gameTime / 60);
         int seconds = Mathf.FloorToInt(gameTime % 60);
 
         //first light
-        if(minutes == 10 && seconds == 30 && currentLight == 0) {
+        /*if(minutes == 10 && seconds == 30 && currentLight == 0) {
             lights[currentLight].color = Color.red;
             currentLight += 1;
         }
@@ -63,13 +70,14 @@ public class CabinSecret : MonoBehaviour {
         if(minutes == 2 && seconds == 51 && currentLight == 3) {
             lights[currentLight].color = Color.red;
             currentLight += 1;
-        }
+        }*/
 
 
 
-        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact")) || Input.GetKeyDown(KeyCode.Mouse0)) {
             foreach(GameObject key in keys) {
                 if(key.activeInHierarchy && key.GetComponent<Outliner>().hovering) {
+                    PlayerUI.Instance.StartCoroutine(PlayerUI.Instance.Acquisition(key.name, "A padlock has been unlocked."));
                     key.SetActive(false);
                     UnlockPadlock();
                     break;
@@ -85,22 +93,21 @@ public class CabinSecret : MonoBehaviour {
                     return;
                 }
 
-                if(minutes == 9 && seconds == 09 && currentLight == 1) {
+                if(minutes == 9 && seconds == 10 && currentLight == 1) {
                     lights[currentLight].color = Color.green;
                     currentLight += 1;
                     return;
                 }
 
-                if(minutes == 5 && seconds == 59 && currentLight == 2) {
+                if(minutes == 6 && seconds == 00 && currentLight == 2) {
                     lights[currentLight].color = Color.green;
                     currentLight += 1;
                     return;
                 }
 
-                if(minutes == 2 && seconds == 51 && currentLight == 3) {
+                if(minutes == 2 && seconds == 52 && currentLight == 3) {
                     lights[currentLight].color = Color.green;
                     currentLight += 1;
-                    return;
                 }
 
                 if(currentLight == 4) {
@@ -112,12 +119,11 @@ public class CabinSecret : MonoBehaviour {
                     }
                     if (allGreen) {
                         wall.SetActive(false);
+                        finished = true;
                         currentLight += 5;
                     }
-                    return;
                 }
-                if(currentLight >= 4)
-                {
+                if(currentLight >= 4) {
                     return;
                 }
 

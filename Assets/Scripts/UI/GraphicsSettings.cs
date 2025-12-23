@@ -58,7 +58,7 @@ public class GraphicsSettings : MonoBehaviour
         }
 
         ChangeSelection(Brightness);
-
+        Brightness.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetInt("Brightness",50));
         EventTrigger trigger = Resolution.AddComponent<EventTrigger>();
         // Create a new entry for the click event
         EventTrigger.Entry entry = new EventTrigger.Entry();

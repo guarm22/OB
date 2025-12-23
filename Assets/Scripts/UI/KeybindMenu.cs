@@ -156,13 +156,17 @@ public class KeybindMenu : MonoBehaviour {
         KeybindManager.instance.SaveKeybinds();
     }
 
+    public void CloseKeybinds() {
+        DiscardChanges();
+        otherMenus.ForEach(m => m.SetActive(true));
+        settingsMenu.SetActive(true);
+        KeybindMenu.Instance.isOpen = false;
+        gameObject.SetActive(false);
+    }
+
     void Update() {
         if(Input.GetKeyDown(KeyCode.Escape) && currentlyEditing != null) {
-            DiscardChanges();
-            otherMenus.ForEach(m => m.SetActive(true));
-            settingsMenu.SetActive(true);
-            KeybindMenu.Instance.isOpen = false;
-            gameObject.SetActive(false);
+            CloseKeybinds();
         }
     }
 }

@@ -65,6 +65,10 @@ public class DifficultySelect : MonoBehaviour {
         float y = Display.main.systemHeight/42f;
         underline.transform.DOMove(new Vector3(parent.transform.position.x, 
         parent.transform.position.y-y, parent.transform.position.z), moveTime);
+
+        parent.GetComponentInChildren<TMP_Text>().ForceMeshUpdate();
+        float newX = parent.GetComponentInChildren<TMP_Text>().GetRenderedValues(true).x;
+        underline.rectTransform.DOSizeDelta(new Vector2(newX, underline.rectTransform.sizeDelta.y), moveTime+0.2f);
     }
 
     public String GetDifficulty() {

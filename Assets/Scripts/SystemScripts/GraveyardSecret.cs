@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 
 public class GraveyardSecret : MonoBehaviour {
+    public static GraveyardSecret Instance;
     public GameObject gate;
 
     public AudioSource audioSource;
@@ -12,7 +13,11 @@ public class GraveyardSecret : MonoBehaviour {
     public List<GameObject> keys = new List<GameObject>();
     public List<GameObject> padlocks = new List<GameObject>();
 
-    void Start() {
+    public bool finished = false;
+
+    void Start()
+    {
+        Instance = this;
     }
 
     private void UnlockPadlock() {
@@ -28,6 +33,7 @@ public class GraveyardSecret : MonoBehaviour {
     private void UnlockGate() {
         gate.GetComponentInChildren<MetalGateOpen>().OpenGate();
         padlocks.ForEach(p => p.SetActive(false));
+        finished = true;
     }
 
    
@@ -36,9 +42,10 @@ public class GraveyardSecret : MonoBehaviour {
             UnlockGate();
         }
 
-        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
+        if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))|| Input.GetKeyDown(KeyCode.Mouse0)) {
             foreach(GameObject key in keys) {
                 if(key.activeInHierarchy && key.GetComponent<Outliner>().hovering) {
+                    PlayerUI.Instance.StartCoroutine(PlayerUI.Instance.Acquisition(key.name, "A padlock has been unlocked."));
                     key.SetActive(false);
                     UnlockPadlock();
                     break;

@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
-using NUnit.Framework.Constraints;
 
 public class LevelSelect : MonoBehaviour {
 
@@ -31,7 +30,6 @@ public class LevelSelect : MonoBehaviour {
     private bool inAnim = false;
 
     private List<String> levels = new List<String> { "Tutorial", "Cabin", "Graveyard", "Apartment", "The_Puncture" };
-    private List<String> unavailableLevels = new List<String> { "ThePuncture"};
 
     private void SetLevel(String level, bool firstTime = false) {
         if(inAnim) {
@@ -71,19 +69,25 @@ public class LevelSelect : MonoBehaviour {
         underline.transform.DOKill();
         underline.transform.DOMove(new Vector3(parent.transform.position.x, 
         divider.transform.position.y, parent.transform.position.z), moveTime);
+
+        parent.GetComponentInChildren<TMP_Text>().ForceMeshUpdate();
+        float newX = parent.GetComponentInChildren<TMP_Text>().GetRenderedValues(true).x;
+        underline.rectTransform.DOSizeDelta(new Vector2(newX, underline.rectTransform.sizeDelta.y), moveTime+0.2f);
     }
 
     private IEnumerator LevelAnimation(bool left) {
         inAnim = true;
-        float moveDuration = 0.6f;
+        float moveDuration = 0.2f;
 
         currentLevelImage.transform.DOComplete();
 
         Vector3 movePos = left ? levelImageRight.transform.position : levelImageLeft.transform.position;
+        Vector3 moveFrom = left ? levelImageLeft.transform.position : levelImageRight.transform.position;
 
         background.transform.DOMove(movePos, moveDuration);
         yield return new WaitForSeconds(moveDuration);
         currentLevelImage.sprite = levelImages[levels.IndexOf(currentLevel)];
+        background.transform.position = moveFrom;
         yield return new WaitForSeconds(0.05f);
         background.transform.DOMove(backgroundOrigLocation, moveDuration);
         yield return new WaitForSeconds(moveDuration);
@@ -139,6 +143,8 @@ public class LevelSelect : MonoBehaviour {
             }
         }
         if(background.transform.position != backgroundOrigLocation && !inAnim) {background.transform.position = backgroundOrigLocation;}
-
+        if(underline.rectTransform.sizeDelta.x < 20) {
+            MoveUnderline(GameObject.Find(currentLevel), 0.1f);
+        }
     }
 }

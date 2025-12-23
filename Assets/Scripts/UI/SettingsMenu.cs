@@ -18,8 +18,33 @@ public class SettingsMenu : MonoBehaviour
     public GameObject defaultMenu;
 
     public Image divider;
+    public static SettingsMenu Instance;
 
     public List<GameObject> fullMenus = new List<GameObject>();
+
+    public GameObject popup;
+    public Button popupYes;
+    public Button popupNo;
+
+    public bool isPopupOpen = false;
+
+    public GameObject bg;
+
+    public void popupYesEvent() {
+        closePopup();
+        SaveChanges();
+    }
+    public void popupNoEvent() {
+        closePopup();
+        RevertChanges();
+        if(defaultMenu == null) {
+            EscapeMenu.Instance.CloseOptions();
+            this.gameObject.SetActive(false);
+            return;
+        }
+        this.gameObject.SetActive(false);
+        defaultMenu.SetActive(true);
+    }
 
     private void SetMenu(String menu, bool firstTime = false) {
         currentMenu = menu;
@@ -27,7 +52,7 @@ public class SettingsMenu : MonoBehaviour
         if(firstTime) {moveTime = 0.01f;}
         //Bold the selected menu and create a line underneath by using the list of levels
         foreach (String l in menus) {
-            GameObject menuText = GameObject.Find(l);
+            GameObject menuText = GameObject.Find(l+"Btn");
             if (l == menu) {
                 fullMenus[menus.IndexOf(l)].SetActive(true);
                 menuText.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
@@ -49,31 +74,47 @@ public class SettingsMenu : MonoBehaviour
         float y = Display.main.systemHeight/42f;
         underline.transform.DOMove(new Vector3(parent.transform.position.x, 
         divider.transform.position.y, parent.transform.position.z), moveTime);
+
+        parent.GetComponentInChildren<TMP_Text>().ForceMeshUpdate();
+        float newX = parent.GetComponentInChildren<TMP_Text>().GetRenderedValues(true).x;
+        underline.rectTransform.DOSizeDelta(new Vector2(newX, underline.rectTransform.sizeDelta.y), moveTime+0.2f);
     }
 
-    private void RevertChanges() {
+    public void RevertChanges() {
         fullMenus[0].GetComponent<GameplaySettings>().RevertChanges();
         fullMenus[1].GetComponent<ControlSettings>().RevertChanges();
         fullMenus[2].GetComponent<GraphicsSettings>().RevertChanges();
         fullMenus[3].GetComponent<AudioSettings>().RevertChanges();
-
+        SetMenu(currentMenu);
+        /*if(defaultMenu == null) {
+            //EscapeMenu.Instance.CloseOptions();
+            //this.gameObject.SetActive(false);
+            return;
+        }
         this.gameObject.SetActive(false);
-        defaultMenu.SetActive(true);
+        defaultMenu.SetActive(true);*/
     }
 
-    private void BackEvent() {
+    private void SaveChanges() {
         fullMenus[0].GetComponent<GameplaySettings>().SaveSettings();
         fullMenus[1].GetComponent<ControlSettings>().SaveSettings();
         fullMenus[2].GetComponent<GraphicsSettings>().SaveSettings();
         fullMenus[3].GetComponent<AudioSettings>().SaveSettings();
 
         //update volume for main menu and music
-        GameObject.Find("MainScreen").GetComponent<AudioSource>().volume = PlayerPrefs.GetInt("MusicVolume", 50) / 100f;
+        if(GameObject.Find("MainScreen") != null) {
+            GameObject.Find("MainScreen").GetComponent<AudioSource>().volume = PlayerPrefs.GetInt("MusicVolume", 50) / 100f;
+        }
         AudioListener.volume = PlayerPrefs.GetInt("MasterVolume", 50) / 100f;
 
         //update brightness
         GlobalPostProcessingSettings.Instance.SetGammaAlpha(PlayerPrefs.GetInt("Brightness", 50));
 
+        if(defaultMenu == null) {
+            EscapeMenu.Instance.CloseOptions();
+            this.gameObject.SetActive(false);
+            return;
+        }
         this.gameObject.SetActive(false);
         defaultMenu.SetActive(true);
     }
@@ -101,21 +142,54 @@ public class SettingsMenu : MonoBehaviour
         button.GetComponent<Button>().onClick.AddListener(() => SetMenu(level));
     }
 
+    public void closePopup() {
+        isPopupOpen = false;
+        popup.SetActive(false);
+    }
+
     void Start() {
         foreach(String l in menus) {
-            GameObject b = GameObject.Find(l);
+            GameObject b = GameObject.Find(l+"Btn");
             AddOnClick(b, l);
         }
+        if(defaultMenu == null){
+            Open();
+        }
+        
+        EventTrigger trigger = bg.AddComponent<EventTrigger>();
+        // Create a new entry for the click event
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerClick;
 
+        // Add a callback to the entry
+        entry.callback.AddListener(delegate { closePopup(); });
+
+        // Add the entry to the trigger
+        trigger.triggers.Add(entry);
+
+        Instance = this;
         currentMenu = "Gameplay";
         SetMenu(currentMenu, true);
-        Back.onClick.AddListener(BackEvent);
+        Back.onClick.AddListener(ShowPopup);
         Revert.onClick.AddListener(RevertChanges);
+        popupYes.onClick.AddListener(popupYesEvent);
+        popupNo.onClick.AddListener(popupNoEvent);
+    }
+
+    public void ShowPopup() {
+        isPopupOpen = true;
+        popup.SetActive(true);
     }
 
     // Update is called once per frame
     void Update() {
         //pressing Q or E switches the current menu selection
+        if(KeybindMenu.Instance != null && KeybindMenu.Instance.isOpen) {
+            return;
+        }
+        if(isPopupOpen) {
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Q)) {
             int index = menus.IndexOf(currentMenu);
             if (index == 0) {
@@ -133,10 +207,14 @@ public class SettingsMenu : MonoBehaviour
             }
         }
         if(Input.GetKeyDown(KeyCode.Escape)) {
-            if(KeybindMenu.Instance != null && KeybindMenu.Instance.isOpen) {
+            if(defaultMenu == null) {
                 return;
             }
-            RevertChanges();
+            if(isPopupOpen) {
+                closePopup();
+                return;
+            }
+            ShowPopup();
         }
     }
 }

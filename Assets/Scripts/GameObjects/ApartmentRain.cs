@@ -62,6 +62,7 @@ public class ApartmentRain : MonoBehaviour {
                 }
             }
 
+            
             if(Vector3.Distance(player.transform.position, window.transform.position) < distance 
             && window.GetComponent<opencloseWindowApt>().open) {
                 isCloseToWindow = true;

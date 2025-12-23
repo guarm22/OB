@@ -15,7 +15,7 @@ public class LightControl : MonoBehaviour {
 
         if(PlayerPrefs.GetInt("Darkness",0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
             foreach(Light l in lights) {
-                l.intensity = l.intensity * 0.12f;
+                l.intensity = l.intensity * 0.25f;
                 l.range = l.range * 0.65f;
             }
         }

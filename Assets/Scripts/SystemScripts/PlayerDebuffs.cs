@@ -16,6 +16,7 @@ public class PlayerDebuffs : MonoBehaviour
         SC_FPSController.Instance.runningSpeed = SC_FPSController.Instance.originalRunSpeed;
         SC_FPSController.Instance.crouchSpeed = SC_FPSController.Instance.originalCrouchSpeed;
         SC_FPSController.Instance.ChangeFOV(SC_FPSController.Instance.originalFOV);
+        SC_FPSController.Instance.debuffed = false;
     }
 
     public void Energy(float amount=1f) {

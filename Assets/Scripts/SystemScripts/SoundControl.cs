@@ -35,6 +35,7 @@ public class SoundControl : MonoBehaviour
 
     private void walking() {
         if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
+            if(PlayerUI.paused) {walkingSound.SetActive(false); return;}
             walkingSound.SetActive(true);
             if(SC_FPSController.Instance.isRunning) {
                 walkingSound.GetComponent<AudioSource>().pitch = 1.5f;

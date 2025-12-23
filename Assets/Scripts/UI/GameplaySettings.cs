@@ -85,7 +85,7 @@ public class GameplaySettings : MonoBehaviour
         } else if(selectedOption == VisualHints) {
             selectedOptionDescription.text = "Determines if lights will flicker in game as a hint";
         } else if(selectedOption == profile) {
-            selectedOptionDescription.text = "Profile to save stats, achievements, and keybinds";
+            selectedOptionDescription.text = "Profile to save relics, achievements, and keybinds. Will not affect steam achievements/stats.";
         }
     }
 
@@ -107,6 +107,10 @@ public class GameplaySettings : MonoBehaviour
         PlayerPrefs.SetString("VisualHints", VisualHints.GetComponentInChildren<SingleChoiceSection>().GetCurrentChoice());
         PlayerPrefs.SetInt("FOV", (int)FOV.GetComponentInChildren<BarSlider>().GetValue());
         PlayerPrefs.SetString("currentProfile", profile.GetComponentInChildren<TMP_Dropdown>().captionText.text);
+
+        if(SC_FPSController.Instance !=null) {
+            SC_FPSController.Instance.ChangeFOV(PlayerPrefs.GetInt("FOV"));
+        }
     }
 
     void Update() {

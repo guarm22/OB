@@ -16,15 +16,20 @@ public class RelicsMenu : MonoBehaviour {
     public Button softResetCollectibles;
     public Button unlockAllCollectibles;
 
+    public TMP_Text relicTutorial;
+
     public List<Button> buttons = new List<Button>();
 
     public GameObject relicMenu;
 
     public GameObject relicLoc;
     private GameObject relicObj;
+    public GameObject relicCam;
     private float curX;
     private float curY;
     private float curZ;
+
+    private bool noRelicsUnlocked = false;
 
     public String currentProfile;
 
@@ -74,6 +79,8 @@ public class RelicsMenu : MonoBehaviour {
         LoadCollectibles();
         currentProfile = PlayerPrefs.GetString("currentProfile");
         if(collectibles.Count == 0) {
+            noRelicsUnlocked = true;
+            relicTutorial.gameObject.SetActive(false);
             noRelicsText.SetActive(true);
             relicInitialLocation.SetActive(false);
             description.SetActive(false);
@@ -95,7 +102,7 @@ public class RelicsMenu : MonoBehaviour {
             t.text = c.name;
 
             if(c.isCollected) {
-                firstShown = c;
+                if(firstShown == null) {firstShown = c;}
                 t.color = Color.white;
                 Button rb = relic.GetComponent<Button>();
                 buttons.Add(rb);
@@ -145,13 +152,21 @@ public class RelicsMenu : MonoBehaviour {
         if(Input.GetAxis("Mouse Y")>0) {
             curZ -= rotationSpeed;
         }
-
-
         SetRotation();
     }
 
     private void SetRotation() {
         relicObj.transform.rotation = Quaternion.Euler(curX, curY, curZ);
+    }
+
+    private void RelicScroll() {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if(scroll > 0f && relicCam.transform.position.z < -77.9f) {
+            relicCam.transform.position += relicCam.transform.forward * 0.1f;
+        }
+        else if(scroll < 0f && relicCam.transform.position.z > -79.9f) {
+            relicCam.transform.position -= relicCam.transform.forward * 0.1f;
+        }
     }
 
     private void HardResetCollectibles() {
@@ -182,6 +197,15 @@ public class RelicsMenu : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.O) && GameSystem.InEditor()) {
             devStuff.SetActive(!devStuff.activeSelf);
         }
+        if(Input.GetKeyDown(KeyCode.T)) {
+            description.SetActive(!description.activeSelf);
+            if(description.activeSelf) {
+                relicTutorial.text = "Press T to hide description.";
+            }
+            else {
+                relicTutorial.text = "Press T to show description. Click and drag your mouse to rotate the relic.";
+            }
+        }
 
         if(currentProfile != PlayerPrefs.GetString("currentProfile")) {
             Start();
@@ -189,6 +213,7 @@ public class RelicsMenu : MonoBehaviour {
 
         if(relicObj != null) {
             SpinObject();
+            RelicScroll();
         }
     }
 }

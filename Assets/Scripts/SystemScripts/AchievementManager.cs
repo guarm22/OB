@@ -31,6 +31,14 @@ public class AchievementManager : MonoBehaviour
             new Achievement("Collector", "Collect 5 relics.", false, 5, "ACH_COLLECTOR"),
             new Achievement("Extra Hard Mode", "Beat a level on hard with the No Warnings modifier enabled.", false, 1, "ACH_EXTRAHARDMODE"),
             new Achievement("Modified", "Beat a level with any modifier enabled on normal or higher.", false, 1, "ACH_MODIFIED"),
+            new Achievement("High Scorer", "Achieve a score of 200 or more in a single level.", false, 1, "ACH_HIGHSCORER"),
+            new Achievement("I Work In The Dark", "Complete a level without ever using the flashlight.", false, 1, "ACH_IWORKINTHEDARK"),
+            new Achievement("I Feel You In There", "Witness the true ending.", false, 1, "ACH_IFEELYOUINTHERE"),
+            new Achievement("The Puncture", "Complete The Puncture level.", false, 1, "ACH_THEPUNCTURE"), 
+            new Achievement("Stabilizer", "Beat all levels on normal or harder.", false, 1, "ACH_STABILIZER"),
+            new Achievement("Eyes On The Clock", "Find the secret in the Cabin and complete the level.", false, 1, "ACH_EYESONTHECLOCK"),
+            new Achievement("Code Finder", "Find the secret code in the Apartment and complete the level.", false, 1, "ACH_CODEFINDER"),
+            new Achievement("My Worst Mistake", "Find the secret in the Graveyard and complete the level.", false, 1, "ACH_MYWORSTMISTAKE"),
         };
     
     void Start() {
@@ -69,8 +77,41 @@ public class AchievementManager : MonoBehaviour
         }
 
         foreach(Achievement a in achievements) {
+            if(a.Name == "Eyes On The Clock") {
+                if(level=="Cabin") {
+                    if(CabinSecret.Instance.finished) {
+                        UnlockAchievement(a.Name);
+                    }
+                }
+            }
+            if(a.Name == "Code Finder") {
+                if(level=="Apartment") {
+                    if(ApartmentSecret.Instance.finished) {
+                        UnlockAchievement(a.Name);
+                    }
+                }
+            }
+
+            if(a.Name=="My Worst Mistake") {
+                if(level=="Graveyard") {
+                    if(GraveyardSecret.Instance.finished) {
+                        UnlockAchievement(a.Name);
+                    }
+                }
+            }
             if(a.Name == "Back Home") {
                 if(level=="Apartment") {
+                    UnlockAchievement(a.Name);
+                }
+            }
+            if(a.Name == "High Scorer") {
+                float finalScore = GameSystem.Instance.CalculateScore();
+                if(finalScore >= 200) {
+                    UnlockAchievement(a.Name);
+                }
+            }
+            if(a.Name == "I Work In The Dark" && level != "Tutorial") {
+                if(Flashlight.Instance.everTurnedOn == false) {
                     UnlockAchievement(a.Name);
                 }
             }
@@ -94,7 +135,24 @@ public class AchievementManager : MonoBehaviour
                     UnlockAchievement(a.Name);
                 }
             }
-
+            if(a.Name == "The Puncture") {
+                if(level=="The Puncture") {
+                    UnlockAchievement(a.Name);
+                }
+            }
+            if(a.Name == "Stabilizer") {
+                bool allBeaten = false;
+                foreach(Achievement checkAch in achievements) {
+                    if(isAchievementUnlocked("A Night in the Woods") && isAchievementUnlocked("Haunting Disappearences") && isAchievementUnlocked("Back Home") && isAchievementUnlocked("The Puncture")) {
+                        if(!checkAch.Unlocked) {
+                            allBeaten = true;
+                        }
+                    }
+                }
+                if(allBeaten) {
+                    UnlockAchievement(a.Name);
+                }
+            }
             if(a.Name == "Haunting Disappearences") {
                 if(level=="Graveyard") {
                     UnlockAchievement(a.Name);
@@ -220,6 +278,14 @@ public class AchievementManager : MonoBehaviour
                 return;
             }
         }
+    }
+    public bool isAchievementUnlocked(string name) {
+        foreach(Achievement a in achievements) {
+            if(a.Name == name) {
+                return a.Unlocked;
+            }
+        }
+        return false;
     }
 
     void Save() {

@@ -92,8 +92,8 @@ public class GameSystem : MonoBehaviour {
             break;
         default:
             Difficulty = PlayerPrefs.GetString("lastChosenDiff", "Normal");
-            energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.1f);
-            GracePeriod = PlayerPrefs.GetInt("GracePeriod", 15);
+            energyPerSecond = PlayerPrefs.GetFloat("EPS", 1.65f);
+            GracePeriod = PlayerPrefs.GetInt("GracePeriod", 30);
             break;
     }
 
@@ -108,6 +108,17 @@ public class GameSystem : MonoBehaviour {
     }
   
   }
+
+    public float CalculateScore() {
+        float finalScore = GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame * 8;
+        finalScore += CreatureControl.Instance.CreaturesReported * 4;
+        //decrease score based on how many divergences were leftover and for how long
+        finalScore += -DivergenceControl.Instance.RemainingDivergenceScore();
+        finalScore *= PlayerPrefs.GetFloat("CurrentScoreMultiplier", 1);
+        finalScore *= 1f + (GameSystem.Instance.TimeInLevel / 6000f); //1% bonus for every minute survived
+        finalScore *= Difficulty == "Easy" ? 0.8f : Difficulty == "Normal" ? 1f : 1.2f;
+        return finalScore;
+    }
 
     public void PlayDivergenceSound() {
         if(shouldPlaySound==false) {
@@ -164,6 +175,7 @@ public class GameSystem : MonoBehaviour {
         Debug.Log("Reason:" + reason);
         GameOver = true;
         endReason = reason;
+        PlayerUI.Instance.PauseControl("EndGame");
         AchievementManager.Instance.CheckLevelFinishAchievements(SceneManager.GetActiveScene().name, Difficulty, reason);
         PlayerDataManager.Instance.EndGameStats(TimeInLevel);
     }

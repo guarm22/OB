@@ -158,8 +158,6 @@ public class DivergenceControl : MonoBehaviour {
         lastDivergenceTime -= GameSystem.Instance.GracePeriod;
         DivergenceTimer -= GameSystem.Instance.GracePeriod;
         generateNewRandomness();
-        Debug.Log("Difficulty: " + PlayerPrefs.GetString("Difficulty"));
-        Debug.Log(PlayerPrefs.GetInt("DivergenceRate", 29));
 
         if(GameSystem.InEditor()) {
             return;

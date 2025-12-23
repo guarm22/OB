@@ -19,7 +19,7 @@ public class Outliner : MonoBehaviour {
     }
 
     void Update() {
-        if(hovering && Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
+        if(hovering && (Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))|| Input.GetKeyDown(KeyCode.Mouse0))) {
             //OnMouseExit();
         }
 

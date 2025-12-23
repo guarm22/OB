@@ -38,9 +38,9 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
 
     void Update() {
-            if (this == null || !gameObject.activeInHierarchy) {
-                ClearHighlight();
-            }
+        if (this == null || !gameObject.activeInHierarchy) {
+            ClearHighlight();
+        }
     }
 
     private void ClearHighlight() {

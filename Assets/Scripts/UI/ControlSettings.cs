@@ -95,6 +95,10 @@ public class ControlSettings : MonoBehaviour {
         PlayerPrefs.SetFloat("MouseSens", MouseSens.GetComponentInChildren<BarSlider>().GetValue());
         PlayerPrefs.SetString("MouseAccel", MouseAccel.GetComponentInChildren<SingleChoiceSection>().GetCurrentChoice());
         PlayerPrefs.SetString("InvertMouse", InvertMouse.GetComponentInChildren<SingleChoiceSection>().GetCurrentChoice());
+
+        if(SC_FPSController.Instance !=null){
+            SC_FPSController.Instance.ChangeSettings(PlayerPrefs.GetInt("MouseAccel", 1), PlayerPrefs.GetFloat("MouseSens", 2));
+        }
     }
 
     public void RevertChanges() {

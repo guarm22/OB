@@ -6,8 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Flashlight : MonoBehaviour
-{
+public class Flashlight : MonoBehaviour {
 
     public Light beam;
     private float staticEnergyDrainPerSecond;
@@ -39,6 +38,8 @@ public class Flashlight : MonoBehaviour
     private Quaternion initialLocalRot;
 
     private float bobTimer = 0f;
+
+    public bool everTurnedOn = false;
 
 
     public float innerAngle = 30f;
@@ -103,6 +104,7 @@ public class Flashlight : MonoBehaviour
         StartCoroutine(MoveOverTime(PhysicalFlashlight.transform, offFlashlingPos, defaultFlashlightPos, flashlightMoveTime));
         beam.enabled = true;
         isOn = true;
+        everTurnedOn = true;
     }
 
     public void TurnOffLight() {

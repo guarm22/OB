@@ -57,6 +57,8 @@ public class SC_FPSController : MonoBehaviour
 
     public bool controlsGlitch = false;
 
+    public bool debuffed = false;
+
     void Start() {
         characterController = GetComponent<CharacterController>();
         characterController.stepOffset = 0.4f; // Increase step height here
@@ -92,6 +94,11 @@ public class SC_FPSController : MonoBehaviour
         if(PlayerPrefs.GetInt("Teleport", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
             StartCoroutine(RandomTeleporting());
         }
+    }
+
+    public void ChangeSettings(int mouseAccel, float mouseSpeed) {
+        this.mouseAccel = mouseAccel == 1 ? true : false;
+        lookSpeed = mouseSpeed;
     }
 
     private IEnumerator RandomTeleporting() {
@@ -178,6 +185,11 @@ public class SC_FPSController : MonoBehaviour
         transform.DORotate(new Vector3(0, newRot.y, 0), 0.2f);
     }
 
+    public void LookAtObject(GameObject obj) {
+        playerCamera.transform.DOLookAt(obj.transform.position, 0.2f);
+        transform.DORotate(new Vector3(0, playerCamera.transform.eulerAngles.y, 0), 0.2f);
+    }
+
     public IEnumerator ForceCrouch(float duration) {
         //crouch then uncrouch 2 seconds later
         yield return StartCoroutine(Crouch(true));
@@ -239,8 +251,20 @@ public class SC_FPSController : MonoBehaviour
             isCrouching = true;
         }
     }
+    public void ChangeSpeed(float mult){
+        walkingSpeed = walkingSpeed * mult;
+        runningSpeed = runningSpeed * mult;
+        crouchSpeed = crouchSpeed * mult; 
+    }
+
+    public void ResetSpeed() {
+        walkingSpeed = originalWalkSpeed;
+        runningSpeed = originalRunSpeed;
+        crouchSpeed = originalCrouchSpeed;
+    }
 
     public void Debuff(string type, float multiplier, float duration=0) {
+        debuffed = true;
         if(type == "Slow") {
             StartCoroutine(PlayerDebuffs.Instance.Slow(multiplier, duration));
         }

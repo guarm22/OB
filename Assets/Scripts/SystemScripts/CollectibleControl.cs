@@ -84,6 +84,7 @@ public class CollectibleControl : MonoBehaviour {
         foreach(Collectible collectible in collectibles) {
             if(collectible.name == obj.name) {
                 collectible.isCollected = true;
+                PlayerUI.Instance.StartCoroutine(PlayerUI.Instance.Acquisition(collectible.name));
                 obj.SetActive(false);
                 break;
             }

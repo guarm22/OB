@@ -18,6 +18,9 @@ public class StatsMenu : MonoBehaviour
 
     public List<GameObject> fullMenus = new List<GameObject>();
 
+    //to use in game rather than in main menu
+    public GameObject pauseMenu;
+
     private void SetMenu(String menu, bool firstTime = false) {
         currentMenu = menu;
         //Bold the selected menu and create a line underneath by using the list of levels
@@ -45,11 +48,22 @@ public class StatsMenu : MonoBehaviour
         float y = Display.main.systemHeight/42f;
         underline.transform.DOMove(new Vector3(parent.transform.position.x, 
         divider.transform.position.y, parent.transform.position.z), moveTime);
+
+        parent.GetComponentInChildren<TMP_Text>().ForceMeshUpdate();
+        float newX = parent.GetComponentInChildren<TMP_Text>().GetRenderedValues(true).x;
+        underline.rectTransform.DOSizeDelta(new Vector2(newX, underline.rectTransform.sizeDelta.y), moveTime+0.2f);
     }
 
     private void BackEvent() {
-        this.gameObject.SetActive(false);
-        defaultMenu.SetActive(true);
+        if(defaultMenu == null) {
+            pauseMenu.SetActive(true);
+            this.gameObject.SetActive(false);
+            return;
+        }
+        else {
+            this.gameObject.SetActive(false);
+            defaultMenu.SetActive(true);
+        }
     }
 
     private void AddOnClick(GameObject button, String level) {
