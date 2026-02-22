@@ -19,6 +19,9 @@ public class Zombie : CreatureBase {
     protected override void Update() {
         base.Update();
         if(amTouchingPlayer()) {
+            if(PlayerPrefs.GetInt("EnergySapped", 0) == 1) {
+                PlayerDebuffs.Instance.Energy(15f);
+            }
             SC_FPSController.Instance.TeleportRoom(DivergenceControl.Instance.RoomObjects[Random.Range(0, DivergenceControl.Instance.RoomObjects.Count)]);
             CreatureControl.Instance.RemoveCreature(gameObject);
         }

@@ -47,13 +47,15 @@ public class GraveyardAmbience : MonoBehaviour {
         if(PlayerUI.paused) {
             paused = true;
             foreach(ParticleSystem p in ps) {
+                if(p == null) {return;}
                 p.Pause();
             }
             return;
         }
         else if (!PlayerUI.paused && paused) {
             paused = false;
-            foreach(ParticleSystem p in ps) {
+            foreach(ParticleSystem p in ps ) {
+                if(p == null) {return;}
                 p.Play();
             }
         }

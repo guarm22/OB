@@ -22,8 +22,11 @@ public class CollectibleControl : MonoBehaviour {
         else {
             PFileUtil.Load<JsonWrapperUtil<Collectible>>(collectibleListPath).list.ForEach(c => collectibles.Add(c));
         }
-
-        collectiblesOnMap.AddRange(GameObject.FindGameObjectsWithTag("Collectible"));
+        CollectibleData[] scriptsInScene = Object.FindObjectsByType<CollectibleData>(FindObjectsSortMode.None);
+        foreach(CollectibleData c in scriptsInScene)
+        {
+            collectiblesOnMap.Add(c.gameObject);
+        }
 
         int l = collectibles.Count;
         Debug.Log($"Loaded {l} collectibles from file. There are {collectiblesOnMap.Count} collectibles on map.");

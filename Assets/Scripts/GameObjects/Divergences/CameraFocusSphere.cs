@@ -9,26 +9,39 @@ public class CameraFocusSphere : CustomDivergence{
     public AudioClip creepySound;
     public AudioSource audioSource;
 
-    private bool changedSpeed = false;
+    private Material originalMaterial;
+    private Material overrideMaterial;
 
     void Start() {
         player = GameObject.Find("Player");
         if(GetComponent<AudioSource>() != null) {
             GetComponent<AudioSource>().clip = creepySound;
         }
+        else {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.clip = creepySound;
+            audioSource.playOnAwake = false;
+            audioSource.loop = false;
+            audioSource.spatialBlend = 1.0f;
+            GetComponent<AudioSource>().clip = Resources.Load("Sounds/creepy-whistles-66703") as AudioClip;
+        }
+        originalMaterial = GetComponent<Renderer>().material;
+        overrideMaterial = Resources.Load("Materials/Puncture_Shader") as Material;
     }
 
     public override void DoDivergenceAction(bool enable, DynamicObject obj) {
         room = obj.Room;
         if(enable) {
             on = true;
-            obj.Obj.transform.DOScale(new Vector3(1,1,1), 2.5f);
+            //change object material to puncture shader
+            GetComponent<Renderer>().material = overrideMaterial;
         }
         else {
             on = false;
             audioSource.Stop();
             audioSource.time = 0f;
-            obj.Obj.transform.DOScale(new Vector3(0f, 0f, 0f), 2.5f);
+            //change object material back to original
+            GetComponent<Renderer>().material = originalMaterial;
         }
     }
 

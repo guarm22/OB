@@ -67,6 +67,7 @@ public class Flashlight : MonoBehaviour {
         }
     }
 
+
     // Update is called once per frame
     void Update() {
         if(GameSystem.Instance.GameOver || PlayerUI.paused || PlayerUI.Instance.inMenu) {
@@ -87,6 +88,7 @@ public class Flashlight : MonoBehaviour {
                 GameSystem.Instance.ChangeEnergy(-totalEnergyDrainPerSecond);
             }
         }
+
 
         if(GameSystem.Instance.CurrentEnergy <= 1 && isOn) {
             TurnOffLight();

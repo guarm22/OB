@@ -110,6 +110,8 @@ public class DivergenceControl : MonoBehaviour {
 
     public bool ActivateEndgameCollapse = true;
 
+    public int DivergencesSpawned = 0;
+
     /// <summary>
     /// Finds each game object with the DynamicData script and adds it to the DynamicObjectList.
     /// </summary>
@@ -245,7 +247,8 @@ public class DivergenceControl : MonoBehaviour {
             return;
         }
 
-        GameSystem.Instance.PlayDivergenceSound();
+        DivergencesSpawned += 1;
+        GameSystem.Instance.PlayDivergenceSound(randomObject);
         DynamicObjectList.Remove(randomObject);
         DivergenceList.Add(randomObject);
         Rooms[randomObject.Room] += 1;
@@ -395,6 +398,9 @@ public class DivergenceControl : MonoBehaviour {
             DivergencesReportedCorrectly = new List<DynamicObject>();
         }
         else {
+            if(PlayerPrefs.GetInt("EnergySapped", 0) == 1) {
+                PlayerDebuffs.Instance.Energy(15);
+            }
             SoundControl.Instance.guessFeedbackSound(false);
         }
     }

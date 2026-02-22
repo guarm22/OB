@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using SojaExiles;
 using UnityEngine;
-using UnityEngine.AI;
+using DG.Tweening;
 
 public class CabinSecret : MonoBehaviour {
     public static CabinSecret Instance;
@@ -20,6 +18,7 @@ public class CabinSecret : MonoBehaviour {
     public List<Light> lights = new List<Light>();
     public GameObject wall;
     private int currentLight=0;
+    public AudioClip keyPickupSound;
 
     public bool finished = false;
 
@@ -51,33 +50,12 @@ public class CabinSecret : MonoBehaviour {
         int minutes = Mathf.FloorToInt(gameTime / 60);
         int seconds = Mathf.FloorToInt(gameTime % 60);
 
-        //first light
-        /*if(minutes == 10 && seconds == 30 && currentLight == 0) {
-            lights[currentLight].color = Color.red;
-            currentLight += 1;
-        }
-
-        if(minutes == 9 && seconds == 09 && currentLight == 1) {
-            lights[currentLight].color = Color.red;
-            currentLight += 1;
-        }
-
-        if(minutes == 5 && seconds == 59 && currentLight == 2) {
-            lights[currentLight].color = Color.red;
-            currentLight += 1;
-        }
-
-        if(minutes == 2 && seconds == 51 && currentLight == 3) {
-            lights[currentLight].color = Color.red;
-            currentLight += 1;
-        }*/
-
-
-
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact")) || Input.GetKeyDown(KeyCode.Mouse0)) {
             foreach(GameObject key in keys) {
                 if(key.activeInHierarchy && key.GetComponent<Outliner>().hovering) {
+                    CrosshairControl.Instance.SetObjectInRange(false);
                     PlayerUI.Instance.StartCoroutine(PlayerUI.Instance.Acquisition(key.name, "A padlock has been unlocked."));
+                    AudioSource.PlayClipAtPoint(keyPickupSound, key.transform.position);
                     key.SetActive(false);
                     UnlockPadlock();
                     break;
@@ -118,7 +96,7 @@ public class CabinSecret : MonoBehaviour {
                         }
                     }
                     if (allGreen) {
-                        wall.SetActive(false);
+                        wall.transform.DOMoveY(-2, 2);
                         finished = true;
                         currentLight += 5;
                     }

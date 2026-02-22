@@ -39,6 +39,7 @@ public class AchievementManager : MonoBehaviour
             new Achievement("Eyes On The Clock", "Find the secret in the Cabin and complete the level.", false, 1, "ACH_EYESONTHECLOCK"),
             new Achievement("Code Finder", "Find the secret code in the Apartment and complete the level.", false, 1, "ACH_CODEFINDER"),
             new Achievement("My Worst Mistake", "Find the secret in the Graveyard and complete the level.", false, 1, "ACH_MYWORSTMISTAKE"),
+            new Achievement("Perfection", "Complete a level with no wrong reports.", false, 1, "ACH_PERFECTION"),
         };
     
     void Start() {

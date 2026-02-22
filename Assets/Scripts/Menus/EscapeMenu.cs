@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class EscapeMenu : MonoBehaviour
-{
+public class EscapeMenu : MonoBehaviour {
     public GameObject escapeMenuUI;
     public GameObject defaultUI;
     public GameObject extrasMenu;
@@ -60,7 +59,6 @@ public class EscapeMenu : MonoBehaviour
 
     public void QuitGame() {
         String Difficulty = PlayerPrefs.GetString("Difficulty", "Normal");
-        PlayerUI.Instance.PauseControl("quit");
         GameSystem.Instance.EndGame("quit");
         PlayerDataManager.Instance.SavePlayerData();
         SceneManager.LoadScene("MainMenuScene");
@@ -80,8 +78,12 @@ public class EscapeMenu : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
+    void Update() {
+        if(Input.GetKeyDown(KeyCode.R)) {
+            CloseEscapeMenu();
+            PlayerDataManager.Instance.SavePlayerData();
+            PlayerUI.paused = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }

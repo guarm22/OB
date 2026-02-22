@@ -36,7 +36,7 @@ public class CreditsMenu : MonoBehaviour {
         Aggressive Napkin Members - Silver, Arcima, Noley, and Rabboni
 
         Music
-        Main Menu Theme - 'atmosphärischer loop 128 bpm 8972' by van_Wiese on pixabay
+        Main Menu Theme - 'The Puncture Main Theme' by Kevin Moran
 
         Sounds
         All in game sounds created by Michael Guarrasi or found on pixabay.com

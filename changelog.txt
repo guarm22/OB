@@ -1,26 +1,59 @@
 
 Planned:
--Add a secret collectible to Apartment
 -Add collectibles to Apartment
 -Add story to collectibles
 
-v0.9.6
+v0.9.7:
+Changes:
+-The divergence alert sound is now directional on all non-hard difficulties
+-Increased divergence timer by 1 more on normal
+-Changed Main Menu music
+-Reduced the chance of the secret mist spawning
+-Changed all the secret collectibles to a USB flash drive
+-Updated the crosshair
+-Updated pause menu
+-Updated end game screen
+-You can no longer see relics you haven't collected
+
+Additions:
+-Added new text and effects to the end game screen
+-Creatures can now be reported by the room they are currently in rather than only the room they spawn in
+-There is now a bar on the end game screen showing the player how many divergences appeared and were reported
+-Completing a level's secret now adds bonus score
+-Started work on Campsite map
+-The crosshair now displays a new icon when near a collectible item
+-Added "Energy Sapped" modifier
+
+Bugfixes:
+-The puncture spike now points the correct direction (mostly)
+-Added a collider to some objects that were missing them (lamppost, brick)
+-The Gravestone will now correctly show up in the relic menu
+
+
+v0.9.6 (finished 12/31/25)
 Changes:
 -Gave the relic viewer better lighting
 -Made settings easier
+-Made the Room Glitch divergence a bit more obvious
+-Updated the secret puzzle on Graveyard. It now has an extra step
 
 Additions:
 -The Settings and Extras menu is now accessible while in level
 -You can now escape the "Save Changes" window by hitting escape or clicking off the popup
 -Added sound dampening for audio divergences through walls
--Added a new type of Puncture divergence
+-Added 2 new types of Puncture divergence
+-There's a new secret mist that has a small chance to appear every level
+-The ability to turn off Audio divergences for accessability purposes has been added
+-Keys make a sound when picked up
 
 Bugfixes:
 -Fixed an issue where pressing Q while on the keybind menu would break the game
 -Fixed an issue where reverting the settings would not change brightness
 -Fixed a collectible not able to be collected
 -Fixed the secret on Cabin not being able to be completed
--The report device will no longer stay open when a level is finished`
+-The report device will no longer stay open when a level is finished
+-The game will no longer be unplayable if the player quits by pausing and pressing "Quit Game"
+-Fixed a bug where "Replay" after losing a level would be broken
 
 
 v0.9.5 (12/15/2025):

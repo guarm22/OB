@@ -2,8 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameSettings : MonoBehaviour
-{
+public class GameSettings : MonoBehaviour {
     // Start is called before the first frame update
     public static GameSettings Instance;
     public string Difficulty;
@@ -11,14 +10,11 @@ public class GameSettings : MonoBehaviour
     public float EPS;
 
     public int creatureThreshold;
-
     public int gracePeriod;
-
     public float creatureSpawnRate;
-
     public bool hintsEnabled;
 
-    public const int NormalDivergenceRate = 30;
+    public const int NormalDivergenceRate = 35;
     public const int NormalCreatureThreshold = 4;
     public const int NormalGracePeriod = 24;
     public const float NormalEPS = 1.65f;
@@ -62,13 +58,13 @@ public class GameSettings : MonoBehaviour
 
     private float GetCreatureSpawnRate(string diff) {
         if(diff == "Easy") {
-            return 34f;
+            return 40f;
         }
         else if(diff == "Normal") {
-            return 27f;
+            return 26f;
         }
         else if(diff == "Hard") {
-            return 20f;
+            return 18f;
         }
         else if(diff == "Nightmare") {
             return 16f;
@@ -83,7 +79,7 @@ public class GameSettings : MonoBehaviour
             return 45;
         }
         else if(diff == "Normal") {
-            return 32;
+            return 34;
         }
         else if(diff == "Hard") {
             return 24;
@@ -98,7 +94,7 @@ public class GameSettings : MonoBehaviour
 
     private int getGracePeriod(string diff) {
         if(diff == "Easy") {
-            return 45;
+            return 55;
         }
         else if(diff == "Normal") {
             return 30;

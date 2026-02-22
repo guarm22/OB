@@ -23,6 +23,8 @@ public class GameplaySettings : MonoBehaviour
     private GameObject selectedOption;
     public TMP_Text selectedOptionDescription;
 
+    public GameObject AudioDivergences;
+
     void Awake() {
         if(!PlayerPrefs.HasKey("VisualHints")) {
             PlayerPrefs.SetString("VisualHints", "YES");
@@ -30,6 +32,9 @@ public class GameplaySettings : MonoBehaviour
 
         if(!PlayerPrefs.HasKey("currentProfile")) {
             PlayerPrefs.SetString("currentProfile", "default");
+        }
+        if(!PlayerPrefs.HasKey("AudioDivergences")) {
+            PlayerPrefs.SetString("AudioDivergences", "YES");
         }
 
         List<string> profiles = PFileUtil.GetAllProfiles();
@@ -39,7 +44,7 @@ public class GameplaySettings : MonoBehaviour
 
         createProfileButton.onClick.AddListener(() => {
             PFileUtil.CreateDirectoryForProfile(newProfileName.text);
-            profile.GetComponentInChildren<Dropdown>().InitDropdown(PFileUtil.GetAllProfiles(), PlayerPrefs.GetString("currentProfile", "defau;t"));
+            profile.GetComponentInChildren<Dropdown>().InitDropdown(PFileUtil.GetAllProfiles(), PlayerPrefs.GetString("currentProfile", "default"));
             newProfilePanel.SetActive(false);
         });
 
@@ -69,6 +74,12 @@ public class GameplaySettings : MonoBehaviour
         entry.callback.AddListener(delegate { ChangeSelection(VisualHints); });
         trigger.triggers.Add(entry);
 
+        trigger = AudioDivergences.AddComponent<EventTrigger>();
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        entry.callback.AddListener(delegate { ChangeSelection(AudioDivergences); });
+        trigger.triggers.Add(entry);
+
 
         trigger = profile.AddComponent<EventTrigger>();
         entry = new EventTrigger.Entry();
@@ -86,7 +97,10 @@ public class GameplaySettings : MonoBehaviour
             selectedOptionDescription.text = "Determines if lights will flicker in game as a hint";
         } else if(selectedOption == profile) {
             selectedOptionDescription.text = "Profile to save relics, achievements, and keybinds. Will not affect steam achievements/stats.";
+        } else if(selectedOption == AudioDivergences) {
+            selectedOptionDescription.text = "Determines if the audio divergences will appear in game. For accessibility purposes.";
         }
+
     }
 
     private void CreateNewProfile() {
@@ -97,6 +111,7 @@ public class GameplaySettings : MonoBehaviour
         VisualHints.GetComponentInChildren<SingleChoiceSection>().SetChoice(PlayerPrefs.GetString("VisualHints"));
         FOV.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetInt("FOV"));
         profile.GetComponentInChildren<Dropdown>().InitDropdown(PFileUtil.GetAllProfiles(), PlayerPrefs.GetString("currentProfile"));
+        AudioDivergences.GetComponentInChildren<SingleChoiceSection>().SetChoice(PlayerPrefs.GetString("AudioDivergences"));
     }
 
     public void RevertChanges() {
@@ -107,6 +122,7 @@ public class GameplaySettings : MonoBehaviour
         PlayerPrefs.SetString("VisualHints", VisualHints.GetComponentInChildren<SingleChoiceSection>().GetCurrentChoice());
         PlayerPrefs.SetInt("FOV", (int)FOV.GetComponentInChildren<BarSlider>().GetValue());
         PlayerPrefs.SetString("currentProfile", profile.GetComponentInChildren<TMP_Dropdown>().captionText.text);
+        PlayerPrefs.SetString("AudioDivergences", AudioDivergences.GetComponentInChildren<SingleChoiceSection>().GetCurrentChoice());
 
         if(SC_FPSController.Instance !=null) {
             SC_FPSController.Instance.ChangeFOV(PlayerPrefs.GetInt("FOV"));

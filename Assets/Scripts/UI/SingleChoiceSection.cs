@@ -36,7 +36,7 @@ public class SingleChoiceSection : MonoBehaviour
 
         parent.GetComponentInChildren<TMP_Text>().ForceMeshUpdate();
         float newX = parent.GetComponentInChildren<TMP_Text>().GetRenderedValues(true).x;
-        underline.rectTransform.DOSizeDelta(new Vector2(newX, underline.rectTransform.sizeDelta.y), 25f);
+        underline.rectTransform.DOSizeDelta(new Vector2(newX, underline.rectTransform.sizeDelta.y), .25f);
     }
 
     //Set this selections choice based on the string passed in

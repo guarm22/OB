@@ -173,7 +173,6 @@ public class ReportUI : MonoBehaviour {
 
 
     private IEnumerator BlinkLight(Light light, float speed, float normalIntensity) {
-        Debug.Log("Starting blink on " + light.name);
         while(true) {
             light.intensity = normalIntensity;
             yield return new WaitForSeconds(speed);

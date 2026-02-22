@@ -30,6 +30,7 @@ public class CollectibleOutline : MonoBehaviour {
     void Update() {
         if(hovering && Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact"))) {
             CollectibleControl.Instance.Collect(gameObject);
+            CrosshairControl.Instance.SetObjectInRange(false);
             OnMouseExit();
         }
 
@@ -40,6 +41,7 @@ public class CollectibleOutline : MonoBehaviour {
 
     void OnMouseOver() {
         if(Vector3.Distance(transform.position, player.transform.position) < distance) {
+            CrosshairControl.Instance.SetObjectInRange(true);
             hovering = true;
             PlayerUI.Instance.ChangePrompt("(" + KeybindManager.instance.GetKeybind("Interact").ToString() +") Collect", true);
             GetComponent<Renderer>().materials = new Material[] {materials[0], shader};
@@ -47,6 +49,7 @@ public class CollectibleOutline : MonoBehaviour {
     }
 
     void OnMouseExit() {
+        CrosshairControl.Instance.SetObjectInRange(false);
         hovering = false;
         PlayerUI.Instance.ChangePrompt("", false);
         GetComponent<Renderer>().materials = materials.ToArray();

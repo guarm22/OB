@@ -45,6 +45,8 @@ public class SC_FPSController : MonoBehaviour
     public float originalFOV;
     public float minFOV = 30;
 
+    public bool isZoomed = false;
+
     public GameObject blacknessPanel;
 
     private bool mouseAccel;
@@ -325,14 +327,19 @@ public class SC_FPSController : MonoBehaviour
     public void CameraZoom() {
         if(Input.GetKey(KeybindManager.instance.GetKeybind("Zoom"))) {
             SlowlyZoom(30);
+            isZoomed = true;
         }
         else {
             SlowlyZoom(originalFOV);
+            isZoomed = false;
         }
     }
 
     private void SlowlyZoom(float targetFOV) {
         if(playerCamera.fieldOfView < minFOV) {
+            return;
+        }
+        if(Mathf.Abs(playerCamera.fieldOfView - targetFOV) < 0.1f) {
             return;
         }
         playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, 0.25f);

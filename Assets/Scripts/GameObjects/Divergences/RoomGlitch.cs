@@ -10,6 +10,7 @@ public class RoomGlitch : CustomDivergence
     private GameObject roomText;
     public float glitchFrequency = 0.25f;
     private String roomName;
+    private GameObject roomTextOnDevice;
     private List<String> roomNames = new List<String>();
 
     void Awake() {
@@ -21,12 +22,15 @@ public class RoomGlitch : CustomDivergence
 
     public override void DoDivergenceAction(bool enable, DynamicObject obj) {
         roomName = obj.Room;
+        List<GameObject> rooms = GameObject.FindGameObjectsWithTag("RoomUI").ToList();
+        roomTextOnDevice = rooms.Where(r => r.name.Contains(roomName)).FirstOrDefault();
         if(enable) {
             StartCoroutine(GlitchRoomText());
         }
         else {
             StopAllCoroutines();
             roomText.GetComponent<TMP_Text>().text = PlayerUI.Instance.GetCurrentRoom();
+            roomTextOnDevice.GetComponentInChildren<TMP_Text>().text = roomName;
         }
     }
 
@@ -39,14 +43,10 @@ public class RoomGlitch : CustomDivergence
                 continue;
             }
 
-            if(PlayerUI.Instance.GetCurrentRoom() != roomName) {
-                roomText.GetComponent<TMP_Text>().text = PlayerUI.Instance.GetCurrentRoom();
-                yield return null;
-                continue;
-            }
-
             elapsedTime += Time.deltaTime;
             if(elapsedTime >= glitchFrequency) {
+                elapsedTime = 0f;
+
                 roomText.GetComponent<TMP_Text>().text = roomNames[UnityEngine.Random.Range(0, roomNames.Count)];
                 //also scramble the letters a bit
                 char[] chars = roomText.GetComponent<TMP_Text>().text.ToCharArray();
@@ -55,8 +55,13 @@ public class RoomGlitch : CustomDivergence
                         chars[i] = (char)UnityEngine.Random.Range(65, 91);
                     }
                 }
+                roomTextOnDevice.GetComponentInChildren<TMP_Text>().text = new string(chars);
+                if(PlayerUI.Instance.GetCurrentRoom() != roomName) {
+                    roomText.GetComponent<TMP_Text>().text = PlayerUI.Instance.GetCurrentRoom();
+                    yield return null;
+                    continue;
+                }
                 roomText.GetComponent<TMP_Text>().text = new string(chars);
-                elapsedTime = 0f;
             }
             yield return null;
         }

@@ -27,6 +27,7 @@ public class DefaultUI : MonoBehaviour {
     Vector3 originalPos;
     Vector3 originalScale;
 
+    public GameObject collectibleNearby;
     void Start() {
         originalText = startingText.text;
         originalPos = timer.transform.position;
@@ -130,6 +131,23 @@ public class DefaultUI : MonoBehaviour {
         }
     }
 
+    private void CollectibleUpdate() {
+        string targetTag = "Collectible";
+        // Check for objects with the specified tag within the detection radius
+        Collider[] hitColliders = Physics.OverlapSphere(SC_FPSController.Instance.gameObject.transform.position, 2.2f);
+        // Iterate through the results
+        foreach (var hitCollider in hitColliders) {
+            // Check if the hit object has the desired tag
+            if (hitCollider.CompareTag(targetTag)) {
+                // Found an object with the tag within range
+                collectibleNearby.SetActive(true);
+                return;
+            }
+        }
+        collectibleNearby.SetActive(false);
+        
+    }
+
     // Update is called once per frame
     void Update() {
         if(PlayerUI.paused || GameSystem.Instance.GameOver) {
@@ -139,5 +157,6 @@ public class DefaultUI : MonoBehaviour {
             forceFinishAnim();
         }
         SetText();
+        CollectibleUpdate();
     }
 }

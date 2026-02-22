@@ -12,7 +12,7 @@ public class MenuBackground : MonoBehaviour
     public GameObject currentWorld = null;
 
     private void rotateCam() {
-        mainCamera.transform.Rotate(Vector3.up, 0.01f);
+        mainCamera.transform.Rotate(Vector3.up, 0.025f);
     }
 
     void Start() {
@@ -43,8 +43,10 @@ public class MenuBackground : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         rotateCam();
+    }
+    void Update() {
         if(Input.GetKeyDown(KeyCode.Space)) {
             currentWorld.SetActive(false);
             ChangeBackground(worlds[Random.Range(0, worlds.Count)]);

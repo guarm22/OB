@@ -111,19 +111,34 @@ public class GameSystem : MonoBehaviour {
 
     public float CalculateScore() {
         float finalScore = GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame * 8;
+        if(CabinSecret.Instance){
+            if(CabinSecret.Instance.finished){finalScore += 30;}
+        }
+        if(GraveyardSecret.Instance){
+            if(GraveyardSecret.Instance.finished){finalScore += 30;}
+        }
+        if(ApartmentSecret.Instance){
+            if(ApartmentSecret.Instance.finished){finalScore += 30;}
+        }
         finalScore += CreatureControl.Instance.CreaturesReported * 4;
         //decrease score based on how many divergences were leftover and for how long
         finalScore += -DivergenceControl.Instance.RemainingDivergenceScore();
         finalScore *= PlayerPrefs.GetFloat("CurrentScoreMultiplier", 1);
         finalScore *= 1f + (GameSystem.Instance.TimeInLevel / 6000f); //1% bonus for every minute survived
         finalScore *= Difficulty == "Easy" ? 0.8f : Difficulty == "Normal" ? 1f : 1.2f;
+
         return finalScore;
     }
 
-    public void PlayDivergenceSound() {
+    public void PlayDivergenceSound(DynamicObject divergenceObj = null) {
         if(shouldPlaySound==false) {
             return;
         }
+        if(divergenceObj != null && (Difficulty == "Easy" || Difficulty == "Normal")) {
+            AudioSource.PlayClipAtPoint(DisappearSound, divergenceObj.Obj.transform.position);
+            return;
+        }
+
         GetComponent<AudioSource>().Play();
     }
 

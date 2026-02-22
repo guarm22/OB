@@ -17,6 +17,7 @@ public class RelicsMenu : MonoBehaviour {
     public Button unlockAllCollectibles;
 
     public TMP_Text relicTutorial;
+    public TMP_Text relicMap;
 
     public List<Button> buttons = new List<Button>();
 
@@ -28,6 +29,9 @@ public class RelicsMenu : MonoBehaviour {
     private float curX;
     private float curY;
     private float curZ;
+
+    public TMP_Text discoveredText;
+    private int totalUnlocked = 0;
 
     private bool noRelicsUnlocked = false;
 
@@ -44,7 +48,7 @@ public class RelicsMenu : MonoBehaviour {
         }
     }
 
-    private void SetRelic(Collectible c) {
+    private void SetRelic(Collectible c, int index) {
         if(c == null) {
             description.GetComponent<TMPro.TextMeshProUGUI>().text = "Unlock a relic to see its description.";
             return;
@@ -63,6 +67,8 @@ public class RelicsMenu : MonoBehaviour {
         SetRotation();
         
         description.GetComponent<TMPro.TextMeshProUGUI>().text = c.description;
+        relicMap.text = "Relic found on: " + c.map;
+        discoveredText.text = "#" + (collectibles.IndexOf(c)+1) + " | Relics Discovered: " + totalUnlocked;
         
         foreach(Button b in buttons) {
             if(b.name == c.name+" Button"){
@@ -93,31 +99,31 @@ public class RelicsMenu : MonoBehaviour {
         }
         Collectible firstShown = null;
         int y = 0;
+        int index = 1;
         foreach(Collectible c in collectibles) {
-
+            index = index+1;
+            if(!c.isCollected) {
+                continue;
+            }
+            totalUnlocked = totalUnlocked + 1;
             GameObject relic = Instantiate(buttonPrefab, relicInitialLocation.transform);
             relic.name = c.name + " Button";
             TMP_Text t = relic.GetComponentInChildren<TMP_Text>();
             relic.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, y);
             t.text = c.name;
-
             if(c.isCollected) {
                 if(firstShown == null) {firstShown = c;}
                 t.color = Color.white;
                 Button rb = relic.GetComponent<Button>();
                 buttons.Add(rb);
                 relic.GetComponent<Button>().onClick.AddListener(() => {
-                    SetRelic(c);
+                    SetRelic(c, index);
                 });
-            }
-            else {
-                t.color = Color.black;
-                Destroy(relic.GetComponent<MainMenuButton>());
             }
                 
             y -= 100;
         }
-        if(firstShown != null) {SetRelic(firstShown);}
+        if(firstShown != null) {SetRelic(firstShown, 1);}
     }
     
     void Start() {

@@ -33,6 +33,7 @@ public class Outliner : MonoBehaviour {
             hovering = true;
             //PlayerUI.Instance.ChangePrompt("(" + KeybindManager.instance.GetKeybind("Interact").ToString() +") Collect", true);
             GetComponent<Renderer>().materials = new Material[] {materials[0], shader};
+            CrosshairControl.Instance.SetObjectInRange(true);
         }
     }
 
@@ -40,5 +41,6 @@ public class Outliner : MonoBehaviour {
         hovering = false;
         //PlayerUI.Instance.ChangePrompt("", false);
         GetComponent<Renderer>().materials = materials.ToArray();
+        CrosshairControl.Instance.SetObjectInRange(false);
     }
 }

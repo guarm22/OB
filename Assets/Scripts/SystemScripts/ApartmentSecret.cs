@@ -27,6 +27,8 @@ public class ApartmentSecret : MonoBehaviour{
 
     public bool finished = false;
 
+    public AudioClip keyPickupSound;
+
     void Start() {
         string dig1 = RemoveRandomAmount(bathroomMugs) +"";
         string dig2 = RemoveRandomAmount(bedroomMugs)+"";
@@ -59,7 +61,9 @@ public class ApartmentSecret : MonoBehaviour{
     void Update() {
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact")) || Input.GetKeyDown(KeyCode.Mouse0)) {
             if(doorKey.activeInHierarchy && doorKey.GetComponent<Outliner>().hovering) {
+                CrosshairControl.Instance.SetObjectInRange(false);
                 PlayerUI.Instance.StartCoroutine(PlayerUI.Instance.Acquisition(doorKey.name, "You hear a clicking sound from the front door."));
+                AudioSource.PlayClipAtPoint(keyPickupSound, doorKey.transform.position);
                 doorKey.SetActive(false);
                 frontDoor.GetComponentInChildren<opencloseDoor>().locked = false;
             }

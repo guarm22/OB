@@ -9,15 +9,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ModifiersMenu : MonoBehaviour {
-    
+    [Header("UI Elements")]
     public Button backButton;
     public GameObject levelSelectionMenu;
-
     public TMP_Text scoreMultiplierText;
     public TMP_Text ModifierDescription;
 
     public List<Modifier> modifiersList = new List<Modifier>();
 
+    [Header("Modifiers")]
     //Creature Overrun
     public Button coButton;
     public Image coImage;
@@ -42,6 +42,12 @@ public class ModifiersMenu : MonoBehaviour {
     public Button teleportButton;
     public Image teleportImage;
     public float teleportScore = 1.3f;
+
+
+    //EnergySapped
+    public Button energySappedButton;
+    public Image energySappedImage;
+    public float energySappedScore = 1.3f;
 
     private void ButtonEvent(String name) {
         Modifier m = modifiersList.Find(x => x.name.Equals(name));
@@ -70,32 +76,43 @@ public class ModifiersMenu : MonoBehaviour {
         Modifier coM = new Modifier(this, "Creature Overrun", coButton, coImage, coScore, 
         "A creature spawns at every possible opportunity.",
         ()=>ButtonEvent("Creature Overrun"));
+        PlayerPrefs.SetInt("Creature Overrun", coM.isEnabled ? 1 : 0);
 
         //speed boost
         Modifier speedM = new Modifier(this, "Speed Boost", speedButton, speedImage, speedScore, 
         "Increases player speed.",
         ()=>ButtonEvent("Speed Boost"));
+        PlayerPrefs.SetInt("Speed Boost", speedM.isEnabled ? 1 : 0);
 
         //no warnings
         Modifier noWarningM = new Modifier(this, "No Warnings", noWarningButton, noWarningImage, noWarningScore, 
         "Disables all warnings. Includes divergence alerts and report menu alerts.",
         ()=>ButtonEvent("No Warnings"));
+        PlayerPrefs.SetInt("No Warnings", noWarningM.isEnabled ? 1 : 0);
 
         //darkess
         Modifier darknessM = new Modifier(this, "Darkness", darknessButton, darknessImage, darknessScore, 
         "Darkens the world. Flashlight no longer costs energy.",
         ()=>ButtonEvent("Darkness"));
+        PlayerPrefs.SetInt("Darkness", darknessM.isEnabled ? 1 : 0);
 
         //random teleports
         Modifier teleportM = new Modifier(this, "Teleport", teleportButton, teleportImage, teleportScore, 
-        "Causes the player to randomly teleport at random intervals.",
+        "Causes the player to teleport at random intervals.",
         ()=>ButtonEvent("Teleport"));
+        PlayerPrefs.SetInt("Teleport", teleportM.isEnabled ? 1 : 0);
+
+        Modifier energySappedM = new Modifier(this, "Energy Sapped", energySappedButton, energySappedImage, energySappedScore,
+        "Incorrect reports cost more energy. Creatures drain energy on contact. Creatures that already drain energy will drain more.",
+        ()=>ButtonEvent("Energy Sapped"));
+        PlayerPrefs.SetInt("EnergySapped", energySappedM.isEnabled ? 1 : 0);
         
         modifiersList.Add(coM);
         modifiersList.Add(speedM);
         modifiersList.Add(noWarningM);
         modifiersList.Add(darknessM);
         modifiersList.Add(teleportM);
+        modifiersList.Add(energySappedM);
     }
 
     public void ChangeModifierDesc(string modName, string newDesc) {

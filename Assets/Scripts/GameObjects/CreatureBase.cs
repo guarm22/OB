@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 public class CreatureBase : MonoBehaviour {
@@ -33,6 +34,7 @@ public class CreatureBase : MonoBehaviour {
     public bool isPlayerSeen = false;
 
     public String HomeRoom;
+    public String CurrentRoom;
 
     public AudioSource a;
 
@@ -70,6 +72,27 @@ public class CreatureBase : MonoBehaviour {
         if(Vector3.Distance(transform.position, dest) < 1) {
             isDestSet = false;
         }
+    }
+
+    void OnTriggerStay(Collider collision) {
+        if(collision.gameObject.tag == "Room") {
+            if(collision.gameObject.name != CurrentRoom) {
+                StartCoroutine(RoomChangeDelay(collision.gameObject.name));
+            }
+        }
+    }
+
+    private IEnumerator RoomChangeDelay(string room, float delay = 5f) {
+        float elapsed = 0f;
+        while(elapsed < delay) {
+            if(PlayerUI.paused || GameSystem.Instance.GameOver) {
+                yield return null;
+                continue;
+            }
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        CurrentRoom = room;
     }
 
     private bool stuck() {

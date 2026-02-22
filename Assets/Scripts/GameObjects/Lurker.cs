@@ -49,6 +49,9 @@ public class Lurker : CreatureBase
             base.FacePlayer();
         }
         if(amTouchingPlayer()) {
+            if(PlayerPrefs.GetInt("EnergySapped", 0) == 1) {
+                PlayerDebuffs.Instance.Energy(10f);
+            }
             Instantiate(disorientPrefab, player.transform.position, Quaternion.identity);
             SC_FPSController.Instance.Debuff("Energy", 10f);
             CreatureControl.Instance.RemoveCreature(gameObject);

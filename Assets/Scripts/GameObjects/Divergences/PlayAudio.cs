@@ -15,6 +15,11 @@ public class PlayAudio : CustomDivergence {
     private AudioMixerGroup mixerGroup;
     // Start is called before the first frame update
     void Awake() {
+        if(PlayerPrefs.GetString("AudioDivergences", "YES") == "NO"){
+            Destroy(this.GetComponent<DynamicData>());
+            Destroy(this.GetComponent<PlayAudio>());
+        }
+
         player= GameObject.Find("Player");
         mixerGroup = Resources.Load<AudioMixer>("Sounds/Mixers/PlayAudioMixer").FindMatchingGroups("Master")[0];
         if(this.GetComponent<AudioSource>() == null) {

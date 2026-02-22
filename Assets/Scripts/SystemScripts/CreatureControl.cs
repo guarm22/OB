@@ -67,6 +67,7 @@ public class CreatureControl : MonoBehaviour
         creature.name = type + " - " + room;
         CreaturesPerRoom[room] += 1;
         creature.GetComponent<CreatureBase>().HomeRoom = room;
+        creature.GetComponent<CreatureBase>().CurrentRoom = room;
 
         TotalCreatures += 1;
         ActiveCreatures.Add(creature);
@@ -196,7 +197,7 @@ public class CreatureControl : MonoBehaviour
         }
         else {
             if(CollapseChance > 60) {
-                CollapseChance -= 8;
+                CollapseChance -= 6;
             }
         }
 
@@ -215,7 +216,7 @@ public class CreatureControl : MonoBehaviour
         int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t3 && Time.time - div.divTime <= t4);
         int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t4 && Time.time - div.divTime <= t5);
         int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t5);
-        float spawnChance = (0.25f*x) + (0.3f*y) + (0.5f*z) + (1f*w) + (2.5f*v);
+        float spawnChance = (0.2f*x) + (0.35f*y) + (0.5f*z) + (1f*w) + (3.33f*v);
 
         //chance to start collapse within 80% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {
@@ -237,7 +238,7 @@ public class CreatureControl : MonoBehaviour
 
     public int CreatureReport(String room) {
         foreach(GameObject creature in ActiveCreatures) {
-            if(creature.name.Contains(room) || creature.GetComponent<CreatureBase>().HomeRoom == room) {
+            if(creature.GetComponent<CreatureBase>().CurrentRoom == room) {
                 CreaturesReported += 1;
                 GameSystem.Instance.ChangeEnergy(25 - creature.GetComponent<DynamicData>().energyCost);
                 RemoveCreature(creature);

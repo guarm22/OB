@@ -57,6 +57,10 @@ public class Chaser : CreatureBase
     protected override void Update() {
         base.Update();
         if(amTouchingPlayer()) {
+            if(PlayerPrefs.GetInt("EnergySapped", 0) == 1) {
+                PlayerDebuffs.Instance.Energy(20f);
+            }
+
             DisorientPlayer();
             CreatureControl.Instance.RemoveCreature(gameObject);
         }

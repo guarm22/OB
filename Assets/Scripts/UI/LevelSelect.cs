@@ -13,6 +13,7 @@ public class LevelSelect : MonoBehaviour {
     public Button Apartment;
     public Button ThePuncture;
     public Button Tutorial;
+    public Button Campsite;
     public List<Sprite> levelImages;
     public Image currentLevelImage;
     public Image underline;
@@ -29,7 +30,7 @@ public class LevelSelect : MonoBehaviour {
 
     private bool inAnim = false;
 
-    private List<String> levels = new List<String> { "Tutorial", "Cabin", "Graveyard", "Apartment", "The_Puncture" };
+    private List<String> levels = new List<String> { "Tutorial", "Campsite", "Cabin", "Graveyard", "Apartment", "The_Puncture" };
 
     private void SetLevel(String level, bool firstTime = false) {
         if(inAnim) {
@@ -121,7 +122,7 @@ public class LevelSelect : MonoBehaviour {
             AddOnClick(b, l);
         }
         backgroundOrigLocation = background.transform.position;
-        SetLevel("Cabin", true);
+        SetLevel("Campsite", true);
     }
 
     void Update() {

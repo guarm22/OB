@@ -56,6 +56,9 @@ public class Hider : CreatureBase {
             }
             timeLookingAtPlayer += Time.deltaTime;
             if(timer >= energyDrainCooldown) {
+                if(PlayerPrefs.GetInt("EnergySapped", 0) == 1) {
+                    PlayerDebuffs.Instance.Energy(EnergyDrainAmount);
+                }
                 SC_FPSController.Instance.Debuff("Energy", EnergyDrainAmount);
                 timer = 0f;
             }
