@@ -30,6 +30,15 @@ public class KeybindManager : MonoBehaviour {
         return KeyCode.None;
     }
 
+    public string GetKeybindString(string action) {
+        foreach(Keybind k in keybinds) {
+            if(k.action == action) {
+                return k.key.ToString();
+            }
+        }
+        return "";
+    }
+
     public void SetKeybind(string action, KeyCode key) {
         foreach(Keybind k in keybinds) {
             if(k.action == action) {

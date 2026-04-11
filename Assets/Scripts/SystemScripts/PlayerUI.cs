@@ -208,9 +208,8 @@ public class PlayerUI : MonoBehaviour
             if(src=="escape" && EscapeMenu.Instance.inOptionsMenu){
                 if(Input.GetKeyDown(KeyCode.Q)) {return;}
                 if(KeybindMenu.Instance != null) { if(KeybindMenu.Instance.isOpen) {return;};}
-                if(SettingsMenu.Instance != null) {if(!SettingsMenu.Instance.isPopupOpen) {Debug.Log("here1"); SettingsMenu.Instance.ShowPopup(); return;};}
-                if(SettingsMenu.Instance != null) {if(SettingsMenu.Instance.isPopupOpen) {Debug.Log("here2");SettingsMenu.Instance.closePopup(); return;};}
-                Debug.Log("escape menu control");      
+                if(SettingsMenu.Instance != null) {if(!SettingsMenu.Instance.isPopupOpen) { SettingsMenu.Instance.ShowPopup(); return;};}
+                if(SettingsMenu.Instance != null) {if(SettingsMenu.Instance.isPopupOpen) { SettingsMenu.Instance.closePopup(); return;};}
                 SettingsMenu.Instance.ShowPopup();
                 return;
             }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System; 
+using System;
+using UnityEngine.EventSystems;
 public class RelicsMenu : MonoBehaviour {
     public List<Collectible> collectibles = new List<Collectible>();
     
@@ -36,6 +37,19 @@ public class RelicsMenu : MonoBehaviour {
     private bool noRelicsUnlocked = false;
 
     public String currentProfile;
+
+    public List<GameObject> currentList = new List<GameObject>();
+
+    public List<String> sortOptions = new List<String> {
+        "All",
+        "Tutorial",
+        "Campsite",
+        "Cabin",
+        "Graveyard",
+        "Apartment"
+    };
+
+    public GameObject sortDropdown;
 
     private void LoadCollectibles() {
         String collectibleListPath = $"collectibles.json";
@@ -80,8 +94,16 @@ public class RelicsMenu : MonoBehaviour {
         }
     }
 
+    void InitSort() {
+        sortDropdown.GetComponent<Dropdown>().InitDropdown(sortOptions, "All");
+        sortDropdown.GetComponent<TMP_Dropdown>().onValueChanged.AddListener(delegate {
+            RenderRelicButtons(sortOptions[sortDropdown.GetComponent<TMP_Dropdown>().value]);
+        });
+    }
+
     void InitData() {
         collectibles = new List<Collectible>();
+        InitSort();
         LoadCollectibles();
         currentProfile = PlayerPrefs.GetString("currentProfile");
         if(collectibles.Count == 0) {
@@ -97,6 +119,18 @@ public class RelicsMenu : MonoBehaviour {
             relicInitialLocation.SetActive(true);
             description.SetActive(true);
         }
+        RenderRelicButtons();
+    }
+
+    private void RenderRelicButtons(string filter = "All") {
+        //clear current buttons before rendering new ones
+        foreach(GameObject g in currentList) {
+            Destroy(g);
+        }
+        currentList.Clear();
+        buttons.Clear();
+        totalUnlocked = 0;
+
         Collectible firstShown = null;
         int y = 0;
         int index = 1;
@@ -105,8 +139,12 @@ public class RelicsMenu : MonoBehaviour {
             if(!c.isCollected) {
                 continue;
             }
+            if(filter != "All" && c.map != filter) {
+                continue;
+            }
             totalUnlocked = totalUnlocked + 1;
             GameObject relic = Instantiate(buttonPrefab, relicInitialLocation.transform);
+            currentList.Add(relic);
             relic.name = c.name + " Button";
             TMP_Text t = relic.GetComponentInChildren<TMP_Text>();
             relic.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, y);
@@ -126,7 +164,7 @@ public class RelicsMenu : MonoBehaviour {
         if(firstShown != null) {SetRelic(firstShown, 1);}
     }
     
-    void Start() {
+    void OnEnable() {
         InitData();
         
         hardResetCollectibles.onClick.AddListener(HardResetCollectibles);
@@ -179,7 +217,7 @@ public class RelicsMenu : MonoBehaviour {
         string collectibleListPath = $"collectibles.json";
         collectibles = new List<Collectible>();
         PFileUtil.Save(collectibleListPath, new JsonWrapperUtil<Collectible>(collectibles));
-        Start();
+        OnEnable();
     }
 
     private void SoftResetCollectibles() {
@@ -214,7 +252,7 @@ public class RelicsMenu : MonoBehaviour {
         }
 
         if(currentProfile != PlayerPrefs.GetString("currentProfile")) {
-            Start();
+            OnEnable();
         }
 
         if(relicObj != null) {

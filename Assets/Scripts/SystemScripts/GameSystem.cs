@@ -127,6 +127,10 @@ public class GameSystem : MonoBehaviour {
         finalScore *= 1f + (GameSystem.Instance.TimeInLevel / 6000f); //1% bonus for every minute survived
         finalScore *= Difficulty == "Easy" ? 0.8f : Difficulty == "Normal" ? 1f : 1.2f;
 
+        if(finalScore < 0) {
+            finalScore = 0;
+        }
+
         return finalScore;
     }
 

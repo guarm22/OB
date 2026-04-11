@@ -48,9 +48,9 @@ public class EndGameScreen : MonoBehaviour
 
         float divReportedPercent = (float)GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame / DivergenceControl.Instance.DivergencesSpawned * 1.0f;
         divReportedBar.SetPercent(divReportedPercent);
-        divReportedText.text = GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame + " of " + DivergenceControl.Instance.DivergencesSpawned + " DIVERGENCES REPORTED (" + (divReportedPercent * 100).ToString("F1") + "%)";
+        divReportedText.text = GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame + " of " + DivergenceControl.Instance.DivergencesSpawned + " DIVERGENCES REPORTED (" + (divReportedPercent * 100).ToString("F0") + "%)";
 
-        score.text = "" + finalScore.ToString("F1");
+        score.text = "" + finalScore.ToString("F0");
         timerText.text = GameSystem.Instance.gameTimer.text;
 
         if(GameSystem.Instance.Won == true) {

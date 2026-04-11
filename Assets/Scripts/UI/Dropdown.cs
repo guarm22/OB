@@ -9,6 +9,10 @@ public class Dropdown : MonoBehaviour {
     public List<String> options;
     public TMP_Dropdown dropdown;
 
+    public void Start() {
+        dropdown = GetComponent<TMP_Dropdown>();
+        
+    }
 
     public void InitDropdown(List<String> options, string currentOption) {
         this.options = options;
