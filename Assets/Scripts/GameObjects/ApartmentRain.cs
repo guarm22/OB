@@ -44,6 +44,9 @@ public class ApartmentRain : MonoBehaviour {
     }
 
     void Update() {
+        if(rainSound.volume != PlayerPrefs.GetInt("AmbienceVolume", 50)/100f) {
+            rainSound.volume = PlayerPrefs.GetInt("AmbienceVolume", 50)/100f;
+        }
         if(PlayerUI.paused) {return;}
         thunderTimer += Time.deltaTime;
         bool isCloseToWindow = false;
