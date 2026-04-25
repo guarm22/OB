@@ -24,8 +24,12 @@ public class DefaultUI : MonoBehaviour {
 
     public TMP_Text prevReport;
 
+    public GameObject reportButtonPrompt;
+
     Vector3 originalPos;
     Vector3 originalScale;
+
+    public GameObject verifyingBar;
 
     public GameObject collectibleNearby;
     void Start() {
@@ -99,9 +103,14 @@ public class DefaultUI : MonoBehaviour {
             prevReport.text = "";
             label.color = Color.white;
             label.text = "Report";
+            verifyingBar.SetActive(false);
+            reportButtonPrompt.SetActive(true);
         }
         else if(Time.time - reportTime < lockout && DivergenceControl.Instance.PendingReport) {
             label.text = "Verifying...";
+            verifyingBar.SetActive(true);
+            verifyingBar.GetComponent<FillBar>().SetPercent((Time.time - reportTime) / lockout);
+            reportButtonPrompt.SetActive(false);
 
             String types = "";
             foreach(String type in lastReport.reportTypes) {
@@ -116,11 +125,14 @@ public class DefaultUI : MonoBehaviour {
         else if(Time.time - reportTime > lockout && DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport) {
             label.color = Color.green;
             label.text = "CORRECT";
+            verifyingBar.SetActive(false);
+            reportButtonPrompt.SetActive(true);
         }
         else if(Time.time - reportTime > lockout && !DivergenceControl.Instance.WasMostRecentReportCorrect && !DivergenceControl.Instance.PendingReport) {
             label.text = "WRONG";
             label.color = Color.red;
-
+            verifyingBar.SetActive(false);
+            reportButtonPrompt.SetActive(true);
         }
 
         if(Flashlight.Instance.beam.enabled) {

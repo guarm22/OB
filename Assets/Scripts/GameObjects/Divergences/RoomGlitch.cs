@@ -5,8 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class RoomGlitch : CustomDivergence
-{
+public class RoomGlitch : CustomDivergence {
     private GameObject roomText;
     public float glitchFrequency = 0.25f;
     private String roomName;

@@ -357,7 +357,7 @@ public class ReportUI : MonoBehaviour {
             entry.callback.AddListener(delegate { SelectType(ui); });
 
             // Add the entry to the trigger
-            trigger.triggers.Add(entry);
+            trigger.triggers.Add(entry);         
         }
     }
 }

@@ -6,7 +6,9 @@ public class ChessBoard1 : CustomDivergence
 {
     public List<GameObject> pieces;
     public List<Vector3> movements;
+    [HideInInspector]
     public List<Vector3> newPositions;
+    [HideInInspector]
     public List<Vector3> originalPositions;
 
 

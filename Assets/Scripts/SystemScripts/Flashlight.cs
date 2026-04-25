@@ -101,7 +101,7 @@ public class Flashlight : MonoBehaviour {
         }
     }
 
-    private void TurnOnLight() {
+    public void TurnOnLight() {
         AudioSource.PlayClipAtPoint(flashOn, this.gameObject.transform.position);
         StartCoroutine(MoveOverTime(PhysicalFlashlight.transform, offFlashlingPos, defaultFlashlightPos, flashlightMoveTime));
         beam.enabled = true;

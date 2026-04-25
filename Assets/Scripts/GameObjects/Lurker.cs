@@ -13,6 +13,11 @@ public class Lurker : CreatureBase
     private Vector3 spawnPos;
     public Volume disorientPrefab;
 
+    [HideInInspector]
+    public bool atSpawnPos = true;
+
+    public bool attackingPlayer = false;
+
     public void runTowardsPlayer() {
         agent.SetDestination(player.transform.position);
 
@@ -37,16 +42,24 @@ public class Lurker : CreatureBase
     // Update is called once per frame
     protected override void Update() {
         if(GameSystem.Instance.GameOver || PlayerUI.paused) {
+            base.StopCreature();
             return;
         }
 
+        atSpawnPos = Vector3.Distance(transform.position, spawnPos) < 0.5f;
         base.CreatureSounds();
         if(canSeePlayer()) {
+            attackingPlayer = true;
             runTowardsPlayer();
         }
         else {
+            attackingPlayer = false;
             agent.SetDestination(spawnPos);
-            base.FacePlayer();
+            //if near enough to spawn pos, warp to it
+            if(Vector3.Distance(transform.position, spawnPos) < 2f) {
+                transform.position = spawnPos;
+            }
+            //base.FacePlayer();
         }
         if(amTouchingPlayer()) {
             if(PlayerPrefs.GetInt("EnergySapped", 0) == 1) {

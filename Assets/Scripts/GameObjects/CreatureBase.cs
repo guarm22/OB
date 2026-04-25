@@ -148,7 +148,7 @@ public class CreatureBase : MonoBehaviour {
             agent.SetDestination(newDestination);
         }
     }
-    private void StopCreature() {
+    public void StopCreature() {
         agent.SetDestination(transform.position);
     }
     

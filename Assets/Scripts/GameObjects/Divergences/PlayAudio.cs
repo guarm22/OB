@@ -93,7 +93,7 @@ public class PlayAudio : CustomDivergence {
                 yield return null;
                 continue;
             }
-
+            
             elapsedTime += Time.deltaTime;
             if(elapsedTime >= soundRepeatTimer) {
                 audioSource.Play();

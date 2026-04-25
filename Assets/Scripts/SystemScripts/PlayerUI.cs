@@ -86,10 +86,10 @@ public class PlayerUI : MonoBehaviour
         isReportTextGlitching = false;
     }
 
-    public IEnumerator Acquisition(String itemName, String postString = "View information about it in the Relic menu.", float waitTime = 8f) {
+    public IEnumerator Acquisition(String itemName, String postString = "View information about it in the Relic menu.", String prefix = "Acquired: ", float waitTime = 8f) {
         if(acquisitionText.IsActive()) {yield return new WaitUntil(() =>!acquisitionText.IsActive());}
 
-        acquisitionText.text = "Acquired: " + itemName + ". " + postString;
+        acquisitionText.text = prefix + itemName + ". " + postString;
         acquisitionText.gameObject.SetActive(true);
         yield return new WaitForSeconds(waitTime);
         acquisitionText.gameObject.SetActive(false);
