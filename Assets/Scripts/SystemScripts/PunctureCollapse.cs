@@ -36,7 +36,7 @@ public class PunctureCollapse : MonoBehaviour {
 
             //change expansion speed based map
             float expansionSpeed = 1f;
-            if(SceneManager.GetActiveScene().name == "Graveyard") {
+            if(SceneManager.GetActiveScene().name == "Graveyard" || SceneManager.GetActiveScene().name == "Campsite") {
                 expansionSpeed = 2.5f;
             }
 
