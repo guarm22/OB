@@ -25,6 +25,10 @@ public class CabinSecret : MonoBehaviour {
     void Start() {
         doorScript = cellarDoor.GetComponent<opencloseDoor>();
         Instance = this;
+
+        foreach (Light l in lights) {
+            l.gameObject.SetActive(false);
+        }
     }
 
     private void UnlockPadlock() {
@@ -39,10 +43,10 @@ public class CabinSecret : MonoBehaviour {
 
    
     void Update() {
-        if(Input.GetKeyDown(KeyCode.H)) {
+        if(Input.GetKeyDown(KeyCode.H) && GameSystem.InEditor()) {
             doorScript.ChangeLockState(!doorScript.locked);
         }
-        if(Input.GetKeyDown(KeyCode.V)) {
+        if(Input.GetKeyDown(KeyCode.V) && GameSystem.InEditor()) {
             wall.SetActive(false);
             finished = true;
         }
@@ -112,6 +116,9 @@ public class CabinSecret : MonoBehaviour {
             if(keys.Where(k => k.activeInHierarchy).ToList().Count == 0) {
                 Debug.Log("Unlocking door");
                 doorScript.ChangeLockState(false);
+                foreach (Light l in lights) {
+                    l.gameObject.SetActive(true);
+                }
             }
         }
     }

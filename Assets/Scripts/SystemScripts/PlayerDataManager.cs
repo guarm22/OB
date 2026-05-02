@@ -39,7 +39,8 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         if(timeSinceLastUpdate >= dataUpdateFrequency) {
-            SavePlayerData();
+            UpdateData();
+            //SavePlayerData();
             timeSinceLastUpdate = 0;
         }
         else {
