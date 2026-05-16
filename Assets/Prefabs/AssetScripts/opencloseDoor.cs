@@ -111,7 +111,7 @@ namespace SojaExiles {
 			inAnim = false;
 		}
 
-		IEnumerator closing() {
+		public IEnumerator closing() {
 			inAnim = true;
 			openandclose.Play("Closing");
 			open = false;
