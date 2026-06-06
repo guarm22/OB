@@ -30,6 +30,8 @@ public class SettingsMenu : MonoBehaviour
 
     public GameObject bg;
 
+    public bool inLevel = false;
+
     public void popupYesEvent() {
         closePopup();
         SaveChanges();
@@ -147,12 +149,13 @@ public class SettingsMenu : MonoBehaviour
         popup.SetActive(false);
     }
 
-    void Start() {
+    void Awake() {
         foreach(String l in menus) {
             GameObject b = GameObject.Find(l+"Btn");
             AddOnClick(b, l);
         }
         if(defaultMenu == null){
+            inLevel = true;
             Open();
         }
         
