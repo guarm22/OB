@@ -12,6 +12,7 @@ public class FootstepControl : MonoBehaviour {
     private string currentSurfaceTag;
     private string playingSurfaceTag = "null";
 
+    public AudioClip defaultFootstep;
 
     public AudioClip TileFootstep;
     public AudioClip CarpetFootstep;
@@ -50,9 +51,9 @@ public class FootstepControl : MonoBehaviour {
         else if(currentSurfaceTag == "CarpetFloor" && CarpetFootstep != null) {
             ChangeFootstepSound(CarpetFootstep);
         }
-        //defaiult to carpet footstep if the surface is not tagged
+        //default to carpet footstep if the surface is not tagged
         else {
-            ChangeFootstepSound(CarpetFootstep);
+            ChangeFootstepSound(defaultFootstep);
         }
     }
 
