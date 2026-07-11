@@ -40,6 +40,9 @@ public class AchievementManager : MonoBehaviour
             new Achievement("Code Finder", "Find the secret code in the Apartment and complete the level.", false, 1, "ACH_CODEFINDER"),
             new Achievement("My Worst Mistake", "Find the secret in the Graveyard and complete the level.", false, 1, "ACH_MYWORSTMISTAKE"),
             new Achievement("Perfection", "Complete a level with no wrong reports.", false, 1, "ACH_PERFECTION"),
+            new Achievement("The First Key", "Find the secret in the Tutorial and complete the level,", false, 1, "ACH_THEFIRSTKEY"),
+            new Achievement("Stolen Sun", "Complete the Campsite level.", false, 1, "ACH_STOLENSUN"),
+
         };
     
     void Start() {
@@ -98,6 +101,18 @@ public class AchievementManager : MonoBehaviour
                     if(GraveyardSecret.Instance.finished) {
                         UnlockAchievement(a.Name);
                     }
+                }
+            }
+            if(a.Name == "The First Key") {
+                if(level=="Tutorial") {
+                    if(TutorialSecret.Instance.finished) {
+                        UnlockAchievement(a.Name);
+                    }
+                }
+            }
+            if(a.Name == "Stolen Sun") {
+                if(level=="Campsite") {
+                    UnlockAchievement(a.Name);
                 }
             }
             if(a.Name == "Back Home") {

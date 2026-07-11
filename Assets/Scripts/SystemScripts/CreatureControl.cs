@@ -249,6 +249,9 @@ public class CreatureControl : MonoBehaviour
     }
     
     public void RemoveCreature(GameObject creature) {
+        if(creature.GetComponent<AudioSource>() != null) {
+            creature.GetComponent<AudioSource>().Stop();
+        }
         string room = creature.name.Split('-')[1].Trim();
         ActiveCreatures.Remove(creature);
         CreaturesPerRoom[room] -= 1;

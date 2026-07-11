@@ -29,6 +29,10 @@ public class LurkerDisorient : MonoBehaviour {
     }
 
     private IEnumerator DistortSound() {
+        //check if there are any other disorient sounds playing, if so, wait until they are done
+        if(GameObject.FindObjectsOfType<LurkerDisorient>().Length > 1) {
+            yield break;
+        }
         AudioSource a = this.gameObject.AddComponent<AudioSource>();
         this.gameObject.GetComponent<AudioSource>().clip = disorientSound;
         this.gameObject.GetComponent<AudioSource>().Play();

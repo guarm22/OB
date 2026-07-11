@@ -16,10 +16,16 @@ public class FootstepControl : MonoBehaviour {
 
     public AudioClip TileFootstep;
     public AudioClip CarpetFootstep;
+    public AudioClip ConcreteFootstep;
+    public AudioClip DirtFootstep;
+    
+
+    private float defaultVolume;
 
     void Start() {
         player = GameObject.Find("Player");
         audioSource = walkingSound.GetComponent<AudioSource>();
+        defaultVolume = audioSource.volume;
     }
 
     // Update is called once per frame
@@ -33,7 +39,6 @@ public class FootstepControl : MonoBehaviour {
         //only detect ground layer
         if (Physics.Raycast(player.transform.position, Vector3.down, out hit, 1.5f, LayerMask.GetMask("Floor"))) {
             currentSurfaceTag = hit.collider.tag;
-            Debug.Log("Current surface: " + currentSurfaceTag);
         }
 
         if(currentSurfaceTag == playingSurfaceTag) {
@@ -44,12 +49,19 @@ public class FootstepControl : MonoBehaviour {
         if(currentSurfaceTag == "Untagged") {
             currentSurfaceTag = defaultSurfaceTag;
         }
-
+        audioSource.volume = defaultVolume;
         if(currentSurfaceTag == "TileFloor" && TileFootstep != null) {
             ChangeFootstepSound(TileFootstep);
         }
         else if(currentSurfaceTag == "CarpetFloor" && CarpetFootstep != null) {
             ChangeFootstepSound(CarpetFootstep);
+        }
+        else if(currentSurfaceTag == "ConcreteFloor" && ConcreteFootstep != null) {
+            audioSource.volume = defaultVolume * 0.4f;
+            ChangeFootstepSound(ConcreteFootstep);
+        }
+        else if(currentSurfaceTag == "DirtFloor" && DirtFootstep != null) {
+            ChangeFootstepSound(DirtFootstep);
         }
         //default to carpet footstep if the surface is not tagged
         else {
