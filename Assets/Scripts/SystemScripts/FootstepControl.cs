@@ -39,7 +39,6 @@ public class FootstepControl : MonoBehaviour {
         //only detect ground layer
         if (Physics.Raycast(player.transform.position, Vector3.down, out hit, 1.5f, LayerMask.GetMask("Floor"))) {
             currentSurfaceTag = hit.collider.tag;
-            Debug.Log("Current surface: " + currentSurfaceTag);
         }
 
         if(currentSurfaceTag == playingSurfaceTag) {
@@ -58,7 +57,7 @@ public class FootstepControl : MonoBehaviour {
             ChangeFootstepSound(CarpetFootstep);
         }
         else if(currentSurfaceTag == "ConcreteFloor" && ConcreteFootstep != null) {
-            audioSource.volume = defaultVolume * 0.6f;
+            audioSource.volume = defaultVolume * 0.4f;
             ChangeFootstepSound(ConcreteFootstep);
         }
         else if(currentSurfaceTag == "DirtFloor" && DirtFootstep != null) {

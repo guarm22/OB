@@ -11,6 +11,8 @@ public class CrosshairControl : MonoBehaviour {
     public string targetTag = "Collectible";
     public float detectionRadius = 3f;
 
+    private Vector3 collectibleCrosshairScale = new Vector3(4.5f,3f,4);
+
     void Start() {
         objectInRange = false;
         Instance = this;
@@ -20,14 +22,14 @@ public class CrosshairControl : MonoBehaviour {
         objectInRange = inRange;
         if (objectInRange && tag == "") {
             GetComponent<Image>().sprite = collectibleCrosshair;
-            GetComponent<RectTransform>().localScale = new Vector3(4.5f,3f,4); 
+            GetComponent<RectTransform>().localScale = collectibleCrosshairScale; 
         } 
         /*else if (objectInRange && tag == "Door") {
             GetComponent<Image>().sprite = collectibleCrosshair;
             GetComponent<RectTransform>().localScale = new Vector3(4.5f,3f,4); 
         } */
         else {
-            GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+            GetComponent<RectTransform>().localScale = Vector3.one;
             GetComponent<Image>().sprite = defaultCrosshair;
         }
     }

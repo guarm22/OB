@@ -3654,9 +3654,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795879863801881378, guid: 5e00eadd86e0eb44fab2a35e8cfe039e, type: 3}
       propertyPath: m_text
-      value: \n\nThe objects most precious to you are the key to opening the path...\n\nRed
-        means the end of the path is no longer reachable.\n\nGreen means you are
-        one step closer to salvation.
+      value: \n\nThe objects in this place that are the most precious to you are
+        the key to opening this box...\n\nRed means the end of the path is no longer
+        reachable.\n\nGreen means you are one step closer to salvation.
       objectReference: {fileID: 0}
     - target: {fileID: 2795879863801881378, guid: 5e00eadd86e0eb44fab2a35e8cfe039e, type: 3}
       propertyPath: m_fontSize
@@ -3664,7 +3664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795879863801881378, guid: 5e00eadd86e0eb44fab2a35e8cfe039e, type: 3}
       propertyPath: m_fontStyle
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2795879863801881378, guid: 5e00eadd86e0eb44fab2a35e8cfe039e, type: 3}
       propertyPath: m_fontSizeBase
@@ -5903,7 +5903,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8671328227652953959, guid: c8efa0ebb83f8f9498202481854c76a5, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: CarpetFloor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9247,6 +9247,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1526673091923585306, guid: 9dd93ff4bd20a564bb5eedf91b056612, type: 3}
   m_PrefabInstance: {fileID: 519431689}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &519905351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4712435079166210497, guid: 2bd990e05ffc62c4d84e5ea111d2a04f, type: 3}
+  m_PrefabInstance: {fileID: 1079582280}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &519905354
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519905351}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5189084501962919628, guid: a39a955fb8217dc4989b8e7fc6aaee84, type: 3}
 --- !u!1001 &520972085
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20428,7 +20455,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4712435079166210497, guid: 2bd990e05ffc62c4d84e5ea111d2a04f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 519905354}
   m_SourcePrefab: {fileID: 100100000, guid: 2bd990e05ffc62c4d84e5ea111d2a04f, type: 3}
 --- !u!1 &1080666190
 GameObject:
@@ -23169,31 +23199,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 17.058
+      value: 17.381
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.098
+      value: 0.72130007
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.059
+      value: 1.4941714
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.69383466
+      value: 0.6820209
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.71336967
+      value: -0.6994823
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.07142262
+      value: 0.14613724
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.06779498
+      value: 0.15561453
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23201,11 +23231,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 4.87
+      value: 40.811996
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -16.17
+      value: -16.169983
       objectReference: {fileID: 0}
     - target: {fileID: 3019568617730713240, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_Name
@@ -24654,6 +24684,14 @@ PrefabInstance:
     - target: {fileID: 2200114559990214439, guid: 40399f95a6f26064ebdd3b08052bb9fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830302235704412130, guid: 40399f95a6f26064ebdd3b08052bb9fc, type: 3}
+      propertyPath: m_Size.z
+      value: 0.25046778
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830302235704412130, guid: 40399f95a6f26064ebdd3b08052bb9fc, type: 3}
+      propertyPath: m_Center.z
+      value: 0.07547498
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
