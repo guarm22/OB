@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TutorialSecret : MonoBehaviour {
@@ -13,13 +14,14 @@ public class TutorialSecret : MonoBehaviour {
     public List<TutorialNote> notes = new List<TutorialNote>();
     private List<TutorialNote> noteSequence = new List<TutorialNote>();
 
-
     private int currentNoteIndex = 0;
 
     private bool doNotContinue = false;
 
     public AudioClip failedSequenceSound;
     public AudioClip correctSequenceSound;
+
+    public TMP_Text paperNote;
 
     private bool secretActive = true;
 
@@ -42,6 +44,11 @@ public class TutorialSecret : MonoBehaviour {
     }
 
     private void CheckSequence() {
+        //if sequence finished:
+        if(currentNoteIndex >= noteSequence.Count) {
+            return;
+        }
+
         //check if the player is currently standing on the incorrect note
         foreach(TutorialNote note in noteSequence) {
             if(note.isPlayerOnNote() && note != noteSequence[currentNoteIndex] && !doNotContinue) {
@@ -60,7 +67,7 @@ public class TutorialSecret : MonoBehaviour {
             Debug.Log("Correct note! Moving to next note. Current index: " + currentNoteIndex);
             if(currentNoteIndex >= noteSequence.Count) {
                 fenceGate.GetComponent<WoodFenceOpen>().locked = false;
-                PlayerUI.Instance.Acquisition("A gate clicks in the distance.", "", "");
+                PlayerUI.Instance.StartCoroutine(PlayerUI.Instance.Acquisition("A gate clicks in the distance.", "", ""));
                 AudioSource.PlayClipAtPoint(correctSequenceSound, fenceGate.transform.position);
                 finished = true;
             }
@@ -91,7 +98,7 @@ public class TutorialSecret : MonoBehaviour {
 
     private void GenerateSequence() {
         //create a random sequence of letters from the possible letters without duplicates
-        string possibleLetters = "abcdefg";
+        string possibleLetters = "abcde";
         string preSeq = "";
         string letters = possibleLetters;
         for(int i = 0; i < possibleLetters.Length; i++) {
@@ -112,6 +119,7 @@ public class TutorialSecret : MonoBehaviour {
         for(int i=0; i<seqLength; i++) {
             sequence += nums[i].ToString() + preSeq[i].ToString();
         }
+        paperNote.text = sequence + "\n\nThe letters beneath your feet.";
         Debug.Log("Sequence: " + sequence);
     }
 
@@ -135,18 +143,12 @@ public class TutorialSecret : MonoBehaviour {
 
     private void CollectRock(){
         foreach(GameObject rock in rocks) {
-                if(rock.activeInHierarchy && rock.GetComponent<Outliner>().hovering) {
-                    CrosshairControl.Instance.SetObjectInRange(false);
-                    PlayerUI.Instance.StartCoroutine(PlayerUI.Instance.Acquisition(rock.name, "You feel the energy in the air return to normal."));
-                    rock.SetActive(false);
-                    if(rock.gameObject.name == "Path Rock") {
-                        //if the rock is collected, disble ability to do secret sequence
-                        secretActive = false;
-                        fenceGate.SetActive(false);
-                        normalGate.SetActive(true);
-                    }
-                    break;
-                }
+            if(rock.activeInHierarchy && rock.GetComponent<Outliner>().hovering) {
+                CrosshairControl.Instance.SetObjectInRange(false);
+                PlayerUI.Instance.StartCoroutine(PlayerUI.Instance.Acquisition(rock.name, "It's a rock."));
+                rock.SetActive(false);
+                break;
             }
+        }
     }
 }

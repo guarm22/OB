@@ -60,7 +60,7 @@ public class PunctureRealm : MonoBehaviour {
             if(door != correctDoor && door != fakeDoor) {
                 GameObject expandingSphere = Instantiate(expandingSpherePrefab, door.transform.position, Quaternion.identity);
                 spawnedSpheres.Add(expandingSphere);
-                expandingSphere.GetComponent<ExpandingSphere>().ManualActivation(1.8f);
+                expandingSphere.GetComponent<ExpandingSphere>().ManualActivation(1.6f);
                 yield return new WaitForSeconds(0.2f);
             }
         }

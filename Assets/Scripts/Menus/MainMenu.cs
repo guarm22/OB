@@ -60,6 +60,10 @@ public class MainMenu : MonoBehaviour {
 
     private void CreditsEvent() {
         Credits.SetActive(true);
+        if(PatchNotes.activeSelf) {
+            PatchNotes.SetActive(false);
+        }
+
         DefaultMenu.SetActive(false);
     }
 
@@ -70,6 +74,9 @@ public class MainMenu : MonoBehaviour {
 
     private void PatchNoteEvent() {
         PatchNotes.SetActive(true);
+        if(Credits.activeSelf) {
+            Credits.SetActive(false);
+        }
         DefaultMenu.SetActive(false);
     }
 

@@ -40,6 +40,9 @@ public class PlayerUI : MonoBehaviour
 
     void Start() {
         Instance = this;
+        if(paused) {
+            paused = false;
+        }
         audioSource = this.gameObject.AddComponent<AudioSource>();
     }
 

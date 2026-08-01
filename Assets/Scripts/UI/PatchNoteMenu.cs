@@ -20,7 +20,136 @@ public class PatchNoteMenu : MonoBehaviour {
 
     void Start() {
         backButton.onClick.AddListener(BackButtonEvent);
-        patchNotes.text = @"v0.9.4:
+        patchNotes.text = @"v0.10.0: The Campsite/Tutorial Update
+Changes:
+-Overhauled the Campsite map with new visuals and areas
+-Certain settings cannot be changed while in game now
+-Updated the background scenery of Cabin
+-Updated some gates on the Tutorial
+-Removed some invisible walls on the Tutorial that prevent the player from walking backwards
+-Changed 'The Puncture' to 'Subway'
+-Moved the credits button to the main menu
+
+Additions:
+-Added an 'Audio' glitch divergence
+-Added a puncture divergence that sends the player to another realm
+-Added and changed divergences on Cabin
+-Footstep sounds will now change depending on the type of surface you walk on
+-There is additional text in the Tutorial
+-Added a secret collectible to Tutorial
+
+Bug Fixes:
+-Lurker attack sounds should no longer stack and get super loud
+-The sounds creatures make should no longer play after being removed
+-Tutorial collectibles should no longer change your crosshair for the remainder of the level
+-Fixed the credits overlapping the settings menu
+
+
+v0.9.8 (finished 5-16-26):
+Changes:
+-The final score no longer has a decimal place
+-The final score can not be negative
+-Moved some UI elements on the bottom right of screen around
+
+Additions:
+-Added relic sorting
+-Added occlusion culling
+-Changed lighting rendering to deffered
+-There's a new hint on Cabin on how to complete the level secret
+-There's a new progess bar showing how long a report will take to verify
+-Campsite now has real divergences
+-Added new movement divergence
+-Added new puncture divergence
+-Campsite has a secret collectible
+
+Bug Fixes:
+-The report menu prompt in game will now update when you change the keybind
+-Fixed some lighting issues on Cabin
+-Player data no longer saves mid level to prevent lag spikes
+-Fixed an issue on Cabin where you could see into the cellar from the Kitchen
+
+
+v0.9.7 (Finished 2-21-26):
+Changes:
+-The divergence alert sound is now directional on all non-hard difficulties
+-Increased divergence timer by 1 more on normal
+-Changed Main Menu music
+-Reduced the chance of the secret mist spawning
+-Changed all the secret collectibles to a USB flash drive
+-Updated the crosshair
+-Updated pause menu
+-Updated end game screen
+-You can no longer see relics you haven't collected
+
+Additions:
+-Added new text and effects to the end game screen
+-Creatures can now be reported by the room they are currently in rather than only the room they spawn in
+-There is now a bar on the end game screen showing the player how many divergences appeared and were reported
+-Completing a level's secret now adds bonus score
+-Started work on Campsite map
+-The crosshair now displays a new icon when near a collectible item
+-Added 'Energy Sapped' modifier
+
+Bugfixes:
+-The puncture spike now points the correct direction (mostly)
+-Added a collider to some objects that were missing them (lamppost, brick)
+-The Gravestone will now correctly show up in the relic menu
+
+
+v0.9.6 (finished 12/31/25)
+Changes:
+-Gave the relic viewer better lighting
+-Made settings easier
+-Made the Room Glitch divergence a bit more obvious
+-Updated the secret puzzle on Graveyard. It now has an extra step
+
+Additions:
+-The Settings and Extras menu is now accessible while in level
+-You can now escape the 'Save Changes' window by hitting escape or clicking off the popup
+-Added sound dampening for audio divergences through walls
+-Added 2 new types of Puncture divergence
+-There's a new secret mist that has a small chance to appear every level
+-The ability to turn off Audio divergences for accessability purposes has been added
+-Keys make a sound when picked up
+
+Bugfixes:
+-Fixed an issue where pressing Q while on the keybind menu would break the game
+-Fixed an issue where reverting the settings would not change brightness
+-Fixed a collectible not able to be collected
+-Fixed the secret on Cabin not being able to be completed
+-The report device will no longer stay open when a level is finished
+-The game will no longer be unplayable if the player quits by pausing and pressing 'Quit Game'
+-Fixed a bug where 'Replay' after losing a level would be broken
+
+
+v0.9.5 (12/15/2025):
+Changes:
+-Updated the Relics menu
+-Added the rest of the puzzle for the secret collectible in Cabin
+-Adjusted lighting on each level
+-Adjusted brightness of background in the main menu
+-Moved the patch notes and credits buttons
+-The animations on the main menu are smoother
+-Changed the color of some main menu text
+-Changed some Tutorial text. Added additional reminders at certain sections
+
+Additions:
+-Added new collectibles on all maps
+-Added new ambience effects to Graveyard and Tutorial
+-Score is now affected by amount of time survived and difficulty
+-Some new achievements related to score
+-New achievements for finding the secret on each level
+-Added a popup for when the player picks up relics or level items
+-Added the ability to zoom in and out on the relic menu
+
+Bugfixes:
+-You can no longer walk through the elevator door on Apartment
+-Fixed certain interactables not being able to be used with left click
+-Increased performance on tutorial
+-You will no longer hear walking sounds when the game is paused or a popup is on screen
+        
+        
+v0.9.4:
 Changes:
 -Certain objects that were missing colliders now should have them
 -The player can now move while the report device is open
