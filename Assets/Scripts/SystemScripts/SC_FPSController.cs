@@ -282,6 +282,43 @@ public class SC_FPSController : MonoBehaviour
         StartCoroutine(TeleportEffects(room));
     }
 
+    public void TeleportToPosition(Vector3 position) {
+        StartCoroutine(TeleportEffectsLocation(position));
+    }
+
+    private IEnumerator TeleportEffectsLocation(Vector3 location) {
+        blacknessPanel.SetActive(true);
+        blacknessPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        //slowly turn up alpha of panel over 0.5 seconds
+        float timer = 0f;
+        while(timer < 0.5f) {
+            timer += Time.deltaTime;
+            blacknessPanel.GetComponent<Image>().color += new Color(0, 0, 0, Time.deltaTime / 0.5f);
+
+            //warp fov
+            playerCamera.fieldOfView = Mathf.Lerp(FOV, 35, timer / 0.5f);
+
+            yield return null;
+        }
+        //return fov
+        playerCamera.fieldOfView = FOV;
+        teleported = true;
+
+        transform.position = location;
+        characterController.enabled = false;
+        
+        yield return new WaitForSeconds(1f);
+        timer = 0f;
+        //slowly turn down alpha of panel
+        while(timer < 4f) {
+            timer += Time.deltaTime;
+            blacknessPanel.GetComponent<Image>().color -= new Color(0, 0, 0, Time.deltaTime / 4f);
+            yield return null;
+        }
+        blacknessPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        blacknessPanel.SetActive(false);
+    }
+
     private IEnumerator TeleportEffects(GameObject room) {
         blacknessPanel.SetActive(true);
         blacknessPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);

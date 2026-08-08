@@ -30,7 +30,7 @@ public class LevelSelect : MonoBehaviour {
 
     private bool inAnim = false;
 
-    private List<String> levels = new List<String> { "Tutorial", "Campsite", "Cabin", "Graveyard", "Apartment", "The_Puncture" };
+    private List<String> levels = new List<String> { "Tutorial", "Campsite", "Cabin", "Graveyard", "Apartment", "Subway" };
 
     private void SetLevel(String level, bool firstTime = false) {
         if(inAnim) {
@@ -122,7 +122,7 @@ public class LevelSelect : MonoBehaviour {
             AddOnClick(b, l);
         }
         backgroundOrigLocation = background.transform.position;
-        SetLevel("Campsite", true);
+        SetLevel("Tutorial", true);
     }
 
     void Update() {

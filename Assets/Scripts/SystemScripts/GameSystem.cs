@@ -50,6 +50,8 @@ public class GameSystem : MonoBehaviour {
 
     public float EnergyUsed = 0;
 
+    public bool timeGlitchActivated = false;
+
   void Awake() {
     if (Instance != null) {
       Debug.LogError("There is more than one instance!");

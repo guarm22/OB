@@ -29,26 +29,6 @@ public class SoundControl : MonoBehaviour
         AudioListener.volume = PlayerPrefs.GetInt("MasterVolume") / 100f;
     }
 
-    void Update() {
-        walking();
-    }
-
-    private void walking() {
-        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
-            if(PlayerUI.paused) {walkingSound.SetActive(false); return;}
-            walkingSound.SetActive(true);
-            if(SC_FPSController.Instance.isRunning) {
-                walkingSound.GetComponent<AudioSource>().pitch = 1.5f;
-            }
-            else {
-                walkingSound.GetComponent<AudioSource>().pitch = 1f;
-            }
-        }
-        else {
-            walkingSound.SetActive(false);
-        }
-    }
-
     public void PauseSound(bool pausing) {
         if(pausing) {
             AudioSource[] a = FindObjectsOfType<AudioSource>();

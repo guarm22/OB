@@ -62,7 +62,8 @@ public class KeybindManager : MonoBehaviour {
             new Keybind("Report Menu", KeyCode.Tab),
             new Keybind("Flashlight", KeyCode.F),
             new Keybind("Zoom", KeyCode.Mouse1),
-            new Keybind("FileSystemVersion", KeyCode.Mouse1)
+            new Keybind("FileSystemVersion", KeyCode.Mouse1),
+            new Keybind("Jump", KeyCode.Space),
         };
         return keybinds;
     }

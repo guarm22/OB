@@ -11,6 +11,7 @@ public class GraphicsSettings : MonoBehaviour
     public GameObject Brightness;
     public GameObject DisplayMode;
     public GameObject Quality;
+    public GameObject Monitor;
 
     public Image selectedOptionOutline;
     private GameObject selectedOption;
@@ -43,6 +44,8 @@ public class GraphicsSettings : MonoBehaviour
         "Fullscreen"
     };
 
+    public List<String> monitors = new List<String>();
+
     void Awake() {
         if(!PlayerPrefs.HasKey("Resolution")) {
             PlayerPrefs.SetString("Resolution", Display.main.systemWidth + "x" + Display.main.systemHeight);
@@ -56,6 +59,11 @@ public class GraphicsSettings : MonoBehaviour
         if(!PlayerPrefs.HasKey("Quality")) {
             PlayerPrefs.SetString("Quality", "High");
         }
+        if(!PlayerPrefs.HasKey("Monitor")) {
+            PlayerPrefs.SetString("Monitor", "Monitor 1");
+        }
+
+        GetMonitors();
 
         ChangeSelection(Brightness);
         Brightness.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetInt("Brightness",50));
@@ -85,6 +93,27 @@ public class GraphicsSettings : MonoBehaviour
         entry.eventID = EventTriggerType.PointerEnter;
         entry.callback.AddListener(delegate { ChangeSelection(Quality); });
         trigger.triggers.Add(entry);
+
+        trigger = Monitor.AddComponent<EventTrigger>();
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        entry.callback.AddListener(delegate { ChangeSelection(Monitor); });
+        trigger.triggers.Add(entry);
+    }
+
+    private void GetMonitors() {
+        int monitorCount = Display.displays.Length;
+        monitors.Clear();
+        for(int i = 0; i < monitorCount; i++) {
+            monitors.Add("Monitor " + (i + 1));
+        }
+    }
+
+    private void SwitchMonitor(int monitorIndex) {
+        if(monitorIndex < Display.displays.Length) {
+            Display.displays[monitorIndex].Activate();
+            PlayerPrefs.SetString("Monitor", "Monitor " + (monitorIndex + 1));
+        }
     }
 
     private void ChangeSelection(GameObject selectedOption) {
@@ -98,7 +127,10 @@ public class GraphicsSettings : MonoBehaviour
             selectedOptionDescription.text = "Change the display mode";
         } else if(selectedOption == Quality) {
             selectedOptionDescription.text = "Change the graphics quality of the game. This can affect performance";
+        } else if(selectedOption == Monitor) {
+            selectedOptionDescription.text = "Change the monitor the game is displayed on";
         }
+         
         
     }
 
@@ -107,6 +139,7 @@ public class GraphicsSettings : MonoBehaviour
         Brightness.GetComponentInChildren<BarSlider>().SetValue(PlayerPrefs.GetInt("Brightness"));
         DisplayMode.GetComponentInChildren<Dropdown>().InitDropdown(displayModes, PlayerPrefs.GetString("DisplayMode"));
         Quality.GetComponentInChildren<Dropdown>().InitDropdown(qualities, PlayerPrefs.GetString("Quality"));
+        Monitor.GetComponentInChildren<Dropdown>().InitDropdown(monitors, PlayerPrefs.GetString("Monitor"));
     }
 
     void Start() {
@@ -118,7 +151,7 @@ public class GraphicsSettings : MonoBehaviour
         PlayerPrefs.SetInt("Brightness", Brightness.GetComponentInChildren<BarSlider>().GetIntValue());
         PlayerPrefs.SetString("DisplayMode", DisplayMode.GetComponentInChildren<TMP_Dropdown>().captionText.text);
         PlayerPrefs.SetString("Quality", Quality.GetComponentInChildren<TMP_Dropdown>().captionText.text);
-
+        PlayerPrefs.SetString("Monitor", Monitor.GetComponentInChildren<TMP_Dropdown>().captionText.text);
         FullScreenMode fsMode = FullScreenMode.ExclusiveFullScreen;
         
         if(PlayerPrefs.GetString("DisplayMode") == "Fullscreen") {
@@ -139,6 +172,8 @@ public class GraphicsSettings : MonoBehaviour
 
         string[] res = PlayerPrefs.GetString("Resolution").Split('x');
         Screen.SetResolution(int.Parse(res[0]), int.Parse(res[1]), fsMode);
+
+        //SwitchMonitor(monitors.IndexOf(PlayerPrefs.GetString("Monitor")));
     }
 
     public void RevertChanges() {
@@ -148,6 +183,7 @@ public class GraphicsSettings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //which monitor
+        Debug.Log("Current Monitor: " + PlayerPrefs.GetString("Monitor"));
     }
 }

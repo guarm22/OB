@@ -30,6 +30,7 @@ public class Fireflies : MonoBehaviour {
     void Awake() {
         fireflies = GetComponent<ParticleSystem>();
         player = GameObject.Find("Player");
+        fireflies.Stop();
         
         var emission = fireflies.emission;
         emission.rateOverTime = emissionRate;
@@ -40,6 +41,7 @@ public class Fireflies : MonoBehaviour {
         main.startSize = size;
 
         main.duration = lifetime;
+        fireflies.Play();
     }
 
     void Update() {

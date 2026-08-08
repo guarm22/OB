@@ -37,6 +37,13 @@ public class GameplaySettings : MonoBehaviour
             PlayerPrefs.SetString("AudioDivergences", "YES");
         }
 
+        if(SettingsMenu.Instance != null && SettingsMenu.Instance.inLevel) {
+            profile.GetComponentInChildren<Dropdown>().SetInteractable(false);
+            newProfileButton.interactable = false;
+            newProfileButton.GetComponentInChildren<TMP_Text>().color = new Color(172/255f, 187/255f, 207/255f, 0.5f);
+            profile.transform.GetChild(1).GetComponent<TMP_Text>().color = new Color(172/255f, 187/255f, 207/255f, 1);
+        }
+
         List<string> profiles = PFileUtil.GetAllProfiles();
         profile.GetComponentInChildren<Dropdown>().InitDropdown(profiles, PlayerPrefs.GetString("currentProfile", "default"));
 
@@ -73,12 +80,22 @@ public class GameplaySettings : MonoBehaviour
         entry.eventID = EventTriggerType.PointerEnter;
         entry.callback.AddListener(delegate { ChangeSelection(VisualHints); });
         trigger.triggers.Add(entry);
+        if(SettingsMenu.Instance != null && SettingsMenu.Instance.inLevel) {
+            VisualHints.GetComponentInChildren<SingleChoiceSection>().SetInteractable(false);
+            VisualHints.transform.GetChild(1).GetComponent<TMP_Text>().color = new Color(172/255f, 187/255f, 207/255f, 1);
+        }
 
         trigger = AudioDivergences.AddComponent<EventTrigger>();
         entry = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.PointerEnter;
         entry.callback.AddListener(delegate { ChangeSelection(AudioDivergences); });
         trigger.triggers.Add(entry);
+        if(SettingsMenu.Instance != null && SettingsMenu.Instance.inLevel) {
+            AudioDivergences.GetComponentInChildren<SingleChoiceSection>().SetInteractable(false);
+            AudioDivergences.transform.GetChild(1).GetComponent<TMP_Text>().color = new Color(172/255f, 187/255f, 207/255f, 1);
+        }
+
+
 
 
         trigger = profile.AddComponent<EventTrigger>();
@@ -92,13 +109,22 @@ public class GameplaySettings : MonoBehaviour
         this.selectedOption = selectedOption;
         selectedOptionOutline.transform.position = new Vector3(selectedOption.transform.position.x, selectedOption.transform.position.y, selectedOption.transform.position.z);
         if(selectedOption == FOV) {
-            selectedOptionDescription.text = "In game field of view";
+            selectedOptionDescription.text = "In game field of view.";
         } else if(selectedOption == VisualHints) {
             selectedOptionDescription.text = "Determines if lights will flicker in game as a hint";
+             if(SettingsMenu.Instance != null && SettingsMenu.Instance.inLevel) {
+                selectedOptionDescription.text += ".\n\nCannot be changed in game.";
+            }
         } else if(selectedOption == profile) {
             selectedOptionDescription.text = "Profile to save relics, achievements, and keybinds. Will not affect steam achievements/stats.";
+            if(SettingsMenu.Instance != null && SettingsMenu.Instance.inLevel) {
+                selectedOptionDescription.text += "\n\nCannot be changed in game.";
+            }        
         } else if(selectedOption == AudioDivergences) {
             selectedOptionDescription.text = "Determines if the audio divergences will appear in game. For accessibility purposes.";
+             if(SettingsMenu.Instance != null && SettingsMenu.Instance.inLevel) {
+                selectedOptionDescription.text += "\n\nCannot be changed in game.";
+            }
         }
 
     }

@@ -9,6 +9,8 @@ public class SecretMist : MonoBehaviour
     private float currentRate = 2f;
     public float startRate = 2f;
 
+    private bool paused = false;
+
     void Start() {
         float rand = UnityEngine.Random.Range(0, 100);
         if (rand <= MistChance) {
@@ -19,14 +21,23 @@ public class SecretMist : MonoBehaviour
         }
         else {
             Destroy(mist);
+            this.gameObject.SetActive(false);
         }
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.M)){
-            mist.SetActive(!mist.activeSelf);
+    void Update() {
+        if(PlayerUI.paused && !paused) { 
+            paused = true;
+            ps.Pause();
+            return; 
+        }
+        else if(!PlayerUI.paused && paused) {
+            paused = false;
+            ps.Play();
+        }
+        else if(PlayerUI.paused && paused) {
+            return;
         }
 
         timer += Time.deltaTime;

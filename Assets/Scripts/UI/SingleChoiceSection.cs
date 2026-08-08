@@ -13,6 +13,9 @@ public class SingleChoiceSection : MonoBehaviour
     public Button currentChoice;
     public Image underline;
 
+    private Color defaultColor = new Color(172/255f, 187/255f, 207/255f, 1);
+    private Color notInteractableColor = new Color(172/255f, 187/255f, 207/255f, 0.5f);
+
     public void SetChoice(Button choice) {
         currentChoice = choice;
         float y = Display.main.systemHeight/42;
@@ -67,8 +70,11 @@ public class SingleChoiceSection : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update() {
-        
+    public void SetInteractable(bool interactable) {
+        foreach (Button b in choices) {
+            b.interactable = interactable;
+            b.GetComponentInChildren<TMPro.TMP_Text>().color = interactable ? defaultColor : notInteractableColor;
+        }
+        underline.color = interactable ? defaultColor : notInteractableColor;
     }
 }

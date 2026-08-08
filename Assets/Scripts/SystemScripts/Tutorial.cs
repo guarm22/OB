@@ -23,10 +23,6 @@ public class Tutorial : MonoBehaviour {
     public GameObject gate1;
     public GameObject gate2;
 
-    public GameObject invisibleWall1;
-    public GameObject invisibleWall2;
-    public GameObject invisibleWall3;
-
     private bool manualTrigger1 = false;
     private bool manualTrigger2 = false;
     private bool manualTrigger3 = false;
@@ -51,7 +47,7 @@ public class Tutorial : MonoBehaviour {
         
         if(JustLoaded) {
             JustLoaded = false;
-            Popup.Instance.OpenPopup("Welcome to The Puncture.\nYou can use the WASD keys to move around, and the mouse to look around.\n\nYou can also sprint by holding down the left shift key.\n\nYou may pause the game at any time by pressing ESC or Q.");
+            Popup.Instance.OpenPopup("Welcome to The Puncture.\nYou can use the WASD keys to move around, and the mouse to look around.\n\nYou can also sprint by holding down the left shift key.\n\nYou may pause the game by pressing ESC or Q.\n\nKeep an eye on the left side of the screen for important reminders.");
         }
 
         //picnic report
@@ -71,6 +67,7 @@ public class Tutorial : MonoBehaviour {
         if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 2 && manualTrigger3 == false) {
             tutorialReminder.SetActive(false);
             tutorialReminder.GetComponentInChildren<TMP_Text>().text = "";
+            StartCoroutine(FinalSequence());
             manualTrigger3 = true;
         }
 
@@ -78,6 +75,7 @@ public class Tutorial : MonoBehaviour {
             if(key1.activeInHierarchy && key1.GetComponent<Outliner>().hovering) {
                 key1.SetActive(false);
                 UnlockGate1();
+                CrosshairControl.Instance.SetObjectInRange(false);
                 PlayerUI.Instance.Acquisition("The gate is now open, you may proceed through.");
                 tutorialReminder.GetComponentInChildren<TMP_Text>().text = "";
                 tutorialReminder.SetActive(false);
@@ -97,7 +95,6 @@ public class Tutorial : MonoBehaviour {
             Popup.Instance.OpenPopup("When you enter a room, you can see its name on the top right of the HUD as long as you're inside of that room.\n\n"+
             "You can press tab anytime to bring up the report device. There is a map on the report device showing how rooms are connected, which room you're in (highlighted green), and where other rooms are.");
             trigger.SetActive(false);
-            invisibleWall1.SetActive(true);
             tutorialReminder.GetComponentInChildren<TMP_Text>().text = "";
             tutorialReminder.SetActive(false);
         }
@@ -121,14 +118,12 @@ public class Tutorial : MonoBehaviour {
         }
 
         if(trigger == FinalPathTrigger) {
-            invisibleWall3.SetActive(true);
             StartCoroutine(FinalPathSequence());
             FinalPathTrigger.SetActive(false);
         }
 
         if(trigger == ShortPathTrigger) {
             DivergenceControl.Instance.ManuallyActivateDivergence("RockFall Div");
-            invisibleWall2.SetActive(true);
             ShortPathTrigger.SetActive(false);
         }
 
@@ -139,12 +134,18 @@ public class Tutorial : MonoBehaviour {
 
     private void UnlockGate1() {
         Debug.Log("Unlocking gate 1 from tutorial");
-        gate1.SetActive(false);
+        gate1.GetComponent<WoodFenceOpen>().locked = false;
     }
 
     private void UnlockGate2() {
         Debug.Log("Unlocking gate 2 from tutorial");
-        gate2.SetActive(false);
+        gate2.GetComponent<WoodFenceOpen>().locked = false;
+    }
+
+    private IEnumerator FinalSequence() {
+        yield return new WaitForSeconds(0.5f);
+        Popup.Instance.OpenPopup("The Puncture is a game about surviving a certain amount of time while dealing with divergences and creatures.\n You will not be guided through the other levels, but the same principles you have learned in this tutorial will apply to them as well.\n\nAlso be on the lookout for secrets and puzzles. You may have already missed one in this tutorial...");
+    
     }
 
     private IEnumerator CorrectReport1() {
