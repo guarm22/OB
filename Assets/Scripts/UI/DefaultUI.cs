@@ -59,7 +59,7 @@ public class DefaultUI : MonoBehaviour {
         while(startingText.text.Equals(text) == false) {
             startingText.text += text[element];
             if(char.IsLetterOrDigit(text[element])) {
-                audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.05f);
+                audioSource.pitch = UnityEngine.Random.Range(0.8f, 1.2f);
                 audioSource.PlayOneShot(writeBoop);
             }
             element += 1;
@@ -73,7 +73,7 @@ public class DefaultUI : MonoBehaviour {
         timer.transform.DOScale(originalScale, 2.5f);
 
         //remove text
-        startingText.transform.DOScale(Vector3.zero, 0.5f);
+        startingText.transform.DOScale(Vector3.zero, 0.75f);
 
         yield return new WaitForSeconds(3f);
         isTimerAnimFinished = true;
