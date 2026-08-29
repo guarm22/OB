@@ -49,6 +49,8 @@ public class SC_FPSController : MonoBehaviour
 
     public GameObject blacknessPanel;
 
+    private Vector3 spawnpoint;
+
     private bool mouseAccel;
     private Vector3 prevMousePosition;
     private float accelerationFactor = 0.01f;
@@ -96,6 +98,7 @@ public class SC_FPSController : MonoBehaviour
         if(PlayerPrefs.GetInt("Teleport", 0) == 1 && SceneManager.GetActiveScene().name != "Tutorial") {
             StartCoroutine(RandomTeleporting());
         }
+        spawnpoint = transform.position;
     }
 
     public void ChangeSettings(int mouseAccel, float mouseSpeed) {
@@ -356,10 +359,11 @@ public class SC_FPSController : MonoBehaviour
 
     }
 
-    public void ChangeFOV(float fov) {
-        originalFOV = fov;
+    public void ChangeFOV(float fov, bool fromSettings = false) {
         FOV = fov;
         playerCamera.fieldOfView = fov;
+
+        if(fromSettings) { originalFOV = fov; }
     }
 
     public void CameraZoom() {
@@ -384,14 +388,16 @@ public class SC_FPSController : MonoBehaviour
     }
 
     private void CheckOutOfMap() {
-        if(transform.position.y < -90) {
-            if(GameObject.Find("SPAWNPOINT")) {
-                transform.position = GameObject.Find("SPAWNPOINT").transform.position;
-            }
-            else {
-                transform.position = new Vector3(0, 0, 0);
-            }
+        if(transform.position.y < -50) {
+            StartCoroutine(OutOfMapTP());
         }
+    }
+
+    private IEnumerator OutOfMapTP() {
+        characterController.enabled = false;
+        teleported = true;
+        yield return new WaitForEndOfFrame();
+        transform.position = spawnpoint + new Vector3(0,1,0);
     }
 
     public void LockMovement(bool lockMove) {

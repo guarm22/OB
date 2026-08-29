@@ -6,13 +6,10 @@ public class ScreenGlitch : CustomDivergence {
 
     [SerializeField]
     private Image overlay;
-
     private string roomName;
     private bool active = false;
-
     private GameObject overlayGameObject;
     private ScreenRedFade srf;
-
     private bool inRoom = false;
 
     void Start() {
@@ -24,12 +21,12 @@ public class ScreenGlitch : CustomDivergence {
     void Update() {
         if(!active) { return; }
 
-        if(PlayerUI.Instance.currentRoom == "Main Path" && !inRoom) {
+        if(PlayerUI.Instance.currentRoom == roomName && !inRoom) {
             //nothing
             srf.SetProgress(100, -1);
             inRoom = true;
         }
-        else if (inRoom && PlayerUI.Instance.currentRoom != "Main Path") {
+        else if (inRoom && PlayerUI.Instance.currentRoom != roomName) {
             srf.SetProgress(0, 1.5f);
             inRoom = false;
         }

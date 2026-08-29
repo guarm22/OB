@@ -86,7 +86,8 @@ public class ScreenRedFade : MonoBehaviour
             targetProgress,
             t
         );
-        if(progress == 100) {
+
+        if(progress >= 0.995f) {
             GameSystem.Instance.EndGame("puncture");
         }
 
