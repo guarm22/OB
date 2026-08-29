@@ -69,28 +69,35 @@ public class ScreenRedFade : MonoBehaviour
     }
 
     private void Update() {
-    if (!transitioning)
-        return;
+        if(PlayerUI.paused) {
+            return;
+        }
+        
+        if (!transitioning)
+            return;
 
-    transitionTimer += Time.deltaTime;
+        transitionTimer += Time.deltaTime;
 
-    float t = Mathf.Clamp01(transitionTimer / transitionTime);
+        float t = Mathf.Clamp01(transitionTimer / transitionTime);
 
-    // Linear interpolation
-    float progress = Mathf.Lerp(
-        startProgress,
-        targetProgress,
-        t
-    );
+        // Linear interpolation
+        float progress = Mathf.Lerp(
+            startProgress,
+            targetProgress,
+            t
+        );
+        if(progress == 100) {
+            GameSystem.Instance.EndGame("puncture");
+        }
 
-    material.SetFloat("_Progress", progress);
+        material.SetFloat("_Progress", progress);
 
-    if (t >= 1f)
-    {
-        material.SetFloat("_Progress", targetProgress);
-        transitioning = false;
+        if (t >= 1f)
+        {
+            material.SetFloat("_Progress", targetProgress);
+            transitioning = false;
+        }
     }
-}
 
     public void StartFade()
     {

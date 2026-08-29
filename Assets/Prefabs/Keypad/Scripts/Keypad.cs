@@ -52,8 +52,6 @@ namespace NavKeypad
         public void SetCombo(string newCombo)
         {
             keypadCombo = Int32.Parse(newCombo);
-            Debug.Log(keypadCombo);
-;
         }
 
 

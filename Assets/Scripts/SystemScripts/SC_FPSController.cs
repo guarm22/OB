@@ -357,8 +357,9 @@ public class SC_FPSController : MonoBehaviour
     }
 
     public void ChangeFOV(float fov) {
+        originalFOV = fov;
         FOV = fov;
-        playerCamera.fieldOfView = FOV;
+        playerCamera.fieldOfView = fov;
     }
 
     public void CameraZoom() {
