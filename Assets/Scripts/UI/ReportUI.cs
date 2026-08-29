@@ -50,6 +50,10 @@ public class ReportUI : MonoBehaviour {
     public Light redLight;
     private float originalIntensity;
 
+    public GameObject staticEffect;
+    private GameObject activeStatic = null;
+    public GameObject background;
+
     void Start() {
         CreateUI();
         Instance = this;
@@ -57,6 +61,10 @@ public class ReportUI : MonoBehaviour {
         GetRooms();
         audioSource = this.gameObject.GetComponent<AudioSource>();
         originalIntensity = greenLight.intensity;
+        if(background == null) {
+            //find object in children with name Background
+            background = transform.Find("Background").gameObject;
+        }
     }
 
     void Update() {
@@ -95,12 +103,33 @@ public class ReportUI : MonoBehaviour {
         }
     }
 
+    private void CreateStatic() {
+        if(staticEffect == null) {
+            return;
+        }
+
+        activeStatic = Instantiate(staticEffect, background.transform.position, new Quaternion(0,0,0,0), 
+        background.GetComponentInParent<Canvas>().gameObject.transform);
+    }
+
+    private void DeleteStatic() {
+        if(!activeStatic || activeStatic == null){
+            return;
+        }
+        else {
+            Destroy(activeStatic);
+            activeStatic = null;
+        }
+    }
+
     public void ScrambleUI(bool active) {
         ScrambledUI = active;
         if(active) {
             StartCoroutine(Scramble());
+            CreateStatic();
         }
         else {
+            DeleteStatic();
             StopAllCoroutines();
             ResetSelections();
         }
