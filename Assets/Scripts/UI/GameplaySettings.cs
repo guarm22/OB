@@ -151,7 +151,7 @@ public class GameplaySettings : MonoBehaviour
         PlayerPrefs.SetString("AudioDivergences", AudioDivergences.GetComponentInChildren<SingleChoiceSection>().GetCurrentChoice());
 
         if(SC_FPSController.Instance !=null) {
-            SC_FPSController.Instance.ChangeFOV(PlayerPrefs.GetInt("FOV"));
+            SC_FPSController.Instance.ChangeFOV(PlayerPrefs.GetInt("FOV"), true);
         }
     }
 

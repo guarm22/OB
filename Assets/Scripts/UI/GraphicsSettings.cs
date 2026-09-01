@@ -183,7 +183,6 @@ public class GraphicsSettings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //which monitor
-        Debug.Log("Current Monitor: " + PlayerPrefs.GetString("Monitor"));
+
     }
 }
