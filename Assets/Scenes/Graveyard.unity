@@ -602,6 +602,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8430010017369540777, guid: 3af40ecfb9c325742b0bf5a84dcfc18c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 343996625}
+    - targetCorrespondingSourceObject: {fileID: 8430010017369540777, guid: 3af40ecfb9c325742b0bf5a84dcfc18c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 343996626}
   m_SourcePrefab: {fileID: 100100000, guid: 3af40ecfb9c325742b0bf5a84dcfc18c, type: 3}
 --- !u!1 &9654520 stripped
 GameObject:
@@ -2528,6 +2531,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3095339688535964111, guid: d4e05b8529990b6478619d12a784ce68, type: 3}
+      propertyPath: m_Intensity
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 3276646956944614346, guid: d4e05b8529990b6478619d12a784ce68, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.73
@@ -2601,7 +2608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DynamicData
-  type: 3
+  type: 1
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: All
@@ -2614,11 +2621,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 86945112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b7acd93b4e04024f93b9959ad9070b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 28eed572a5aed1c4bbb67c6c4eef1524, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Spin
-  rotationsPerSecond: 0.2
-  rotationAxis: {x: 0, y: 1, z: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::PeripheralDisappearance
 --- !u!4 &87803141 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
@@ -4164,6 +4169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 146350842}
   - component: {fileID: 146350843}
+  - component: {fileID: 146350844}
   m_Layer: 4
   m_Name: GateOuter - D
   m_TagString: Untagged
@@ -4206,6 +4212,20 @@ MonoBehaviour:
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: All
+--- !u!114 &146350844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146350841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00887aa771c6620419ee53e722376ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlickerDisappearance
+  minFlickerFrequency: 0.05
+  maxFlickerFrequency: 1.2
 --- !u!4 &146361857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2703903776504695495, guid: 016072d9749b8fd48b622de49f2b22f3, type: 3}
@@ -8681,11 +8701,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1344932731}
+    m_TransformParent: {fileID: 441433082}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 116.81986
+      value: 116.81988
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
       propertyPath: m_LocalScale.y
@@ -8693,19 +8713,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 116.81987
+      value: 116.81986
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.570282
+      value: 16.26027
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.0932617
+      value: -4.473567
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.551636
+      value: -17.551636
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8741,13 +8761,24 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: a4ed7943cdda6fd4a9fb649a168bc546, type: 2}
     - target: {fileID: 919132149155446097, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
       propertyPath: m_Name
-      value: Decorative_Pillar (8)
+      value: Decorative_Pillar (8) - D
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1486512491}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1486512490}
   m_SourcePrefab: {fileID: 100100000, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
+--- !u!1 &310197938 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
+  m_PrefabInstance: {fileID: 310197937}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &310720228 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5366622116292570022, guid: 7c932a78336cc8141b20d546e8aac817, type: 3}
@@ -9442,6 +9473,18 @@ MonoBehaviour:
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: All
+--- !u!114 &343996626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9654520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678ab0871c399e042853559eb888af20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CenterDisappearence
 --- !u!1001 &344363552
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12695,6 +12738,7 @@ Transform:
   - {fileID: 820649415}
   - {fileID: 1594307121}
   - {fileID: 720728236}
+  - {fileID: 1486512489}
   - {fileID: 1655148898}
   - {fileID: 1528157332}
   - {fileID: 343996623}
@@ -12703,8 +12747,8 @@ Transform:
   - {fileID: 924955083}
   - {fileID: 829464739}
   - {fileID: 1448911189}
-  - {fileID: 460571718}
   - {fileID: 846050785}
+  - {fileID: 460571718}
   - {fileID: 1249462352}
   m_Father: {fileID: 1136641244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22299,6 +22343,20 @@ MonoBehaviour:
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: All
+--- !u!114 &783161617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783161614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00887aa771c6620419ee53e722376ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlickerDisappearance
+  minFlickerFrequency: 0.05
+  maxFlickerFrequency: 1.2
 --- !u!4 &783943793 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5393543069186164675, guid: 45b31ea46b15c6043b5bf5b4e5f5231c, type: 3}
@@ -24146,7 +24204,7 @@ GameObject:
   - component: {fileID: 846050785}
   - component: {fileID: 846050786}
   m_Layer: 0
-  m_Name: PianoADditon
+  m_Name: PianoADditon - D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26444,7 +26502,7 @@ GameObject:
   - component: {fileID: 958319143}
   - component: {fileID: 958319144}
   m_Layer: 4
-  m_Name: BlockadeAddition
+  m_Name: BlockadeAddition - D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35090,6 +35148,18 @@ MonoBehaviour:
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: All
+--- !u!114 &1232538327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888441612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28eed572a5aed1c4bbb67c6c4eef1524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PeripheralDisappearance
 --- !u!4 &1232638939 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5393543069186164675, guid: 45b31ea46b15c6043b5bf5b4e5f5231c, type: 3}
@@ -35543,6 +35613,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4073005997286943081, guid: 35c341cc1730dfb4d8c122fcbc09ea9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1232538326}
+    - targetCorrespondingSourceObject: {fileID: 4073005997286943081, guid: 35c341cc1730dfb4d8c122fcbc09ea9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1232538327}
   m_SourcePrefab: {fileID: 100100000, guid: 35c341cc1730dfb4d8c122fcbc09ea9b, type: 3}
 --- !u!1001 &1259341852
 PrefabInstance:
@@ -37820,7 +37893,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1486512489}
   - {fileID: 1704974192}
   - {fileID: 1890666594}
   - {fileID: 331797813}
@@ -39269,6 +39341,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7764878079905229644, guid: c02c5c8e1f64afa4b89df5a0814f2358, type: 3}
       insertIndex: -1
       addedObject: {fileID: 783161616}
+    - targetCorrespondingSourceObject: {fileID: 7764878079905229644, guid: c02c5c8e1f64afa4b89df5a0814f2358, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 783161617}
   m_SourcePrefab: {fileID: 100100000, guid: c02c5c8e1f64afa4b89df5a0814f2358, type: 3}
 --- !u!1001 &1396989767
 PrefabInstance:
@@ -42183,6 +42258,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e5f1ed77ce61a4419deec1fda12177b, type: 3}
   m_PrefabInstance: {fileID: 310197937}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1486512490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310197938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00887aa771c6620419ee53e722376ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlickerDisappearance
+  minFlickerFrequency: 0.05
+  maxFlickerFrequency: 1.2
+--- !u!114 &1486512491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310197938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DynamicData
+  type: 1
+  energyCost: 25
+  customDivergence: {fileID: 0}
+  difficulty: All
 --- !u!1 &1488212195
 GameObject:
   m_ObjectHideFlags: 0
@@ -48774,6 +48879,18 @@ MonoBehaviour:
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: All
+--- !u!114 &1747103534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747103532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678ab0871c399e042853559eb888af20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CenterDisappearence
 --- !u!1001 &1747311859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50604,20 +50721,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8430010017369540777, guid: 3af40ecfb9c325742b0bf5a84dcfc18c, type: 3}
   m_PrefabInstance: {fileID: 2007392368}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1796652448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796652444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b7acd93b4e04024f93b9959ad9070b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationsPerSecond: 0.08
-  rotationAxis: {x: 0, y: 0, z: 1}
 --- !u!114 &1796652449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50630,10 +50733,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b843eb5996804693ff2c3c44a2e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 1
   energyCost: 25
   customDivergence: {fileID: 0}
   difficulty: All
+--- !u!114 &1796652450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796652444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00887aa771c6620419ee53e722376ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlickerDisappearance
+  minFlickerFrequency: 0.05
+  maxFlickerFrequency: 1.2
 --- !u!1001 &1798216257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58765,7 +58882,7 @@ PrefabInstance:
       addedObject: {fileID: 1796652449}
     - targetCorrespondingSourceObject: {fileID: 8430010017369540777, guid: 3af40ecfb9c325742b0bf5a84dcfc18c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1796652448}
+      addedObject: {fileID: 1796652450}
   m_SourcePrefab: {fileID: 100100000, guid: 3af40ecfb9c325742b0bf5a84dcfc18c, type: 3}
 --- !u!1001 &2007970785
 PrefabInstance:
@@ -63842,6 +63959,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5321289782376680868, guid: 1d9eacac032db0846b9461b7bb8ce3cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1747103533}
+    - targetCorrespondingSourceObject: {fileID: 5321289782376680868, guid: 1d9eacac032db0846b9461b7bb8ce3cf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1747103534}
   m_SourcePrefab: {fileID: 100100000, guid: 1d9eacac032db0846b9461b7bb8ce3cf, type: 3}
 --- !u!1001 &5409996568538376590
 PrefabInstance:

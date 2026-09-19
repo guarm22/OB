@@ -366,6 +366,35 @@ public class SC_FPSController : MonoBehaviour
         if(fromSettings) { originalFOV = fov; }
     }
 
+    public bool CheckInLOS(Transform target, float maxDistance = 25f, float FOV = 90f) {
+        if (target == null) return false;
+        float viewAngle = FOV-30; // Field of view angle in degrees
+
+        // 1. Distance Check
+        Vector3 directionToTarget = target.position - transform.position;
+        float distanceToTarget = directionToTarget.magnitude;
+
+        if (distanceToTarget > maxDistance) {
+            return false; // Target is too far away
+        }
+
+        // 2. Angle (Field of View) Check
+        float angleToTarget = Vector3.Angle(transform.forward, directionToTarget.normalized);
+        if (angleToTarget > viewAngle) {
+            return false; // Target is outside the vision cone
+        }
+
+        // 3. Raycast (Obstacle) Check
+        // Cast a ray from this object to the target. If it hits an obstacle first, LOS is broken.
+        if (Physics.Raycast(transform.position, directionToTarget.normalized, out RaycastHit hit, distanceToTarget, ~LayerMask.GetMask("Player", "Default", "Floor"))) {
+            // If the ray hits something on the obstacle mask before reaching the target
+            return false; 
+        }
+
+        // If it passed all checks, the target is visible
+        return true;
+    }
+
     public void CameraZoom() {
         if(Input.GetKey(KeybindManager.instance.GetKeybind("Zoom"))) {
             SlowlyZoom(30);

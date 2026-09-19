@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class ReplaceMaterial : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+public class ReplaceMaterial : CustomDivergence {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private Material originalMaterial;
+
+    [SerializeField]
+    private Material replacementMaterial;
+
+    public override void DoDivergenceAction(bool activate, DynamicObject gameObject) {
+        if(activate) {
+            originalMaterial = gameObject.Obj.GetComponent<Renderer>().material;
+            gameObject.Obj.GetComponent<Renderer>().material = replacementMaterial;
+        }
+        else {
+            gameObject.Obj.GetComponent<Renderer>().material = originalMaterial;
+        }
     }
 }
