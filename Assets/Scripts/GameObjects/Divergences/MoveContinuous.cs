@@ -7,6 +7,12 @@ public class MoveContinous : CustomDivergence {
     public Vector3 target;
     public float moveTime = 2f;
     private Vector3 originalPosition;
+
+    [ContextMenu("Record Current Position")]
+    private void RecordCurrentPosition() {
+        target = transform.localPosition;
+    }
+
     public override void DoDivergenceAction(bool activate, DynamicObject dynamic) {
         if(activate) {
             originalPosition = gameObject.transform.localPosition;

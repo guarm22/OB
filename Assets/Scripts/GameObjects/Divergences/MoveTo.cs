@@ -13,6 +13,11 @@ public class MoveTo : CustomDivergence
 
     private Vector3 originalRotation;
 
+    [ContextMenu("Record Current Position")]
+    private void RecordCurrentPosition() {
+        target = transform.localPosition;
+    }
+
     public override void DoDivergenceAction(bool activate, DynamicObject gameObject) {
         if (activate) {
             if(target.Equals(Vector3.zero)) {
