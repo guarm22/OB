@@ -159035,6 +159035,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e67053e95884f924f9f8e953ba494ec5, type: 3}
+--- !u!1 &997394066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 997394067}
+  - component: {fileID: 997394068}
+  m_Layer: 0
+  m_Name: PopupManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &997394067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997394066}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1669244200}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &997394068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997394066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee73ca7049e4094081df5b92ef41fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuPopupManager
+  PopupPrefab: {fileID: 2950979243133074595, guid: 9ee1424f4c45c3f42a6d08fe26bf338e, type: 3}
+  popupParent: {fileID: 285529464}
 --- !u!1001 &998564119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -258960,6 +259006,7 @@ Transform:
   - {fileID: 1965226247}
   - {fileID: 1085737328}
   - {fileID: 1354497846}
+  - {fileID: 997394067}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1670393973
@@ -315299,7 +315346,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: v0.10.0
+  m_text: v0.11.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9d1e1857b8f7b424cb5f4a9e225b539a, type: 2}
   m_sharedMaterial: {fileID: 6774795204957673895, guid: 9d1e1857b8f7b424cb5f4a9e225b539a, type: 2}

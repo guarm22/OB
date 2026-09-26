@@ -63,6 +63,11 @@ public class SC_FPSController : MonoBehaviour
 
     public bool debuffed = false;
 
+    private float originalHeight;
+    Vector3 originalCenter;
+
+    private float originalCamPos;
+
     void Start() {
         characterController = GetComponent<CharacterController>();
         characterController.stepOffset = 0.4f; // Increase step height here
@@ -73,6 +78,9 @@ public class SC_FPSController : MonoBehaviour
         originalRunSpeed = runningSpeed;
         originalWalkSpeed = walkingSpeed;
         originalCrouchSpeed = crouchSpeed;
+        originalHeight = characterController.height;
+        originalCenter = characterController.center;
+        originalCamPos = playerCamera.transform.localPosition.y;
         FOV = PlayerPrefs.GetInt("FOV", 85);
         if(FOV < 80) {
             FOV = 85;
@@ -232,9 +240,9 @@ public class SC_FPSController : MonoBehaviour
             walkingSpeed = originalWalkSpeed;
             while(duration < crouchAnimationTime) {
                 duration += Time.deltaTime;
-                characterController.height = Mathf.Lerp(1, 2, duration/crouchAnimationTime);
-                characterController.center = new Vector3(0, Mathf.Lerp(-0.5f, 0, duration/crouchAnimationTime), 0);
-                playerCamera.transform.localPosition = new Vector3(0, Mathf.Lerp(-0.5f, 0.639f, duration/crouchAnimationTime));
+                characterController.height = Mathf.Lerp(1, originalHeight, duration/crouchAnimationTime);
+                characterController.center = new Vector3(0, Mathf.Lerp(-0.5f, originalCenter.y, duration/crouchAnimationTime), 0);
+                playerCamera.transform.localPosition = new Vector3(0, Mathf.Lerp(-0.5f, originalCamPos, duration/crouchAnimationTime));
                 yield return null;
             }
             isCrouchAnimation = false;
@@ -247,9 +255,9 @@ public class SC_FPSController : MonoBehaviour
             walkingSpeed = originalCrouchSpeed;
             while(duration < crouchAnimationTime) {
                 duration += Time.deltaTime;
-                characterController.height = Mathf.Lerp(2, 1, duration/crouchAnimationTime);
-                characterController.center = new Vector3(0, Mathf.Lerp(0, -0.5f, duration/crouchAnimationTime), 0);
-                playerCamera.transform.localPosition = new Vector3(0, Mathf.Lerp(0.639f, -0.5f, duration/crouchAnimationTime));
+                characterController.height = Mathf.Lerp(originalHeight, 1, duration/crouchAnimationTime);
+                characterController.center = new Vector3(0, Mathf.Lerp(originalCenter.y, -0.5f, duration/crouchAnimationTime), 0);
+                playerCamera.transform.localPosition = new Vector3(0, Mathf.Lerp(originalCamPos, -0.5f, duration/crouchAnimationTime));
                 yield return null;
             }
             isCrouchAnimation = false;
@@ -364,6 +372,35 @@ public class SC_FPSController : MonoBehaviour
         playerCamera.fieldOfView = fov;
 
         if(fromSettings) { originalFOV = fov; }
+    }
+
+    public bool CheckInLOS(Transform target, float maxDistance = 25f, float FOV = 90f) {
+        if (target == null) return false;
+        float viewAngle = FOV-30; // Field of view angle in degrees
+
+        // 1. Distance Check
+        Vector3 directionToTarget = target.position - transform.position;
+        float distanceToTarget = directionToTarget.magnitude;
+
+        if (distanceToTarget > maxDistance) {
+            return false; // Target is too far away
+        }
+
+        // 2. Angle (Field of View) Check
+        float angleToTarget = Vector3.Angle(transform.forward, directionToTarget.normalized);
+        if (angleToTarget > viewAngle) {
+            return false; // Target is outside the vision cone
+        }
+
+        // 3. Raycast (Obstacle) Check
+        // Cast a ray from this object to the target. If it hits an obstacle first, LOS is broken.
+        if (Physics.Raycast(transform.position, directionToTarget.normalized, out RaycastHit hit, distanceToTarget, ~LayerMask.GetMask("Player", "Default", "Floor"))) {
+            // If the ray hits something on the obstacle mask before reaching the target
+            return false; 
+        }
+
+        // If it passed all checks, the target is visible
+        return true;
     }
 
     public void CameraZoom() {

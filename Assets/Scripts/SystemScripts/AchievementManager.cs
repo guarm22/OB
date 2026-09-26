@@ -9,8 +9,6 @@ public class AchievementManager : MonoBehaviour
     private float timeSinceLastCheck = 0;
 
     public List<Achievement> achievements = new List<Achievement>();
-    private JsonWrapperUtil<Achievement> wrapper;
-
     public static AchievementManager Instance;
 
     private int unlocked = 0;
