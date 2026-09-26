@@ -315,7 +315,7 @@ Shader "UI/Screen Red Swirl"
 
                 // Make sure the effect gradually takes over
                 float effectAmount =
-                    _Progress;
+                    _Progress + 0.25;
 
 
                 // =====================================================
