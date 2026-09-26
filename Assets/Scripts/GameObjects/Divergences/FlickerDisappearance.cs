@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FlickerDisappearance : CustomDivergence {
@@ -9,11 +10,13 @@ public class FlickerDisappearance : CustomDivergence {
     [SerializeField]
     private float maxFlickerFrequency = 1.2f;
 
-    private MeshRenderer meshRenderer;
+    private List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
 
 
     void Start() {
-        meshRenderer = GetComponent<MeshRenderer>();
+        //get all mesh renderers in this object and its children
+        meshRenderers.AddRange(GetComponentsInChildren<MeshRenderer>());
+        meshRenderers.AddRange(GetComponents<MeshRenderer>());
     }
 
     public override void DoDivergenceAction(bool activate, DynamicObject gameObject) {
@@ -22,7 +25,9 @@ public class FlickerDisappearance : CustomDivergence {
         }
         else {
             StopAllCoroutines();
-            meshRenderer.enabled = true;
+            foreach(MeshRenderer mr in meshRenderers) {
+                mr.enabled = true;
+            }
         }
     }
 
@@ -42,9 +47,13 @@ public class FlickerDisappearance : CustomDivergence {
                 }
             }
 
-            meshRenderer.enabled = !meshRenderer.enabled;
+            foreach(MeshRenderer mr in meshRenderers) {
+                mr.enabled = !mr.enabled;
+            }
             yield return new WaitForSeconds(flickerDuration);
-            meshRenderer.enabled = !meshRenderer.enabled;
+            foreach(MeshRenderer mr in meshRenderers) {
+                mr.enabled = !mr.enabled;
+            }
             yield return new WaitForSeconds(flickerDuration);
         }
     }

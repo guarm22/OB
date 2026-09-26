@@ -25,7 +25,7 @@ public class GameplaySettings : MonoBehaviour
 
     public GameObject AudioDivergences;
 
-    void Awake() {
+    void Start() {
         if(!PlayerPrefs.HasKey("VisualHints")) {
             PlayerPrefs.SetString("VisualHints", "YES");
         }
@@ -141,7 +141,7 @@ public class GameplaySettings : MonoBehaviour
     }
 
     public void RevertChanges() {
-        Awake();
+        Start();
     }
 
     public void SaveSettings() {

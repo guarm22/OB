@@ -14,15 +14,18 @@ Additions:
 -Added a new type of replacement divergences. Replace material
 -Added a new type of movement divergence. Follow player
 -Campsite now has ambient sound
+-PhysicsMove objects now play a sound when colliding with other objects
 
 Bugfixes:
 -Flicker no longer causes the object to permanently disappear
+-Flicker now works on objects with multiple meshes
+-PhysicsMove objects no longer continue to move while the game is paused
+-You can no longer get stuck in certain locations on Campsite
 
 
 v0.10.0 (Finished 9-19-2026): The Campsite/Tutorial Update
 Changes:
 -Overhauled the Campsite map with new visuals and areas
--Overhauled Cabin Bathroom
 -Certain settings cannot be changed while in game now
 -Updated the background scenery of Cabin
 -Updated some gates on the Tutorial

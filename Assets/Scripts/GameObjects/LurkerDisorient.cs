@@ -35,6 +35,7 @@ public class LurkerDisorient : MonoBehaviour {
         }
         AudioSource a = this.gameObject.AddComponent<AudioSource>();
         this.gameObject.GetComponent<AudioSource>().clip = disorientSound;
+        this.gameObject.GetComponent<AudioSource>().volume = 0.1f;
         this.gameObject.GetComponent<AudioSource>().Play();
         float targetVol = SoundControl.Instance.MasterVolume;
 
