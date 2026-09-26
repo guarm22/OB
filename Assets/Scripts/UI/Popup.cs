@@ -38,8 +38,6 @@ public class Popup : MonoBehaviour
             return;
         }
         Instance = this;
-        PopupText = this.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>();
-        CloseButton = this.transform.GetChild(0).GetChild(2).GetComponent<Button>();
         this.gameObject.SetActive(false);
         CloseButton.onClick.AddListener(ClosePopup);
     }

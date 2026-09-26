@@ -55,6 +55,11 @@ public class PlayMenu : MonoBehaviour
         playButton.onClick.AddListener(PlayButtonEvent);
         backButton.onClick.AddListener(BackButtonEvent);
         modifiersButton.onClick.AddListener(ModifiersEvent);
+
+        MenuPopupManager.Instance.OpenPopup(
+            new MenuPopupData("Starting the Game", 
+            "Welcome to the Puncture.\n\nWe recommend you start with the tutorial level to get a feel for the game. \n\nYou can also adjust the difficulty settings to your liking.", 
+            "StartingTheGame1", false));
     }
 
     // Update is called once per frame

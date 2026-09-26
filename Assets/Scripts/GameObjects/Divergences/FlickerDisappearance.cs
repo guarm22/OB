@@ -22,6 +22,7 @@ public class FlickerDisappearance : CustomDivergence {
         }
         else {
             StopAllCoroutines();
+            meshRenderer.enabled = true;
         }
     }
 
