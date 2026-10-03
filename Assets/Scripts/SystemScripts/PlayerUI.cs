@@ -44,6 +44,7 @@ public class PlayerUI : MonoBehaviour
             paused = false;
         }
         audioSource = this.gameObject.AddComponent<AudioSource>();
+        StartCoroutine(CheckRoom());
     }
 
     // Update is called once per frame
@@ -63,6 +64,21 @@ public class PlayerUI : MonoBehaviour
             return;
         }
         SelectionMenu();
+    }
+
+    private IEnumerator CheckRoom() {
+        while(true) {
+            yield return new WaitForSeconds(0.5f);
+            //find which object the player is currently colliding with that has the tag "Room"
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
+            foreach(Collider c in colliders) {
+                if(c.CompareTag("Room") || c.CompareTag("FakeRoom")) {
+                    currentRoom = c.name;
+                    roomText.GetComponent<TMP_Text>().text = c.name;
+                    break;
+                }
+            }
+        }
     }
 
     public void ChangePrompt(string text, bool activate) {

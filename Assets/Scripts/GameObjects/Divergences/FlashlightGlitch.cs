@@ -54,6 +54,11 @@ public class FlashlightGlitch : CustomDivergence {
                 continue;
             }
 
+            if(PlayerUI.Instance.inMenu) {
+                yield return null;
+                continue;
+            }
+
             elapsedTime += Time.deltaTime;
             if(elapsedTime >= glitchFrequency) {
                 elapsedTime = 0f;

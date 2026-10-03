@@ -5,8 +5,9 @@ Planned:
 
 v0.11.0: Cabin Update
 Changes:
--Updated Bathroom and Kitchen on Cabin
+-Updated Bathroom, Office, and Kitchen on Cabin
 -Updated the visual of popups in the tutorial
+-Slightly decreased energy per second on normal and easy
 
 Additions:
 -Added popups in the menu to help the player when first starting out
@@ -16,12 +17,22 @@ Additions:
 -Campsite now has ambient sound
 -PhysicsMove objects now play a sound when colliding with other objects
 -Added the Outhouse building to Campsite
+-Added new creatures to Campsite
+-Added the "Stalker" creature
 
 Bugfixes:
 -Flicker no longer causes the object to permanently disappear
 -Flicker now works on objects with multiple meshes
 -PhysicsMove objects no longer continue to move while the game is paused
 -You can no longer get stuck in certain locations on Campsite
+-Lurker audio shouldn't be as loud anymore
+-Fixed an issue where the Bathroom wouldn't count the player as inside it
+-The FollowMove divergence now correctly resets the position of the GameObject when reported
+-Fixed a movement divergence in Campsite that would fall through the map
+-IMPORTANT FIX: Fixed a bug where the room that the player was in wouldn't update if they stood at the edge of the collider of a room
+-Fixed the Flashlight glitch divergence causing the flashlight to appear on top of the reporting device.
+-Fixed the ambience on Campsite not looping
+-Fixed creature pathing on Campsite
 
 
 v0.10.0 (Finished 9-19-2026): The Campsite/Tutorial Update
