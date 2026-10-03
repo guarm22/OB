@@ -25,7 +25,7 @@ public class AudioPlayer : MonoBehaviour {
 
     void Update() {
         //test play sound
-        if(Input.GetKeyDown(KeyCode.U)) {
+        if(Input.GetKeyDown(KeyCode.U) && GameSystem.InEditor()) {
             TranscriptEntry entry = Transcript.instance.GetEntry("test_01");
             PlaySound(getFileFromName(entry.filename), entry.subtitle);
         } 

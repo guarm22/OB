@@ -443,7 +443,7 @@ public class SC_FPSController : MonoBehaviour
 
     void Update()  { 
         CheckOutOfMap();  
-        if(PlayerUI.paused || GameSystem.Instance.GameOver || CreatureControl.Instance.IsJumpscareFinished) {
+        if(PlayerUI.paused || GameSystem.Instance.GameOver) {
             return;
         }
         

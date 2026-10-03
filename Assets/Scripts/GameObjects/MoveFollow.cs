@@ -59,5 +59,9 @@ public class MoveFollow : CustomDivergence {
     public override void DoDivergenceAction(bool activate, DynamicObject gameObject) {
         room = gameObject.Room;
         followActive = activate;
+        if(activate == false) {
+            currentlyFollowing = false;
+            transform.DOMove(originalPos, 0.75f);
+        }
     }
 }

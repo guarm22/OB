@@ -79,7 +79,7 @@ public class GameSettings : MonoBehaviour {
             return 45;
         }
         else if(diff == "Normal") {
-            return 34;
+            return 33;
         }
         else if(diff == "Hard") {
             return 24;
@@ -130,10 +130,10 @@ public class GameSettings : MonoBehaviour {
 
     private float getEPS(string diff) {
         if(diff == "Easy") {
-            return 1.7f;
+            return 1.65f;
         }
         else if(diff == "Normal") {
-            return 1.75f;
+            return 1.70f;
         }
         else if(diff == "Hard") {
             return 1.8f;

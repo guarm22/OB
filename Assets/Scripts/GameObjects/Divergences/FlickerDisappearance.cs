@@ -11,12 +11,14 @@ public class FlickerDisappearance : CustomDivergence {
     private float maxFlickerFrequency = 1.2f;
 
     private List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
+    private List<Light> lights = new List<Light>();
 
 
     void Start() {
         //get all mesh renderers in this object and its children
         meshRenderers.AddRange(GetComponentsInChildren<MeshRenderer>());
         meshRenderers.AddRange(GetComponents<MeshRenderer>());
+        lights.AddRange(GetComponentsInChildren<Light>());
     }
 
     public override void DoDivergenceAction(bool activate, DynamicObject gameObject) {
@@ -27,6 +29,9 @@ public class FlickerDisappearance : CustomDivergence {
             StopAllCoroutines();
             foreach(MeshRenderer mr in meshRenderers) {
                 mr.enabled = true;
+            }
+            foreach(Light l in lights) {
+                l.enabled = true;
             }
         }
     }
@@ -50,10 +55,19 @@ public class FlickerDisappearance : CustomDivergence {
             foreach(MeshRenderer mr in meshRenderers) {
                 mr.enabled = !mr.enabled;
             }
+            foreach(Light l in lights) {
+                l.enabled = !l.enabled;
+            }
+
             yield return new WaitForSeconds(flickerDuration);
+
             foreach(MeshRenderer mr in meshRenderers) {
                 mr.enabled = !mr.enabled;
             }
+            foreach(Light l in lights) {
+                l.enabled = !l.enabled;
+            }
+
             yield return new WaitForSeconds(flickerDuration);
         }
     }

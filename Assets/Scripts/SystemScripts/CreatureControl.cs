@@ -13,15 +13,14 @@ public class CreatureControl : MonoBehaviour
     public GameObject chaserPrefab;
     public GameObject lurkerPrefab;
     public GameObject hiderPrefab;
+    public GameObject stalkerPrefab;
     public int divergenceThreshold = 2;
 
     public Dictionary<string, int> CreaturesPerRoom = new Dictionary<string, int>();
-    [HideInInspector]
-    public bool IsJumpscareFinished = false;
     public float creatureSpawnRate = 20f;
     public float timeSinceLastCreature = 0f;
     private List<GameObject> creatures = new List<GameObject>();
-    public float specialSpawnChance = 50f;
+    public float creatureSpawnChance = 33f;
     [HideInInspector]
     public int TotalCreatures;
     public int CreaturesReported = 0;
@@ -34,8 +33,13 @@ public class CreatureControl : MonoBehaviour
     public bool ActivateLurker = true;
     public bool ActivateHider = true;
     public bool ActivateChaser = true;
+    public bool ActivateStalker = true;
 
     private float CollapseChance = 60f;
+
+    private List<GameObject> lurkerSpawnpoints = new List<GameObject>();
+    private List<GameObject> hiderSpawnpoints = new List<GameObject>();
+    private List<GameObject> stalkerSpawnpoints = new List<GameObject>();
 
     private List<string> GetRoomsWithNoCreatures() {
         return CreaturesPerRoom.Keys.Where(k => CreaturesPerRoom[k] == 0).ToList();
@@ -60,9 +64,6 @@ public class CreatureControl : MonoBehaviour
         GameObject creature = Instantiate(prefab, spawnPos, Quaternion.identity, roomObj.transform);
         Debug.Log("Spawning " + type + " in " + room + " at " + spawnPos);
 
-        if(type != "Hider") {
-            //creature.GetComponent<NavMeshAgent>().Warp(spawnPos);
-        }
         creature.transform.SetParent(roomObj.transform);
         creature.name = type + " - " + room;
         CreaturesPerRoom[room] += 1;
@@ -80,6 +81,9 @@ public class CreatureControl : MonoBehaviour
 
             if(type == "Hider") {
                 return FindHiderSpawn(room);
+            }
+            if(type == "Stalker") {
+                return FindStalkerSpawn(room);
             }
 
             GameObject roomObj = GameObject.Find(room);
@@ -104,15 +108,6 @@ public class CreatureControl : MonoBehaviour
                 point = hit.position;
             }
             return point;
-    }
-
-    public Vector3 FindHiderSpawn(String room) {
-        if(!GameObject.Find("HiderSpawn"+room)) {
-            createCreature(zombiePrefab, "Zombie", room);
-            return new Vector3(-1, -1, -1);
-        }
-        Vector3 spawnPos = GameObject.Find("HiderSpawn"+room).transform.position;
-        return spawnPos;
     }
 
     private Vector3 GetRoomCornerFurthestFromPlayer(GameObject roomObj) {
@@ -148,13 +143,28 @@ public class CreatureControl : MonoBehaviour
         return furthestPoint;
     }
 
-    private Vector3 FindLurkerSpawn(string room) {
-        if(!GameObject.Find("LurkerSpawn"+room)) {
+    public Vector3 FindHiderSpawn(String room) {
+        GameObject hiderSpawn = hiderSpawnpoints.Find(spawn => spawn.name == "HiderSpawn" + room);
+        if(hiderSpawn != null) {
             createCreature(zombiePrefab, "Zombie", room);
         }
+        return hiderSpawn.transform.position;
+    }
 
-        Vector3 spawnPos = GameObject.Find("LurkerSpawn"+room).transform.position;
-        return spawnPos;
+    private Vector3 FindLurkerSpawn(string room) {
+        GameObject lurkerSpawn = lurkerSpawnpoints.Find(spawn => spawn.name == "LurkerSpawn" + room);
+        if(lurkerSpawn == null) {
+            createCreature(zombiePrefab, "Zombie", room);
+        }
+        return lurkerSpawn.transform.position;
+    }
+
+    private Vector3 FindStalkerSpawn(string room) {
+        GameObject stalkerSpawn = stalkerSpawnpoints.Find(spawn => spawn.name == room + "TP");
+        if(stalkerSpawn == null) {
+            createCreature(zombiePrefab, "Zombie", room);
+        }
+        return stalkerSpawn.transform.position;
     }
 
     public void ManuallySpawnCreature(string room) {
@@ -164,6 +174,9 @@ public class CreatureControl : MonoBehaviour
     private void doCreatureCheck() {
         //lose condition - all rooms have max anomalies
         ShouldStartCollapse();
+        if(creatures.Count == 0) {
+            return;
+        }
 
         if(DivergenceControl.Instance.DivergenceList.Count >= divergenceThreshold) {
             int rng = UnityEngine.Random.Range(0,100);
@@ -172,7 +185,7 @@ public class CreatureControl : MonoBehaviour
             bool coEnabled = PlayerPrefs.GetInt("Creature Overrun",0) == 1;
             bool onTutorial = SceneManager.GetActiveScene().name == "Tutorial";
 
-            if(rng < specialSpawnChance || (coEnabled && !onTutorial))  {
+            if(rng < creatureSpawnChance || (coEnabled && !onTutorial))  {
                 createCreature(creatures[randomIndex],  creatures[randomIndex].name);
             }
         }
@@ -216,7 +229,7 @@ public class CreatureControl : MonoBehaviour
         int z = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t3 && Time.time - div.divTime <= t4);
         int w = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t4 && Time.time - div.divTime <= t5);
         int v = DivergenceControl.Instance.DivergenceList.Count(div => Time.time - div.divTime > t5);
-        float spawnChance = (0.2f*x) + (0.35f*y) + (0.5f*z) + (1f*w) + (3.33f*v);
+        float spawnChance = (0.15f*x) + (0.4f*y) + (0.6f*z) + (1f*w) + (3f*v);
 
         //chance to start collapse within 80% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.8f)) {
@@ -227,9 +240,19 @@ public class CreatureControl : MonoBehaviour
             }
         }
 
+        //chance to start collapse within 65% of the max divergences
         if(divCount >= Mathf.Ceil(maxDivs*0.65f)) {
             int rnum = UnityEngine.Random.Range(0,100);
             if(rnum < spawnChance/2) {
+                StartCoroutine(PunctureCollapse.Instance.Collapse());
+                return;
+            }
+        }
+
+        //chance to start collapse within 50% of the max divergences
+        if(divCount >= Mathf.Ceil(maxDivs*0.5f)) {
+            int rnum = UnityEngine.Random.Range(0,100);
+            if(rnum < spawnChance/4) {
                 StartCoroutine(PunctureCollapse.Instance.Collapse());
                 return;
             }
@@ -277,12 +300,28 @@ public class CreatureControl : MonoBehaviour
         if(ActivateChaser) {
             creatures.Add(chaserPrefab);
         }
+        if(ActivateStalker) {
+            creatures.Add(stalkerPrefab);
+        }
         setCreatureSettings();
 
         //create rooms
         List<GameObject> rooms = GameObject.FindGameObjectsWithTag("Room").ToList<GameObject>();
         foreach(GameObject room in rooms) {
             CreaturesPerRoom.Add(room.name, 0);
+            
+            GameObject lurkerSpawn = GameObject.Find("LurkerSpawn" + room.name);
+            GameObject hiderSpawn = GameObject.Find("HiderSpawn" + room.name);
+            GameObject stalkerSpawn = GameObject.Find(room.name + "TP");
+            if(lurkerSpawn != null) {
+                lurkerSpawnpoints.Add(lurkerSpawn);
+            }
+            if(hiderSpawn != null) {
+                hiderSpawnpoints.Add(hiderSpawn);
+            }
+            if(stalkerSpawn != null) {
+                stalkerSpawnpoints.Add(stalkerSpawn);
+            }
         }
     }
 
@@ -296,6 +335,10 @@ public class CreatureControl : MonoBehaviour
     void Update() {
         if(GameSystem.Instance.GameOver || PlayerUI.paused) {
             return;
+        }
+
+        if(GameSystem.InEditor() && Input.GetKeyDown(KeyCode.Alpha8)) {
+            createCreature(stalkerPrefab, "Stalker");
         }
 
         if(GameSystem.InEditor() && Input.GetKeyDown(KeyCode.Delete)) {

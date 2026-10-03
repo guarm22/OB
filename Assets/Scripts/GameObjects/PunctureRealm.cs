@@ -24,6 +24,8 @@ public class PunctureRealm : MonoBehaviour {
 
     private List<GameObject> spawnedSpheres = new List<GameObject>();
 
+    private float expansionSpeed = 1.3f;
+
     void Awake() {
         Instance = this;
         correctDoor = doors[Random.Range(0, doors.Count)];
@@ -40,6 +42,9 @@ public class PunctureRealm : MonoBehaviour {
     }
 
     public void InitRealm(GameObject realmSphere) {
+        if(GameSystem.Instance.Difficulty == "Hard") {
+            expansionSpeed = 1.6f;
+        }
         triggeringSphere = realmSphere;
         correctDoor = doors[Random.Range(0, doors.Count)];
         fakeDoor = doors.Find(door => door != correctDoor);
@@ -60,7 +65,7 @@ public class PunctureRealm : MonoBehaviour {
             if(door != correctDoor && door != fakeDoor) {
                 GameObject expandingSphere = Instantiate(expandingSpherePrefab, door.transform.position, Quaternion.identity);
                 spawnedSpheres.Add(expandingSphere);
-                expandingSphere.GetComponent<ExpandingSphere>().ManualActivation(1.6f);
+                expandingSphere.GetComponent<ExpandingSphere>().ManualActivation(expansionSpeed);
                 yield return new WaitForSeconds(0.2f);
             }
         }

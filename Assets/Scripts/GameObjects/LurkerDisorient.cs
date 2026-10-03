@@ -47,7 +47,7 @@ public class LurkerDisorient : MonoBehaviour {
                 yield return null;
             }
             elapsed += Time.deltaTime;
-            a.volume = Mathf.Lerp(0f, 1f, 1-(elapsed/duration));
+            a.volume = Mathf.Lerp(0f, 0.25f, 1-(elapsed/duration));
             AudioListener.volume = Mathf.Lerp(0f, targetVol, elapsed/duration);
             yield return null;
         }
