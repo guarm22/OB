@@ -11,6 +11,9 @@ public class PunctureSpike : CustomDivergence {
 
     public GameObject testsphere;
 
+    [SerializeField]
+    private Vector3 spikeRotationOffset = new Vector3(0f, -174f, 0f);
+
     public AudioSource audioSource;
     public AudioClip warningSound;
     public AudioClip moveSound;
@@ -101,9 +104,18 @@ public class PunctureSpike : CustomDivergence {
         }
     }
 
-    private void RotateSpike(Vector3 loc) {
-        transform.LookAt(loc);
-        transform.Rotate(new Vector3(0, -169, 0));
+    private void RotateSpike(Vector3 endLocation) {
+        Vector3 worldStart = transform.parent != null
+            ? transform.parent.TransformPoint(startLoc)
+            : startLoc;
+        Vector3 worldEnd = transform.parent != null
+            ? transform.parent.TransformPoint(endLocation)
+            : endLocation;
+        Vector3 direction = worldEnd - worldStart;
+
+        if (direction.sqrMagnitude > 0.0001f) {
+            transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(spikeRotationOffset);
+        }
     }
 
     void Update() {

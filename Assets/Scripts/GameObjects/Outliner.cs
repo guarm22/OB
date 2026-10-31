@@ -43,4 +43,11 @@ public class Outliner : MonoBehaviour {
         GetComponent<Renderer>().materials = materials.ToArray();
         CrosshairControl.Instance.SetObjectInRange(false);
     }
+
+    void OnDisable() {
+        hovering = false;
+        if (CrosshairControl.Instance != null) {
+            CrosshairControl.Instance.SetObjectInRange(false);
+        }
+    }
 }

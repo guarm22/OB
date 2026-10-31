@@ -18,7 +18,7 @@ public class AudioPlayer : MonoBehaviour {
         audioSource.clip = clip;
         audioSource.Play();
         if(subtitle != "") {
-            SubtitleControl.Instance.ShowSubtitle(subtitle, clip.length * 1.3f);
+            SubtitleControl.Instance.ShowSubtitle(subtitle, "DEV", clip.length * 1.3f);
         }
     }
 

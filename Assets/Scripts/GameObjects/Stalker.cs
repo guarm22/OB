@@ -82,6 +82,7 @@ public class Stalker : CreatureBase {
         //this should be a loud scream, a flash of white, and a large energy drain
 
         StartCoroutine(Sound(stalkerScream, 2.5f));
+        SubtitleControl.Instance.ShowSubtitle("*Scream*", "Stalker:");
         if(reason == "camera") {
             Debug.Log("Stalker kill event triggered by camera in " + this.HomeRoom);
             //play "WHY DID YOU LOOK"
@@ -120,12 +121,14 @@ public class Stalker : CreatureBase {
         timeSpentInRoom = 0f;
         SC_FPSController.Instance.Debuff("Energy", 5f);
         StartCoroutine(Sound(stalkerWhisper, 1f));
+        SubtitleControl.Instance.ShowSubtitle("Can you help me?","Stalker:");
     }
 
     private void OutsideRoomBehavior() {
         timeSpentOutsideRoom += Time.deltaTime;
         if(timeSpentOutsideRoom >= laughFrequency) {
             StartCoroutine(Sound(stalkerLaugh, 0.5f));
+            SubtitleControl.Instance.ShowSubtitle("*Laughs*","Stalker:");
             Debug.Log("Stalker laugh triggered in " + this.HomeRoom);
             timeSpentOutsideRoom = 0f;
         }

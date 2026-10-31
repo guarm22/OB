@@ -74,6 +74,7 @@ public class Hider : CreatureBase {
         if(timeLookingAtPlayer >= 6.5f) {
             ads.pitch = Random.Range(1.65f, 1.8f);
             ads.PlayOneShot(this.scareSound);
+            SubtitleControl.Instance.ShowSubtitle("Big man spotted 12 O'Clock!", "Hider:");
             SC_FPSController.Instance.Debuff("Energy", EnergyDrainAmount*2.5f);
             timeLookingAtPlayer = 1f;
         }

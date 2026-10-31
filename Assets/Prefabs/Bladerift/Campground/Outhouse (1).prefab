@@ -178,7 +178,7 @@ Transform:
   m_GameObject: {fileID: 1080307365295933763}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7004205, y: -0, z: -0, w: -0.7137305}
-  m_LocalPosition: {x: 3.2419906, y: 2.2036963, z: -8.47}
+  m_LocalPosition: {x: 3.151309, y: 2.2045054, z: -8.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -800,6 +800,14 @@ PrefabInstance:
       value: Floor (11)
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
+      propertyPath: m_TagString
+      value: ConcreteFloor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 1
       objectReference: {fileID: 0}
@@ -1324,6 +1332,9 @@ MonoBehaviour:
   closeSound: {fileID: 8300000, guid: 73a9dc1bb3b73b64b837018326f61840, type: 3}
   axis: {x: 0, y: 0, z: 1}
   openAngle: -90
+  timeToOpen: 1
+  timeToClose: 1
+  volModifier: 1
 --- !u!1001 &1433953995766532001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2632,6 +2643,9 @@ MonoBehaviour:
   closeSound: {fileID: 8300000, guid: 73a9dc1bb3b73b64b837018326f61840, type: 3}
   axis: {x: 0, y: 0, z: 1}
   openAngle: 90
+  timeToOpen: 1
+  timeToClose: 1
+  volModifier: 1
 --- !u!4 &3069104101393787249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b356f46a118c2cb4e801457e037bf175, type: 3}
@@ -2708,6 +2722,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
       propertyPath: m_Name
       value: Floor (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
+      propertyPath: m_TagString
+      value: ConcreteFloor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3117,6 +3139,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Floor (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
+      propertyPath: m_TagString
+      value: ConcreteFloor
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3473,6 +3503,9 @@ MonoBehaviour:
   closeSound: {fileID: 8300000, guid: 73a9dc1bb3b73b64b837018326f61840, type: 3}
   axis: {x: 0, y: 0, z: 1}
   openAngle: 2
+  timeToOpen: 1
+  timeToClose: 1
+  volModifier: 1
 --- !u!4 &3084052439735344715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7996328071841057250, guid: 9297c0d8e3976624b809ef6d66367a60, type: 3}
@@ -5995,6 +6028,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
       propertyPath: m_Name
       value: Floor (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 43a44a368d3c7054bba34d96302f5348, type: 3}
+      propertyPath: m_TagString
+      value: ConcreteFloor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

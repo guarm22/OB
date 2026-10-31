@@ -60,6 +60,13 @@ public class PlayMenu : MonoBehaviour
             new MenuPopupData("Starting the Game", 
             "Welcome to the Puncture.\n\nWe recommend you start with the tutorial level to get a feel for the game. \n\nYou can also adjust the difficulty settings to your liking.", 
             "StartingTheGame1", false));
+
+        if(MenuPopupManager.Instance.PopupFinished("StartingTheGame1")) {
+            MenuPopupManager.Instance.OpenPopup(
+            new MenuPopupData("Expectations", 
+            "You're expected to fail each level a few times before being able to complete it, even on easy and normal.\n\nMake sure you try to learn the ins and outs of each area.", 
+            "Expectations", false));
+        }
     }
 
     // Update is called once per frame

@@ -72,4 +72,13 @@ public class MenuPopupManager : MonoBehaviour {
         }
     }
 
+    public bool PopupFinished(string popupName) {
+        foreach(MenuPopupData p in popupList) {
+            if(p.name == popupName && p.doNotShowAgain == true){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
