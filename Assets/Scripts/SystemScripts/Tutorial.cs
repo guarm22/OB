@@ -26,6 +26,7 @@ public class Tutorial : MonoBehaviour {
     private bool manualTrigger1 = false;
     private bool manualTrigger2 = false;
     private bool manualTrigger3 = false;
+    private bool manualTrigger4 = false;
     private bool JustLoaded = true;
 
     public GameObject pathGate;
@@ -71,6 +72,11 @@ public class Tutorial : MonoBehaviour {
             manualTrigger3 = true;
         }
 
+        if(GameSystem.Instance.AnomaliesSuccesfullyReportedThisGame > 3 && !manualTrigger4) {
+            manualTrigger4 = true;
+            StartCoroutine(SphereSequnce());
+        }
+
         if(Input.GetKeyDown(KeybindManager.instance.GetKeybind("Interact")) || Input.GetKeyDown(KeyCode.Mouse0)) {
             if(key1.activeInHierarchy && key1.GetComponent<Outliner>().hovering) {
                 key1.SetActive(false);
@@ -80,6 +86,10 @@ public class Tutorial : MonoBehaviour {
                 tutorialReminder.GetComponentInChildren<TMP_Text>().text = "";
                 tutorialReminder.SetActive(false);
             }
+        }
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            StartCoroutine(FinalSequence());
         }
     }
 
@@ -141,11 +151,22 @@ public class Tutorial : MonoBehaviour {
         Debug.Log("Unlocking gate 2 from tutorial");
         gate2.GetComponent<WoodFenceOpen>().locked = false;
     }
+    private IEnumerator SphereSequnce() {
+        yield return new WaitForSeconds(1f);
+        tutorialReminder.SetActive(false);
+        tutorialReminder.GetComponentInChildren<TMP_Text>().text = "";
+        Popup.Instance.OpenPopup("Once you see multiple of those red Puncture Spheres in an actual level, that means you've lost. You have left too many divergences around for too long.\n\nNormally, you wouldn't be able to report them, but you may be able to outrun them.\n\nNow, continue to the end of the path.");
+    }
 
     private IEnumerator FinalSequence() {
         yield return new WaitForSeconds(0.5f);
         Popup.Instance.OpenPopup("The Puncture is a game about surviving a certain amount of time while dealing with divergences and creatures.\n You will not be guided through the other levels, but the same principles you have learned in this tutorial will apply to them as well.\n\nAlso be on the lookout for secrets and puzzles. You may have already missed one in this tutorial...");
-    
+        yield return new WaitUntil(() =>!Popup.Instance.isPopupOpen);
+        DivergenceControl.Instance.ManuallyActivateDivergence("RFExpand1");
+        DivergenceControl.Instance.ManuallyActivateDivergence("RFExpand2");
+        yield return new WaitForSeconds(1.5f);
+        tutorialReminder.SetActive(true);
+        tutorialReminder.GetComponentInChildren<TMP_Text>().text = "You can report these Puncture spheres! Quickly!";
     }
 
     private IEnumerator CorrectReport1() {

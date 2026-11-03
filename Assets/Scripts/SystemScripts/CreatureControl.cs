@@ -155,6 +155,7 @@ public class CreatureControl : MonoBehaviour
         GameObject lurkerSpawn = lurkerSpawnpoints.Find(spawn => spawn.name == "LurkerSpawn" + room);
         if(lurkerSpawn == null) {
             createCreature(zombiePrefab, "Zombie", room);
+            return Vector3.zero;
         }
         return lurkerSpawn.transform.position;
     }

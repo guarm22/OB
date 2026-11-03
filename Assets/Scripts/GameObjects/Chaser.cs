@@ -13,7 +13,7 @@ public class Chaser : CreatureBase
     public bool canSeeTarget = false;
 
     private bool amTouchingPlayer() {
-        if(Vector3.Distance(transform.position, player.transform.position) < 1.3f) {
+        if(Vector3.Distance(transform.position, player.transform.position) < 2f) {
                 return true;
             }
         return false;

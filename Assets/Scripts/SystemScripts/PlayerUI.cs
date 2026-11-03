@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -38,6 +37,8 @@ public class PlayerUI : MonoBehaviour
 
     public TMP_Text acquisitionText;
 
+    private Coroutine currentTextRoutine;
+
     void Start() {
         Instance = this;
         if(paused) {
@@ -68,17 +69,39 @@ public class PlayerUI : MonoBehaviour
 
     private IEnumerator CheckRoom() {
         while(true) {
-            yield return new WaitForSeconds(0.5f);
             //find which object the player is currently colliding with that has the tag "Room"
             Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
             foreach(Collider c in colliders) {
                 if(c.CompareTag("Room") || c.CompareTag("FakeRoom")) {
+                    if(currentRoom == c.name) {break;}
                     currentRoom = c.name;
-                    roomText.GetComponent<TMP_Text>().text = c.name;
+                    ChangeText(c.name);
                     break;
                 }
             }
+            yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    private void ChangeText(string text, float duration = 0.25f) {
+        if(currentTextRoutine != null) { 
+            StopCoroutine(currentTextRoutine);
+            roomText.GetComponent<TMP_Text>().text = "";
+            }
+        currentTextRoutine = StartCoroutine(SlowText(roomText.GetComponent<TMP_Text>(), text));
+    }
+
+    private IEnumerator SlowText(TMP_Text obj, string text, float duration = 0.25f) {
+        for(int i=obj.text.Length-1; i>=1; i--) {
+            obj.text = obj.text.Substring(0, i-1);
+            yield return new WaitForSeconds(duration/text.Length);
+        }
+
+        for(int i=0; i<text.Length; i++) {
+            obj.text = obj.text+text[i];
+            yield return new WaitForSeconds((duration/text.Length) + UnityEngine.Random.Range(0.02f, 0.14f));
+        }
+        currentTextRoutine = null;
     }
 
     public void ChangePrompt(string text, bool activate) {
@@ -287,8 +310,8 @@ public class PlayerUI : MonoBehaviour
         {
             // Player is within a GameObject with the specified tag
             //Debug.Log("Player is within a GameObject with the tag: " + targetTag + " with object name: " + other.gameObject.name);
-            roomText.GetComponent<TMP_Text>().text = other.gameObject.name;
-            currentRoom = other.gameObject.name;
+            //roomText.GetComponent<TMP_Text>().text = other.gameObject.name;
+            //currentRoom = other.gameObject.name;
         }
 
         if (other.tag.Equals(tutTag)) {

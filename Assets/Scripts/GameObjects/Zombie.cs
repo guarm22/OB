@@ -5,7 +5,7 @@ using UnityEngine;
 public class Zombie : CreatureBase {
 
     private bool amTouchingPlayer() {
-        if(Vector3.Distance(transform.position, player.transform.position) < 1.3f) {
+        if(Vector3.Distance(transform.position, player.transform.position) < 1.65f) {
                 return true;
             }
         return false;
