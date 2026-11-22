@@ -21,12 +21,19 @@ public class CampsiteAmbience : MonoBehaviour
     [SerializeField]
     private AudioSource waterAudio;
 
+    [SerializeField]
+    private AudioSource fireAudio;
+
+    [SerializeField]
+    private ParticleSystem fireParticles;
+
     void Start() {
         Player = GameObject.Find("Player");
         originalPosition = audioPlayer.transform.localPosition;
         ambienceTimer = ambienceReplayDelay - 8f;
         audioPlayer.volume = PlayerPrefs.GetInt("AmbienceVolume") / 100f;
         waterAudio.volume = PlayerPrefs.GetInt("AmbienceVolume") / 150f;
+        fireAudio.volume = PlayerPrefs.GetInt("AmbienceVolume") / 50f;
         backgroundNoise.volume = PlayerPrefs.GetInt("AmbienceVolume") / 1000f;
     }
 
@@ -53,7 +60,13 @@ public class CampsiteAmbience : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if(PlayerUI.paused) return;
+        if(PlayerUI.paused) {
+            fireParticles.Pause();
+            return;
+        }
+        if(!fireParticles.isPlaying) {
+            fireParticles.Play();
+        }
 
         if(ambienceTimer >= ambienceReplayDelay) {
             StopAllCoroutines();
