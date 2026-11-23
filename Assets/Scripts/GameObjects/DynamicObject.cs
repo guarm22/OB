@@ -91,6 +91,16 @@ public class DynamicObject {
         Vector3 scale = enable ? new Vector3(0f, 0f, 0f) : originalScale;
         float scaletime = enable ? 0.1f : 0.25f;
         Obj.transform.DOScale(scale, scaletime).SetEase(Ease.InOutSine);
+
+        //also disable all audio sources on the object if it is disappearing, and re-enable them if it is reappearing
+        for(int i = 0; i < Obj.transform.childCount; i++) {
+            Transform child = Obj.transform.GetChild(i);
+            AudioSource audio = child.GetComponent<AudioSource>();
+            if(audio != null) {
+                audio.enabled = !enable;
+            }
+        }
+
         return true;
     }
 

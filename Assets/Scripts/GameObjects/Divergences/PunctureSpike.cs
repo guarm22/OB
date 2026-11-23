@@ -53,7 +53,7 @@ public class PunctureSpike : CustomDivergence {
         while(true) {
             if(PlayerUI.paused){yield return null; continue;}
 
-            if (Vector3.Distance(player.transform.position, this.transform.position) < 1 && !resetting) {
+            if (Vector3.Distance(player.transform.position, this.transform.position) < 2.2f && !resetting) {
                 GameSystem.Instance.EndGame("puncture");
                 yield return null;
                 break;

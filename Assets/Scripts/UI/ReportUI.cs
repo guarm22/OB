@@ -221,6 +221,12 @@ public class ReportUI : MonoBehaviour {
         int maxDivergences = DivergenceControl.Instance.Rooms.Count;
         float divergenceRatio = (float) divergences / maxDivergences;
 
+        if(maxDivergences == 0) {
+            StatusText.text = "Unknown";
+            StatusText.color = Color.grey;
+            return;
+        }
+
         if(divergenceRatio <= Warning.warningThreshold) {
             StatusText.text = " " + Statuses[0];
             StatusText.color = StatusColors[0];
