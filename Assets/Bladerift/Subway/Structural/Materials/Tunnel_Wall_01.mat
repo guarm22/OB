@@ -23,7 +23,7 @@ Material:
   m_Name: Tunnel_Wall_01
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: a780c98dab5f4ff4087414ac1300c73f, type: 2}
-  m_ModifiedSerializedProperties: 0
+  m_ModifiedSerializedProperties: 8
   m_ValidKeywords:
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
@@ -51,7 +51,8 @@ Material:
         m_Scale: {x: 3.36, y: 3.36}
         m_Offset: {x: 0.046, y: 0.021}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Cull: 2
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
